@@ -198,7 +198,7 @@ void FancyTabWidget::SetMode(const Mode mode) {
   }
 
 #ifndef Q_OS_MACOS
-  if (mode_ == Mode::LargeSidebar) {
+  if (mode_ == Mode::LargeSidebar || mode_ == Mode::IconsSidebar) {
     setIconSize(QSize(iconsize_largesidebar_, iconsize_largesidebar_));
   }
   else {
@@ -206,13 +206,15 @@ void FancyTabWidget::SetMode(const Mode mode) {
   }
 #endif
 
-  if (previous_mode == Mode::IconOnlyTabs && mode != Mode::IconOnlyTabs) {
+  if ((previous_mode == Mode::IconOnlyTabs || previous_mode == Mode::IconsSidebar) &&
+      (mode != Mode::IconOnlyTabs && mode != Mode::IconsSidebar)) {
     for (int i = 0; i < count(); ++i) {
       tabBar()->setTabText(i, tabBar()->tabData(i).value<FancyTabData*>()->label());
       tabBar()->setTabToolTip(i, QLatin1String(""));
     }
   }
-  else if (previous_mode != Mode::IconOnlyTabs && mode == Mode::IconOnlyTabs) {
+  else if ((previous_mode != Mode::IconOnlyTabs && previous_mode != Mode::IconsSidebar) &&
+           (mode == Mode::IconOnlyTabs || mode == Mode::IconsSidebar)) {
     for (int i = 0; i < count(); ++i) {
       tabBar()->setTabText(i, QLatin1String(""));
       tabBar()->setTabToolTip(i, tabBar()->tabData(i).value<FancyTabData*>()->label());
@@ -285,7 +287,7 @@ int FancyTabWidget::IndexOfTab(QWidget *widget) {
 
 void FancyTabWidget::paintEvent(QPaintEvent *pe) {
 
-  if (mode() != Mode::LargeSidebar && mode() != Mode::SmallSidebar) {
+  if (mode() != Mode::LargeSidebar && mode() != Mode::SmallSidebar && mode() != Mode::IconsSidebar) {
     QTabWidget::paintEvent(pe);
     return;
   }
@@ -382,6 +384,7 @@ void FancyTabWidget::contextMenuEvent(QContextMenuEvent *e) {
     menu_ = new QMenu(this);
     QActionGroup *group = new QActionGroup(this);
     addMenuItem(group, tr("Large sidebar"), Mode::LargeSidebar);
+    addMenuItem(group, tr("Icons sidebar"), Mode::IconsSidebar);
     addMenuItem(group, tr("Small sidebar"), Mode::SmallSidebar);
     addMenuItem(group, tr("Plain sidebar"), Mode::PlainSidebar);
     addMenuItem(group, tr("Tabs on top"), Mode::Tabs);
