@@ -42,7 +42,7 @@ class FilterParserTextContainsComparator : public FilterParserSearchTermComparat
  public:
   explicit FilterParserTextContainsComparator(const QString &search_term) : search_term_(search_term) {}
   bool Matches(const QVariant &value) const override {
-    return value.toString().contains(search_term_, Qt::CaseInsensitive);
+    return value.metaType().id() == QMetaType::QString && value.toString().contains(search_term_, Qt::CaseInsensitive);
   }
  private:
   QString search_term_;
