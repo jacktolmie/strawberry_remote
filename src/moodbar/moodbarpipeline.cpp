@@ -81,6 +81,7 @@ QByteArray MoodbarPipeline::ToGstUrl(const QUrl &url) {
   }
 
   return url.toEncoded();
+
 }
 
 void MoodbarPipeline::Start() {
