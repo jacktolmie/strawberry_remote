@@ -168,7 +168,9 @@ PlaylistDelegateBase::PlaylistDelegateBase(QObject *parent, const QString &suffi
 {
 }
 
-QString PlaylistDelegateBase::displayText(const QVariant &value, const QLocale&) const {
+QString PlaylistDelegateBase::displayText(const QVariant &value, const QLocale &locale) const {
+
+  Q_UNUSED(locale)
 
   QString text;
 
@@ -295,7 +297,9 @@ bool PlaylistDelegateBase::helpEvent(QHelpEvent *event, QAbstractItemView *view,
 }
 
 
-QString LengthItemDelegate::displayText(const QVariant &value, const QLocale&) const {
+QString LengthItemDelegate::displayText(const QVariant &value, const QLocale &locale) const {
+
+  Q_UNUSED(locale)
 
   bool ok = false;
   qint64 nanoseconds = value.toLongLong(&ok);
@@ -306,7 +310,9 @@ QString LengthItemDelegate::displayText(const QVariant &value, const QLocale&) c
 }
 
 
-QString SizeItemDelegate::displayText(const QVariant &value, const QLocale&) const {
+QString SizeItemDelegate::displayText(const QVariant &value, const QLocale &locale) const {
+
+  Q_UNUSED(locale)
 
   bool ok = false;
   qint64 bytes = value.toLongLong(&ok);
@@ -423,7 +429,10 @@ void TagCompleter::ModelReady() {
 
 }
 
-QWidget *TagCompletionItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const {
+QWidget *TagCompletionItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &idx) const {
+
+  Q_UNUSED(option)
+  Q_UNUSED(idx)
 
   QLineEdit *editor = new QLineEdit(parent);
   new TagCompleter(backend_, column_, editor);
@@ -432,7 +441,9 @@ QWidget *TagCompletionItemDelegate::createEditor(QWidget *parent, const QStyleOp
 
 }
 
-QString NativeSeparatorsDelegate::displayText(const QVariant &value, const QLocale&) const {
+QString NativeSeparatorsDelegate::displayText(const QVariant &value, const QLocale &locale) const {
+
+  Q_UNUSED(locale)
 
   const QString string_value = value.toString();
 
@@ -456,8 +467,9 @@ QString NativeSeparatorsDelegate::displayText(const QVariant &value, const QLoca
 
 SongSourceDelegate::SongSourceDelegate(QObject *parent) : PlaylistDelegateBase(parent) {}
 
-QString SongSourceDelegate::displayText(const QVariant &value, const QLocale&) const {
+QString SongSourceDelegate::displayText(const QVariant &value, const QLocale &locale) const {
   Q_UNUSED(value);
+  Q_UNUSED(locale)
   return QString();
 }
 
@@ -520,7 +532,9 @@ QSize RatingItemDelegate::sizeHint(const QStyleOptionViewItem &option, const QMo
 
 }
 
-QString RatingItemDelegate::displayText(const QVariant &value, const QLocale&) const {
+QString RatingItemDelegate::displayText(const QVariant &value, const QLocale &locale) const {
+
+  Q_UNUSED(locale)
 
   if (value.isNull() || value.toFloat() <= 0) return QString();
 
@@ -531,7 +545,9 @@ QString RatingItemDelegate::displayText(const QVariant &value, const QLocale&) c
 
 }
 
-QString Ebur128LoudnessLUFSItemDelegate::displayText(const QVariant &value, const QLocale&) const {
+QString Ebur128LoudnessLUFSItemDelegate::displayText(const QVariant &value, const QLocale &locale) const {
+
+  Q_UNUSED(locale)
 
   bool ok = false;
   double v = value.toDouble(&ok);
@@ -541,7 +557,9 @@ QString Ebur128LoudnessLUFSItemDelegate::displayText(const QVariant &value, cons
 
 }
 
-QString Ebur128LoudnessRangeLUItemDelegate::displayText(const QVariant &value, const QLocale&) const {
+QString Ebur128LoudnessRangeLUItemDelegate::displayText(const QVariant &value, const QLocale &locale) const {
+
+  Q_UNUSED(locale)
 
   bool ok = false;
   double v = value.toDouble(&ok);

@@ -290,7 +290,9 @@ QRect OSDPretty::BoxBorder() const {
   return rect().adjusted(kDropShadowSize, kDropShadowSize, -kDropShadowSize, -kDropShadowSize);
 }
 
-void OSDPretty::paintEvent(QPaintEvent*) {
+void OSDPretty::paintEvent(QPaintEvent *e) {
+
+  Q_UNUSED(e)
 
   QPainter p(this);
   p.setRenderHint(QPainter::Antialiasing);
@@ -459,7 +461,9 @@ void OSDPretty::Reposition() {
 
 }
 
-void OSDPretty::enterEvent(QEnterEvent*) {
+void OSDPretty::enterEvent(QEnterEvent *e) {
+
+  Q_UNUSED(e)
 
   if (mode_ == Mode::Popup) {
     setWindowOpacity(0.25);
@@ -467,8 +471,12 @@ void OSDPretty::enterEvent(QEnterEvent*) {
 
 }
 
-void OSDPretty::leaveEvent(QEvent*) {
+void OSDPretty::leaveEvent(QEvent *e) {
+
+  Q_UNUSED(e)
+
   setWindowOpacity(1.0);
+
 }
 
 void OSDPretty::mousePressEvent(QMouseEvent *e) {
@@ -512,7 +520,9 @@ void OSDPretty::mouseMoveEvent(QMouseEvent *e) {
 
 }
 
-void OSDPretty::mouseReleaseEvent(QMouseEvent *) {
+void OSDPretty::mouseReleaseEvent(QMouseEvent *e) {
+
+  Q_UNUSED(e)
 
   if (current_screen() && mode_ == Mode::Draggable) {
     popup_screen_ = current_screen();

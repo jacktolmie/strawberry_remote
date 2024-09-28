@@ -146,7 +146,10 @@ int Queue::rowCount(const QModelIndex &parent) const {
   return static_cast<int>(source_indexes_.count());
 }
 
-int Queue::columnCount(const QModelIndex&) const { return 1; }
+int Queue::columnCount(const QModelIndex &parent) const {
+  Q_UNUSED(parent)
+  return 1;
+}
 
 QVariant Queue::data(const QModelIndex &proxy_index, int role) const {
 
@@ -354,7 +357,10 @@ QMimeData *Queue::mimeData(const QModelIndexList &indexes) const {
 
 }
 
-bool Queue::dropMimeData(const QMimeData *data, Qt::DropAction action, int row, int, const QModelIndex&) {
+bool Queue::dropMimeData(const QMimeData *data, Qt::DropAction action, const int row, const int column, const QModelIndex &parent_index) {
+
+  Q_UNUSED(column)
+  Q_UNUSED(parent_index)
 
   if (action == Qt::IgnoreAction)
     return false;

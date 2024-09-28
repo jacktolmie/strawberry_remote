@@ -1053,7 +1053,10 @@ void GstEngine::UpdateScope(const int chunk_length) {
 
 }
 
-void GstEngine::StreamDiscovered(GstDiscoverer*, GstDiscovererInfo *info, GError*, gpointer self) {
+void GstEngine::StreamDiscovered(GstDiscoverer *discoverer, GstDiscovererInfo *info, GError *error, gpointer self) {
+
+  Q_UNUSED(discoverer)
+  Q_UNUSED(error)
 
   GstEngine *instance = reinterpret_cast<GstEngine*>(self);
   if (!instance->current_pipeline_) return;
@@ -1136,7 +1139,10 @@ void GstEngine::StreamDiscovered(GstDiscoverer*, GstDiscovererInfo *info, GError
 
 }
 
-void GstEngine::StreamDiscoveryFinished(GstDiscoverer*, gpointer) {}
+void GstEngine::StreamDiscoveryFinished(GstDiscoverer *discoverer, gpointer self) {
+  Q_UNUSED(discoverer)
+  Q_UNUSED(self)
+}
 
 QString GstEngine::GSTdiscovererErrorMessage(GstDiscovererResult result) {
 
