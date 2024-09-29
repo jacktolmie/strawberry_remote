@@ -315,6 +315,8 @@ class Song {
   void set_ebur128_integrated_loudness_lufs(const std::optional<double> v);
   void set_ebur128_loudness_range_lu(const std::optional<double> v);
 
+  void set_init_from_file(const bool v);
+
   void set_stream_url(const QUrl &v);
 
   const QUrl &effective_stream_url() const;

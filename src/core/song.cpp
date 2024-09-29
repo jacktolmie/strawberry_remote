@@ -567,6 +567,8 @@ void Song::set_musicbrainz_work_id(const QString &v) { d->musicbrainz_work_id_ =
 void Song::set_ebur128_integrated_loudness_lufs(const std::optional<double> v) { d->ebur128_integrated_loudness_lufs_ = v; }
 void Song::set_ebur128_loudness_range_lu(const std::optional<double> v) { d->ebur128_loudness_range_lu_ = v; }
 
+void Song::set_init_from_file(const bool v) { d->init_from_file_ = v; }
+
 void Song::set_stream_url(const QUrl &v) { d->stream_url_ = v; }
 
 const QUrl &Song::effective_stream_url() const { return !d->stream_url_.isEmpty() && d->stream_url_.isValid() ? d->stream_url_ : d->url_; }
