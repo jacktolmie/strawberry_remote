@@ -102,11 +102,12 @@
 #include "tagreadermessages.pb.h"
 
 namespace {
-constexpr char kTagsDifferentHintText[] = QT_TR_NOOP("(different across multiple songs)");
-constexpr char kArtDifferentHintText[] = QT_TR_NOOP("Different art across multiple songs.");
 constexpr char kSettingsGroup[] = "EditTagDialog";
 constexpr int kSmallImageSize = 128;
 }  // namespace
+
+const char EditTagDialog::kTagsDifferentHintText[] = QT_TR_NOOP("(different across multiple songs)");
+const char EditTagDialog::kArtDifferentHintText[] = QT_TR_NOOP("Different art across multiple songs.");
 
 EditTagDialog::EditTagDialog(Application *app, QWidget *parent)
     : QDialog(parent),
