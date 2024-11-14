@@ -204,6 +204,8 @@ int main(int argc, char *argv[]) {
   qLog(Debug) << "Looking for resources in" << QCoreApplication::libraryPaths();
 #endif
 
+  GstStartup::Initialize();
+
   // Gnome on Ubuntu has menu icons disabled by default.  I think that's a bad idea, and makes some menus in Strawberry look confusing.
   QCoreApplication::setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
