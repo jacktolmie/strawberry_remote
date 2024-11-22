@@ -75,7 +75,6 @@ void SmartPlaylistSearchPreview::set_collection(SharedPtr<CollectionBackend> col
   model_ = new Playlist(nullptr, nullptr, collection_backend_, -1, QString(), false, this);
   ui_->tree->setModel(model_);
   ui_->tree->SetPlaylist(model_);
-  ui_->tree->SetItemDelegates();
 
 }
 
