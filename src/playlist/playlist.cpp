@@ -1618,7 +1618,7 @@ void Playlist::ItemsLoaded() {
 
   // Should we gray out deleted songs asynchronously on startup?
   if (greyout) {
-    (void)QtConcurrent::run(&Playlist::InvalidateDeletedSongs, this);
+    InvalidateDeletedSongs();
   }
 
   Q_EMIT PlaylistLoaded();
@@ -1898,18 +1898,6 @@ void Playlist::ReloadItems(const QList<int> &rows) {
     if (idx.isValid()) {
       ItemReload(idx, item->Metadata(), false);
     }
-  }
-
-}
-
-void Playlist::ReloadItemsBlocking(const QList<int> &rows) {
-
-  for (const int row : rows) {
-    PlaylistItemPtr item = item_at(row);
-    const Song old_metadata = item->Metadata();
-    item->Reload();
-    QPersistentModelIndex idx = index(row, 0);
-    ItemReloadComplete(idx, old_metadata, false);
   }
 
 }
@@ -2292,8 +2280,8 @@ void Playlist::InvalidateDeletedSongs() {
     PlaylistItemPtr item = items_.value(row);
     const Song song = item->Metadata();
 
-    if (song.url().isLocalFile()) {
-      bool exists = QFile::exists(song.url().toLocalFile());
+    if (song.url().isValid() && song.url().isLocalFile()) {
+      const bool exists = QFile::exists(song.url().toLocalFile());
 
       if (!exists && !item->HasForegroundColor(kInvalidSongPriority)) {
         // Gray out the song if it's not there
@@ -2308,12 +2296,7 @@ void Playlist::InvalidateDeletedSongs() {
   }
 
   if (!invalidated_rows.isEmpty()) {
-    if (QThread::currentThread() == thread()) {
-      ReloadItems(invalidated_rows);
-    }
-    else {
-      ReloadItemsBlocking(invalidated_rows);
-    }
+    ReloadItems(invalidated_rows);
   }
 
 }
