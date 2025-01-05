@@ -10,7 +10,7 @@ jobs:
 
   build-opensuse:
     name: Build openSUSE
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && (!(github.event.pusher.name == 'strawbsbot' && contains(github.event.head_commit.message, 'New translations')))
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -136,7 +136,7 @@ jobs:
 
   build-fedora:
     name: Build Fedora
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && (!(github.event.pusher.name == 'strawbsbot' && contains(github.event.head_commit.message, 'New translations')))
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -229,7 +229,7 @@ jobs:
 
   build-openmandriva:
     name: Build OpenMandriva
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && false
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master' && false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -327,7 +327,7 @@ jobs:
 
   build-mageia:
     name: Build Mageia
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && (!(github.event.pusher.name == 'strawbsbot' && contains(github.event.head_commit.message, 'New translations')))
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -425,7 +425,7 @@ jobs:
 
   build-debian:
     name: Build Debian
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && (!(github.event.pusher.name == 'strawbsbot' && contains(github.event.head_commit.message, 'New translations')))
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -504,7 +504,7 @@ jobs:
 
   build-ubuntu:
     name: Build Ubuntu
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && (!(github.event.pusher.name == 'strawbsbot' && contains(github.event.head_commit.message, 'New translations')))
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -588,7 +588,7 @@ jobs:
 
   upload-ubuntu-ppa:
     name: Upload Ubuntu PPA
-    if: github.repository == 'strawberrymusicplayer/strawberry' && github.event.pull_request.head.repo.fork == false && (github.event_name == 'release' || (github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci' || github.ref == 'refs/heads/1.1'))) && (!(github.event.pusher.name == 'strawbsbot' && contains(github.event.head_commit.message, 'New translations')))
+    if: github.repository == 'strawberrymusicplayer/strawberry' && github.event.pull_request.head.repo.fork == false && (github.event_name == 'release' || (github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci' || github.ref == 'refs/heads/1.1')))
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -680,6 +680,7 @@ jobs:
 
   build-freebsd:
     name: Build FreeBSD
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -704,6 +705,7 @@ jobs:
 
   build-openbsd:
     name: Build OpenBSD
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -729,7 +731,7 @@ jobs:
 
   build-macos-public:
     name: Build macOS Public
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && (!(github.event.pusher.name == 'strawbsbot' && contains(github.event.head_commit.message, 'New translations')))
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
 
     strategy:
       fail-fast: false
@@ -1009,7 +1011,7 @@ jobs:
 
   build-windows-mingw:
     name: Build Windows MinGW
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && (!(github.event.pusher.name == 'strawbsbot' && contains(github.event.head_commit.message, 'New translations')))
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -1199,7 +1201,7 @@ jobs:
 
   build-windows-msvc:
     name: Build Windows MSVC
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && (!(github.event.pusher.name == 'strawbsbot' && contains(github.event.head_commit.message, 'New translations')))
+    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
     runs-on: windows-2022
     strategy:
       fail-fast: false
