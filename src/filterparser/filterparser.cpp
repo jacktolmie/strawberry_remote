@@ -180,8 +180,15 @@ FilterTree *FilterParser::parseSearchTerm() {
   QString value;
 
   bool in_quotes = false;
+  bool previous_char_operator = false;
 
   for (; iter_ != end_; ++iter_) {
+    if (previous_char_operator) {
+      if (iter_->isSpace()) {
+        continue;
+      }
+      previous_char_operator = false;
+    }
     if (in_quotes) {
       if (*iter_ == QLatin1Char('"')) {
         in_quotes = false;
@@ -198,6 +205,7 @@ FilterTree *FilterParser::parseSearchTerm() {
         column = buf_.toLower();
         buf_.clear();
         prefix.clear();  // Prefix isn't allowed here - let's ignore it
+        previous_char_operator = true;
       }
       else if (iter_->isSpace() || *iter_ == QLatin1Char('(') || *iter_ == QLatin1Char(')') || *iter_ == QLatin1Char('-')) {
         break;
@@ -206,9 +214,11 @@ FilterTree *FilterParser::parseSearchTerm() {
         // We don't know whether there is a column part in this search term thus we assume the latter and just try and read a prefix
         if (prefix.isEmpty() && (*iter_ == QLatin1Char('>') || *iter_ == QLatin1Char('<') || *iter_ == QLatin1Char('=') || *iter_ == QLatin1Char('!'))) {
           prefix += *iter_;
+          previous_char_operator = true;
         }
         else if (prefix != QLatin1Char('=') && *iter_ == QLatin1Char('=')) {
           prefix += *iter_;
+          previous_char_operator = true;
         }
         else {
           buf_ += *iter_;
