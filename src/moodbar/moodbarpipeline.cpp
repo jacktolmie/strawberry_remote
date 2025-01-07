@@ -86,6 +86,7 @@ QByteArray MoodbarPipeline::ToGstUrl(const QUrl &url) {
 
 void MoodbarPipeline::Start() {
 
+  Q_ASSERT(QThread::currentThread() == thread());
   Q_ASSERT(QThread::currentThread() != qApp->thread());
 
   Utilities::SetThreadIOPriority(Utilities::IoPriority::IOPRIO_CLASS_IDLE);
@@ -204,6 +205,8 @@ GstBusSyncReply MoodbarPipeline::BusCallbackSync(GstBus *bus, GstMessage *messag
 
   MoodbarPipeline *instance = reinterpret_cast<MoodbarPipeline*>(self);
 
+  if (!instance->running_) return GST_BUS_PASS;
+
   switch (GST_MESSAGE_TYPE(message)) {
     case GST_MESSAGE_EOS:
       instance->Stop(true);
@@ -224,12 +227,25 @@ GstBusSyncReply MoodbarPipeline::BusCallbackSync(GstBus *bus, GstMessage *messag
 
 void MoodbarPipeline::Stop(const bool success) {
 
-  success_ = success;
   running_ = false;
+
+  QMetaObject::invokeMethod(this, "Finish", Qt::QueuedConnection, Q_ARG(bool, success));
+
+}
+
+void MoodbarPipeline::Finish(const bool success) {
+
+  Q_ASSERT(QThread::currentThread() == thread());
+  Q_ASSERT(QThread::currentThread() != qApp->thread());
+
+  success_ = success;
+
   if (builder_) {
     data_ = builder_->Finish(1000);
     builder_.reset();
   }
+
+  Cleanup();
 
   Q_EMIT Finished(success);
 
@@ -238,6 +254,7 @@ void MoodbarPipeline::Stop(const bool success) {
 void MoodbarPipeline::Cleanup() {
 
   running_ = false;
+
   if (pipeline_) {
     GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipeline_));
     if (bus) {
