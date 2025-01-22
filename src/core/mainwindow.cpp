@@ -1615,6 +1615,11 @@ void MainWindow::StopAfterCurrent() {
 
 void MainWindow::showEvent(QShowEvent *e) {
 
+  if (error_dialog_ && error_dialog_->isVisible() && error_dialog_->isMinimized()) {
+    error_dialog_->raise();
+    error_dialog_->activateWindow();
+  }
+
   QMainWindow::showEvent(e);
 
 }
