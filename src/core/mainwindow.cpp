@@ -2862,7 +2862,7 @@ void MainWindow::OpenSettingsDialog() {
 
 }
 
-void MainWindow::OpenSettingsDialogAtPage(SettingsDialog::Page page) {
+void MainWindow::OpenSettingsDialogAtPage(const SettingsDialog::Page page) {
   settings_dialog_->OpenAtPage(page);
 }
 
