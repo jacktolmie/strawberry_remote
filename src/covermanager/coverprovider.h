@@ -46,7 +46,7 @@ class CoverProvider : public QObject {
 
   // A name (very short description) of this provider, like "last.fm".
   QString name() const { return name_; }
-  bool is_enabled() const { return enabled_; }
+  bool enabled() const { return enabled_; }
   int order() const { return order_; }
   float quality() const { return quality_; }
   bool batch() const { return batch_; }
