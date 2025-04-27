@@ -1011,6 +1011,18 @@ void CollectionWatcher::AddChangedSong(const QString &file, const Song &matching
       changes << u"length"_s;
       notify_new = true;
     }
+    if (matching_song.filetype() != new_song.filetype()) {
+      changes << u"filetype"_s;
+      notify_new = true;
+    }
+    if (matching_song.filesize() != new_song.filesize()) {
+      changes << u"filesize"_s;
+      notify_new = true;
+    }
+    if (matching_song.length_nanosec() != new_song.length_nanosec()) {
+      changes << u"length"_s;
+      notify_new = true;
+    }
     if (matching_song.fingerprint() != new_song.fingerprint()) {
       changes << u"fingerprint"_s;
       notify_new = true;
@@ -1045,6 +1057,9 @@ void CollectionWatcher::AddChangedSong(const QString &file, const Song &matching
     }
     if (matching_song.mtime() != new_song.mtime()) {
       changes << u"mtime"_s;
+    }
+    if (matching_song.ctime() != new_song.ctime()) {
+      changes << u"ctime"_s;
     }
     if (matching_song.ctime() != new_song.ctime()) {
       changes << u"ctime"_s;
