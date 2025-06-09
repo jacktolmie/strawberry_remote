@@ -92,7 +92,6 @@ CollectionModel::CollectionModel(SharedPtr<CollectionBackend> backend, Applicati
       app_(app),
       dir_model_(new CollectionDirectoryModel(backend, this)),
       filter_(new CollectionFilter(this)),
-      timer_reload_(new QTimer(this)),
       timer_update_(new QTimer(this)),
       icon_artist_(IconLoader::Load(QStringLiteral("folder-sound"))),
       use_disk_cache_(false),
@@ -136,10 +135,6 @@ CollectionModel::CollectionModel(SharedPtr<CollectionBackend> backend, Applicati
   backend_->UpdateTotalSongCountAsync();
   backend_->UpdateTotalArtistCountAsync();
   backend_->UpdateTotalAlbumCountAsync();
-
-  timer_reload_->setSingleShot(true);
-  timer_reload_->setInterval(300ms);
-  QObject::connect(timer_reload_, &QTimer::timeout, this, &CollectionModel::Reload);
 
   timer_update_->setSingleShot(false);
   timer_update_->setInterval(20ms);
@@ -198,13 +193,9 @@ void CollectionModel::EndReset() {
 
 }
 
-void CollectionModel::Reload() {
+void CollectionModel::ResetInternal() {
 
   loading_ = true;
-  if (timer_reload_->isActive()) {
-    timer_reload_->stop();
-  }
-  updates_.clear();
 
   options_active_ = options_current_;
 
@@ -215,14 +206,6 @@ void CollectionModel::Reload() {
   EndReset();
 
   LoadSongsFromSqlAsync();
-
-}
-
-void CollectionModel::ScheduleReset() {
-
-  if (!timer_reload_->isActive()) {
-    timer_reload_->start();
-  }
 
 }
 
@@ -446,15 +429,26 @@ void CollectionModel::RemoveSongs(const SongList &songs) {
 
 void CollectionModel::ScheduleUpdate(const CollectionModelUpdate::Type type, const SongList &songs) {
 
-  for (qint64 i = 0; i < songs.count(); i += 400LL) {
-    const qint64 number = std::min(songs.count() - i, 400LL);
-    const SongList songs_to_queue = songs.mid(i, number);
-    updates_.enqueue(CollectionModelUpdate(type, songs_to_queue));
+  if (type == CollectionModelUpdate::Type::Reset) {
+    updates_.enqueue(CollectionModelUpdate(type));
+  }
+  else {
+    for (qint64 i = 0; i < songs.count(); i += 400LL) {
+      const qint64 number = std::min(songs.count() - i, 400LL);
+      const SongList songs_to_queue = songs.mid(i, number);
+      updates_.enqueue(CollectionModelUpdate(type, songs_to_queue));
+    }
   }
 
   if (!timer_update_->isActive()) {
     timer_update_->start();
   }
+
+}
+
+void CollectionModel::ScheduleReset() {
+
+  ScheduleUpdate(CollectionModelUpdate::Type::Reset);
 
 }
 
@@ -490,6 +484,9 @@ void CollectionModel::ProcessUpdate() {
   }
 
   switch (update.type) {
+    case CollectionModelUpdate::Type::Reset:
+      ResetInternal();
+      break;
     case CollectionModelUpdate::Type::AddReAddOrUpdate:
       AddReAddOrUpdateSongsInternal(update.songs);
       break;
