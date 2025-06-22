@@ -101,8 +101,9 @@ QString CddaLister::MakeFriendlyName(const QString &id) {
   CdIo_t *cdio = cdio_open(id.toLocal8Bit().constData(), DRIVER_DEVICE);
   cdio_hwinfo_t cd_info;
   if (cdio_get_hwinfo(cdio, &cd_info)) {
+    const QString friendly_name = QString::fromUtf8(cd_info.psz_model).trimmed();
     cdio_destroy(cdio);
-    return QString::fromUtf8(cd_info.psz_model);
+    return friendly_name;
   }
   cdio_destroy(cdio);
   return QStringLiteral("CD (") + id + QLatin1Char(')');
