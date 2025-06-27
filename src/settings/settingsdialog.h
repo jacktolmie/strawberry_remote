@@ -84,6 +84,7 @@ class SettingsDialog : public QDialog {
     Lyrics,
     Transcoding,
     Proxy,
+    RemoteController,
     Appearance,
     Context,
     Notifications,

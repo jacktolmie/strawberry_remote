@@ -71,6 +71,8 @@
 #include "contextsettingspage.h"
 #include "notificationssettingspage.h"
 #include "globalshortcutssettingspage.h"
+#include "remotecontrollersettingpage.h"
+
 #ifdef HAVE_MOODBAR
 #  include "moodbarsettingspage.h"
 #endif
@@ -130,6 +132,7 @@ SettingsDialog::SettingsDialog(const SharedPtr<Player> player,
   AddPage(Page::Lyrics, new LyricsSettingsPage(this, lyrics_providers, this), general);
   AddPage(Page::Transcoding, new TranscoderSettingsPage(this, this), general);
   AddPage(Page::Proxy, new NetworkProxySettingsPage(this, this), general);
+  AddPage(Page::RemoteController, new RemoteControllerSettingPage(this, this), general);
 
   QTreeWidgetItem *iface = AddCategory(tr("User interface"));
   AddPage(Page::Appearance, new AppearanceSettingsPage(this, this), iface);

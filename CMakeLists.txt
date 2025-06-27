@@ -716,6 +716,7 @@ set(SOURCES
   src/settings/contextsettingspage.cpp
   src/settings/notificationssettingspage.cpp
   src/settings/transcodersettingspage.cpp
+  src/settings/remotecontrollersettingpage.cpp
 
   src/dialogs/about.cpp
   src/dialogs/console.cpp
@@ -1014,6 +1015,7 @@ set(HEADERS
   src/settings/contextsettingspage.h
   src/settings/notificationssettingspage.h
   src/settings/transcodersettingspage.h
+  src/settings/remotecontrollersettingpage.h
 
   src/dialogs/about.h
   src/dialogs/errordialog.h
@@ -1167,6 +1169,7 @@ set(UI
   src/settings/appearancesettingspage.ui
   src/settings/notificationssettingspage.ui
   src/settings/transcodersettingspage.ui
+  src/settings/remotecontrollersettingpage.ui
 
   src/equalizer/equalizer.ui
   src/equalizer/equalizerslider.ui
