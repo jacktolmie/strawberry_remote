@@ -19,30 +19,45 @@
  *
  */
 
-#ifndef REMOTECONTROLLERSETTINGPAGE_H
-#define REMOTECONTROLLERSETTINGPAGE_H
+#ifndef REMOTECONTROLLERSETTINGSPAGE_H
+#define REMOTECONTROLLERSETTINGSPAGE_H
 
 #include "config.h"
 
+#include <QObject>
+#include <QString>
+#include <QStringList>
+
+#include "includes/shared_ptr.h"
 #include "settingspage.h"
+#include "remotecontroller/remotecontroller.h"
+
+class SettingsDialog;
 
 namespace Ui {
-    class RemoteControllerSettingPage;
+  class RemoteControllerSettingsPage;
 }
 
-class RemoteControllerSettingPage : public SettingsPage
-{
-    Q_OBJECT
+class RemoteControllerSettingsPage : public SettingsPage {
+  Q_OBJECT
 
 public:
-    explicit RemoteControllerSettingPage(SettingsDialog *dialog, QWidget *parent = nullptr);
-    ~RemoteControllerSettingPage();
+  explicit RemoteControllerSettingsPage(SettingsDialog *dialog, QWidget *parent = nullptr);
+  ~RemoteControllerSettingsPage();
 
-    virtual void Load() override;
+  virtual void Load() override;
+  virtual void Save() override;
+
+Q_SIGNALS:
 
 private:
-    Ui::RemoteControllerSettingPage *ui;
-    virtual void Save() override;
+  Ui::RemoteControllerSettingsPage *ui_;
+  const SharedPtr<RemoteController> remote_;
+
+private Q_SLOTS:
+
+void on_enableRemote_clicked(bool checked);
+void on_enableRemote_toggled(bool checked);
 };
 
-#endif // REMOTECONTROLLERSETTINGPAGE_H
+#endif // REMOTECONTROLLERSETTINGSPAGE_H

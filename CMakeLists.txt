@@ -409,6 +409,8 @@ if(NOT CMAKE_CROSSCOMPILING)
   )
 endif()
 
+find_package(Qt6 REQUIRED COMPONENTS Core)
+
 add_executable(strawberry)
 
 if(APPLE)
@@ -716,7 +718,7 @@ set(SOURCES
   src/settings/contextsettingspage.cpp
   src/settings/notificationssettingspage.cpp
   src/settings/transcodersettingspage.cpp
-  src/settings/remotecontrollersettingpage.cpp
+  src/settings/remotecontrollersettingspage.cpp
 
   src/dialogs/about.cpp
   src/dialogs/console.cpp
@@ -834,6 +836,8 @@ set(SOURCES
   src/device/devicestatefiltermodel.cpp
   src/device/deviceviewcontainer.cpp
   src/device/deviceview.cpp
+
+  src/remotecontroller/remotecontroller.cpp
 )
 
 set(HEADERS
@@ -1015,7 +1019,7 @@ set(HEADERS
   src/settings/contextsettingspage.h
   src/settings/notificationssettingspage.h
   src/settings/transcodersettingspage.h
-  src/settings/remotecontrollersettingpage.h
+  src/settings/remotecontrollersettingspage.h
 
   src/dialogs/about.h
   src/dialogs/errordialog.h
@@ -1124,6 +1128,8 @@ set(HEADERS
   src/device/devicestatefiltermodel.h
   src/device/deviceviewcontainer.h
   src/device/deviceview.h
+
+  src/remotecontroller/remotecontroller.h
 )
 
 set(UI
@@ -1169,7 +1175,7 @@ set(UI
   src/settings/appearancesettingspage.ui
   src/settings/notificationssettingspage.ui
   src/settings/transcodersettingspage.ui
-  src/settings/remotecontrollersettingpage.ui
+  src/settings/remotecontrollersettingspage.ui
 
   src/equalizer/equalizer.ui
   src/equalizer/equalizerslider.ui
@@ -1589,6 +1595,7 @@ if(APPLE)
 endif()
 
 target_link_libraries(strawberry PUBLIC strawberry_lib)
+target_link_libraries(strawberry PRIVATE Qt6::Core)
 
 if(NOT APPLE)
   install(TARGETS strawberry RUNTIME DESTINATION bin)

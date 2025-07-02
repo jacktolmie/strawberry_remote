@@ -113,6 +113,8 @@
 #include "radios/radioservices.h"
 #include "radios/radiobackend.h"
 
+#include "remotecontroller/remotecontroller.h"
+
 using std::make_shared;
 using namespace std::chrono_literals;
 
@@ -244,6 +246,7 @@ class ApplicationImpl {
 #endif
   Lazy<LastFMImport> lastfm_import_;
 
+  Lazy<RemoteController> remote_controller_;
 };
 
 Application::Application(QObject *parent)
@@ -324,7 +327,8 @@ void Application::Exit() {
                  << &*albumcover_loader()
                  << &*device_manager()
                  << &*streaming_services()
-                 << &*radio_services()->radio_backend();
+                 << &*radio_services()->radio_backend()
+                 << &*remote_controller();
 
   QObject::connect(&*tagreader_client(), &TagReaderClient::ExitFinished, this, &Application::ExitReceived);
   tagreader_client()->ExitAsync();
@@ -346,6 +350,9 @@ void Application::Exit() {
 
   QObject::connect(&*radio_services()->radio_backend(), &RadioBackend::ExitFinished, this, &Application::ExitReceived);
   radio_services()->radio_backend()->ExitAsync();
+
+  QObject::connect(&*remote_controller(), &RemoteController::ExitFinished, this, &Application::ExitReceived);
+  remote_controller()->Exit();
 
 }
 
@@ -389,4 +396,5 @@ SharedPtr<LastFMImport> Application::lastfm_import() const { return p_->lastfm_i
 #ifdef HAVE_MOODBAR
 SharedPtr<MoodbarController> Application::moodbar_controller() const { return p_->moodbar_controller_.ptr(); }
 SharedPtr<MoodbarLoader> Application::moodbar_loader() const { return p_->moodbar_loader_.ptr(); }
+SharedPtr<RemoteController> Application::remote_controller() const { return p_->remote_controller_.ptr(); }
 #endif
