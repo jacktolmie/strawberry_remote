@@ -36,14 +36,12 @@
 #include <QDesktopServices>
 #include <QCryptographicHash>
 #include <QRegularExpression>
-#include <QSettings>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonValue>
 #include <QJsonParseError>
 #include <QMessageBox>
-#include <QMutexLocker>
 
 #include "core/logging.h"
 #include "core/shared_ptr.h"
