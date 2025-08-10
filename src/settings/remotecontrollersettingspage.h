@@ -24,9 +24,12 @@
 
 #include "config.h"
 
+#include <QList>
+#include <QNetworkInterface>
 #include <QObject>
 #include <QString>
 #include <QStringList>
+
 
 #include "includes/shared_ptr.h"
 #include "settingspage.h"
@@ -54,10 +57,14 @@ private:
   Ui::RemoteControllerSettingsPage *ui_;
   const SharedPtr<RemoteController> remote_;
 
-private Q_SLOTS:
+  bool active_network_connection();
+  void checkNetworkConnection();
 
-void on_enableRemote_clicked(bool checked);
-void on_enableRemote_toggled(bool checked);
+private Q_SLOTS:
+  void on_enableRemote_clicked(bool checked);
+  void on_enableRemote_toggled(bool checked);
+
+
 };
 
 #endif // REMOTECONTROLLERSETTINGSPAGE_H
