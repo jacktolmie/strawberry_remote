@@ -6,7 +6,6 @@
 #include "constants/remotesettings.h"
 #include "core/iconloader.h"
 #include "core/settings.h"
-#include "includes/shared_ptr.h"
 #include "settings/settingspage.h"
 
 using namespace Qt::Literals::StringLiterals;

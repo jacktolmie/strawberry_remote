@@ -5,6 +5,9 @@
 
 class RemoteController : public QObject
 {
+  int port{5500};
+
+
      Q_OBJECT
 public:
     explicit RemoteController(QObject *parent = nullptr);
