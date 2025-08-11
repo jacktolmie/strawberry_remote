@@ -29,7 +29,9 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
-
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QTimer>
 
 #include "includes/shared_ptr.h"
 #include "settingspage.h"
@@ -57,12 +59,28 @@ private:
   Ui::RemoteControllerSettingsPage *ui_;
   const SharedPtr<RemoteController> remote_;
 
+  // Timer for checking network connection.
+  QTimer *timer;
+
+  // Set up incoming connection.
+  QTcpServer *server;
+
+  /* Check for active network connection. Set up port and
+   * check if set for local only connections */
   bool active_network_connection();
-  void checkNetworkConnection();
+
+  void startNetworkConnection();
+  void setLocalOnly();
 
 private Q_SLOTS:
   void on_enableRemote_clicked(bool checked);
   void on_enableRemote_toggled(bool checked);
+  void checkNetworkConnection();
+
+  // Network port objects.
+  void onNewConnection();
+  void onReadyRead();
+  void onDisconnect();
 
 
 };
