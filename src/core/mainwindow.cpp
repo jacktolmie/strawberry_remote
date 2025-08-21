@@ -180,6 +180,9 @@
 #  include "constants/qobuzsettings.h"
 #endif
 
+#include "settings/remotecontrollersettingspage.h"
+#include "constants/remotesettings.h"
+
 #include "streaming/streamingservices.h"
 #include "streaming/streamingservice.h"
 #include "streaming/streamingsongsview.h"
@@ -337,6 +340,14 @@ MainWindow::MainWindow(Application *app,
         QObject::connect(add_stream_dialog, &AddStreamDialog::accepted, this, &MainWindow::AddStreamAccepted);
         return add_stream_dialog;
       }),
+
+      // remote_controller_( std::make_shared<RemoteController>(this)),
+      remote_controller_([this](){
+        RemoteController *remote_control = new RemoteController(this);
+        return remote_control;
+      }),
+
+#ifdef HAVE_SUBSONIC
       smartplaylists_view_(new SmartPlaylistsViewContainer(app->player(),
                                                            app->playlist_manager(),
                                                            app->collection_backend(),
@@ -345,18 +356,18 @@ MainWindow::MainWindow(Application *app,
 #endif
                                                            app->current_albumcover_loader(),
                                                            this)),
-#ifdef HAVE_SUBSONIC
-      subsonic_view_(new StreamingSongsView(app->streaming_services()->ServiceBySource(Song::Source::Subsonic), QLatin1String(SubsonicSettings::kSettingsGroup), this)),
 #endif
 #ifdef HAVE_TIDAL
-      tidal_view_(new StreamingTabsView(app->streaming_services()->ServiceBySource(Song::Source::Tidal), app->albumcover_loader(), QLatin1String(TidalSettings::kSettingsGroup), this)),
+      subsonic_view_(new StreamingSongsView(app->streaming_services()->ServiceBySource(Song::Source::Subsonic), QLatin1String(SubsonicSettings::kSettingsGroup), this)),
 #endif
 #ifdef HAVE_SPOTIFY
-      spotify_view_(new StreamingTabsView(app->streaming_services()->ServiceBySource(Song::Source::Spotify), app->albumcover_loader(), QLatin1String(SpotifySettings::kSettingsGroup), this)),
+      tidal_view_(new StreamingTabsView(app->streaming_services()->ServiceBySource(Song::Source::Tidal), app->albumcover_loader(), QLatin1String(TidalSettings::kSettingsGroup), this)),
 #endif
 #ifdef HAVE_QOBUZ
-      qobuz_view_(new StreamingTabsView(app->streaming_services()->ServiceBySource(Song::Source::Qobuz), app->albumcover_loader(), QLatin1String(QobuzSettings::kSettingsGroup), this)),
+      spotify_view_(new StreamingTabsView(app->streaming_services()->ServiceBySource(Song::Source::Spotify), app->albumcover_loader(), QLatin1String(SpotifySettings::kSettingsGroup), this)),
 #endif
+
+      qobuz_view_(new StreamingTabsView(app->streaming_services()->ServiceBySource(Song::Source::Qobuz), app->albumcover_loader(), QLatin1String(QobuzSettings::kSettingsGroup), this)),
       radio_view_(new RadioViewContainer(this)),
       lastfm_import_dialog_(new LastFMImportDialog(app_->lastfm_import(), this)),
       collection_show_all_(nullptr),
@@ -383,10 +394,11 @@ MainWindow::MainWindow(Application *app,
       track_position_timer_(new QTimer(this)),
       track_slider_timer_(new QTimer(this)),
       keep_running_(false),
-      playing_widget_(true),
 #ifdef HAVE_DBUS
-      taskbar_progress_(false),
+      playing_widget_(true),
 #endif
+
+    taskbar_progress_(false),
       doubleclick_addmode_(BehaviourSettings::AddBehaviour::Append),
       doubleclick_playmode_(BehaviourSettings::PlayBehaviour::Never),
       doubleclick_playlist_addmode_(BehaviourSettings::PlaylistAddBehaviour::Play),
@@ -1140,6 +1152,19 @@ MainWindow::MainWindow(Application *app,
     }
   }
 
+  // Start Remote Controller settings.
+    Settings s;
+    s.beginGroup(RemoteControllerSettings::kSettingsGroup);
+
+    remote_controller_->settingsChanged(
+      s.value(RemoteControllerSettings::kRemoteEnabled).toBool(),
+      s.value(RemoteControllerSettings::kUseAuthentication).toBool(),
+      s.value(RemoteControllerSettings::kHashedPassword).toByteArray(),
+      s.value(RemoteControllerSettings::kPort).toInt()
+    );
+  s.endGroup();
+  // End Remote Controller settings.
+
   qLog(Debug) << "Started" << QThread::currentThread();
   initialized_ = true;
 
@@ -1322,6 +1347,7 @@ void MainWindow::ReloadAllSettings() {
 #ifdef HAVE_DISCORD_RPC
   discord_rich_presence_->ReloadSettings();
 #endif
+
 
 }
 

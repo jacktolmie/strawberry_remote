@@ -410,6 +410,7 @@ if(NOT CMAKE_CROSSCOMPILING)
 endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core)
 
 add_executable(strawberry)
 
@@ -838,6 +839,7 @@ set(SOURCES
   src/device/deviceview.cpp
 
   src/remotecontroller/remotecontroller.cpp
+  src/remotecontroller/remotesettings.cpp
 )
 
 set(HEADERS
@@ -1130,6 +1132,7 @@ set(HEADERS
   src/device/deviceview.h
 
   src/remotecontroller/remotecontroller.h
+  src/remotecontroller/remotesettings.h
 )
 
 set(UI
@@ -1595,6 +1598,7 @@ if(APPLE)
 endif()
 
 target_link_libraries(strawberry PUBLIC strawberry_lib)
+target_link_libraries(strawberry PRIVATE Qt6::Core)
 target_link_libraries(strawberry PRIVATE Qt6::Core)
 
 if(NOT APPLE)

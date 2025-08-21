@@ -51,7 +51,7 @@ class AudioScrobbler;
 class StreamingServices;
 class GlobalShortcutsManager;
 class SettingsPage;
-class RemoteController;
+class RemoteSettings;
 
 class Ui_SettingsDialog;
 
@@ -66,7 +66,7 @@ class SettingsDialog : public QDialog {
                           const SharedPtr<LyricsProviders> lyrics_providers,
                           const SharedPtr<AudioScrobbler> scrobbler,
                           const SharedPtr<StreamingServices> streaming_services,
-                          const SharedPtr<RemoteController> remote_controller,
+                          const SharedPtr<RemoteSettings> remote_settings,
 #ifdef HAVE_GLOBALSHORTCUTS
                           GlobalShortcutsManager *global_shortcuts_manager,
 #endif

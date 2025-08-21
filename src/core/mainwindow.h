@@ -63,6 +63,9 @@
 #include "constants/behavioursettings.h"
 #include "covermanager/albumcoverloaderresult.h"
 #include "covermanager/albumcoverimageresult.h"
+#include "remotecontroller/remotecontroller.h"
+#include "remotecontroller/remotesettings.h"
+#include "settings/remotecontrollersettingspage.h"
 
 class About;
 class Console;
@@ -99,6 +102,10 @@ class Windows7ThumbBar;
 class AddStreamDialog;
 class LastFMImportDialog;
 class RadioViewContainer;
+
+class RemoteController;
+class RemoteSettings;
+class RemoteControllerSettingsPage;
 
 #ifdef HAVE_DISCORD_RPC
 namespace discord {
@@ -336,6 +343,11 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   Lazy<OrganizeDialog> organize_dialog_;
   Lazy<TranscodeDialog> transcode_dialog_;
   Lazy<AddStreamDialog> add_stream_dialog_;
+
+  Lazy<RemoteController> remote_controller_;
+  RemoteSettings *remote_settings_;
+  Lazy<RemoteControllerSettingsPage> remote_settings_page_;
+  // SharedPtr<RemoteController> remote_controller_;
 
 #ifdef HAVE_MUSICBRAINZ
   ScopedPtr<TagFetcher> tag_fetcher_;

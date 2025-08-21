@@ -27,15 +27,15 @@
 #include <QList>
 #include <QNetworkInterface>
 #include <QObject>
+#include <QCryptographicHash>
 #include <QString>
 #include <QStringList>
-#include <QTcpServer>
-#include <QTcpSocket>
-#include <QTimer>
+#include <QFileSystemWatcher>
 
-#include "includes/shared_ptr.h"
 #include "settingspage.h"
+#include "includes/shared_ptr.h"
 #include "remotecontroller/remotecontroller.h"
+#include "remotecontroller/remotesettings.h"
 
 class SettingsDialog;
 
@@ -47,42 +47,38 @@ class RemoteControllerSettingsPage : public SettingsPage {
   Q_OBJECT
 
 public:
-  explicit RemoteControllerSettingsPage(SettingsDialog *dialog, QWidget *parent = nullptr);
+  explicit RemoteControllerSettingsPage(SettingsDialog *dialog, const SharedPtr<RemoteSettings> data, QWidget *parent = nullptr);
   ~RemoteControllerSettingsPage();
 
   virtual void Load() override;
   virtual void Save() override;
 
+  Ui::RemoteControllerSettingsPage* getUi();
+
 Q_SIGNALS:
+  void remoteSettingsChanged(Values& sentValues);
 
 private:
-  Ui::RemoteControllerSettingsPage *ui_;
-  const SharedPtr<RemoteController> remote_;
+  Ui::RemoteControllerSettingsPage  *ui_;
+  const SharedPtr<RemoteSettings>   data_;
 
-  // Timer for checking network connection.
-  QTimer *timer;
+  void on_enableRemote_clicked();
+  void setPassword();
 
-  // Set up incoming connection.
-  QTcpServer *server;
+  // Get variables from RemoteSettings.
+  // RemoteSettings  remoteValues;
+  // Values          values;
+
+
+  QFileSystemWatcher *watchSettings;
 
   /* Check for active network connection. Set up port and
    * check if set for local only connections */
-  bool active_network_connection();
-
+  // void active_network_connection();
   void startNetworkConnection();
-  void setLocalOnly();
 
 private Q_SLOTS:
-  void on_enableRemote_clicked(bool checked);
-  void on_enableRemote_toggled(bool checked);
-  void checkNetworkConnection();
-
-  // Network port objects.
-  void onNewConnection();
-  void onReadyRead();
-  void onDisconnect();
-
-
+  void getUpdates(Values& sentValues);
 };
 
 #endif // REMOTECONTROLLERSETTINGSPAGE_H

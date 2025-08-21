@@ -1,24 +1,72 @@
 #ifndef REMOTECONTROLLER_H
 #define REMOTECONTROLLER_H
 
+#include <QDebug>
 #include <QObject>
+#include <QNetworkInterface>
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QTimer>
+#include <QHash>
+#include <QSettings>
+
+#include "constants/remotesettings.h"
+#include "remotecontroller/remotesettings.h"
+#include "includes/shared_ptr.h"
+
+enum class ClientState {
+  Unauthenticated,
+  Authenticated
+};
+
+struct ClientInfo {
+  QTcpSocket *socket = nullptr;
+  ClientState state = ClientState::Unauthenticated;
+};
 
 class RemoteController : public QObject
 {
-  int port{5500};
-
-
-     Q_OBJECT
+  Q_OBJECT
 public:
-    explicit RemoteController(QObject *parent = nullptr);
+  explicit RemoteController(const SharedPtr<RemoteSettings> data, QObject *parent = nullptr);
+  ~RemoteController() = default;
 
-    void Exit();
+  void Exit();
+  void serverCheck();
+  void setTimer();
+
+private:
+  QTcpServer    *server;
+  QHostAddress  localIp4;
+  QHostAddress  localIp6;
+
+  QTimer        *timer;
+
+  // List of connected sockets, and if authenticated
+  QHash<QTcpSocket*, ClientInfo*> clients_;
+
+  RemoteSettings  *data_;
+  Values          values_;
+  // bool            remoteEnabled_;
+  // bool            authRequired_;
+  // QByteArray      hashedPassword_;
+  // int             portNumber_;
+  // bool            activeNetwork_;
 
 Q_SIGNALS:
-    void ExitFinished();
+  void ExitFinished();
+
+public Q_SLOTS:
+  void settingsChanged();
+  void activeNetworkConnection();
 
 private Q_SLOTS:
-    void ExitReceived();
+  void ExitReceived();
+
+  // Network port objects.
+  void onNewConnection();
+  void onReadyRead();
+  void onDisconnect();
 
 };
 

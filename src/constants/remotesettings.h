@@ -22,16 +22,13 @@
 
 namespace RemoteControllerSettings {
 
-constexpr char kSettingsGroup[] = "RemoteController";
-
-// constexpr char kType[] = "type";
-// constexpr char kHostname[] = "hostname";
-// constexpr char kPort[] = "port";
-// constexpr char kUseAuthentication[] = "use_authentication";
-// constexpr char kUsername[] = "username";
-// constexpr char kPassword[] = "password";
-// constexpr char kEngine[] = "engine";
-
+constexpr char kSettingsGroup[]     = "RemoteController";
+constexpr char kRemoteEnabled[]     = "remote_enabled";
+constexpr char kPassword[]          = "password";
+constexpr char kHashedPassword[]    = "hashed_password";
+constexpr char kPort[]              = "port";
+constexpr char kUseAuthentication[] = "use_authentication";
+constexpr char kActiveNetwork[]     = "active_network";
 }  // namespace
 
 #endif  // REMOTECONTROLLERSETTINGS_H
