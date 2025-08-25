@@ -60,3 +60,10 @@ void RemoteSettings::saveValues()
 
   Q_EMIT RemoteSettings::sendValues(values);
 }
+
+
+void RemoteSettings::receiveValues(const Values& values)
+{
+  this->values = values;
+  saveValues();
+}

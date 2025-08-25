@@ -108,7 +108,7 @@ SettingsDialog::SettingsDialog(const SharedPtr<Player> player,
                                const SharedPtr<LyricsProviders> lyrics_providers,
                                const SharedPtr<AudioScrobbler> scrobbler,
                                const SharedPtr<StreamingServices> streaming_services,
-                               const SharedPtr<RemoteController> remote_controller,
+                               const SharedPtr<RemoteSettings> remote_settings,
 #ifdef HAVE_GLOBALSHORTCUTS
                                GlobalShortcutsManager *global_shortcuts_manager,
 #endif
@@ -133,7 +133,7 @@ SettingsDialog::SettingsDialog(const SharedPtr<Player> player,
   AddPage(Page::Lyrics, new LyricsSettingsPage(this, lyrics_providers, this), general);
   AddPage(Page::Transcoding, new TranscoderSettingsPage(this, this), general);
   AddPage(Page::Proxy, new NetworkProxySettingsPage(this, this), general);
-  AddPage(Page::RemoteController, new RemoteControllerSettingsPage(this, remote_controller, this), general);
+  AddPage(Page::RemoteController, new RemoteControllerSettingsPage(this, remote_settings, this), general);
 
   QTreeWidgetItem *iface = AddCategory(tr("User interface"));
   AddPage(Page::Appearance, new AppearanceSettingsPage(this, this), iface);

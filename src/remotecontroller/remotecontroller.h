@@ -45,19 +45,13 @@ private:
   // List of connected sockets, and if authenticated
   QHash<QTcpSocket*, ClientInfo*> clients_;
 
-  RemoteSettings  *data_;
-  Values          values_;
-  // bool            remoteEnabled_;
-  // bool            authRequired_;
-  // QByteArray      hashedPassword_;
-  // int             portNumber_;
-  // bool            activeNetwork_;
-
+  SharedPtr<RemoteSettings> data_;
+  // Values          values_;
 Q_SIGNALS:
   void ExitFinished();
 
 public Q_SLOTS:
-  void settingsChanged();
+  void settingsChanged(const Values& data);
   void activeNetworkConnection();
 
 private Q_SLOTS:

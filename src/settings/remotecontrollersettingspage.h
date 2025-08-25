@@ -34,7 +34,6 @@
 
 #include "settingspage.h"
 #include "includes/shared_ptr.h"
-#include "remotecontroller/remotecontroller.h"
 #include "remotecontroller/remotesettings.h"
 
 class SettingsDialog;
@@ -56,7 +55,7 @@ public:
   Ui::RemoteControllerSettingsPage* getUi();
 
 Q_SIGNALS:
-  void remoteSettingsChanged(Values& sentValues);
+
 
 private:
   Ui::RemoteControllerSettingsPage  *ui_;
@@ -64,13 +63,7 @@ private:
 
   void on_enableRemote_clicked();
   void setPassword();
-
-  // Get variables from RemoteSettings.
-  // RemoteSettings  remoteValues;
-  // Values          values;
-
-
-  QFileSystemWatcher *watchSettings;
+  void remoteSettingsChanged(Values& sentValues);
 
   /* Check for active network connection. Set up port and
    * check if set for local only connections */
@@ -78,7 +71,7 @@ private:
   void startNetworkConnection();
 
 private Q_SLOTS:
-  void getUpdates(Values& sentValues);
+  // void getUpdates(Values& sentValues);
 };
 
 #endif // REMOTECONTROLLERSETTINGSPAGE_H

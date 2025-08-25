@@ -1,10 +1,9 @@
 #include "remotecontroller.h"
 
 
-RemoteController::RemoteController(RemoteSettings* data, QObject *parent)
+RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject *parent)
     : QObject{parent},
-      data_(data),
-      values_(val)
+      data_(data)
 {
   server = new QTcpServer(this);
 
@@ -13,43 +12,32 @@ RemoteController::RemoteController(RemoteSettings* data, QObject *parent)
   timer->setInterval(5000);
   connect(timer, &QTimer::timeout, this, &RemoteController::activeNetworkConnection);
   RemoteController::setTimer();
-
-  // Set up settings for changes on network connection changes.
-
-  // QSettings s;
-  // s.beginGroup(RemoteControllerSettings::kSettingsGroup);
-  // activeNetwork_ =  s.value(RemoteControllerSettings::kActiveNetwork).toBool();
-  // remoteEnabled_ =  s.value(RemoteControllerSettings::kRemoteEnabled).toBool();
-  // portNumber_ =     s.value(RemoteControllerSettings::kPort).toInt();
-  // authRequired_ =   s.value(RemoteControllerSettings::kUseAuthentication).toBool();
-  // hashedPassword_ = s.value(RemoteControllerSettings::kHashedPassword).toByteArray();
-  // s.endGroup();
 }
 
 void RemoteController::setTimer()
 {
-  qDebug() << "setTimer called. Remote enabled? " << remoteEnabled_;
+  qDebug() << "setTimer called. Remote enabled? " << data_->values.remoteEnabled;
 
-  remoteEnabled_ ? timer->start() : timer->stop();
+  data_->values.remoteEnabled ? timer->start() : timer->stop();
   qDebug() << "Remote Is timer active? " << timer->isActive();
 }
 
 void RemoteController::serverCheck()
 {
-  if (remoteEnabled_){
+  if (data_->values.remoteEnabled){
     // Check for active connection.
     RemoteController::activeNetworkConnection();
 
     // Shut down and restart the server.
     if(server->isListening()) server->close();
-    server->listen(QHostAddress::Any, portNumber_);
+    server->listen(QHostAddress::Any, data_->values.portNumber);
 
     if (!server->isListening()) {
       qDebug() << "Failed to start server on new port.";
       // Handle error...
     }
     else {
-        qDebug() << "Remote Server running? " << server->isListening() << " on port: " << portNumber_;
+        qDebug() << "Remote Server running? " << server->isListening() << " on port: " << data_->values.portNumber;
     }
   }
   else {
@@ -72,13 +60,13 @@ void RemoteController::activeNetworkConnection()
 
       if (ip.protocol() == QAbstractSocket::IPv4Protocol && !ip.isLoopback()) {
         qDebug() << "Remote Found active, usable IPv4 address:" << ip.toString() << "on interface" << interface.name();
-        activeNetwork_ = true;
+        data_->values.activeNetwork = true;
         return;
       }
     }
   }
   qDebug() << "Remote activeNetworkConnection called. No active networks found";
-  activeNetwork_ = false;
+  data_->values.activeNetwork = false;
 }
 
 // void RemoteController::ExitFinished(){}
@@ -131,7 +119,7 @@ void RemoteController::onReadyRead(){
 
       QByteArray receivedPassword = socket->readLine().trimmed();
 
-      if (hashedPassword_ == receivedPassword) {
+      if (data_->values.hashedPassword == receivedPassword) {
         qDebug() << "Password matched for" << socket->peerAddress().toString() << ". Client is now authenticated.";
 
         client->state = ClientState::Authenticated;
@@ -190,13 +178,10 @@ void RemoteController::onDisconnect()
   socket->deleteLater();
 }
 
-void RemoteController::settingsChanged(bool remoteEnabled, bool authRequired, QByteArray hashedPassword, int portNumber)
+void RemoteController::settingsChanged(const Values& data)
 {
-  remoteEnabled_ =  remoteEnabled;
-  authRequired_ =   authRequired;
-  hashedPassword_ = hashedPassword;
-  portNumber_ =     portNumber;
-  qDebug() << "Remote controller settings changed called " <<"Port: "<<portNumber<<" Remote Enabled: "<< remoteEnabled_;
+  qDebug() << "Remote controller settings changed called " <<"Port: "<<data_->values.portNumber<<" Remote Enabled: "<< data_->values.remoteEnabled;
+
   RemoteController::serverCheck();
   // RemoteController::setTimer();
 

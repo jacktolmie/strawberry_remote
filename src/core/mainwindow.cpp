@@ -180,9 +180,6 @@
 #  include "constants/qobuzsettings.h"
 #endif
 
-#include "settings/remotecontrollersettingspage.h"
-#include "constants/remotesettings.h"
-
 #include "streaming/streamingservices.h"
 #include "streaming/streamingservice.h"
 #include "streaming/streamingsongsview.h"
@@ -339,12 +336,6 @@ MainWindow::MainWindow(Application *app,
         AddStreamDialog *add_stream_dialog = new AddStreamDialog;
         QObject::connect(add_stream_dialog, &AddStreamDialog::accepted, this, &MainWindow::AddStreamAccepted);
         return add_stream_dialog;
-      }),
-
-      // remote_controller_( std::make_shared<RemoteController>(this)),
-      remote_controller_([this](){
-        RemoteController *remote_control = new RemoteController(this);
-        return remote_control;
       }),
 
 #ifdef HAVE_SUBSONIC
@@ -1151,19 +1142,6 @@ MainWindow::MainWindow(Application *app,
       }
     }
   }
-
-  // Start Remote Controller settings.
-    Settings s;
-    s.beginGroup(RemoteControllerSettings::kSettingsGroup);
-
-    remote_controller_->settingsChanged(
-      s.value(RemoteControllerSettings::kRemoteEnabled).toBool(),
-      s.value(RemoteControllerSettings::kUseAuthentication).toBool(),
-      s.value(RemoteControllerSettings::kHashedPassword).toByteArray(),
-      s.value(RemoteControllerSettings::kPort).toInt()
-    );
-  s.endGroup();
-  // End Remote Controller settings.
 
   qLog(Debug) << "Started" << QThread::currentThread();
   initialized_ = true;
@@ -2960,7 +2938,7 @@ SettingsDialog *MainWindow::CreateSettingsDialog() {
                                                        app_->lyrics_providers(),
                                                        app_->scrobbler(),
                                                        app_->streaming_services(),
-                                                       app_->remote_controller(),
+                                                       app_->remote_settings(),
 #ifdef HAVE_GLOBALSHORTCUTS
                                                        globalshortcuts_manager_,
 #endif

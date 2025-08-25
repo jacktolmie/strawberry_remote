@@ -5,17 +5,19 @@
 #include "settings/settingspage.h"
 
 using namespace Qt::Literals::StringLiterals;
-using namespace RemoteControllerSettings;
+// using namespace RemoteControllerSettings;
 
 RemoteControllerSettingsPage::RemoteControllerSettingsPage(SettingsDialog *dialog, SharedPtr<RemoteSettings> data, QWidget *parent)
   : SettingsPage(dialog, parent),
-    ui_(new Ui::RemoteControllerSettingsPage)
+    ui_(new Ui::RemoteControllerSettingsPage),
+    data_(data)
 {
   ui_->setupUi(this);
+  Init(this);
   setWindowIcon(IconLoader::Load(u"remote_control"_s, true, 0, 32));
 
   // Connect the remote settings changes to the RemoteController class.
-  connect(this, &RemoteControllerSettingsPage::remoteSettingsChanged, data, &RemoteController::settingsChanged);
+  // connect(this, &RemoteControllerSettingsPage::remoteSettingsChanged, data, &RemoteController::settingsChanged);
 
   // Connect the password setting section if password required checkbox is toggled.
   connect(ui_->authCodeCkBx, &QCheckBox::toggled, this, &RemoteControllerSettingsPage::setPassword);
@@ -62,17 +64,10 @@ void RemoteControllerSettingsPage::Save(){
     data_->values.remoteEnabled = ui_->enableRemote->isChecked();
     data_->values.hashedPassword = QCryptographicHash::hash(ui_->authCodeEdit->text().toUtf8(), QCryptographicHash::Sha256);
 
-    qDebug() << "emit signal with remoteenabled as: " << data_->values.remoteEnabled;
-    Q_EMIT remoteSettingsChanged(data_->values);
-    // RemoteControllerSettingsPage::emitSignal();
+    qLog(Debug) << "Remote Controller settings changed. Updating values.";
+    data_->receiveValues(data_->values);
   }
 }
-
-// void RemoteControllerSettingsPage::emitSignal()
-// {
-//   // Send data
-//   Q_EMIT remoteSettingsChanged(data->values);
-// }
 
 void RemoteControllerSettingsPage::on_enableRemote_clicked()
 {

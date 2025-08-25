@@ -64,6 +64,7 @@ class MoodbarController;
 class MoodbarLoader;
 #endif
 class RemoteController;
+class RemoteSettings;
 
 class Application : public QObject {
   Q_OBJECT
@@ -100,6 +101,7 @@ class Application : public QObject {
   SharedPtr<RadioServices> radio_services() const;
 
   SharedPtr<RemoteController> remote_controller() const;
+  SharedPtr<RemoteSettings> remote_settings() const;
 
 #ifdef HAVE_MOODBAR
   SharedPtr<MoodbarController> moodbar_controller() const;

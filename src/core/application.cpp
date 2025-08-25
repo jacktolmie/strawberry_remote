@@ -221,9 +221,11 @@ class ApplicationImpl {
 #endif
         lastfm_import_([app]() { return new LastFMImport(app->network()); }),
 
-
-        remote_controller_([]() { return new RemoteController(); })
-  {}
+      remote_settings_(std::make_shared<RemoteSettings>()),
+      remote_controller_([this,app]() {return new RemoteController(remote_settings_, app);})
+  {
+    QObject::connect(remote_settings_.get(), &RemoteSettings::sendValues, &*remote_controller_, &RemoteController::settingsChanged);
+  }
 
   Lazy<TagReaderClient> tagreader_client_;
   Lazy<Database> database_;
@@ -249,6 +251,7 @@ class ApplicationImpl {
 #endif
   Lazy<LastFMImport> lastfm_import_;
 
+  SharedPtr<RemoteSettings> remote_settings_;
   Lazy<RemoteController> remote_controller_;
 };
 
@@ -399,5 +402,6 @@ SharedPtr<LastFMImport> Application::lastfm_import() const { return p_->lastfm_i
 #ifdef HAVE_MOODBAR
 SharedPtr<MoodbarController> Application::moodbar_controller() const { return p_->moodbar_controller_.ptr(); }
 SharedPtr<MoodbarLoader> Application::moodbar_loader() const { return p_->moodbar_loader_.ptr(); }
-SharedPtr<RemoteController> Application::remote_controller() const { return p_->remote_controller_.ptr(); }
 #endif
+SharedPtr<RemoteController> Application::remote_controller() const { return p_->remote_controller_.ptr();}
+SharedPtr<RemoteSettings> Application::remote_settings() const {return p_->remote_settings_;}
