@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QObject>
 #include <QNetworkInterface>
+#include <QCryptographicHash>
 #include <QTcpServer>
 #include <QTcpSocket>
 #include <QTimer>
@@ -15,13 +16,15 @@
 #include "includes/shared_ptr.h"
 
 enum class ClientState {
-  Unauthenticated,
-  Authenticated
+  Authenticated,
+  ChallengeSent,
+  Unauthenticated
 };
 
 struct ClientInfo {
   QTcpSocket *socket = nullptr;
   ClientState state = ClientState::Unauthenticated;
+  QByteArray  nonce;
 };
 
 class RemoteController : public QObject

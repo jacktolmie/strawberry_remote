@@ -1,5 +1,5 @@
+#include <QRandomGenerator>
 #include "remotecontroller.h"
-
 
 RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject *parent)
     : QObject{parent},
@@ -11,13 +11,15 @@ RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject
   timer = new QTimer(this);
   timer->setInterval(5000);
   connect(timer, &QTimer::timeout, this, &RemoteController::activeNetworkConnection);
+  connect(server, &QTcpServer::newConnection, this, &RemoteController::onNewConnection);
+
   RemoteController::setTimer();
+  RemoteController::serverCheck();
+  qDebug() << "Remote Network auth password hashed: " << data_->values.hashedPassword;
 }
 
 void RemoteController::setTimer()
 {
-  qDebug() << "setTimer called. Remote enabled? " << data_->values.remoteEnabled;
-
   data_->values.remoteEnabled ? timer->start() : timer->stop();
   qDebug() << "Remote Is timer active? " << timer->isActive();
 }
@@ -82,7 +84,6 @@ void RemoteController::ExitReceived(){
 
 void RemoteController::onNewConnection()
 {
-  qDebug() << "Remote onNewConnection called";
   // Check for any incoming connections.
   while (server->hasPendingConnections()) {
     QTcpSocket *socket = server->nextPendingConnection();
@@ -92,8 +93,13 @@ void RemoteController::onNewConnection()
       // Create a new client for clients_ list.
       ClientInfo* client = new ClientInfo();
       client->socket = socket;
-      client->state = ClientState::Unauthenticated;
+
+      client->nonce = QByteArray::number(QRandomGenerator::global()->generate64());
+      client->state = ClientState::ChallengeSent;
       clients_.insert(socket, client);
+
+      socket->write("CHALLENGE " + client->nonce.toHex() + "\n");
+      qDebug() << "Sent challenge (nonce) to client: " << client->nonce.toHex();
 
       connect(socket, &QTcpSocket::readyRead, this, &RemoteController::onReadyRead);
       connect(socket, &QTcpSocket::disconnected, this, &RemoteController::onDisconnect);
@@ -101,18 +107,45 @@ void RemoteController::onNewConnection()
   }
 }
 
-void RemoteController::onReadyRead(){
-
+void RemoteController::onReadyRead()
+{
   QTcpSocket *socket = qobject_cast<QTcpSocket*>(sender());
 
   // If socket is nullprt, or the client is not in the list of clients_, return
   if (!socket || !clients_.contains(socket)) return;
 
-  qDebug() << "Remote onReadyRead called";
-
   ClientInfo* client = clients_.value(socket);
 
   switch (client->state) {
+    case ClientState::ChallengeSent: {
+      if (!socket->canReadLine()) return;
+
+      QString line = QString::fromUtf8(socket->readLine().trimmed());
+      if (!line.startsWith(QStringLiteral("PROOF "))) {
+        qDebug() << "Bad protocol from client. Kicking.";
+        socket->close();
+        return;
+      }
+
+      QByteArray receivedProof = QByteArray::fromHex(line.mid(6).toUtf8());
+
+      // QByteArray combined = client->nonce + data_->values.hashedPassword;
+      QByteArray combined = client->nonce + data_->values.password.toUtf8();
+      QByteArray expectedProof = QCryptographicHash::hash(combined, QCryptographicHash::Sha256);
+
+      if (receivedProof == expectedProof) {
+        qDebug() << "Proof matche for " << socket->peerAddress().toString() << ". Client is now authenticated";
+
+        client->state = ClientState::Authenticated;
+        client->nonce.clear();
+        socket->write("AUTH_SUCCESS\n");
+      }
+      else {
+        qDebug() << "Bad proof from " << socket->peerAddress().toString() << ". Kicking";
+        socket->close();
+      }
+      break;
+    }
     case ClientState::Unauthenticated: {
       // Wait for full line of data to arrive before processing.
       if (!socket->canReadLine()) return;
@@ -132,7 +165,6 @@ void RemoteController::onReadyRead(){
         socket->write("AUTH_FAILURE\n");
         socket->close();
       }
-
       break;
     }
     case ClientState::Authenticated: {
@@ -145,7 +177,10 @@ void RemoteController::onReadyRead(){
         // QString command = parts[0];
         // if (command == "volume") { ... }
       }
-
+      break;
+    }
+    default: {
+      socket->close();
       break;
     }
 
@@ -181,8 +216,6 @@ void RemoteController::onDisconnect()
 void RemoteController::settingsChanged(const Values& data)
 {
   qDebug() << "Remote controller settings changed called " <<"Port: "<<data_->values.portNumber<<" Remote Enabled: "<< data_->values.remoteEnabled;
-
+  this->data_->values = data;
   RemoteController::serverCheck();
-  // RemoteController::setTimer();
-
 }

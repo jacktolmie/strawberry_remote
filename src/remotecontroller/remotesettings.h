@@ -35,7 +35,7 @@ Q_SIGNALS:
   void sendValues(const Values& values);
 
 public Q_SLOTS:
-  void receiveValues(const Values& values);
+  void receiveValues(const Values& sentValues);
 };
 
 #endif // REMOTESETTINGS_H

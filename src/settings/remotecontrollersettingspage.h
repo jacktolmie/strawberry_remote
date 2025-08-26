@@ -46,16 +46,13 @@ class RemoteControllerSettingsPage : public SettingsPage {
   Q_OBJECT
 
 public:
-  explicit RemoteControllerSettingsPage(SettingsDialog *dialog, const SharedPtr<RemoteSettings> data, QWidget *parent = nullptr);
+  explicit RemoteControllerSettingsPage(SettingsDialog *dialog, const SharedPtr<RemoteSettings> sentData, QWidget *parent = nullptr);
   ~RemoteControllerSettingsPage();
 
   virtual void Load() override;
   virtual void Save() override;
 
   Ui::RemoteControllerSettingsPage* getUi();
-
-Q_SIGNALS:
-
 
 private:
   Ui::RemoteControllerSettingsPage  *ui_;
@@ -64,14 +61,6 @@ private:
   void on_enableRemote_clicked();
   void setPassword();
   void remoteSettingsChanged(Values& sentValues);
-
-  /* Check for active network connection. Set up port and
-   * check if set for local only connections */
-  // void active_network_connection();
-  void startNetworkConnection();
-
-private Q_SLOTS:
-  // void getUpdates(Values& sentValues);
 };
 
 #endif // REMOTECONTROLLERSETTINGSPAGE_H

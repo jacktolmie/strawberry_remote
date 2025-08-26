@@ -62,8 +62,8 @@ void RemoteSettings::saveValues()
 }
 
 
-void RemoteSettings::receiveValues(const Values& values)
+void RemoteSettings::receiveValues(const Values& sentValues)
 {
-  this->values = values;
+  this->values = sentValues;
   saveValues();
 }
