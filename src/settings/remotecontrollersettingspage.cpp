@@ -5,7 +5,6 @@
 #include "settings/settingspage.h"
 
 using namespace Qt::Literals::StringLiterals;
-// using namespace RemoteControllerSettings;
 
 RemoteControllerSettingsPage::RemoteControllerSettingsPage(SettingsDialog *dialog, SharedPtr<RemoteSettings> sentData, QWidget *parent)
   : SettingsPage(dialog, parent),
@@ -21,6 +20,9 @@ RemoteControllerSettingsPage::RemoteControllerSettingsPage(SettingsDialog *dialo
 
   // Connect the enable group box if the checkbox is toggled.
   connect(ui_->enableRemote, &QCheckBox::toggled, this, &RemoteControllerSettingsPage::on_enableRemote_clicked);
+
+  // Connect the networkNotActive label to changes made when app is checking connections.
+  connect(data_.get(), &RemoteSettings::networkStatusChanged, this, &RemoteControllerSettingsPage::onNetworkStatusChanged);
 }
 
 RemoteControllerSettingsPage::~RemoteControllerSettingsPage()
@@ -84,4 +86,10 @@ Ui::RemoteControllerSettingsPage* RemoteControllerSettingsPage::getUi(){
 void RemoteControllerSettingsPage::setPassword()
 {
   ui_->authCodeEdit->setEnabled(ui_->authCodeCkBx->isChecked());
+}
+
+void RemoteControllerSettingsPage::onNetworkStatusChanged(bool isActive)
+{
+  data_->values.activeNetwork = isActive;
+  RemoteControllerSettingsPage::on_enableRemote_clicked();
 }

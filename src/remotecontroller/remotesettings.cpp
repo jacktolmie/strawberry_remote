@@ -67,3 +67,8 @@ void RemoteSettings::receiveValues(const Values& sentValues)
   this->values = sentValues;
   saveValues();
 }
+
+void RemoteSettings::updateNetworkStatus(bool isActive)
+{
+  if (values.activeNetwork != isActive) Q_EMIT RemoteSettings::networkStatusChanged(isActive);
+}

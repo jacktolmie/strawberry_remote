@@ -94,13 +94,19 @@ void RemoteController::onNewConnection()
       ClientInfo* client = new ClientInfo();
       client->socket = socket;
 
-      client->nonce = QByteArray::number(QRandomGenerator::global()->generate64());
-      client->state = ClientState::ChallengeSent;
+      // If no password required, do not check.
+      if (!data_->values.authRequired) {
+        client->state = ClientState::Authenticated;
+        socket->write("AUTH_SUCCESS\n");
+      }
+      else {
+        client->nonce = QByteArray::number(QRandomGenerator::global()->generate64());
+        client->state = ClientState::ChallengeSent;
+
+        socket->write("CHALLENGE " + client->nonce.toHex() + "\n");
+        qDebug() << "Sent challenge (nonce) to client: " << client->nonce.toHex();
+      }
       clients_.insert(socket, client);
-
-      socket->write("CHALLENGE " + client->nonce.toHex() + "\n");
-      qDebug() << "Sent challenge (nonce) to client: " << client->nonce.toHex();
-
       connect(socket, &QTcpSocket::readyRead, this, &RemoteController::onReadyRead);
       connect(socket, &QTcpSocket::disconnected, this, &RemoteController::onDisconnect);
     }
@@ -142,28 +148,9 @@ void RemoteController::onReadyRead()
       }
       else {
         qDebug() << "Bad proof from " << socket->peerAddress().toString() << ". Kicking";
+        socket->write("AUTH_FAILED\n");
         socket->close();
-      }
-      break;
-    }
-    case ClientState::Unauthenticated: {
-      // Wait for full line of data to arrive before processing.
-      if (!socket->canReadLine()) return;
-
-      QByteArray receivedPassword = socket->readLine().trimmed();
-
-      if (data_->values.hashedPassword == receivedPassword) {
-        qDebug() << "Password matched for" << socket->peerAddress().toString() << ". Client is now authenticated.";
-
-        client->state = ClientState::Authenticated;
-
-        // Send client acknowledgemnet it is authenticated.
-        socket->write("AUTH_SUCCESS\n");
-      }
-      else {
-        qDebug() << "Bad password from" << socket->peerAddress().toString() << ". Kicking them out.";
-        socket->write("AUTH_FAILURE\n");
-        socket->close();
+        return;
       }
       break;
     }
@@ -183,17 +170,6 @@ void RemoteController::onReadyRead()
       socket->close();
       break;
     }
-
-  }
-
-  while (socket->canReadLine()){
-    QByteArray line = socket->readLine().trimmed();
-
-    qDebug() << "Remote line: " <<line;
-
-
-
-
   }
 }
 

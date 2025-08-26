@@ -33,9 +33,11 @@ private:
 
 Q_SIGNALS:
   void sendValues(const Values& values);
+  void networkStatusChanged(bool isActive);
 
 public Q_SLOTS:
   void receiveValues(const Values& sentValues);
+  void updateNetworkStatus(bool isActive);
 };
 
 #endif // REMOTESETTINGS_H

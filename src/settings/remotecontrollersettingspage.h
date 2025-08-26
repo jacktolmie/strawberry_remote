@@ -61,6 +61,9 @@ private:
   void on_enableRemote_clicked();
   void setPassword();
   void remoteSettingsChanged(Values& sentValues);
+
+public Q_SLOT:
+  void onNetworkStatusChanged(bool isActive);
 };
 
 #endif // REMOTECONTROLLERSETTINGSPAGE_H

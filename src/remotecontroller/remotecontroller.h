@@ -11,7 +11,6 @@
 #include <QHash>
 #include <QSettings>
 
-#include "constants/remotesettings.h"
 #include "remotecontroller/remotesettings.h"
 #include "includes/shared_ptr.h"
 
