@@ -113,6 +113,7 @@
 #include "radios/radioservices.h"
 #include "radios/radiobackend.h"
 
+#include "remotecontroller/remotecommands.h"
 #include "remotecontroller/remotecontroller.h"
 
 using std::make_shared;
@@ -225,6 +226,7 @@ class ApplicationImpl {
       remote_controller_([this,app]() {return new RemoteController(remote_settings_, app);})
   {
     QObject::connect(remote_settings_.get(), &RemoteSettings::sendValues, &*remote_controller_, &RemoteController::settingsChanged);
+    QObject::connect(remote_controller_.ptr().get(), &RemoteController::commandReceived, remote_commands_.ptr().get(), &RemoteCommands::processLine);
   }
 
   Lazy<TagReaderClient> tagreader_client_;
@@ -253,6 +255,7 @@ class ApplicationImpl {
 
   SharedPtr<RemoteSettings> remote_settings_;
   Lazy<RemoteController> remote_controller_;
+  Lazy<RemoteCommands> remote_commands_;
 };
 
 Application::Application(QObject *parent)
@@ -403,5 +406,6 @@ SharedPtr<LastFMImport> Application::lastfm_import() const { return p_->lastfm_i
 SharedPtr<MoodbarController> Application::moodbar_controller() const { return p_->moodbar_controller_.ptr(); }
 SharedPtr<MoodbarLoader> Application::moodbar_loader() const { return p_->moodbar_loader_.ptr(); }
 #endif
+SharedPtr<RemoteCommands> Application::remote_commands() const { return p_->remote_commands_.ptr();}
 SharedPtr<RemoteController> Application::remote_controller() const { return p_->remote_controller_.ptr();}
 SharedPtr<RemoteSettings> Application::remote_settings() const {return p_->remote_settings_;}

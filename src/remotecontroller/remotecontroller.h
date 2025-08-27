@@ -12,6 +12,7 @@
 #include <QSettings>
 
 #include "remotecontroller/remotesettings.h"
+// #include "remotecontroller/remotecommands.h"
 #include "includes/shared_ptr.h"
 
 enum class ClientState {
@@ -48,9 +49,10 @@ private:
   QHash<QTcpSocket*, ClientInfo*> clients_;
 
   SharedPtr<RemoteSettings> data_;
-  // Values          values_;
+  // RemoteCommands            commands;
 Q_SIGNALS:
   void ExitFinished();
+  void commandReceived(const QString& line);
 
 public Q_SLOTS:
   void settingsChanged(const Values& data);

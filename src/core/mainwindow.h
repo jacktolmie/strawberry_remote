@@ -63,8 +63,7 @@
 #include "constants/behavioursettings.h"
 #include "covermanager/albumcoverloaderresult.h"
 #include "covermanager/albumcoverimageresult.h"
-#include "remotecontroller/remotecontroller.h"
-#include "remotecontroller/remotesettings.h"
+
 #include "settings/remotecontrollersettingspage.h"
 
 class About;
@@ -281,6 +280,8 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   void FocusSearchField();
 
   void DeleteFilesFinished(const SongList &songs_with_errors);
+
+  void handleRemoteCommand(const QString& command, const QStringList& args); // Add default to args?
 
  public Q_SLOTS:
   void CommandlineOptionsReceived(const QByteArray &string_options);

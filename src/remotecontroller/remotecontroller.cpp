@@ -159,10 +159,7 @@ void RemoteController::onReadyRead()
         QString line = QString::fromUtf8(socket->readLine().trimmed());
         qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << line;
 
-        // Now you can parse this line for commands like "play", "pause", "volume", etc.
-        // QStringList parts = line.split(' ');
-        // QString command = parts[0];
-        // if (command == "volume") { ... }
+        Q_EMIT RemoteController::commandReceived(line);
       }
       break;
     }

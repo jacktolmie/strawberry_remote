@@ -231,6 +231,8 @@
   #include "discord/richpresence.h"
 #endif
 
+#include "remotecontroller/remotecommands.h"
+
 using std::make_unique;
 using std::make_shared;
 using namespace std::chrono_literals;
@@ -1142,6 +1144,9 @@ MainWindow::MainWindow(Application *app,
       }
     }
   }
+
+  // Connect for remote controller commands sent.
+  connect(app_->remote_commands().get(), &RemoteCommands::forwardToPlayer, this, &MainWindow::handleRemoteCommand);
 
   qLog(Debug) << "Started" << QThread::currentThread();
   initialized_ = true;
@@ -3369,4 +3374,9 @@ void MainWindow::FocusSearchField() {
     ui_->playlist->FocusSearchField();
   }
 
+}
+
+void MainWindow::handleRemoteCommand(const QString& command, const QStringList& args)
+{
+  // Add switch statement etc for commands.
 }
