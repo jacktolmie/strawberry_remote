@@ -3,6 +3,10 @@
 
 #include <QObject>
 #include <QString>
+#include <QDebug>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 enum BasicCommands
 {
