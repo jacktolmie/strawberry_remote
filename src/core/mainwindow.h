@@ -282,9 +282,7 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   void DeleteFilesFinished(const SongList &songs_with_errors);
 
   // Remote Controller function to receive basic commands.
-  void handleRemoteCommand(const QString& command, const QStringList& args);
-  // Remote Controller function to create QMap of command and function call.
-  QMap<QString, std::variant<std::function<void()>, std::function<void(const quint32)>>> createCommandMap();
+  void handleRemoteCommand(const QString& command, const QStringList& arg);
 
  public Q_SLOTS:
   void CommandlineOptionsReceived(const QByteArray &string_options);
@@ -309,6 +307,9 @@ class MainWindow : public QMainWindow, public PlatformInterface {
 #ifdef HAVE_DBUS
   void UpdateTaskbarProgress(const bool visible, const double progress = 0);
 #endif
+
+  // Remote Controller function to create QMap of command and function call.
+  QMap<QString, std::function<void(const QStringList&)>> createCommandMap();
 
  private:
   Ui_MainWindow *ui_;

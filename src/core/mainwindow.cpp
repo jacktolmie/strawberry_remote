@@ -3376,43 +3376,68 @@ void MainWindow::FocusSearchField() {
 
 }
 
-void MainWindow::handleRemoteCommand(const QString& command, const QStringList& args)
+void MainWindow::handleRemoteCommand(const QString& command, const QStringList &args)
 {
   qDebug() <<"MainWindow::handleRemoteCommand called";
-
+  auto commandMap{MainWindow::createCommandMap()};
+  if (commandMap.contains(command)){
+    commandMap[command](args);
+  }
 
 
 
 
 }
 
-QMap<QString, std::variant<std::function<void()>, std::function<void(const quint32)>>> MainWindow::createCommandMap()
+QMap<QString, std::function<void(const QStringList&)>> MainWindow::createCommandMap()
 {
-  // Create a variant of functions that can take an argument or not.
-  using commandNoArgs = std::function<void()>;
-  using commandWithArgs = std::function<void(const quint32)>;
-  using Command = std::variant<commandNoArgs, commandWithArgs>;
+  // Lambda to check if args contains an int.
+  auto parseUintArg = [](const QStringList& args, bool& ok)-> quint32 {
+    if (args.isEmpty()){
+      ok = false;
+      return 0;
+    }
+    return args.first().toUInt(&ok);
+  };
 
-  QMap<QString, Command> commandMap;
+  QMap<QString, std::function<void(const QStringList&)>> commandMap;
   // Basic audio playback funtions.
-  commandMap[QStringLiteral("play")] = [this](){ app_->player()->Play();};
-  commandMap[QStringLiteral("play-pause")] = [this]() { app_->player()->PlayPauseHelper();};
-  commandMap[QStringLiteral("pause")] = [this](){ app_->player()->Pause();};
-  commandMap[QStringLiteral("stop")] = [this](){ app_->player()->Stop();};
-  commandMap[QStringLiteral("next")] = [this](){ app_->player()->Next();};
-  commandMap[QStringLiteral("previous")] = [this](){ app_->player()->Previous();};
-  commandMap[QStringLiteral("stop-after-current")] = [this](){ StopAfterCurrent();};
-  commandMap[QStringLiteral("restart-or-previous")] = [this](){ app_->player()->RestartOrPrevious();};
+  commandMap[QStringLiteral("play")] = [this](const auto&){ qDebug()<< "Remote Play called";app_->player()->Play();};
+  commandMap[QStringLiteral("play-pause")] = [this](const auto&) { app_->player()->PlayPauseHelper();};
+  commandMap[QStringLiteral("pause")] = [this](const auto&){ app_->player()->Pause();};
+  commandMap[QStringLiteral("stop")] = [this](const auto&){ app_->player()->Stop();};
+  commandMap[QStringLiteral("next")] = [this](const auto&){ app_->player()->Next();};
+  commandMap[QStringLiteral("previous")] = [this](const auto&){ app_->player()->Previous();};
+  commandMap[QStringLiteral("stop-after-current")] = [this](const auto&){ StopAfterCurrent();};
+  commandMap[QStringLiteral("restart-or-previous")] = [this](const auto&){ app_->player()->RestartOrPrevious();};
 
   // Basic volume changes.
-  commandMap[QStringLiteral("volume")] = [this](quint32 volChanged){ app_->player()->VolumeChanged(volChanged);};
-  commandMap[QStringLiteral("volume-up")] = [this](){ app_->player()->VolumeUp();};
-  commandMap[QStringLiteral("volume-down")] = [this](){ app_->player()->VolumeDown();};
-  commandMap[QStringLiteral("mute")] = [this](){ app_->player()->Mute();};
+  commandMap[QStringLiteral("volume")] = [this, parseUintArg](const QStringList& args){
+    bool ok;
+    quint32 vol = parseUintArg(args, ok);
+    qDebug() << "Remote volume with value: "<< vol;
+    if (ok) app_->player()->SetVolume(qBound(0u, vol, 100u));
+  };
+  commandMap[QStringLiteral("volume-up")] = [this](const auto&){ qDebug()<< "Remote Volume-up"; app_->player()->VolumeUp();};
+  commandMap[QStringLiteral("volume-down")] = [this](const auto&){ qDebug()<< "Remote Volume-down"; app_->player()->VolumeDown();};
+
+  commandMap[QStringLiteral("mute")] = [this](const auto&){ app_->player()->Mute();};
 
   // Basic seek commands.
-  commandMap[QStringLiteral("seek-to")] = [this](quint32 seconds){ app_->player()->SeekTo(seconds);};
-  commandMap[QStringLiteral("seek-by")] = [this](quint32 seconds){ app_->player()->SeekTo(seconds);};
+  commandMap[QStringLiteral("seek-to")] = [this, parseUintArg](const QStringList& args){
+    bool ok;
+    quint32 seconds = parseUintArg(args, ok);
+    if (ok) app_->player()->SeekTo(seconds);
+  };
+  // Need to calculate from/to amount.
+  commandMap[QStringLiteral("seek-by")] = [this, parseUintArg](const QStringList& args){
+  bool ok;
+  quint32 seconds = parseUintArg(args, ok);
+  if (ok) {
+    qint64 current_pos_sec = app_->player()->engine()->position_nanosec() / 1000000000;
+            app_->player()->SeekTo(current_pos_sec + seconds);
+  }
+  };
 
   // commandMap[QStringLiteral("play")] = [this](){ app_->;};
   // commandMap[QStringLiteral("play")] = [this](){ app_->;};

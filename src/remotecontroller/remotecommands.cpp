@@ -45,11 +45,6 @@ void RemoteCommands::processLine(const QString& line)
   QString value{QStringLiteral("value")};
   QString arg{QStringLiteral("args")};
 
-  // If the command is a basic command, emit to MainWindow.
-  if (commands.contains(command)){
-    Q_EMIT RemoteCommands::forwardToPlayer(command, args);
-  }
-
   // If not a basic command, process it accordingly.
   if (obj.contains(value)) {
     // Handles simple cases like { "command": "volume", "value": 75 }
@@ -64,6 +59,10 @@ void RemoteCommands::processLine(const QString& line)
     }
   }
 
+  // If the command is a basic command, emit to MainWindow.
+  if (commands.contains(command)){
+    Q_EMIT RemoteCommands::forwardToPlayer(command, args);
+  }
 
   // Q_EMIT RemoteCommands::forwardToPlayer(command, args); // Figure out what to emit.
 }
