@@ -223,7 +223,8 @@ class ApplicationImpl {
         lastfm_import_([app]() { return new LastFMImport(app->network()); }),
 
       remote_settings_(std::make_shared<RemoteSettings>()),
-      remote_controller_([this,app]() {return new RemoteController(remote_settings_, app);})
+      remote_controller_([this, app]() {return new RemoteController(remote_settings_, app);}),
+      remote_commands_([app]() { return new RemoteCommands(app, app);})
   {
     QObject::connect(remote_settings_.get(), &RemoteSettings::sendValues, &*remote_controller_, &RemoteController::settingsChanged);
     QObject::connect(remote_controller_.ptr().get(), &RemoteController::commandReceived, remote_commands_.ptr().get(), &RemoteCommands::processLine);

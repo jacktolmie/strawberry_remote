@@ -1,9 +1,11 @@
 #include "remotecommands.h"
 
 
-RemoteCommands::RemoteCommands()
+RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
+  app_(app)
 {
   qDebug() <<"RemoteCommands instantiated";
+
 }
 
 QString RemoteCommands::processCommand(const QString& command)
@@ -43,6 +45,12 @@ void RemoteCommands::processLine(const QString& line)
   QString value{QStringLiteral("value")};
   QString arg{QStringLiteral("args")};
 
+  // If the command is a basic command, emit to MainWindow.
+  if (commands.contains(command)){
+    Q_EMIT RemoteCommands::forwardToPlayer(command, args);
+  }
+
+  // If not a basic command, process it accordingly.
   if (obj.contains(value)) {
     // Handles simple cases like { "command": "volume", "value": 75 }
     args.append(QJsonValueRef(obj[value]).toVariant().toString());
@@ -57,5 +65,5 @@ void RemoteCommands::processLine(const QString& line)
   }
 
 
-  Q_EMIT RemoteCommands::forwardToPlayer(command, args); // Figure out what to emit.
+  // Q_EMIT RemoteCommands::forwardToPlayer(command, args); // Figure out what to emit.
 }

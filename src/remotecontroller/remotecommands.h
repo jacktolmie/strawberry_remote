@@ -8,36 +8,20 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-enum BasicCommands
-{
-  PLAY,
-  PLAY_PAUSE,
-  PAUSE,
-  STOP,
-  STOP_AFTER_CURRENT,
-  PREVIOUS,
-  NEXT,
-  VOLUME,
-  VOLUME_UP,
-  VOLUME_DOWN,
-  VOLUME_INCREASE_BY,
-  VOLUME_DECREASE_BY,
-  SEEK_TO,
-  SEEK_BY,
-  RESTART_OR_PREVIOUS,
-  PLAY_TRACK
-};
+#include "core/application.h"
 
 class RemoteCommands : public QObject
 {
   Q_OBJECT
 
-  BasicCommands commands;
+  // List of basic commands to be sent to MainWindow::handleRemoteCommand
+  QList<QString> commands{QStringLiteral("play"), QStringLiteral("pause"), QStringLiteral("stop"), QStringLiteral("next"), QStringLiteral("previous"), QStringLiteral("restart"), QStringLiteral("volume"), QStringLiteral("seek")};
+  Application   *app_;
 
   QString processCommand(const QString& command);
 
 public:
-  explicit RemoteCommands();
+  explicit RemoteCommands(Application *app, QObject *parent);
 
 public Q_SLOTS:
   void processLine(const QString& line);

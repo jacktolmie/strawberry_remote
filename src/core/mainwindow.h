@@ -281,7 +281,10 @@ class MainWindow : public QMainWindow, public PlatformInterface {
 
   void DeleteFilesFinished(const SongList &songs_with_errors);
 
-  void handleRemoteCommand(const QString& command, const QStringList& args); // Add default to args?
+  // Remote Controller function to receive basic commands.
+  void handleRemoteCommand(const QString& command, const QStringList& args);
+  // Remote Controller function to create QMap of command and function call.
+  QMap<QString, std::variant<std::function<void()>, std::function<void(const quint32)>>> createCommandMap();
 
  public Q_SLOTS:
   void CommandlineOptionsReceived(const QByteArray &string_options);

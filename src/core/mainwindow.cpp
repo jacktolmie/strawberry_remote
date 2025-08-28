@@ -3378,5 +3378,43 @@ void MainWindow::FocusSearchField() {
 
 void MainWindow::handleRemoteCommand(const QString& command, const QStringList& args)
 {
-  // Add switch statement etc for commands.
+  qDebug() <<"MainWindow::handleRemoteCommand called";
+
+
+
+
+
+}
+
+QMap<QString, std::variant<std::function<void()>, std::function<void(const quint32)>>> MainWindow::createCommandMap()
+{
+  // Create a variant of functions that can take an argument or not.
+  using commandNoArgs = std::function<void()>;
+  using commandWithArgs = std::function<void(const quint32)>;
+  using Command = std::variant<commandNoArgs, commandWithArgs>;
+
+  QMap<QString, Command> commandMap;
+  // Basic audio playback funtions.
+  commandMap[QStringLiteral("play")] = [this](){ app_->player()->Play();};
+  commandMap[QStringLiteral("play-pause")] = [this]() { app_->player()->PlayPauseHelper();};
+  commandMap[QStringLiteral("pause")] = [this](){ app_->player()->Pause();};
+  commandMap[QStringLiteral("stop")] = [this](){ app_->player()->Stop();};
+  commandMap[QStringLiteral("next")] = [this](){ app_->player()->Next();};
+  commandMap[QStringLiteral("previous")] = [this](){ app_->player()->Previous();};
+  commandMap[QStringLiteral("stop-after-current")] = [this](){ StopAfterCurrent();};
+  commandMap[QStringLiteral("restart-or-previous")] = [this](){ app_->player()->RestartOrPrevious();};
+
+  // Basic volume changes.
+  commandMap[QStringLiteral("volume")] = [this](quint32 volChanged){ app_->player()->VolumeChanged(volChanged);};
+  commandMap[QStringLiteral("volume-up")] = [this](){ app_->player()->VolumeUp();};
+  commandMap[QStringLiteral("volume-down")] = [this](){ app_->player()->VolumeDown();};
+  commandMap[QStringLiteral("mute")] = [this](){ app_->player()->Mute();};
+
+  // Basic seek commands.
+  commandMap[QStringLiteral("seek-to")] = [this](quint32 seconds){ app_->player()->SeekTo(seconds);};
+  commandMap[QStringLiteral("seek-by")] = [this](quint32 seconds){ app_->player()->SeekTo(seconds);};
+
+  // commandMap[QStringLiteral("play")] = [this](){ app_->;};
+  // commandMap[QStringLiteral("play")] = [this](){ app_->;};
+  return commandMap;
 }
