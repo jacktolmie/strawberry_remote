@@ -113,7 +113,7 @@ class MainWindow : public QMainWindow, public PlatformInterface {
 
  public:
   explicit MainWindow(Application *app,
-                      SharedPtr<SystemTrayIcon> tray_icon,
+                      SharedPtr<SystemTrayIcon> systemtrayicon,
                       OSDBase *osd,
 #ifdef HAVE_DISCORD_RPC
                       discord::RichPresence *discord_rich_presence,
@@ -315,7 +315,7 @@ class MainWindow : public QMainWindow, public PlatformInterface {
 #endif
 
   Application *app_;
-  SharedPtr<SystemTrayIcon> tray_icon_;
+  SharedPtr<SystemTrayIcon> systemtrayicon_;
   OSDBase *osd_;
 #ifdef HAVE_DISCORD_RPC
   discord::RichPresence *discord_rich_presence_;
