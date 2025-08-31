@@ -308,9 +308,6 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   void UpdateTaskbarProgress(const bool visible, const double progress = 0);
 #endif
 
-  // Remote Controller function to create QMap of command and function call.
-  QMap<QString, std::function<void(const QStringList&)>> createCommandMap();
-
  private:
   Ui_MainWindow *ui_;
 #ifdef Q_OS_WIN32

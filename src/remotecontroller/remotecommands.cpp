@@ -2,16 +2,26 @@
 
 
 RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
-  app_(app)
+  QObject{parent},
+  app_(app),
+  playlist(RemotePlaylist(app, this)),
+  basicCommands(RemoteBasicCommands(app))
 {
   qDebug() <<"RemoteCommands instantiated";
 
 }
 
-QString RemoteCommands::processCommand(const QString& command)
+// QString RemoteCommands::processCommand(const QString& command, const QStringList &args)
+void RemoteCommands::processCommand(const QString& command, const QStringList &args)
 {
   qDebug() << "RemoteCommands::processCommand called with: "<< command;
-  return command;
+
+  // If the command is a basic command, run it in RemoteBasicCommands.
+  if (!basicCommands.sendCommand(command, args) ){
+    // If the command is not a basic command, check other command functions.
+    qDebug() << "Returned from RemoteBasicCommand send command call. Not basic command";
+  }
+
 }
 
 void RemoteCommands::processLine(const QString& line)
@@ -39,30 +49,24 @@ void RemoteCommands::processLine(const QString& line)
     return;
   }
 
-  command = obj[command].toString();
+  command = obj[command].toString().toLower();
 
   QStringList args;
   QString value{QStringLiteral("value")};
   QString arg{QStringLiteral("args")};
 
-  // If not a basic command, process it accordingly.
   if (obj.contains(value)) {
     // Handles simple cases like { "command": "volume", "value": 75 }
-    args.append(QJsonValueRef(obj[value]).toVariant().toString());
+    args.append(QJsonValueRef(obj[value]).toVariant().toString().toLower());
   }
   else if (obj.contains(arg) && obj[arg].isArray()) {
     // Handles more complex cases like { "command": "add", "args": ["url1", "url2"] }
     QJsonArray argArray{obj[arg].toArray()};
 
     for(const QJsonValue& val : argArray) {
-      args.append(val.toString())  ;
+      args.append(val.toString().toLower())  ;
     }
   }
 
-  // If the command is a basic command, emit to MainWindow.
-  if (commands.contains(command)){
-    Q_EMIT RemoteCommands::forwardToPlayer(command, args);
-  }
-
-  // Q_EMIT RemoteCommands::forwardToPlayer(command, args); // Figure out what to emit.
+  RemoteCommands::processCommand(command, args);
 }
