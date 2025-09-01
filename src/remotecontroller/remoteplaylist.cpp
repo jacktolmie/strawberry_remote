@@ -55,30 +55,47 @@ void RemotePlaylist::favoritePlaylist()
   app_->playlist_manager()->Favorite(playlistId, !isFavourite);
 }
 
+void RemotePlaylist::setCurrentPlaylist(const int id)
+{
+  auto all = app_->playlist_manager()->playlist_ids();
+  for(auto ids: all) qDebug() <<"Remote Playlist id: "<< ids;
+  int currentPlaylist{app_->playlist_manager()->current_id()};
+  if (currentPlaylist != id){
+    app_->playlist_manager()->SetActivePlaylist(id);
+    app_->playlist_manager()->SetCurrentOrOpen(id);
+    app_->playlist_manager()->playlist(id)->next_row();
+  }
+}
 
 void RemotePlaylist::createCommandMap()
 {
   // Lambda to check if args contains an int. Inside remoteconstants header.
   auto parseStringArg{remoteconstants::parseStringArg};
+  auto parseUintArg{remoteconstants::parseUintArg};
 
-  commandMap[QStringLiteral("shuffle-playlist")] = [this](const auto&){ app_->playlist_manager()->ShuffleCurrent();};
   commandMap[QStringLiteral("clear-playlist")] = [this](const auto&){ app_->playlist_manager()->ClearCurrent();};
-
-  commandMap[QStringLiteral("load-playlist")] = [this, parseStringArg](const QStringList& args){
+  commandMap[QStringLiteral("close-playlist")] = [this, parseUintArg](const QStringList& args){
     bool ok;
-    QString playlist = parseStringArg(args, ok);
-    app_->playlist_manager()->Load(playlist);
+    quint32 id{parseUintArg(args, ok)};
+    if (ok) qDebug() << app_->playlist_manager()->Close(id);
   };
-
-  commandMap[QStringLiteral("get-all-playlists")] = [this](const auto&){ app_->playlist_manager()->GetAllPlaylists();};
-  commandMap[QStringLiteral("rename-playlist")] = [this](const QStringList& args){RemotePlaylist::renamePlaylist(args);};
-  commandMap[QStringLiteral("shuffle-all-playlists")] = [this](const auto&){ RemotePlaylist::shuffleAllPlaylists();};
   commandMap[QStringLiteral("delete-current-playlist")] = [this](const auto&){ RemotePlaylist::deleteCurrentPlaylist();};
   commandMap[QStringLiteral("favorite-playlist")] = [this](const auto&){ RemotePlaylist::favoritePlaylist();};
+  commandMap[QStringLiteral("get-all-playlists")] = [this](const auto&){ app_->playlist_manager()->GetAllPlaylists();};
+  commandMap[QStringLiteral("remove-current-song-playlist")] = [this](const auto&){ app_->playlist_manager()->RemoveCurrentSong();};
+  commandMap[QStringLiteral("remove-duplicates-playlist")] = [this](const auto&){ app_->playlist_manager()->RemoveDuplicatesCurrent();};
+  commandMap[QStringLiteral("rename-playlist")] = [this](const QStringList& args){RemotePlaylist::renamePlaylist(args);};
+  commandMap[QStringLiteral("set-current-playlist")] = [this, parseUintArg](const QStringList& args){
+    bool ok;
+    quint32 id{parseUintArg(args, ok)};
+    if(ok)RemotePlaylist::setCurrentPlaylist(id);
+    // if(true) RemotePlaylist::setCurrentPlaylist(123);
+  };
+  commandMap[QStringLiteral("shuffle-playlist")] = [this](const auto&){ app_->playlist_manager()->ShuffleCurrent();};
+  commandMap[QStringLiteral("shuffle-all-playlists")] = [this](const auto&){ RemotePlaylist::shuffleAllPlaylists();};
 
   // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->playlist_manager()->;};
-
-
+  // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->playlist_manager()->;};
 }
 
 /*

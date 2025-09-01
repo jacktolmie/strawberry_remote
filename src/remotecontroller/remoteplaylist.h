@@ -28,6 +28,11 @@ class RemotePlaylist : public QObject
 
   // Make playlist a favourite or not.
   void favoritePlaylist();
+
+  // Set the playlist as current. Send set-current-playlist <playlist ID>.
+  void setCurrentPlaylist(const int id);
+
+
 public:
     explicit RemotePlaylist(Application *app, QObject *parent = nullptr);
     ~RemotePlaylist() = default;
