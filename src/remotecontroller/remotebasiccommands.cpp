@@ -1,15 +1,17 @@
 #include "remotebasiccommands.h"
+#include "remotecontroller/remoteconstants.h"
 #include "core/player.h"
 #include "core/logging.h"
 
 
-RemoteBasicCommands::RemoteBasicCommands(Application *app)//, QObject *parent)
-    : //QObject{parent},
-      app_(app),
-      commandMap(RemoteBasicCommands::createCommandMap())
-{}
+RemoteBasicCommands::RemoteBasicCommands(Application *app)
+    : app_(app)
+{
+  // Fill the commandMap.
+  RemoteBasicCommands::createCommandMap();
+}
 
-bool RemoteBasicCommands::sendCommand(const QString& command, [[maybe_unused]] const QStringList &args)
+bool RemoteBasicCommands::sendCommand(const QString& command, const QStringList &args)
 {
   // If the command is a basic command, run it, otherwise return false to check other command lists.
   if ( commandMap.contains(command)){
@@ -18,21 +20,14 @@ bool RemoteBasicCommands::sendCommand(const QString& command, [[maybe_unused]] c
   }
   qLog(Debug) << "No matching command sent to RemoteBacisCommands::runCommand: " << command;
   return false;
-
 }
 
-QMap<QString, std::function<void(const QStringList&)>> RemoteBasicCommands::createCommandMap()
+void RemoteBasicCommands::createCommandMap()
 {
-  // Lambda to check if args contains an int.
-  auto parseUintArg = [](const QStringList& args, bool& ok)-> quint32 {
-    if (args.isEmpty()){
-      ok = false;
-      return 0;
-    }
-    return args.first().toUInt(&ok);
-  };
+  // Lambda to check if args contains an int. Inside remoteconstants header.
+  auto parseUintArg{remoteconstants::parseUintArg};
 
-  QMap<QString, std::function<void(const QStringList&)>> commandMap;
+  // QMap<QString, std::function<void(const QStringList&)>> commandMap_;
   // Basic audio playback funtions.
   commandMap[QStringLiteral("play")] = [this](const auto&){ app_->player()->Play();};
   commandMap[QStringLiteral("play-pause")] = [this](const auto&) { app_->player()->PlayPauseHelper();};
@@ -61,7 +56,7 @@ QMap<QString, std::function<void(const QStringList&)>> RemoteBasicCommands::crea
     quint32 seconds = parseUintArg(args, ok);
     if (ok) app_->player()->SeekTo(seconds);
   };
-  // Need to calculate from/to amount.
+
   commandMap[QStringLiteral("seek-by")] = [this, parseUintArg](const QStringList& args){
   bool ok;
   quint32 seconds = parseUintArg(args, ok);
@@ -72,7 +67,6 @@ QMap<QString, std::function<void(const QStringList&)>> RemoteBasicCommands::crea
   };
 
   // A couple of spares, since I would forget :)
-  // commandMap[QStringLiteral("play")] = [this](){ app_->;};
-  // commandMap[QStringLiteral("play")] = [this](){ app_->;};
-  return commandMap;
+  // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->;};
+  // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->;};
 }

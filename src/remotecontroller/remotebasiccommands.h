@@ -10,7 +10,7 @@
 
 class RemoteBasicCommands
 {
-  QMap<QString, std::function<void(const QStringList&)>> createCommandMap();
+  void createCommandMap();
 
   Application *app_;
   QMap<QString, std::function<void(const QStringList&)>> commandMap;

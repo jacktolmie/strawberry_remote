@@ -415,8 +415,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Core)
 
-add_executable(strawberry
-  src/remotecontroller/remotebasiccommands.h src/remotecontroller/remotebasiccommands.cpp
+add_executable(strawberry  
   )
 
 if(APPLE)
@@ -843,6 +842,7 @@ set(SOURCES
   src/device/deviceviewcontainer.cpp
   src/device/deviceview.cpp
 
+  src/remotecontroller/remotebasiccommands.cpp
   src/remotecontroller/remotecommands.cpp
   src/remotecontroller/remotecontroller.cpp
   src/remotecontroller/remoteplaylist.cpp
@@ -1139,7 +1139,9 @@ set(HEADERS
   src/device/deviceviewcontainer.h
   src/device/deviceview.h
 
+  src/remotecontroller/remotebasiccommands.h
   src/remotecontroller/remotecommands.h
+  src/remotecontroller/remoteconstants.h
   src/remotecontroller/remotecontroller.h
   src/remotecontroller/remoteplaylist.h
   src/remotecontroller/remotesettings.h  

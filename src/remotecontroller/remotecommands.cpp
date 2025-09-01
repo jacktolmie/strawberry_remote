@@ -6,10 +6,7 @@ RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   app_(app),
   playlist(RemotePlaylist(app, this)),
   basicCommands(RemoteBasicCommands(app))
-{
-  qDebug() <<"RemoteCommands instantiated";
-
-}
+{}
 
 // QString RemoteCommands::processCommand(const QString& command, const QStringList &args)
 void RemoteCommands::processCommand(const QString& command, const QStringList &args)
@@ -20,6 +17,10 @@ void RemoteCommands::processCommand(const QString& command, const QStringList &a
   if (!basicCommands.sendCommand(command, args) ){
     // If the command is not a basic command, check other command functions.
     qDebug() << "Returned from RemoteBasicCommand send command call. Not basic command";
+    if (command.contains(QStringLiteral("playlist"))){
+      playlist.processCommand(command, args);
+      return;
+    }
   }
 
 }
@@ -55,18 +56,18 @@ void RemoteCommands::processLine(const QString& line)
   QString value{QStringLiteral("value")};
   QString arg{QStringLiteral("args")};
 
-  if (obj.contains(value)) {
-    // Handles simple cases like { "command": "volume", "value": 75 }
-    args.append(QJsonValueRef(obj[value]).toVariant().toString().toLower());
-  }
-  else if (obj.contains(arg) && obj[arg].isArray()) {
-    // Handles more complex cases like { "command": "add", "args": ["url1", "url2"] }
-    QJsonArray argArray{obj[arg].toArray()};
-
-    for(const QJsonValue& val : argArray) {
-      args.append(val.toString().toLower())  ;
+    if (obj.contains(value)) {
+        args.append(obj[value].toVariant().toString());
     }
-  }
+    //    This handles cases like { "command": "rename", "args": ["oldName", "newName"] }
+    if (obj.contains(arg) && obj[arg].isArray()) {
+        QJsonArray argArray = obj[arg].toArray();
+        for (const QJsonValue& val : argArray) {
+            args.append(val.toString());
+        }
+    }
+  qDebug() << "Remote Final arguments for command '" << command << "':" << args;
 
+  // Process command with args after breaking down the JSON file.
   RemoteCommands::processCommand(command, args);
 }
