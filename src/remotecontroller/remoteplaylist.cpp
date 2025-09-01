@@ -43,6 +43,19 @@ void RemotePlaylist::shuffleAllPlaylists()
   app_->playlist_manager()->SetCurrentPlaylist(currentId);
 }
 
+void RemotePlaylist::deleteCurrentPlaylist()
+{
+  app_->playlist_manager()->Delete(app_->playlist_manager()->current_id());
+}
+
+void RemotePlaylist::favoritePlaylist()
+{
+  int playlistId{app_->playlist_manager()->current_id()};
+  int isFavourite{app_->playlist_manager()->IsPlaylistFavorite(playlistId)};
+  app_->playlist_manager()->Favorite(playlistId, !isFavourite);
+}
+
+
 void RemotePlaylist::createCommandMap()
 {
   // Lambda to check if args contains an int. Inside remoteconstants header.
@@ -60,7 +73,8 @@ void RemotePlaylist::createCommandMap()
   commandMap[QStringLiteral("get-all-playlists")] = [this](const auto&){ app_->playlist_manager()->GetAllPlaylists();};
   commandMap[QStringLiteral("rename-playlist")] = [this](const QStringList& args){RemotePlaylist::renamePlaylist(args);};
   commandMap[QStringLiteral("shuffle-all-playlists")] = [this](const auto&){ RemotePlaylist::shuffleAllPlaylists();};
-
+  commandMap[QStringLiteral("delete-current-playlist")] = [this](const auto&){ RemotePlaylist::deleteCurrentPlaylist();};
+  commandMap[QStringLiteral("favorite-playlist")] = [this](const auto&){ RemotePlaylist::favoritePlaylist();};
 
   // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->playlist_manager()->;};
 

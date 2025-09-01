@@ -23,6 +23,11 @@ class RemotePlaylist : public QObject
   // Shuffle all playlists.
   void shuffleAllPlaylists();
 
+  // Delete current playlist.
+  void deleteCurrentPlaylist();
+
+  // Make playlist a favourite or not.
+  void favoritePlaylist();
 public:
     explicit RemotePlaylist(Application *app, QObject *parent = nullptr);
     ~RemotePlaylist() = default;
