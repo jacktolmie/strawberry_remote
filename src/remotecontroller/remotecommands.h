@@ -16,15 +16,6 @@ class RemoteCommands : public QObject
 {
   Q_OBJECT
 
-  // List of commands that are not in the basic command list. Requires more processing.
-  QList<QString> otherCommands{
-    QStringLiteral("radio"),
-    QStringLiteral("queue"),
-    QStringLiteral("collection"),
-    QStringLiteral("context"),
-    QStringLiteral("remove-current-song"),
-  };
-
   Application   *app_;
   RemotePlaylist playlist;
   RemoteBasicCommands basicCommands;

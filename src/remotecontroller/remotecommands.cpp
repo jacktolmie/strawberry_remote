@@ -62,7 +62,7 @@ void RemoteCommands::processLine(const QString& line)
     //    This handles cases like { "command": "rename", "args": ["oldName", "newName"] }
     if (obj.contains(arg) && obj[arg].isArray()) {
         QJsonArray argArray = obj[arg].toArray();
-        for (const QJsonValue& val : argArray) {
+        for (const QJsonValue& val : std::as_const(argArray)) {
             args.append(val.toString());
         }
     }
