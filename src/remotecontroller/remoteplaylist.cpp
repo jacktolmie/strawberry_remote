@@ -63,8 +63,8 @@ void RemotePlaylist::setCurrentPlaylist(const int id)
   if (currentPlaylist != id){
     app_->playlist_manager()->SetActivePlaylist(id);
     app_->playlist_manager()->SetCurrentOrOpen(id);
-    app_->playlist_manager()->playlist(id)->next_row();
   }
+  // app_->playlist_manager()->playlist(id)->
 }
 
 void RemotePlaylist::createCommandMap()
@@ -89,7 +89,6 @@ void RemotePlaylist::createCommandMap()
     bool ok;
     quint32 id{parseUintArg(args, ok)};
     if(ok)RemotePlaylist::setCurrentPlaylist(id);
-    // if(true) RemotePlaylist::setCurrentPlaylist(123);
   };
   commandMap[QStringLiteral("shuffle-playlist")] = [this](const auto&){ app_->playlist_manager()->ShuffleCurrent();};
   commandMap[QStringLiteral("shuffle-all-playlists")] = [this](const auto&){ RemotePlaylist::shuffleAllPlaylists();};
