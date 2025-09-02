@@ -449,7 +449,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        debian_version: [ 'bookworm', 'trixie' ]
+        debian_version: [ 'bookworm', 'trixie', 'forky' ]
     container:
       image: debian:${{matrix.debian_version}}
     steps:
@@ -499,7 +499,11 @@ jobs:
             qt6-tools-dev-tools
             qt6-l10n-tools
             rapidjson-dev
+      - name: Install KDSingleApplication
+        if: matrix.debian_version != 'bookworm'
+        run: apt install -y libkdsingleapplication-qt6-dev
       - name: Build and install KDSingleApplication
+        if: matrix.debian_version == 'bookworm'
         run: |
           git clone --depth 1 --recurse-submodules https://github.com/KDAB/KDSingleApplication
           cd KDSingleApplication
@@ -538,7 +542,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ubuntu_version: [ 'noble', 'plucky' ]
+        ubuntu_version: [ 'noble', 'plucky', 'questing' ]
     container:
       image: ubuntu:${{matrix.ubuntu_version}}
     steps:
@@ -591,7 +595,11 @@ jobs:
             qt6-tools-dev-tools
             qt6-l10n-tools
             rapidjson-dev
+      - name: Install KDSingleApplication
+        if: matrix.ubuntu_version != 'noble' && matrix.ubuntu_version != 'plucky'
+        run: apt install -y libkdsingleapplication-qt6-dev
       - name: Build and install KDSingleApplication
+        if: matrix.ubuntu_version == 'noble' || matrix.ubuntu_version == 'plucky'
         run: |
           git clone --depth 1 --recurse-submodules https://github.com/KDAB/KDSingleApplication
           cd KDSingleApplication
@@ -631,7 +639,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ubuntu_version: [ 'noble', 'plucky' ]
+        ubuntu_version: [ 'noble', 'plucky', 'questing' ]
     container:
       image: ubuntu:${{matrix.ubuntu_version}}
     steps:
