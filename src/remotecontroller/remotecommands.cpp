@@ -1,3 +1,9 @@
+#include <QJsonObject>
+#include <QString>
+#include <QDebug>
+#include <QJsonArray>
+#include <QJsonDocument>
+
 #include "remotecommands.h"
 
 
@@ -6,7 +12,10 @@ RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   app_(app),
   playlist(RemotePlaylist(app, this)),
   basicCommands(RemoteBasicCommands(app))
-{}
+{
+  connect(&playlist, &RemotePlaylist::sendAllPlaylists, this, &RemoteCommands::getAllPlaylists);
+  connect(&playlist, &RemotePlaylist::sendCurrentPlaylist, this, &RemoteCommands::getCurrentPlaylist);
+}
 
 // QString RemoteCommands::processCommand(const QString& command, const QStringList &args)
 void RemoteCommands::processCommand(const QString& command, const QStringList &args)
@@ -22,10 +31,9 @@ void RemoteCommands::processCommand(const QString& command, const QStringList &a
       return;
     }
   }
-
 }
 
-void RemoteCommands::processLine(const QString& line)
+void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
 {
   qDebug() << "RemoteCommands::processLine called with: "<< line;
 
@@ -70,4 +78,15 @@ void RemoteCommands::processLine(const QString& line)
 
   // Process command with args after breaking down the JSON file.
   RemoteCommands::processCommand(command, args);
+}
+
+void RemoteCommands::getAllPlaylists(const QJsonObject& playlists)
+{
+
+}
+
+
+void RemoteCommands::getCurrentPlaylist(const QJsonObject& playlist)
+{
+
 }

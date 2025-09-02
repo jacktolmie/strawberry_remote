@@ -1,8 +1,10 @@
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QList>
 #include "remoteplaylist.h"
 #include "core/logging.h"
 #include "playlist/playlistmanager.h"
 #include "remotecontroller/remoteconstants.h"
-
 
 RemotePlaylist::RemotePlaylist(Application* app, QObject *parent)
     : QObject{parent},
@@ -57,14 +59,66 @@ void RemotePlaylist::favoritePlaylist()
 
 void RemotePlaylist::setCurrentPlaylist(const int id)
 {
-  auto all = app_->playlist_manager()->playlist_ids();
-  for(auto ids: all) qDebug() <<"Remote Playlist id: "<< ids;
   int currentPlaylist{app_->playlist_manager()->current_id()};
   if (currentPlaylist != id){
     app_->playlist_manager()->SetActivePlaylist(id);
     app_->playlist_manager()->SetCurrentOrOpen(id);
   }
-  // app_->playlist_manager()->playlist(id)->
+}
+
+void RemotePlaylist::makeAllPlaylist()
+{
+  auto playlists{app_->playlist_manager()->GetAllPlaylists()};
+
+  QJsonObject response;
+  response[QStringLiteral("command")] = QStringLiteral("playlist_data");
+
+  QJsonArray playlistArray;
+
+  for (const auto& playlist: playlists){
+    QJsonObject playlistObject;
+    playlistObject[QStringLiteral("name")] = playlist->objectName();
+
+    QJsonArray songsArray;
+    auto songs{playlist->GetAllSongs()};
+
+    for (const auto& song: songs){
+      songsArray.append(song.PrettyTitle());
+    }
+
+    playlistObject[QStringLiteral("songs")] = songsArray;
+
+    playlistArray.append(playlistObject);
+  }
+
+  response[QStringLiteral("playlists")] = playlistArray;
+
+  Q_EMIT RemotePlaylist::sendAllPlaylists(response);
+}
+
+void RemotePlaylist::makeCurrentPlaylist()
+{
+  int id{app_->playlist_manager()->current_id()};
+  auto playlist{app_->playlist_manager()->playlist(id)};
+
+  QJsonObject response;
+  response[QStringLiteral("command")] = QStringLiteral("playlist_data");
+
+  QJsonObject playlistObject;
+  playlistObject[QStringLiteral("name")] = playlist->objectName();
+
+  QJsonArray songsArray;
+  auto songs{playlist->GetAllSongs()};
+
+  for (const auto& song: songs){
+    songsArray.append(song.PrettyTitle());
+  }
+
+  playlistObject[QStringLiteral("songs")] = songsArray;
+
+  response[QStringLiteral("songs")] = playlistObject;
+
+  Q_EMIT RemotePlaylist::sendCurrentPlaylist(response);
 }
 
 void RemotePlaylist::createCommandMap()
@@ -92,26 +146,13 @@ void RemotePlaylist::createCommandMap()
   };
   commandMap[QStringLiteral("shuffle-playlist")] = [this](const auto&){ app_->playlist_manager()->ShuffleCurrent();};
   commandMap[QStringLiteral("shuffle-all-playlists")] = [this](const auto&){ RemotePlaylist::shuffleAllPlaylists();};
+  commandMap[QStringLiteral("send-playlist")] = [this](const auto&){ RemotePlaylist::shuffleAllPlaylists();};
+  commandMap[QStringLiteral("send-all-playlists")] = [this](const auto&){ RemotePlaylist::shuffleAllPlaylists();};
 
   // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->playlist_manager()->;};
   // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->playlist_manager()->;};
 }
 
-/*
-    QStringLiteral("shuffle-playlist"),
-    QStringLiteral("clear-playlist"),
-    QStringLiteral("delete-playlist"),
-    QStringLiteral("get-all-playlists"), returns a QList<Playlist>
-    QStringLiteral("save-playlist"),
-    QStringLiteral("smart-playlist"),
-    QStringLiteral("rename-playlist"),
-    QStringLiteral("delete-playlist")
 
-  if (command == QStringLiteral("get-all-playlists")){
-    auto list = app_->playlist_manager()->GetAllPlaylists();
-    for(auto& l: list){
-      auto test = l->GetAllSongs();
-      for(auto& song: test) qDebug() <<"Remote song: " << song.PrettyTitle();
-    }
-  }
-*/
+  // auto all = app_->playlist_manager()->playlist_ids();
+  // for(auto ids: std::as_const(all)) qDebug() <<"Remote Playlist id: "<< ids;

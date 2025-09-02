@@ -282,7 +282,7 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   void DeleteFilesFinished(const SongList &songs_with_errors);
 
   // Remote Controller function to receive basic commands.
-  void handleRemoteCommand(const QString& command, const QStringList& arg);
+  // void handleRemoteCommand(const QString& command, const QStringList& arg);
 
  public Q_SLOTS:
   void CommandlineOptionsReceived(const QByteArray &string_options);

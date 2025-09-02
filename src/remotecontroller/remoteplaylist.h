@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QDebug>
-#include <QList>
 
 #include "core/application.h"
 
@@ -31,6 +30,15 @@ class RemotePlaylist : public QObject
 
   // Set the playlist as current. Send set-current-playlist <playlist ID>.
   void setCurrentPlaylist(const int id);
+
+  // Make playlists to send back to device.
+  void makeAllPlaylist();
+  void makeCurrentPlaylist();
+
+Q_SIGNALS:
+  // Send either all playlists, or the current one.
+  void sendAllPlaylists(QJsonObject& sendPlaylist);
+  void sendCurrentPlaylist(QJsonObject& sendPlaylist);
 
 
 public:

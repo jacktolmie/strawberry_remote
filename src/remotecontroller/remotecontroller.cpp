@@ -1,5 +1,7 @@
+#include <QJsonDocument>
 #include <QRandomGenerator>
 #include "remotecontroller.h"
+#include "core/logging.h"
 
 RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject *parent)
     : QObject{parent},
@@ -15,13 +17,11 @@ RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject
 
   RemoteController::setTimer();
   RemoteController::serverCheck();
-  qDebug() << "Remote Network auth password hashed: " << data_->values.hashedPassword;
 }
 
 void RemoteController::setTimer()
 {
   data_->values.remoteEnabled ? timer->start() : timer->stop();
-  qDebug() << "Remote Is timer active? " << timer->isActive();
 }
 
 void RemoteController::serverCheck()
@@ -61,26 +61,23 @@ void RemoteController::activeNetworkConnection()
       QHostAddress ip = entry.ip();
 
       if (ip.protocol() == QAbstractSocket::IPv4Protocol && !ip.isLoopback()) {
-        qDebug() << "Remote Found active, usable IPv4 address:" << ip.toString() << "on interface" << interface.name();
+        qLog(Info) << "Remote Found active, usable IPv4 address:" << ip.toString() << "on interface" << interface.name();
         data_->values.activeNetwork = true;
         return;
       }
     }
   }
-  qDebug() << "Remote activeNetworkConnection called. No active networks found";
+  qLog(Warning) << "Remote activeNetworkConnection called. No active networks found";
   data_->values.activeNetwork = false;
 }
 
 // void RemoteController::ExitFinished(){}
 
 void RemoteController::Exit(){
-  qDebug() << "RemoteController ExitFinished called";
   Q_EMIT ExitFinished();
 }
 
-void RemoteController::ExitReceived(){
-  qDebug() << "RemoteController ExitReceived called";
-}
+void RemoteController::ExitReceived(){}
 
 void RemoteController::onNewConnection()
 {
@@ -159,7 +156,7 @@ void RemoteController::onReadyRead()
         QString line = QString::fromUtf8(socket->readLine().trimmed());
         qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << line;
 
-        Q_EMIT RemoteController::commandReceived(line);
+        Q_EMIT RemoteController::commandReceived(socket, line);
       }
       break;
     }
@@ -176,7 +173,7 @@ void RemoteController::onDisconnect()
   // If socket is nullptr, return.
   if (!socket) return;
 
-  qDebug() << "Client disconnected, cleaning up session for" << socket->peerAddress().toString();
+  qLog(Info) << "Client disconnected, cleaning up session for" << socket->peerAddress().toString();
   if (clients_.contains(socket)){
     ClientInfo* client = clients_.value(socket);
     clients_.remove(socket);
@@ -188,7 +185,19 @@ void RemoteController::onDisconnect()
 
 void RemoteController::settingsChanged(const Values& data)
 {
-  qDebug() << "Remote controller settings changed called " <<"Port: "<<data_->values.portNumber<<" Remote Enabled: "<< data_->values.remoteEnabled;
   this->data_->values = data;
   RemoteController::serverCheck();
+}
+
+void RemoteController::onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response)
+{
+  if(!clientSocket || !clients_.contains(clientSocket)){
+    qLog(Warning) << "Remote attempted to send response to a disconnected client.";
+    return;
+  }
+
+  QJsonDocument doc(response);
+  QByteArray responseBytes{doc.toJson(QJsonDocument::Compact)};
+
+  clientSocket->write(responseBytes + "\n");
 }

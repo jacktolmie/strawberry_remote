@@ -49,14 +49,15 @@ private:
   QHash<QTcpSocket*, ClientInfo*> clients_;
 
   SharedPtr<RemoteSettings> data_;
-  // RemoteCommands            commands;
+
 Q_SIGNALS:
   void ExitFinished();
-  void commandReceived(const QString& line);
+  void commandReceived(QTcpSocket* clientSocket, const QString& line);
 
 public Q_SLOTS:
-  void settingsChanged(const Values& data);
   void activeNetworkConnection();
+  void onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response);
+  void settingsChanged(const Values& data);
 
 private Q_SLOTS:
   void ExitReceived();
