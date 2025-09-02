@@ -20,7 +20,6 @@ QJsonObject RemoteBasicCommands::sendCommand(const QString& command, const QStri
     return QJsonObject{{QStringLiteral("response"), QStringLiteral("Running command: %1").arg(command)}};
 
   }
-  qLog(Debug) << "No matching command sent to RemoteBacisCommands::runCommand: " << command;
   return QJsonObject{{QStringLiteral("response"), QStringLiteral("Command '%1' not found").arg(command)}};
 }
 

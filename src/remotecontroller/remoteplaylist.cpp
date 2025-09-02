@@ -170,8 +170,8 @@ void RemotePlaylist::createCommandMap()
     return QJsonObject{{QStringLiteral("response"), QStringLiteral("Shuffled playlist")}};
   };
   commandMap[QStringLiteral("shuffle-all-playlists")] = [this](const auto&){ return RemotePlaylist::shuffleAllPlaylists();};
-  commandMap[QStringLiteral("send-playlist")] = [this](const auto&){ return RemotePlaylist::shuffleAllPlaylists();};
-  commandMap[QStringLiteral("send-all-playlists")] = [this](const auto&){ return RemotePlaylist::shuffleAllPlaylists();};
+  commandMap[QStringLiteral("send-playlist")] = [this](const auto&){ return RemotePlaylist::makeCurrentPlaylist();};
+  commandMap[QStringLiteral("send-all-playlists")] = [this](const auto&){ return RemotePlaylist::makeAllPlaylist();};
 
   // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->playlist_manager()->;};
   // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->playlist_manager()->;};

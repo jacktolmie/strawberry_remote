@@ -231,8 +231,6 @@
   #include "discord/richpresence.h"
 #endif
 
-// #include "remotecontroller/remotecommands.h"
-
 using std::make_unique;
 using std::make_shared;
 using namespace std::chrono_literals;
@@ -1146,9 +1144,6 @@ MainWindow::MainWindow(Application *app,
       }
     }
   }
-
-  // Connect for remote controller commands sent.
-  // connect(app_->remote_commands().get(), &RemoteCommands::forwardToPlayer, this, &MainWindow::handleRemoteCommand);
 
   qLog(Debug) << "Started" << QThread::currentThread();
   initialized_ = true;
@@ -3377,13 +3372,3 @@ void MainWindow::FocusSearchField() {
   }
 
 }
-
-// void MainWindow::handleRemoteCommand(const QString& command, const QStringList &args)
-// {
-//   qDebug() <<"MainWindow::handleRemoteCommand called";
-//   // auto commandMap{MainWindow::createCommandMap()};
-//   // if (commandMap.contains(command)){
-//   //   commandMap[command](args);
-//   // }
-//   // auto commandMap{RemoteCommands::}
-// }

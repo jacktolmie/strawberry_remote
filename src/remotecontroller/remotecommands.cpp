@@ -33,12 +33,10 @@ void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& com
     // If the command was not in basic commands, continue looking for the command.
     else if (response.contains(QStringLiteral("not")) ){
       // If the command is not a basic command, check other command functions.
-      qDebug() << "Returned from RemoteBasicCommand send command call. Not basic command";
       if (command.contains(QStringLiteral("playlist"))){
         playlist.processCommand(clientSocket, command, args);
       }
     }
-
   }
 
   // If sent command does not match anything, send message back to device.
