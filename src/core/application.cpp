@@ -227,7 +227,7 @@ class ApplicationImpl {
       remote_commands_([app]() { return new RemoteCommands(app, app);})
   {
     QObject::connect(remote_settings_.get(), &RemoteSettings::sendValues, &*remote_controller_, &RemoteController::settingsChanged);
-    // QObject::connect(remote_controller_.ptr().get(), &RemoteController::commandReceived, remote_commands_.ptr().get(), &RemoteCommands::processLine);
+    QObject::connect(remote_controller_.ptr().get(), &RemoteController::commandReceived, remote_commands_.ptr().get(), &RemoteCommands::processLine);
     QObject::connect(remote_commands_.ptr().get(), &RemoteCommands::sendReponse, remote_controller_.ptr().get(), &RemoteController::onSendResponse);
   }
 

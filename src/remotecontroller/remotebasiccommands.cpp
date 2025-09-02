@@ -1,3 +1,4 @@
+#include <QJsonObject>
 #include "remotebasiccommands.h"
 #include "remotecontroller/remoteconstants.h"
 #include "core/player.h"
@@ -11,15 +12,16 @@ RemoteBasicCommands::RemoteBasicCommands(Application *app)
   RemoteBasicCommands::createCommandMap();
 }
 
-bool RemoteBasicCommands::sendCommand(const QString& command, const QStringList &args)
+QJsonObject RemoteBasicCommands::sendCommand(const QString& command, const QStringList &args)
 {
   // If the command is a basic command, run it, otherwise return false to check other command lists.
   if ( commandMap.contains(command)){
     commandMap[command](args);
-    return true;
+    return QJsonObject{{QStringLiteral("response"), QStringLiteral("Running command: %1").arg(command)}};
+
   }
   qLog(Debug) << "No matching command sent to RemoteBacisCommands::runCommand: " << command;
-  return false;
+  return QJsonObject{{QStringLiteral("response"), QStringLiteral("Command '%1' not found").arg(command)}};
 }
 
 void RemoteBasicCommands::createCommandMap()

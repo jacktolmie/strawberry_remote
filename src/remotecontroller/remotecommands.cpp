@@ -13,24 +13,37 @@ RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   playlist(RemotePlaylist(app, this)),
   basicCommands(RemoteBasicCommands(app))
 {
-  connect(&playlist, &RemotePlaylist::sendAllPlaylists, this, &RemoteCommands::getAllPlaylists);
-  connect(&playlist, &RemotePlaylist::sendCurrentPlaylist, this, &RemoteCommands::getCurrentPlaylist);
+  connect(&playlist, &RemotePlaylist::sendResponse, this, &RemoteCommands::sendReponse);
 }
 
-// QString RemoteCommands::processCommand(const QString& command, const QStringList &args)
-void RemoteCommands::processCommand(const QString& command, const QStringList &args)
+void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& command, const QStringList &args)
 {
-  qDebug() << "RemoteCommands::processCommand called with: "<< command;
+  qDebug() <<"RemoteCommand::processCommand called";
 
   // If the command is a basic command, run it in RemoteBasicCommands.
-  if (!basicCommands.sendCommand(command, args) ){
-    // If the command is not a basic command, check other command functions.
-    qDebug() << "Returned from RemoteBasicCommand send command call. Not basic command";
-    if (command.contains(QStringLiteral("playlist"))){
-      playlist.processCommand(command, args);
-      return;
+  auto basicCommand{basicCommands.sendCommand(command, args)};
+
+  // Check if basicCommand ran the command or it was not found.
+  if (basicCommand.contains(QStringLiteral("response"))){
+    QString response{basicCommand.value(QStringLiteral("response")).toString()};
+
+    // If the command was in the basic commands, it will return running. Send response back.
+    if (response.contains(QStringLiteral("Running"))) RemoteCommands::getResponse(clientSocket, basicCommand);
+
+    // If the command was not in basic commands, continue looking for the command.
+    else if (response.contains(QStringLiteral("not")) ){
+      // If the command is not a basic command, check other command functions.
+      qDebug() << "Returned from RemoteBasicCommand send command call. Not basic command";
+      if (command.contains(QStringLiteral("playlist"))){
+        playlist.processCommand(clientSocket, command, args);
+      }
     }
+
   }
+
+  // If sent command does not match anything, send message back to device.
+  RemoteCommands::getResponse(clientSocket,
+    QJsonObject{{QStringLiteral("response"), QStringLiteral("The command %1 was not found").arg(command)}});
 }
 
 void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
@@ -77,16 +90,12 @@ void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
   qDebug() << "Remote Final arguments for command '" << command << "':" << args;
 
   // Process command with args after breaking down the JSON file.
-  RemoteCommands::processCommand(command, args);
+  RemoteCommands::processCommand(clientSocket, command, args);
 }
 
-void RemoteCommands::getAllPlaylists(const QJsonObject& playlists)
+void RemoteCommands::getResponse(QTcpSocket *clientSocket, const QJsonObject& response)
 {
-
+  Q_EMIT RemoteCommands::sendReponse(clientSocket, response);
 }
-
-
-void RemoteCommands::getCurrentPlaylist(const QJsonObject& playlist)
-{
-
-}
+// void RemoteCommands::getAllPlaylists(const QJsonObject& playlists){}
+// void RemoteCommands::getCurrentPlaylist(const QJsonObject& playlist){}

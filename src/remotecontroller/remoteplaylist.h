@@ -6,6 +6,7 @@
 
 #include "core/application.h"
 
+class QTcpSocket;
 
 class RemotePlaylist : public QObject
 {
@@ -14,38 +15,37 @@ class RemotePlaylist : public QObject
   Application *app_;
 
   void createCommandMap();
-  QMap<QString, std::function<void(const QStringList&)>> commandMap;
+  QMap<QString, std::function<QJsonObject(const QStringList&)>> commandMap;
 
   // Rename current playlist. Send command rename-playlist <new name>.
-  void renamePlaylist(const QStringList& args);
+  QJsonObject renamePlaylist(const QStringList& args);
 
   // Shuffle all playlists.
-  void shuffleAllPlaylists();
+  QJsonObject shuffleAllPlaylists();
 
   // Delete current playlist.
-  void deleteCurrentPlaylist();
+  QJsonObject deleteCurrentPlaylist();
 
   // Make playlist a favourite or not.
-  void favoritePlaylist();
+  QJsonObject favoritePlaylist();
 
   // Set the playlist as current. Send set-current-playlist <playlist ID>.
-  void setCurrentPlaylist(const int id);
+  QJsonObject setCurrentPlaylist(const int id);
 
   // Make playlists to send back to device.
-  void makeAllPlaylist();
-  void makeCurrentPlaylist();
+  QJsonObject makeAllPlaylist();
+  QJsonObject makeCurrentPlaylist();
 
 Q_SIGNALS:
-  // Send either all playlists, or the current one.
-  void sendAllPlaylists(QJsonObject& sendPlaylist);
-  void sendCurrentPlaylist(QJsonObject& sendPlaylist);
+  // Send playlist changes etc.
+  void sendResponse(QTcpSocket* clientSocket, QJsonObject& response);
 
 
 public:
     explicit RemotePlaylist(Application *app, QObject *parent = nullptr);
     ~RemotePlaylist() = default;
 
-    void processCommand(const QString& command, const QStringList& args);
+    void processCommand(QTcpSocket* clientSocket, const QString& command, const QStringList& args);
 
 
 
