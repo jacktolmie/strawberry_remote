@@ -23,20 +23,14 @@ void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& com
   // If the command is a basic command, run it in RemoteBasicCommands.
   auto basicCommand{basicCommands.sendCommand(command, args)};
 
-  // Check if basicCommand ran the command or it was not found.
-  if (basicCommand.contains(QStringLiteral("response"))){
-    QString response{basicCommand.value(QStringLiteral("response")).toString()};
-
-    // If the command was in the basic commands, it will return running. Send response back.
-    if (response.contains(QStringLiteral("Running"))) RemoteCommands::getResponse(clientSocket, basicCommand);
-
-    // If the command was not in basic commands, continue looking for the command.
-    else if (response.contains(QStringLiteral("not")) ){
-      // If the command is not a basic command, check other command functions.
-      if (command.contains(QStringLiteral("playlist"))){
-        playlist.processCommand(clientSocket, command, args);
-      }
-    }
+  // Check if sent command is in basicCommandMap.
+  if(basicCommandsMap.contains(command)){
+    RemoteCommands::getResponse(clientSocket, basicCommands.sendCommand(command, args));
+    return;
+  }
+  if (command.contains(QStringLiteral("playlist"))){
+    playlist.processCommand(clientSocket, command, args);
+    return;
   }
 
   // If sent command does not match anything, send message back to device.

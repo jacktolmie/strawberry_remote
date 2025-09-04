@@ -17,6 +17,25 @@ class RemoteCommands : public QObject
   RemotePlaylist playlist;
   RemoteBasicCommands basicCommands;
 
+  // List of basic commands. Forward to basicCommands if found.
+  QList<QString> basicCommandsMap{
+    QStringLiteral("play"),
+    QStringLiteral("play-pause"),
+    QStringLiteral("pause"),
+    QStringLiteral("stop"),
+    QStringLiteral("stop-after-current"),
+    QStringLiteral("next"),
+    QStringLiteral("previous"),
+    QStringLiteral("restart-or-previous"),
+    QStringLiteral("volume"),
+    QStringLiteral("volume-up"),
+    QStringLiteral("volume-down"),
+    QStringLiteral("volume-increase-by"),
+    QStringLiteral("volume-decrease-by"),
+    QStringLiteral("seek-to"),
+    QStringLiteral("seek-by")
+  };
+
 public:
   explicit RemoteCommands(Application *app, QObject *parent);
   ~RemoteCommands() = default;
