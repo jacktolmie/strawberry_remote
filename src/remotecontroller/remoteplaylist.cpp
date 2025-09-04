@@ -86,9 +86,10 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id)
 
     for (const auto& song: songs){
       QJsonObject songData;
-      songData[QStringLiteral("Artist")] = song.artist();
-      songData[QStringLiteral("Album")] = song.album();
-      songData[QStringLiteral("Title")] = song.PrettyTitle();
+      songData[QStringLiteral("id")] =      song.id();
+      songData[QStringLiteral("Artist")] =  song.artist();
+      songData[QStringLiteral("Album")] =   song.album();
+      songData[QStringLiteral("Title")] =   song.PrettyTitle();
       songsArray.append(songData);
     }
 
