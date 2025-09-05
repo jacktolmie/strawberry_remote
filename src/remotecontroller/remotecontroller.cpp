@@ -1,7 +1,9 @@
 #include <QJsonDocument>
+#include <QHostInfo>
 #include <QRandomGenerator>
 #include "remotecontroller.h"
 #include "core/logging.h"
+#include <QCoreApplication>
 
 RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject *parent)
     : QObject{parent},
@@ -11,7 +13,7 @@ RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject
 
   // Create a timer to check network connection.
   timer = new QTimer(this);
-  timer->setInterval(5000);
+  timer->setInterval(30000);
   connect(timer, &QTimer::timeout, this, &RemoteController::activeNetworkConnection);
   connect(server, &QTcpServer::newConnection, this, &RemoteController::onNewConnection);
 
@@ -70,8 +72,6 @@ void RemoteController::activeNetworkConnection()
   qLog(Warning) << "Remote activeNetworkConnection called. No active networks found";
   data_->values.activeNetwork = false;
 }
-
-// void RemoteController::ExitFinished(){}
 
 void RemoteController::Exit(){
   Q_EMIT ExitFinished();

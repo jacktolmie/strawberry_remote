@@ -111,7 +111,7 @@ QJsonObject RemotePlaylist::makeAllPlaylist()
     playlistArray.append(RemotePlaylist::makePlaylistData(playlist->id()));
   }
 
-  response[QStringLiteral("playlists")] = playlistArray;
+  response[QStringLiteral("playlistArray")] = playlistArray;
 
   return response;
 }
@@ -121,7 +121,7 @@ QJsonObject RemotePlaylist::makeCurrentPlaylist()
   QJsonObject response;
   response[QStringLiteral("command")] = QStringLiteral("playlist_data");
 
-  response[QStringLiteral("Playlist")] = RemotePlaylist::makePlaylistData(app_->playlist_manager()->current_id());
+  response[QStringLiteral("playlist")] = RemotePlaylist::makePlaylistData(app_->playlist_manager()->current_id());
 
   return response;
 }

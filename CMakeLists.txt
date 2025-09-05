@@ -409,12 +409,6 @@ if(NOT CMAKE_CROSSCOMPILING)
   )
 endif()
 
-find_package(Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt6 REQUIRED COMPONENTS Core)
-find_package(Qt6 REQUIRED COMPONENTS Core)
-
 add_executable(strawberry  
   )
 
