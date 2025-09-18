@@ -4,7 +4,6 @@
 #include "core/player.h"
 #include "core/logging.h"
 
-
 RemoteBasicCommands::RemoteBasicCommands(Application *app)
     : app_(app)
 {
@@ -14,11 +13,10 @@ RemoteBasicCommands::RemoteBasicCommands(Application *app)
 
 QJsonObject RemoteBasicCommands::sendCommand(const QString& command, const QStringList &args)
 {
-  // If the command is a basic command, run it, otherwise return false to check other command lists.
+  // If the command is a basic command, run it
   if ( commandMap.contains(command)){
     commandMap[command](args);
     return QJsonObject{{QStringLiteral("response"), QStringLiteral("Running command: %1").arg(command)}};
-
   }
   return QJsonObject{{QStringLiteral("response"), QStringLiteral("Command '%1' not found").arg(command)}};
 }
@@ -28,14 +26,13 @@ void RemoteBasicCommands::createCommandMap()
   // Lambda to check if args contains an int. Inside remoteconstants header.
   auto parseUintArg{remoteconstants::parseUintArg};
 
-  // QMap<QString, std::function<void(const QStringList&)>> commandMap_;
   // Basic audio playback funtions.
-  commandMap[QStringLiteral("play")] = [this](const auto&){ app_->player()->Play();};
-  commandMap[QStringLiteral("play-pause")] = [this](const auto&) { app_->player()->PlayPauseHelper();};
-  commandMap[QStringLiteral("pause")] = [this](const auto&){ app_->player()->Pause();};
-  commandMap[QStringLiteral("stop")] = [this](const auto&){ app_->player()->Stop();};
-  commandMap[QStringLiteral("next")] = [this](const auto&){ app_->player()->Next();};
-  commandMap[QStringLiteral("previous")] = [this](const auto&){ app_->player()->Previous();};
+  commandMap[QStringLiteral("play")] = [this](const auto&){qDebug() << "Remote play called"; app_->player()->Play();};
+  commandMap[QStringLiteral("play-pause")] = [this](const auto&) {qDebug() << "Remote play/pause called"; app_->player()->PlayPauseHelper();};
+  commandMap[QStringLiteral("pause")] = [this](const auto&){qDebug() << "Remote pause called"; app_->player()->Pause();};
+  commandMap[QStringLiteral("stop")] = [this](const auto&){qDebug() << "Remote stop called"; app_->player()->Stop();};
+  commandMap[QStringLiteral("next")] = [this](const auto&){ qDebug() << "Remote next called"; app_->player()->Next();};
+  commandMap[QStringLiteral("previous")] = [this](const auto&){ qDebug() << "Remote previous called"; app_->player()->Previous();};
   commandMap[QStringLiteral("stop-after-current")] = [this](const auto&){ app_->player()->StopAfterCurrent();};
   commandMap[QStringLiteral("restart-or-previous")] = [this](const auto&){ app_->player()->RestartOrPrevious();};
 

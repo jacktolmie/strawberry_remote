@@ -5,12 +5,21 @@
 #include "core/logging.h"
 #include "playlist/playlistmanager.h"
 #include "remotecontroller/remoteconstants.h"
+#include "remotecontroller/remotecurrentsong.h"
+#include "covermanager/currentalbumcoverloader.h"
+// #include "covermanager/albumcoverloaderresult.h"
+
 RemotePlaylist::RemotePlaylist(Application* app, QObject *parent)
     : QObject{parent},
       app_(app)
 {
   // Fill in the commandMap.
   RemotePlaylist::createCommandMap();
+
+  // auto currentCover = app_->current_albumcover_loader();
+  auto urlHandler = new RemoteCurrentSong(app_);
+  // QObject::connect(&*app_->current_albumcover_loader(), &CurrentAlbumCoverLoader::AlbumCoverLoaded,
+  //                    urlHandler, &RemoteCurrentSong::getAlbumURL);
 }
 
 void RemotePlaylist::processCommand(QTcpSocket* clientSocket, const QString& command, const QStringList& args)
@@ -78,22 +87,25 @@ QJsonObject RemotePlaylist::setCurrentPlaylist(const int id)
 
 QJsonObject RemotePlaylist::makePlaylistData(const int id)
 {
-    QJsonObject playlistObject;
-    playlistObject[QStringLiteral("name")] = app_->playlist_manager()->playlist_name(id);
+  QJsonObject playlistObject;
+  playlistObject[QStringLiteral("name")] = app_->playlist_manager()->playlist_name(id);
 
-    QJsonArray songsArray;
-    auto songs{app_->playlist_manager()->playlist(id)->GetAllSongs()};
+  // Array to hold the songs in the playlist.
+  QJsonArray songsArray;
 
-    for (const auto& song: songs){
-      QJsonObject songData;
-      songData[QStringLiteral("id")] =      song.id();
-      songData[QStringLiteral("Artist")] =  song.artist();
-      songData[QStringLiteral("Album")] =   song.album();
-      songData[QStringLiteral("Title")] =   song.PrettyTitle();
-      songsArray.append(songData);
-    }
+  // Get all songs in the sent playlist id.
+  auto songs{app_->playlist_manager()->playlist(id)->GetAllSongs()};
 
-    playlistObject[QStringLiteral("songs")] = songsArray;
+  // Make object to call up the creation of the data for each song in playlist.
+  RemoteCurrentSong songInfo = RemoteCurrentSong(app_);
+
+
+  // Iterate through all songs in the playlist, and add data to returned JsonObject.
+  for (const auto& song: songs){
+    songsArray.append(songInfo.songInfo(song));
+  }
+
+  playlistObject[QStringLiteral("songs")] = songsArray;
 
   return playlistObject;
 }
@@ -102,16 +114,16 @@ QJsonObject RemotePlaylist::makeAllPlaylist()
 {
   auto playlists{app_->playlist_manager()->GetAllPlaylists()};
 
-  QJsonObject response;
-  response[QStringLiteral("command")] = QStringLiteral("playlist_data");
-
   QJsonArray playlistArray;
 
   for (const auto& playlist: playlists){
-    playlistArray.append(RemotePlaylist::makePlaylistData(playlist->id()));
+    QJsonObject singlePlaylistData = RemotePlaylist::makePlaylistData(playlist->id());
+    playlistArray.append(singlePlaylistData);
   }
 
-  response[QStringLiteral("playlistArray")] = playlistArray;
+  QJsonObject response;
+  response[QStringLiteral("command")] = QStringLiteral("all_playlists");
+  response[QStringLiteral("playlists")] = playlistArray;
 
   return response;
 }
@@ -119,7 +131,7 @@ QJsonObject RemotePlaylist::makeAllPlaylist()
 QJsonObject RemotePlaylist::makeCurrentPlaylist()
 {
   QJsonObject response;
-  response[QStringLiteral("command")] = QStringLiteral("playlist_data");
+  response[QStringLiteral("command")] = QStringLiteral("current_playlist");
 
   response[QStringLiteral("playlist")] = RemotePlaylist::makePlaylistData(app_->playlist_manager()->current_id());
 
@@ -166,6 +178,7 @@ void RemotePlaylist::createCommandMap()
     return QJsonObject{{QStringLiteral("response"), QStringLiteral("Wrong argument sent: ").arg(args.first())}};
   };
   commandMap[QStringLiteral("shuffle-playlist")] = [this](const auto&){
+    qDebug() << "Remote shuffle-playlist called";
     app_->playlist_manager()->ShuffleCurrent();
     return QJsonObject{{QStringLiteral("response"), QStringLiteral("Shuffled playlist")}};
   };

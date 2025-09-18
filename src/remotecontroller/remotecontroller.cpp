@@ -86,7 +86,7 @@ void RemoteController::onNewConnection()
     QTcpSocket *socket = server->nextPendingConnection();
 
     if (socket) {
-      qDebug() << "New client connecting from" << socket->peerAddress().toString();
+      qDebug() << "Remote New client connecting from" << socket->peerAddress().toString();
       // Create a new client for clients_ list.
       ClientInfo* client = new ClientInfo();
       client->socket = socket;

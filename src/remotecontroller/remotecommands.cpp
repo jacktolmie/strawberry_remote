@@ -20,9 +20,6 @@ void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& com
 {
   qDebug() <<"RemoteCommand::processCommand called";
 
-  // If the command is a basic command, run it in RemoteBasicCommands.
-  auto basicCommand{basicCommands.sendCommand(command, args)};
-
   // Check if sent command is in basicCommandMap.
   if(basicCommandsMap.contains(command)){
     RemoteCommands::getResponse(clientSocket, basicCommands.sendCommand(command, args));
@@ -87,6 +84,7 @@ void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
 
 void RemoteCommands::getResponse(QTcpSocket *clientSocket, const QJsonObject& response)
 {
+
   Q_EMIT RemoteCommands::sendReponse(clientSocket, response);
 }
 // void RemoteCommands::getAllPlaylists(const QJsonObject& playlists){}
