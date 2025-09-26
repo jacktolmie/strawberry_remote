@@ -5,9 +5,12 @@
 #include "core/logging.h"
 #include <QCoreApplication>
 
-RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject *parent)
+// RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject *parent)
+RemoteController::RemoteController(const Application* app, const Ui_MainWindow *mainUi , QObject *parent)
     : QObject{parent},
-      data_(data)
+      app_{app},
+      mainUi_{mainUi}
+      // data_(data)
 {
   server = new QTcpServer(this);
 
@@ -23,25 +26,26 @@ RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject
 
 void RemoteController::setTimer()
 {
-  data_->values.remoteEnabled ? timer->start() : timer->stop();
+  app_->remote_settings()->values.remoteEnabled ? timer->start() : timer->stop();
+  // data_->values.remoteEnabled ? timer->start() : timer->stop();
 }
 
 void RemoteController::serverCheck()
 {
-  if (data_->values.remoteEnabled){
+  if (app_->remote_settings()->values.remoteEnabled){
     // Check for active connection.
     RemoteController::activeNetworkConnection();
 
     // Shut down and restart the server.
     if(server->isListening()) server->close();
-    server->listen(QHostAddress::Any, data_->values.portNumber);
+    server->listen(QHostAddress::Any, app_->remote_settings()->values.portNumber);
 
     if (!server->isListening()) {
       qDebug() << "Failed to start server on new port.";
       // Handle error...
     }
     else {
-        qDebug() << "Remote Server running? " << server->isListening() << " on port: " << data_->values.portNumber;
+        qDebug() << "Remote Server running? " << server->isListening() << " on port: " << app_->remote_settings()->values.portNumber;
     }
   }
   else {
@@ -64,13 +68,13 @@ void RemoteController::activeNetworkConnection()
 
       if (ip.protocol() == QAbstractSocket::IPv4Protocol && !ip.isLoopback()) {
         qLog(Info) << "Remote Found active, usable IPv4 address:" << ip.toString() << "on interface" << interface.name();
-        data_->values.activeNetwork = true;
+        app_->remote_settings()->values.activeNetwork = true;
         return;
       }
     }
   }
   qLog(Warning) << "Remote activeNetworkConnection called. No active networks found";
-  data_->values.activeNetwork = false;
+  app_->remote_settings()->values.activeNetwork = false;
 }
 
 void RemoteController::Exit(){
@@ -92,7 +96,7 @@ void RemoteController::onNewConnection()
       client->socket = socket;
 
       // If no password required, do not check.
-      if (!data_->values.authRequired) {
+      if (!app_->remote_settings()->values.authRequired) {
         client->state = ClientState::Authenticated;
         socket->write("AUTH_SUCCESS\n");
       }
@@ -133,7 +137,7 @@ void RemoteController::onReadyRead()
       QByteArray receivedProof = QByteArray::fromHex(line.mid(6).toUtf8());
 
       // QByteArray combined = client->nonce + data_->values.hashedPassword;
-      QByteArray combined = client->nonce + data_->values.password.toUtf8();
+      QByteArray combined = client->nonce + app_->remote_settings()->values.password.toUtf8();
       QByteArray expectedProof = QCryptographicHash::hash(combined, QCryptographicHash::Sha256);
 
       if (receivedProof == expectedProof) {
@@ -185,7 +189,7 @@ void RemoteController::onDisconnect()
 
 void RemoteController::settingsChanged(const Values& data)
 {
-  this->data_->values = data;
+  this->app_->remote_settings()->values = data;
   RemoteController::serverCheck();
 }
 

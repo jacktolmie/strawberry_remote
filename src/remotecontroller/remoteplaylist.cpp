@@ -6,8 +6,6 @@
 #include "playlist/playlistmanager.h"
 #include "remotecontroller/remoteconstants.h"
 #include "remotecontroller/remotecurrentsong.h"
-#include "covermanager/currentalbumcoverloader.h"
-// #include "covermanager/albumcoverloaderresult.h"
 
 RemotePlaylist::RemotePlaylist(Application* app, QObject *parent)
     : QObject{parent},
@@ -16,9 +14,10 @@ RemotePlaylist::RemotePlaylist(Application* app, QObject *parent)
   // Fill in the commandMap.
   RemotePlaylist::createCommandMap();
 
+  // Make connection to forward album cover image to device.
   // auto currentCover = app_->current_albumcover_loader();
-  auto urlHandler = new RemoteCurrentSong(app_);
-  // QObject::connect(&*app_->current_albumcover_loader(), &CurrentAlbumCoverLoader::AlbumCoverLoaded,
+  // auto urlHandler = new RemoteCurrentSong(app_);
+  // QObject::connect(&*currentCover, &CurrentAlbumCoverLoader::AlbumCoverLoaded,
   //                    urlHandler, &RemoteCurrentSong::getAlbumURL);
 }
 
@@ -98,7 +97,6 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id)
 
   // Make object to call up the creation of the data for each song in playlist.
   RemoteCurrentSong songInfo = RemoteCurrentSong(app_);
-
 
   // Iterate through all songs in the playlist, and add data to returned JsonObject.
   for (const auto& song: songs){

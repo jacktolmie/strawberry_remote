@@ -9,6 +9,7 @@ RemoteBasicCommands::RemoteBasicCommands(Application *app)
 {
   // Fill the commandMap.
   RemoteBasicCommands::createCommandMap();
+  qDebug() <<"Remote basic commands initiated";
 }
 
 QJsonObject RemoteBasicCommands::sendCommand(const QString& command, const QStringList &args)

@@ -410,10 +410,9 @@ if(NOT CMAKE_CROSSCOMPILING)
 endif()
 
 find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core)
 
-add_executable(strawberry
-
-  )
+add_executable(strawberry )
 
 if(APPLE)
   set_target_properties(strawberry PROPERTIES MACOSX_BUNDLE TRUE)
@@ -841,6 +840,7 @@ set(SOURCES
   src/remotecontroller/remotecommands.cpp
   src/remotecontroller/remotecontroller.cpp
   src/remotecontroller/remotecurrentsong.cpp
+  src/remotecontroller/remoteguivalues.cpp
   src/remotecontroller/remoteplaylist.cpp
   src/remotecontroller/remotesettings.cpp
 
@@ -1138,6 +1138,7 @@ set(HEADERS
   src/remotecontroller/remoteconstants.h
   src/remotecontroller/remotecontroller.h
   src/remotecontroller/remotecurrentsong.h
+  src/remotecontroller/remoteguivalues.h
   src/remotecontroller/remoteplaylist.h
   src/remotecontroller/remotesettings.h  
 )
@@ -1605,6 +1606,7 @@ if(APPLE)
 endif()
 
 target_link_libraries(strawberry PUBLIC strawberry_lib)
+target_link_libraries(strawberry PRIVATE Qt6::Core)
 target_link_libraries(strawberry PRIVATE Qt6::Core)
 target_link_libraries(strawberry PRIVATE Qt6::Core)
 target_link_libraries(strawberry PRIVATE Qt6::Core)

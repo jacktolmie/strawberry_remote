@@ -112,8 +112,7 @@
 #include "radios/radioservices.h"
 #include "radios/radiobackend.h"
 
-#include "remotecontroller/remotecommands.h"
-#include "remotecontroller/remotecontroller.h"
+#include "remotecontroller/remotesettings.h"
 
 using std::make_shared;
 using namespace std::chrono_literals;
@@ -220,11 +219,8 @@ class ApplicationImpl {
 #endif
         lastfm_import_([app]() { return new LastFMImport(app->network()); }),
 
-      remote_settings_(std::make_shared<RemoteSettings>()),
-      remote_controller_([this, app]() {return new RemoteController(remote_settings_, app);})
-  {
-    QObject::connect(remote_settings_.get(), &RemoteSettings::sendValues, &*remote_controller_, &RemoteController::settingsChanged);
-}
+      remote_settings_(std::make_shared<RemoteSettings>())
+{}
 
   Lazy<TagReaderClient> tagreader_client_;
   Lazy<Database> database_;
@@ -251,8 +247,6 @@ class ApplicationImpl {
   Lazy<LastFMImport> lastfm_import_;
 
   SharedPtr<RemoteSettings> remote_settings_;
-  Lazy<RemoteController> remote_controller_;
-  SharedPtr<RemoteCommands> remote_commands_;
 };
 
 Application::Application(QObject *parent)
@@ -270,11 +264,6 @@ Application::Application(QObject *parent)
   device_finders()->Init();
   collection()->Init();
   tagreader_client();
-
-  p_->remote_commands_ = std::make_shared<RemoteCommands>(this, this);
-  QObject::connect(p_->remote_controller_.get(), &RemoteController::commandReceived, p_->remote_commands_.get(), &RemoteCommands::processLine);
-  QObject::connect(p_->remote_commands_.get(), &RemoteCommands::sendReponse, p_->remote_controller_.get(), &RemoteController::onSendResponse);
-
 }
 
 Application::~Application() {
@@ -337,8 +326,7 @@ void Application::Exit() {
                  << &*albumcover_loader()
                  << &*device_manager()
                  << &*streaming_services()
-                 << &*radio_services()->radio_backend()
-                 << &*remote_controller();
+                 << &*radio_services()->radio_backend();
 
   QObject::connect(&*tagreader_client(), &TagReaderClient::ExitFinished, this, &Application::ExitReceived);
   tagreader_client()->ExitAsync();
@@ -360,10 +348,6 @@ void Application::Exit() {
 
   QObject::connect(&*radio_services()->radio_backend(), &RadioBackend::ExitFinished, this, &Application::ExitReceived);
   radio_services()->radio_backend()->ExitAsync();
-
-  QObject::connect(&*remote_controller(), &RemoteController::ExitFinished, this, &Application::ExitReceived);
-  remote_controller()->Exit();
-
 }
 
 void Application::ExitReceived() {
@@ -407,5 +391,4 @@ SharedPtr<LastFMImport> Application::lastfm_import() const { return p_->lastfm_i
 SharedPtr<MoodbarController> Application::moodbar_controller() const { return p_->moodbar_controller_.ptr(); }
 SharedPtr<MoodbarLoader> Application::moodbar_loader() const { return p_->moodbar_loader_.ptr(); }
 #endif
-SharedPtr<RemoteController> Application::remote_controller() const { return p_->remote_controller_.ptr();}
 SharedPtr<RemoteSettings> Application::remote_settings() const {return p_->remote_settings_;}

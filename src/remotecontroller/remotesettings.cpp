@@ -5,7 +5,7 @@
 
 using namespace RemoteControllerSettings;
 
-RemoteSettings::RemoteSettings(QObject *parent)
+RemoteSettings::RemoteSettings([[maybe_unused]]QObject *parent)
 {
   values = Values();
   RemoteSettings::getValues();

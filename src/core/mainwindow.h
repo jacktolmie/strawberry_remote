@@ -64,7 +64,8 @@
 #include "covermanager/albumcoverloaderresult.h"
 #include "covermanager/albumcoverimageresult.h"
 
-#include "settings/remotecontrollersettingspage.h"
+#include "remotecontroller/remotecontroller.h"
+#include "remotecontroller/remotecommands.h"
 
 class About;
 class Console;
@@ -346,6 +347,9 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   ScopedPtr<TrackSelectionDialog> track_selection_dialog_;
   PlaylistItemPtrList autocomplete_tag_items_;
 
+  SharedPtr<RemoteCommands> remote_commands_;
+  SharedPtr<RemoteController> remote_controller_;
+
   SmartPlaylistsViewContainer *smartplaylists_view_;
 
 #ifdef HAVE_SUBSONIC
@@ -417,7 +421,6 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   bool playlists_loaded_;
   bool delete_files_;
   std::optional<CommandlineOptions> options_;
-
 };
 
 #endif  // MAINWINDOW_H

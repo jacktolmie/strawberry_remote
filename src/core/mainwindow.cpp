@@ -340,6 +340,9 @@ MainWindow::MainWindow(Application *app,
         QObject::connect(add_stream_dialog, &AddStreamDialog::accepted, this, &MainWindow::AddStreamAccepted);
         return add_stream_dialog;
       }),
+      remote_commands_(new RemoteCommands(app_,this)),
+      remote_controller_(new RemoteController(app_, ui_, this)),
+
 
 #ifdef HAVE_SUBSONIC
       smartplaylists_view_(new SmartPlaylistsViewContainer(app->player(),
@@ -413,6 +416,10 @@ MainWindow::MainWindow(Application *app,
   if (QGuiApplication::platformName() != "wayland"_L1) {
     setWindowIcon(IconLoader::Load(u"strawberry"_s));
   }
+
+  QObject::connect(app_->remote_settings().get(), &RemoteSettings::sendValues, &*remote_controller_, &RemoteController::settingsChanged);
+  QObject::connect(remote_controller_.get(), &RemoteController::commandReceived, remote_commands_.get(), &RemoteCommands::processLine);
+  QObject::connect(remote_commands_.get(), &RemoteCommands::sendReponse, remote_controller_.get(), &RemoteController::onSendResponse);
 
   systemtrayicon_->SetDevicePixelRatioF(devicePixelRatioF());
 
