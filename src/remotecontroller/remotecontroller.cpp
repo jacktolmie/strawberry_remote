@@ -5,13 +5,20 @@
 #include "core/logging.h"
 #include <QCoreApplication>
 
-// RemoteController::RemoteController(const SharedPtr<RemoteSettings> data, QObject *parent)
+#include <QString>
+#include "core/player.h"
+
 RemoteController::RemoteController(const Application* app, const Ui_MainWindow *mainUi , QObject *parent)
     : QObject{parent},
       app_{app},
       mainUi_{mainUi}
-      // data_(data)
 {
+  commands = new RemoteCommands(const_cast<Application*>(app_), this);
+  connect(this, &RemoteController::commandReceived, commands, &RemoteCommands::processLine);
+  connect(commands, &RemoteCommands::sendReponse, this, &RemoteController::broadcastToDevices);
+  // connect(commands, &RemoteCommands::sendReponse, this, &RemoteController::onSendResponse);
+
+
   server = new QTcpServer(this);
 
   // Create a timer to check network connection.
@@ -27,7 +34,6 @@ RemoteController::RemoteController(const Application* app, const Ui_MainWindow *
 void RemoteController::setTimer()
 {
   app_->remote_settings()->values.remoteEnabled ? timer->start() : timer->stop();
-  // data_->values.remoteEnabled ? timer->start() : timer->stop();
 }
 
 void RemoteController::serverCheck()
@@ -124,6 +130,7 @@ void RemoteController::onReadyRead()
   ClientInfo* client = clients_.value(socket);
 
   switch (client->state) {
+
     case ClientState::ChallengeSent: {
       if (!socket->canReadLine()) return;
 
@@ -156,12 +163,28 @@ void RemoteController::onReadyRead()
       break;
     }
     case ClientState::Authenticated: {
-      while (socket->canReadLine()) {
-        QString line = QString::fromUtf8(socket->readLine().trimmed());
-        qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << line;
 
-        Q_EMIT RemoteController::commandReceived(socket, line);
+      QDataStream socketStream(socket);
+      socketStream.setVersion(QDataStream::Qt_6_8);
+
+      while(true){
+        socketStream.startTransaction();
+        QByteArray jsonData;
+        socketStream >> jsonData;
+
+        if (!socketStream.commitTransaction()){
+          break;
+        }
+        qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << QString::fromUtf8(jsonData);
+        Q_EMIT RemoteController::commandReceived(socket, QString::fromUtf8(jsonData));
+      // Q_EMIT RemoteController::commandReceived()
       }
+      // while (socket->canReadLine()) {
+      //   QString line = QString::fromUtf8(socket->readLine().trimmed());
+      //   qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << line;
+
+      //   Q_EMIT RemoteController::commandReceived(socket, line);
+      // }
       break;
     }
     default: {
@@ -169,6 +192,7 @@ void RemoteController::onReadyRead()
       break;
     }
   }
+qDebug() << "Remote inside onReadyRead";
 }
 
 void RemoteController::onDisconnect()
@@ -195,13 +219,25 @@ void RemoteController::settingsChanged(const Values& data)
 
 void RemoteController::onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response)
 {
-  if(!clientSocket || !clients_.contains(clientSocket)){
-    qLog(Warning) << "Remote attempted to send response to a disconnected client.";
-    return;
-  }
+    if (clientSocket &&
+        clientSocket->state() == QAbstractSocket::ConnectedState &&
+        clients_.contains(clientSocket) &&
+        clients_.value(clientSocket)->state == ClientState::Authenticated)
+    {
+        QDataStream socketStream(clientSocket);
+        socketStream.setVersion(QDataStream::Qt_6_8);
 
-  QJsonDocument doc(response);
-  QByteArray responseBytes{doc.toJson(QJsonDocument::Compact)};
-
-  clientSocket->write(responseBytes + "\n");
+        socketStream << QJsonDocument(response).toJson(QJsonDocument::Compact);
+    }
 }
+
+void RemoteController::broadcastToDevices(const QJsonObject& message)
+{
+  qDebug() << "RemoteController::broadcastToDevices called with message: " << message;
+  for(auto clientSocket: std::as_const(clients_)){
+    if(clientSocket->state == ClientState::Authenticated){
+      onSendResponse(clientSocket->socket, message);
+    }
+  }
+}
+

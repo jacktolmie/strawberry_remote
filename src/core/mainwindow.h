@@ -347,7 +347,6 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   ScopedPtr<TrackSelectionDialog> track_selection_dialog_;
   PlaylistItemPtrList autocomplete_tag_items_;
 
-  SharedPtr<RemoteCommands> remote_commands_;
   SharedPtr<RemoteController> remote_controller_;
 
   SmartPlaylistsViewContainer *smartplaylists_view_;

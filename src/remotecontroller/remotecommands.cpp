@@ -6,39 +6,39 @@
 
 #include "remotecommands.h"
 
-
 RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   QObject{parent},
   app_(app),
   playlist(RemotePlaylist(app, this)),
-  basicCommands(RemoteBasicCommands(app))
+  basicCommands(RemoteBasicCommands(app)),
+  values{new RemoteGuiValues(app, this)},
+  basicCmdMap{basicCommands.sendCommandMap()}
 {
-  connect(&playlist, &RemotePlaylist::sendResponse, this, &RemoteCommands::sendReponse);
+  connect(&playlist, &RemotePlaylist::sendResponse, this, &RemoteCommands::getResponse);
+  connect(&basicCommands, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::getResponse);
+  // connect(values, &RemoteGuiValues::sendCurrentStatus, this, &RemoteCommands::getGuiUpdate);
+
 }
 
 void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& command, const QStringList &args)
 {
-  qDebug() <<"RemoteCommand::processCommand called";
-
   // Check if sent command is in basicCommandMap.
-  if(basicCommandsMap.contains(command)){
-    RemoteCommands::getResponse(clientSocket, basicCommands.sendCommand(command, args));
-    return;
+  if(basicCmdMap.contains(command)){
+    RemoteCommands::getResponse(basicCommands.checkCommand(command, args));
   }
-  if (command.contains(QStringLiteral("playlist"))){
-    playlist.processCommand(clientSocket, command, args);
-    return;
+  else if (command.contains(QStringLiteral("playlist"))){
+    playlist.processCommand(command, args);
+  }
+  else{
+  // If sent command does not match anything, send message back to device.
+    RemoteCommands::getResponse(QJsonObject{{QStringLiteral("response"), QStringLiteral("The command %1 was not found").arg(command)}});
   }
 
-  // If sent command does not match anything, send message back to device.
-  RemoteCommands::getResponse(clientSocket,
-    QJsonObject{{QStringLiteral("response"), QStringLiteral("The command %1 was not found").arg(command)}});
+  if(values) values->triggerUpdate(clientSocket);
 }
 
 void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
 {
-  qDebug() << "RemoteCommands::processLine called with: "<< line;
-
   QJsonParseError parseError;
   QJsonDocument doc{QJsonDocument::fromJson(line.toUtf8(), &parseError)};
 
@@ -82,10 +82,12 @@ void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
   RemoteCommands::processCommand(clientSocket, command, args);
 }
 
-void RemoteCommands::getResponse(QTcpSocket *clientSocket, const QJsonObject& response)
+void RemoteCommands::getResponse(const QJsonObject& response)
 {
-
-  Q_EMIT RemoteCommands::sendReponse(clientSocket, response);
+  Q_EMIT RemoteCommands::sendReponse(response);
 }
-// void RemoteCommands::getAllPlaylists(const QJsonObject& playlists){}
-// void RemoteCommands::getCurrentPlaylist(const QJsonObject& playlist){}
+
+void RemoteCommands::getGuiUpdate(QTcpSocket *client, QJsonObject updates){
+
+}
+

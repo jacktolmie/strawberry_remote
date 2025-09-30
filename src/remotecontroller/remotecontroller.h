@@ -14,7 +14,7 @@
 #include "core/application.h"
 #include "ui_mainwindow.h"
 #include "remotecontroller/remotesettings.h"
-// #include "remotecontroller/remotecommands.h"
+#include "remotecontroller/remotecommands.h"
 #include "includes/shared_ptr.h"
 
 enum class ClientState {
@@ -48,12 +48,16 @@ private:
 
   QTimer        *timer;
 
+  RemoteCommands *commands;
+
   // List of connected sockets, and if authenticated
   QHash<QTcpSocket*, ClientInfo*> clients_;
 
   // SharedPtr<RemoteSettings> data_;
   const Application   *app_;
   const Ui_MainWindow *mainUi_;
+
+
 
 Q_SIGNALS:
   void ExitFinished();
@@ -66,6 +70,7 @@ public Q_SLOTS:
 
 private Q_SLOTS:
   void ExitReceived();
+  void broadcastToDevices(const QJsonObject& message);
 
   // Network port objects.
   void onNewConnection();

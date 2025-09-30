@@ -38,14 +38,16 @@ class RemotePlaylist : public QObject
   QJsonObject makePlaylistData(const int id);
 
 Q_SIGNALS:
+  void sendResponse(QJsonObject& response);
   // Send playlist changes etc.
-  void sendResponse(QTcpSocket* clientSocket, QJsonObject& response);
+  // void sendResponse(QTcpSocket* clientSocket, QJsonObject& response);
+
 
 public:
     explicit RemotePlaylist(Application *app, QObject *parent = nullptr);
     ~RemotePlaylist() = default;
 
-    void processCommand(QTcpSocket* clientSocket, const QString& command, const QStringList& args);
+    void processCommand(const QString& command, const QStringList& args);
 };
 
 #endif // REMOTEPLAYLIST_H

@@ -13,27 +13,18 @@ RemotePlaylist::RemotePlaylist(Application* app, QObject *parent)
 {
   // Fill in the commandMap.
   RemotePlaylist::createCommandMap();
-
-  // Make connection to forward album cover image to device.
-  // auto currentCover = app_->current_albumcover_loader();
-  // auto urlHandler = new RemoteCurrentSong(app_);
-  // QObject::connect(&*currentCover, &CurrentAlbumCoverLoader::AlbumCoverLoaded,
-  //                    urlHandler, &RemoteCurrentSong::getAlbumURL);
 }
 
-void RemotePlaylist::processCommand(QTcpSocket* clientSocket, const QString& command, const QStringList& args)
+void RemotePlaylist::processCommand(const QString& command, const QStringList& args)
 {
-  qDebug() << "RemotePlaylist::processCommand called with command: "<< command << " and args: "<< args;
-
   if ( commandMap.contains(command)){
-    qDebug()<< "RemotePlaylist::processCommand found: " << command;
     auto response{commandMap[command](args)};
-    Q_EMIT RemotePlaylist::sendResponse(clientSocket,response );
+    Q_EMIT RemotePlaylist::sendResponse(response);
   }
   else {
     QJsonObject response;
     response[QStringLiteral("response")] = QStringLiteral("Invalid command: %1").arg(command);
-    Q_EMIT RemotePlaylist::sendResponse(clientSocket, response);
+    Q_EMIT RemotePlaylist::sendResponse(response);
   }
 }
 
@@ -122,7 +113,6 @@ QJsonObject RemotePlaylist::makeAllPlaylist()
   QJsonObject response;
   response[QStringLiteral("command")] = QStringLiteral("all_playlists");
   response[QStringLiteral("playlists")] = playlistArray;
-
   return response;
 }
 
@@ -158,7 +148,6 @@ void RemotePlaylist::createCommandMap()
   };
   commandMap[QStringLiteral("delete-current-playlist")] = [this](const auto&){ return RemotePlaylist::deleteCurrentPlaylist();};
   commandMap[QStringLiteral("favorite-playlist")] = [this](const auto&){ return RemotePlaylist::favoritePlaylist();};
-  commandMap[QStringLiteral("make-all-playlists")] = [this](const auto&){ return RemotePlaylist::makeAllPlaylist();};
   commandMap[QStringLiteral("remove-current-song-playlist")] = [this](const auto&){
     auto songName{app_->playlist_manager()->current()->current_item_metadata().song_id()};
     app_->playlist_manager()->RemoveCurrentSong();

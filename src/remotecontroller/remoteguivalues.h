@@ -3,9 +3,11 @@
 
 #include <QObject>
 #include <QJsonObject>
+#include <QTcpSocket>
 
-#include "core/song.h"
+// #include "core/song.h"
 #include "core/application.h"
+#include "ui_mainwindow.h"
 
 class TrackSlider;
 
@@ -13,18 +15,19 @@ class RemoteGuiValues : public QObject
 {
   Q_OBJECT
 
-  Application* app_;
+  const Application* app_;
+  const Ui_MainWindow *ui_;
 
-  void getUpdates();
+  void getUpdates(QTcpSocket *client);
 
 public:
-  // explicit RemoteGuiValues(QObject *parent = nullptr);
-  explicit RemoteGuiValues(Application *app, QObject *parent = nullptr);
+  explicit RemoteGuiValues(const Application* app, QObject *parent);
 
-
+public Q_SLOTS:
+  void triggerUpdate(QTcpSocket *client);
 
 Q_SIGNALS:
-  void sendCurrentStatus(QJsonObject data);
+  void sendCurrentStatus(QTcpSocket *client, QJsonObject data);
 
 };
 
