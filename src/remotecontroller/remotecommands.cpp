@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 
 #include "remotecommands.h"
+#include "playlist/playlistmanager.h"
 
 RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   QObject{parent},
@@ -12,11 +13,13 @@ RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   playlist(RemotePlaylist(app, this)),
   basicCommands(RemoteBasicCommands(app)),
   values{new RemoteGuiValues(app, this)},
-  basicCmdMap{basicCommands.sendCommandMap()}
+  basicCmdMap{basicCommands.sendCommandMap()},
+  playlistCmdMap{playlist.sendCommandMap()}
 {
-  connect(&playlist, &RemotePlaylist::sendResponse, this, &RemoteCommands::getResponse);
-  connect(&basicCommands, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::getResponse);
+  QObject::connect(&playlist, &RemotePlaylist::sendResponse, this, &RemoteCommands::getResponse);
+  QObject::connect(&basicCommands, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::getResponse);
   // connect(values, &RemoteGuiValues::sendCurrentStatus, this, &RemoteCommands::getGuiUpdate);
+  // connect(app_->playlist_manager()->playlistChanged(), this, &RemoteCommands::sendReponse);
 
 }
 
@@ -24,10 +27,11 @@ void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& com
 {
   // Check if sent command is in basicCommandMap.
   if(basicCmdMap.contains(command)){
-    RemoteCommands::getResponse(basicCommands.checkCommand(command, args));
+    basicCmdMap[command](args);
+    RemoteCommands::getResponse(QJsonObject{{QStringLiteral("response"), QStringLiteral("Running command: %1").arg(command)}});
   }
-  else if (command.contains(QStringLiteral("playlist"))){
-    playlist.processCommand(command, args);
+  else if (playlistCmdMap.contains(command)){
+    RemoteCommands::getResponse(playlistCmdMap[command](args));
   }
   else{
   // If sent command does not match anything, send message back to device.
@@ -70,10 +74,26 @@ void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
         args.append(obj[value].toVariant().toString());
     }
     //    This handles cases like { "command": "rename", "args": ["oldName", "newName"] }
-    if (obj.contains(arg) && obj[arg].isArray()) {
+    else if (obj.contains(arg) && obj[arg].isArray()) {
         QJsonArray argArray = obj[arg].toArray();
         for (const QJsonValue& val : std::as_const(argArray)) {
             args.append(val.toString());
+        }
+    }
+    else {
+        const QStringList keys = obj.keys();
+        QMap<int, QString> orderedArgs; // Use QMap to store args in order by their integer key
+        for (const QString& key : keys) {
+            bool isNumber;
+            int index = key.toInt(&isNumber); // Try to convert key to an integer
+            // Make sure it's a non-negative number and the value is a string
+            if (isNumber && index >= 0 && obj[key].isString()) {
+                orderedArgs.insert(index, obj[key].toString());
+            }
+        }
+        // Add all collected and ordered arguments to the args list
+        for (const QString& argVal : orderedArgs) {
+            args.append(argVal);
         }
     }
   qDebug() << "Remote Final arguments for command '" << command << "':" << args;

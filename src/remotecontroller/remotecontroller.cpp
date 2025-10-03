@@ -233,7 +233,7 @@ void RemoteController::onSendResponse(QTcpSocket* clientSocket, const QJsonObjec
 
 void RemoteController::broadcastToDevices(const QJsonObject& message)
 {
-  qDebug() << "RemoteController::broadcastToDevices called with message: " << message;
+  // Send each authenticated client the broadcast from the server.
   for(auto clientSocket: std::as_const(clients_)){
     if(clientSocket->state == ClientState::Authenticated){
       onSendResponse(clientSocket->socket, message);

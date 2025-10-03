@@ -120,7 +120,8 @@ void PlaylistManager::Init(PlaylistSequence *sequence, PlaylistContainer *playli
 
   Q_EMIT PlaylistManagerInitialized();
 
-}
+  QObject::connect(playlists_[active_].p, &Playlist::PlaylistChanged, this, &PlaylistManager::playlistChanged);
+ }
 
 void PlaylistManager::PlaylistLoaded() {
 

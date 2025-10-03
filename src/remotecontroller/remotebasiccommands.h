@@ -9,7 +9,7 @@
 
 class QTcpSocket;
 
-using CommandsMap = QMap<QString, std::function<void(const QStringList&)>>;
+using BasicCmdMap = QMap<QString, std::function<void(const QStringList&)>>;
 
 class RemoteBasicCommands: public QObject
 {
@@ -18,15 +18,13 @@ class RemoteBasicCommands: public QObject
   void createCommandMap();
 
   Application *app_;
-  CommandsMap commandMap;
+  BasicCmdMap commandMap;
 
 public:
   explicit RemoteBasicCommands(Application *app);
   ~RemoteBasicCommands() = default;
 
-  CommandsMap& sendCommandMap();
-
-  QJsonObject checkCommand(const QString &command, const QStringList &args);
+  BasicCmdMap& sendCommandMap();
 
 Q_SIGNALS:
   //Commands to sent to server
@@ -46,9 +44,6 @@ Q_SIGNALS:
   void volume(const uint volume);
   void volumeUp();
   void volumeDown();
-
-  // Commands received from server
-  // void volumeChanged(QJsonObject volume)
 
 public Q_SLOTS:
   void volumeChanged(const uint volume);

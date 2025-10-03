@@ -2,7 +2,6 @@
 #include "remotebasiccommands.h"
 #include "remotecontroller/remoteconstants.h"
 #include "core/player.h"
-#include "core/logging.h"
 
 RemoteBasicCommands::RemoteBasicCommands(Application *app)
     : app_(app)
@@ -19,7 +18,6 @@ RemoteBasicCommands::RemoteBasicCommands(Application *app)
   QObject::connect(this, &RemoteBasicCommands::previous , &*app_->player(), &Player::Previous);
   QObject::connect(this, &RemoteBasicCommands::restartOrPrevious , &*app_->player(), &Player::RestartOrPrevious);
   QObject::connect(this, &RemoteBasicCommands::seekTo , &*app_->player(), &Player::SeekTo);
-  // QObject::connect(this, &RemoteBasicCommands::seekBy , &*app_->player(), &Player::SeekTo);
   QObject::connect(this, &RemoteBasicCommands::seekBackward , &*app_->player(), &Player::SeekBackward);
   QObject::connect(this, &RemoteBasicCommands::seekForward , &*app_->player(), &Player::SeekForward);
   QObject::connect(this, &RemoteBasicCommands::stop , &*app_->player(), &Player::Stop);
@@ -31,21 +29,6 @@ RemoteBasicCommands::RemoteBasicCommands(Application *app)
   QObject::connect(&*app_->player(), &Player::VolumeChanged, this, &RemoteBasicCommands::volumeChanged);
 
 // QObject::connect(this, &RemoteBasicCommands:: , &*app_->player(), &Player::);
-// QObject::connect(this, &RemoteBasicCommands:: , &*app_->player(), &Player::);
-// QObject::connect(this, &RemoteBasicCommands:: , &*app_->player(), &Player::);
-// QObject::connect(this, &RemoteBasicCommands:: , &*app_->player(), &Player::);
-// QObject::connect(this, &RemoteBasicCommands:: , &*app_->player(), &Player::);
-}
-
-
-QJsonObject RemoteBasicCommands::checkCommand(const QString& command, const QStringList &args)
-{
-  // If the command is a basic command, run it
-  if ( commandMap.contains(command)){
-    commandMap[command](args);
-    return QJsonObject{{QStringLiteral("response"), QStringLiteral("Running command: %1").arg(command)}};
-  }
-  return QJsonObject{{QStringLiteral("response"), QStringLiteral("Command '%1' not found").arg(command)}};
 }
 
 void RemoteBasicCommands::volumeChanged(const uint volume)
@@ -57,15 +40,10 @@ void RemoteBasicCommands::volumeChanged(const uint volume)
 
 }
 
-CommandsMap& RemoteBasicCommands::sendCommandMap()
+BasicCmdMap& RemoteBasicCommands::sendCommandMap()
 {
   return commandMap;
 }
-
-// void RemoteBasicCommands::sendResponse(QJsonObject response)
-// {
-//   // Delete function if not used.
-// }
 
 void RemoteBasicCommands::createCommandMap()
 {
@@ -106,7 +84,5 @@ void RemoteBasicCommands::createCommandMap()
   commandMap[QStringLiteral("seek-backward")] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekBackward();};
   commandMap[QStringLiteral("seek-forward")] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekForward();};
 
-  // A couple of spares, since I would forget :)
-  // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->;};
   // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->;};
 }

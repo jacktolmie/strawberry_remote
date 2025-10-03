@@ -8,29 +8,32 @@
 
 class QTcpSocket;
 
+using PlaylistCmdMap = QMap<QString, std::function<QJsonObject(const QStringList&)>>;
+
 class RemotePlaylist : public QObject
 {
-     Q_OBJECT
+  Q_OBJECT
 
   Application *app_;
 
+  PlaylistCmdMap commandMap;
   void createCommandMap();
-  QMap<QString, std::function<QJsonObject(const QStringList&)>> commandMap;
 
+  QJsonObject closeCurrentPlaylist(const QStringList& args);
   // Rename current playlist. Send command rename-playlist <new name>.
-  QJsonObject renamePlaylist(const QStringList& args);
+  QJsonObject renameCurrentPlaylist(const QStringList& args);
 
   // Shuffle all playlists.
   QJsonObject shuffleAllPlaylists();
 
   // Delete current playlist.
-  QJsonObject deleteCurrentPlaylist();
+  QJsonObject deleteCurrentDevicePlaylist(const QStringList &args);
 
   // Make playlist a favourite or not.
-  QJsonObject favoritePlaylist();
+  QJsonObject setFavouritePlaylist(const QStringList &args);
 
   // Set the playlist as current. Send set-current-playlist <playlist ID>.
-  QJsonObject setCurrentPlaylist(const int id);
+  QJsonObject setCurrentPlaylist(const QStringList& args);
 
   // Make playlists to send back to device.
   QJsonObject makeAllPlaylist();
@@ -39,15 +42,29 @@ class RemotePlaylist : public QObject
 
 Q_SIGNALS:
   void sendResponse(QJsonObject& response);
+  void clearPlaylist();
+  void closePlaylist(const int id);
+  void deletePlaylist(const int id);
+  void favouritePlaylist(const int id, bool isFavourite);
+  void removeCurrentSong();
+  void removeDuplicates();
+  void renamePlaylist(const int id, const QString name);
+  void setCurrentPlaylistSignal(const int id);
+  void shufflePlaylist();
+  // void shuffleAllPlaylists();
   // Send playlist changes etc.
   // void sendResponse(QTcpSocket* clientSocket, QJsonObject& response);
 
+private Q_SLOTS:
+
+  // If playlist is changed on server, send updated playlist.
+  void playlistChanged();
 
 public:
-    explicit RemotePlaylist(Application *app, QObject *parent = nullptr);
-    ~RemotePlaylist() = default;
+  explicit RemotePlaylist(Application *app, QObject *parent = nullptr);
+  ~RemotePlaylist() = default;
 
-    void processCommand(const QString& command, const QStringList& args);
+  PlaylistCmdMap& sendCommandMap();
 };
 
 #endif // REMOTEPLAYLIST_H

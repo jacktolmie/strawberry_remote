@@ -1050,6 +1050,7 @@ void Playlist::MoveItemsWithoutUndo(const QList<int> &source_rows, int pos) {
   }
 
   Q_EMIT layoutChanged();
+  Q_EMIT PlaylistChanged();
 
   ScheduleSave();
 
@@ -1123,6 +1124,7 @@ void Playlist::MoveItemsWithoutUndo(int start, const QList<int> &dest_rows) {
   }
 
   Q_EMIT layoutChanged();
+  Q_EMIT PlaylistChanged();
 
   ScheduleSave();
 

@@ -179,6 +179,9 @@ class PlaylistManager : public PlaylistManagerInterface {
   int current_;
   int active_;
   int playlists_loading_;
+
+Q_SIGNALS:
+  void playlistChanged();
 };
 
 #endif  // PLAYLISTMANAGER_H
