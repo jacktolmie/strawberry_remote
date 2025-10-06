@@ -120,7 +120,8 @@ void PlaylistManager::Init(PlaylistSequence *sequence, PlaylistContainer *playli
 
   Q_EMIT PlaylistManagerInitialized();
 
-  QObject::connect(playlists_[active_].p, &Playlist::PlaylistChanged, this, &PlaylistManager::playlistChanged);
+  // connect(playlist_);
+  updateConnects();
  }
 
 void PlaylistManager::PlaylistLoaded() {
@@ -298,6 +299,7 @@ void PlaylistManager::Rename(const int id, const QString &new_name) {
 
   Q_EMIT PlaylistRenamed(id, new_name);
 
+  Q_EMIT renamePlaylist(id, new_name);
 }
 
 void PlaylistManager::Favorite(const int id, const bool favorite) {
@@ -373,6 +375,9 @@ void PlaylistManager::SetCurrentPlaylist(const int id) {
   }
 
   current_ = id;
+
+  updateConnects();
+
   Q_EMIT CurrentChanged(current(), playlists_[id].scroll_position);
   UpdateSummaryText();
 
@@ -386,6 +391,8 @@ void PlaylistManager::SetActivePlaylist(const int id) {
   if (active_ != -1 && active_ != id) active()->set_current_row(-1);
 
   active_ = id;
+
+  updateConnects();
 
   Q_EMIT ActiveChanged(active());
 
@@ -614,4 +621,13 @@ void PlaylistManager::SaveAllPlaylists() {
     Save(it.key(), data.name, filepath, path_type);
   }
 
+}
+
+void PlaylistManager::updateConnects()
+{
+  QObject::disconnect(current_playlist_connection);
+  QObject::disconnect(active_playlist_connection);
+
+  if (current_ >= 0 && playlists_.contains(current_)) current_playlist_connection =   QObject::connect(playlists_[current_].p, &Playlist::PlaylistChanged, this, &PlaylistManager::playlistChanged);
+  if(active_ >= 0 && playlists_.contains(active_) && current_ != active_) active_playlist_connection = QObject::connect(playlists_[active_].p, &Playlist::PlaylistChanged, this, &PlaylistManager::playlistChanged);
 }

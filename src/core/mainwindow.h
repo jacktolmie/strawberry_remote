@@ -65,7 +65,6 @@
 #include "covermanager/albumcoverimageresult.h"
 
 #include "remotecontroller/remotecontroller.h"
-#include "remotecontroller/remotecommands.h"
 
 class About;
 class Console;

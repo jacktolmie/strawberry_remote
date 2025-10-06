@@ -14,6 +14,7 @@ namespace remoteconstants
     return args.first().toUInt(&ok);
   };
 
+  // Lambda to check if args contains a string.
   inline constexpr auto parseStringArg = [](const QStringList& args, bool& ok)-> QString {
     if (args.isEmpty()){
       ok = false;

@@ -27,10 +27,10 @@ class RemotePlaylist : public QObject
   QJsonObject shuffleAllPlaylists();
 
   // Delete current playlist.
-  QJsonObject deleteCurrentDevicePlaylist(const QStringList &args);
+  QJsonObject deleteCurrentDevicePlaylist(const QStringList& args);
 
   // Make playlist a favourite or not.
-  QJsonObject setFavouritePlaylist(const QStringList &args);
+  QJsonObject setFavouritePlaylist(const QStringList& args);
 
   // Set the playlist as current. Send set-current-playlist <playlist ID>.
   QJsonObject setCurrentPlaylist(const QStringList& args);
@@ -45,10 +45,11 @@ Q_SIGNALS:
   void clearPlaylist();
   void closePlaylist(const int id);
   void deletePlaylist(const int id);
-  void favouritePlaylist(const int id, bool isFavourite);
+  void remoteFavouritePlaylist(const int id, bool isFavourite);
+  void serverFavouritePlaylist(const int id, bool isFavourite);
   void removeCurrentSong();
   void removeDuplicates();
-  void renamePlaylist(const int id, const QString name);
+  void remoteRenamePlaylist(const int id, const QString& name);
   void setCurrentPlaylistSignal(const int id);
   void shufflePlaylist();
   // void shuffleAllPlaylists();
@@ -58,7 +59,11 @@ Q_SIGNALS:
 private Q_SLOTS:
 
   // If playlist is changed on server, send updated playlist.
+  void closeServerPlaylist(const int id);
+  void deleteServerPlaylist(const int id);
+  void favouriteServerPlaylist(const int id, bool favourite);
   void playlistChanged();
+  void serverRenamePlaylist(const int id, const QString& name);
 
 public:
   explicit RemotePlaylist(Application *app, QObject *parent = nullptr);
