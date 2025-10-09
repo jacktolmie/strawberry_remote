@@ -8,6 +8,7 @@
 #include <QString>
 #include "core/player.h"
 
+
 RemoteController::RemoteController(const Application* app, const Ui_MainWindow *mainUi , QObject *parent)
     : QObject{parent},
       app_{app},
@@ -142,8 +143,6 @@ void RemoteController::onReadyRead()
       }
 
       QByteArray receivedProof = QByteArray::fromHex(line.mid(6).toUtf8());
-
-      // QByteArray combined = client->nonce + data_->values.hashedPassword;
       QByteArray combined = client->nonce + app_->remote_settings()->values.password.toUtf8();
       QByteArray expectedProof = QCryptographicHash::hash(combined, QCryptographicHash::Sha256);
 
@@ -177,14 +176,8 @@ void RemoteController::onReadyRead()
         }
         qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << QString::fromUtf8(jsonData);
         Q_EMIT RemoteController::commandReceived(socket, QString::fromUtf8(jsonData));
-      // Q_EMIT RemoteController::commandReceived()
       }
-      // while (socket->canReadLine()) {
-      //   QString line = QString::fromUtf8(socket->readLine().trimmed());
-      //   qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << line;
 
-      //   Q_EMIT RemoteController::commandReceived(socket, line);
-      // }
       break;
     }
     default: {
@@ -192,7 +185,6 @@ void RemoteController::onReadyRead()
       break;
     }
   }
-qDebug() << "Remote inside onReadyRead";
 }
 
 void RemoteController::onDisconnect()

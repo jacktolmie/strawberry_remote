@@ -38,7 +38,7 @@ Q_SIGNALS:
   void seekTo(const quint32);
   void seekBackward();
   void seekForward();
-  void sendResponse(QJsonObject response);
+  void sendResponse(const QJsonObject response);
   void stop(bool stopAfterCurrent);
   void stopAfterCurrent();
   void volume(const uint volume);
@@ -47,6 +47,7 @@ Q_SIGNALS:
 
 public Q_SLOTS:
   void volumeChanged(const uint volume);
+  void playlistPlay();
 };
 
 #endif // REMOTEBASICCOMMANDS_H

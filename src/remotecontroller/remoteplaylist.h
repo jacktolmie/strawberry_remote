@@ -6,7 +6,7 @@
 
 #include "core/application.h"
 
-class QTcpSocket;
+// class QTcpSocket;
 
 using PlaylistCmdMap = QMap<QString, std::function<QJsonObject(const QStringList&)>>;
 
@@ -35,13 +35,16 @@ class RemotePlaylist : public QObject
   // Set the playlist as current. Send set-current-playlist <playlist ID>.
   QJsonObject setCurrentPlaylist(const QStringList& args);
 
+  // Send active playlist on remote to server.
+  QJsonObject sendRemoteActive(const QStringList& args);
+
   // Make playlists to send back to device.
   QJsonObject makeAllPlaylist();
   QJsonObject makeCurrentPlaylist();
   QJsonObject makePlaylistData(const int id);
 
 Q_SIGNALS:
-  void sendResponse(QJsonObject& response);
+  void sendResponse(const QJsonObject& response);
   void clearPlaylist();
   void closePlaylist(const int id);
   void deletePlaylist(const int id);
@@ -50,11 +53,10 @@ Q_SIGNALS:
   void removeCurrentSong();
   void removeDuplicates();
   void remoteRenamePlaylist(const int id, const QString& name);
+  void setActivePlaylist(const int id);
   void setCurrentPlaylistSignal(const int id);
   void shufflePlaylist();
-  // void shuffleAllPlaylists();
-  // Send playlist changes etc.
-  // void sendResponse(QTcpSocket* clientSocket, QJsonObject& response);
+
 
 private Q_SLOTS:
 
@@ -64,6 +66,7 @@ private Q_SLOTS:
   void favouriteServerPlaylist(const int id, bool favourite);
   void playlistChanged();
   void serverRenamePlaylist(const int id, const QString& name);
+  void activeChanged(const int id);
 
 public:
   explicit RemotePlaylist(Application *app, QObject *parent = nullptr);

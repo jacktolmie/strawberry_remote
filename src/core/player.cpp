@@ -36,6 +36,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include <QSettings>
+#include <QJsonObject>
 
 #include "constants/behavioursettings.h"
 #include "constants/playlistsettings.h"
@@ -516,20 +517,32 @@ void Player::TrackEnded() {
 
 void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll autoscroll) {
 
+  QJsonObject response;
+
   switch (engine_->state()) {
     case EngineBase::State::Paused:
       UnPause();
       Q_EMIT Resumed();
+
+      response[QStringLiteral("response")] = QStringLiteral("play");
+      response[QStringLiteral("row")] =  playlist_manager_->active()->current_row();
+      response[QStringLiteral("value")] = engine()->position_nanosec() / kNsecPerMsec;
+      Q_EMIT Player::sendToRemote(response);
       break;
 
     case EngineBase::State::Playing:{
       if (current_item_->options() & PlaylistItem::Option::PauseDisabled) {
         Stop();
+        Q_EMIT Player::sendToRemote(QJsonObject{{QStringLiteral("response"), QStringLiteral("stop player.cpp")}});
       }
       else {
         pause_time_ = QDateTime::currentDateTime();
         play_offset_nanosec_ = static_cast<quint64>(engine_->position_nanosec());
         engine_->Pause();
+
+        response[QStringLiteral("response")] = QStringLiteral("pause");
+        response[QStringLiteral("value")] = engine()->position_nanosec() / kNsecPerMsec;
+        Q_EMIT Player::sendToRemote(response);
       }
       break;
     }
@@ -596,6 +609,8 @@ void Player::Stop(const bool stop_after) {
   current_item_.reset();
   pause_time_ = QDateTime();
   play_offset_nanosec_ = 0;
+
+  Q_EMIT Player::sendToRemote(QJsonObject{{QStringLiteral("response"), QStringLiteral("stop")}});
 
 }
 
@@ -807,14 +822,28 @@ void Player::SeekTo(const quint64 seconds) {
     playlist_manager_->active()->InformOfCurrentSongChange(false);
   }
 
+  QJsonObject response;
+  response[QStringLiteral("response")] = QStringLiteral("seek-to");
+  response[QStringLiteral("value")] = nanosec / kNsecPerMsec;
+  Q_EMIT Player::sendToRemote(response);
 }
 
 void Player::SeekForward() {
   SeekTo(static_cast<quint64>(engine()->position_nanosec() / kNsecPerSec + seek_step_sec_));
+
+  QJsonObject response;
+  response[QStringLiteral("response")] = QStringLiteral("seek-forward");
+  response[QStringLiteral("value")] = QString::number(static_cast<quint64>(engine()->position_nanosec() / kNsecPerSec + seek_step_sec_));
+  Q_EMIT Player::sendToRemote(response);
 }
 
 void Player::SeekBackward() {
   SeekTo(static_cast<quint64>(engine()->position_nanosec() / kNsecPerSec - seek_step_sec_));
+
+  QJsonObject response;
+  response[QStringLiteral("response")] = QStringLiteral("seek-backward");
+  response[QStringLiteral("value")] = QString::number(static_cast<quint64>(engine()->position_nanosec() / kNsecPerSec - seek_step_sec_));
+  Q_EMIT Player::sendToRemote(response);
 }
 
 void Player::EngineMetadataReceived(const EngineMetadata &engine_metadata) {
@@ -889,6 +918,10 @@ void Player::Play(const quint64 offset_nanosec) {
       break;
   }
 
+  QJsonObject response;
+  response[QStringLiteral("response")] = QStringLiteral("play");
+  response[QStringLiteral("value")] = engine()->position_nanosec() / kNsecPerMsec;
+  Q_EMIT Player::sendToRemote(response);
 }
 
 void Player::PlayWithPause(const quint64 offset_nanosec) {

@@ -1,7 +1,9 @@
 #include <QJsonObject>
 #include "remotebasiccommands.h"
+#include "constants/timeconstants.h"
 #include "remotecontroller/remoteconstants.h"
 #include "core/player.h"
+#include "playlist/playlistmanager.h"
 
 RemoteBasicCommands::RemoteBasicCommands(Application *app)
     : app_(app)
@@ -27,7 +29,7 @@ RemoteBasicCommands::RemoteBasicCommands(Application *app)
   QObject::connect(this, &RemoteBasicCommands::volumeUp , &*app_->player(), &Player::VolumeUp);
 
   QObject::connect(&*app_->player(), &Player::VolumeChanged, this, &RemoteBasicCommands::volumeChanged);
-
+  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlayCommand, this, &RemoteBasicCommands::playlistPlay);
 // QObject::connect(this, &RemoteBasicCommands:: , &*app_->player(), &Player::);
 }
 
@@ -38,6 +40,13 @@ void RemoteBasicCommands::volumeChanged(const uint volume)
   response[QStringLiteral("volume")] = static_cast<int>(volume);
   Q_EMIT RemoteBasicCommands::sendResponse(response);
 
+}
+
+void RemoteBasicCommands::playlistPlay()
+{
+  QJsonObject response;
+  response[QStringLiteral("response")] = QStringLiteral("play");
+  // response[QStringLiteral("row")] = app_->player()->GetCurrentItem()->
 }
 
 BasicCmdMap& RemoteBasicCommands::sendCommandMap()
@@ -70,7 +79,7 @@ void RemoteBasicCommands::createCommandMap()
   commandMap[QStringLiteral("volume-up")] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeUp();};
   commandMap[QStringLiteral("volume-down")] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeDown();};
   // Delete when done testing song timer position
-  commandMap[QStringLiteral("current")] = [this](const auto&){qDebug() << "Remote Current time: "<< app_->player()->engine()->position_nanosec() / 1000000LL;};
+  commandMap[QStringLiteral("current")] = [this](const auto&){qDebug() << "Remote Current time: "<< app_->player()->engine()->position_nanosec() / kNsecPerMsec;};
 
   commandMap[QStringLiteral("mute")] = [this](const auto&){ Q_EMIT RemoteBasicCommands::mute();};
 

@@ -120,7 +120,7 @@ void PlaylistManager::Init(PlaylistSequence *sequence, PlaylistContainer *playli
 
   Q_EMIT PlaylistManagerInitialized();
 
-  // connect(playlist_);
+  Q_EMIT PlaylistManager::sendPlayCommand();
   updateConnects();
  }
 
@@ -396,6 +396,15 @@ void PlaylistManager::SetActivePlaylist(const int id) {
 
   Q_EMIT ActiveChanged(active());
 
+  // Send active playlist id to remote device.
+  QJsonObject response;
+  response[QStringLiteral("response")] = QStringLiteral("active_playlist");
+  response[QStringLiteral("id")] = id;
+  // response[QStringLiteral("row")] = active()->Playing();
+  Q_EMIT PlaylistManager::sendPlaylistResponse(response);
+  // Q_EMIT PlaylistManager::sendPlayCommand(1);
+  active()->Playing();
+
 }
 
 void PlaylistManager::SetActiveToCurrent() {
@@ -425,11 +434,11 @@ void PlaylistManager::RemoveUnavailableCurrent() {
   current()->RemoveUnavailableSongs();
 }
 
-void PlaylistManager::SetActivePlaying() { active()->Playing(); }
+void PlaylistManager::SetActivePlaying() {active()->Playing();}
 
-void PlaylistManager::SetActivePaused() { active()->Paused(); }
+void PlaylistManager::SetActivePaused() {active()->Paused();}
 
-void PlaylistManager::SetActiveStopped() { active()->Stopped(); }
+void PlaylistManager::SetActiveStopped() {active()->Stopped();}
 
 void PlaylistManager::ChangePlaylistOrder(const QList<int> &ids) {
   playlist_backend_->SetPlaylistOrder(ids);

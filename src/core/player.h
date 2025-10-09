@@ -126,6 +126,10 @@ class Player : public PlayerInterface {
 
   void HandleLoadResult(const UrlHandler::LoadResult &result);
 
+Q_SIGNALS:
+  // Send updates to remote devices when actions like play/stop etc are done on server.
+  void sendToRemote(const QJsonObject& response);
+
  private:
   void ResumePlayback();
 

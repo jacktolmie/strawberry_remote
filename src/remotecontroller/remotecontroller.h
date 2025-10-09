@@ -16,6 +16,7 @@
 #include "remotecontroller/remotesettings.h"
 #include "remotecontroller/remotecommands.h"
 #include "includes/shared_ptr.h"
+#include "playlist/playlist.h"
 
 enum class ClientState {
   Authenticated,
@@ -53,7 +54,6 @@ private:
   // List of connected sockets, and if authenticated
   QHash<QTcpSocket*, ClientInfo*> clients_;
 
-  // SharedPtr<RemoteSettings> data_;
   const Application   *app_;
   const Ui_MainWindow *mainUi_;
 

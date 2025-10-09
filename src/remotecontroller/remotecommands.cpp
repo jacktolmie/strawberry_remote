@@ -6,6 +6,7 @@
 
 #include "remotecommands.h"
 #include "playlist/playlistmanager.h"
+#include "core/player.h"
 
 RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   QObject{parent},
@@ -18,9 +19,9 @@ RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
 {
   QObject::connect(&playlist, &RemotePlaylist::sendResponse, this, &RemoteCommands::getResponse);
   QObject::connect(&basicCommands, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::getResponse);
+  QObject::connect(&*app_->player(), &Player::sendToRemote, this, &RemoteCommands::getResponse);
+  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistResponse, this, &RemoteCommands::getResponse);
   // connect(values, &RemoteGuiValues::sendCurrentStatus, this, &RemoteCommands::getGuiUpdate);
-  // connect(app_->playlist_manager()->playlistChanged(), this, &RemoteCommands::sendReponse);
-
 }
 
 void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& command, const QStringList &args)
@@ -104,6 +105,7 @@ void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
 
 void RemoteCommands::getResponse(const QJsonObject& response)
 {
+
   Q_EMIT RemoteCommands::sendReponse(response);
 }
 

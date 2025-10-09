@@ -41,6 +41,8 @@
 #include <QColor>
 #include <QRgb>
 
+#include <QJsonObject>
+
 #include "includes/shared_ptr.h"
 #include "core/song.h"
 #include "tagreader/tagreaderclient.h"
@@ -337,6 +339,9 @@ class Playlist : public QAbstractListModel {
   void QueueChanged();
 
   void Rename(const int id, const QString &name);
+
+  // Send data to the remote devices.
+  void sendResponse(const QJsonObject& response);
 
  private:
   void SetCurrentIsPaused(const bool paused);
