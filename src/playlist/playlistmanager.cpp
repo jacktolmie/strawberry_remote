@@ -400,11 +400,9 @@ void PlaylistManager::SetActivePlaylist(const int id) {
   QJsonObject response;
   response[QStringLiteral("response")] = QStringLiteral("active_playlist");
   response[QStringLiteral("id")] = id;
-  // response[QStringLiteral("row")] = active()->Playing();
+  response[QStringLiteral("row")] = active()->last_played_row();
   Q_EMIT PlaylistManager::sendPlaylistResponse(response);
-  // Q_EMIT PlaylistManager::sendPlayCommand(1);
   active()->Playing();
-
 }
 
 void PlaylistManager::SetActiveToCurrent() {

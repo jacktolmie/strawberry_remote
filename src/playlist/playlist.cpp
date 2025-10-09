@@ -1576,20 +1576,11 @@ void Playlist::ReOrderWithoutUndo(const PlaylistItemPtrList &new_items) {
 
 }
 
-void Playlist::Playing() {
-  Q_EMIT Playlist::sendResponse(QJsonObject{{QStringLiteral("response"), QStringLiteral("play")}});
-  SetCurrentIsPaused(false);
-}
+void Playlist::Playing() {SetCurrentIsPaused(false);}
 
-void Playlist::Paused() {
-  Q_EMIT Playlist::sendResponse(QJsonObject{{QStringLiteral("response"), QStringLiteral("paused")}});
-  SetCurrentIsPaused(true);
-}
+void Playlist::Paused() {SetCurrentIsPaused(true);}
 
-void Playlist::Stopped() {
-  Q_EMIT Playlist::sendResponse(QJsonObject{{QStringLiteral("response"), QStringLiteral("stop")}});
-  SetCurrentIsPaused(false);
-}
+void Playlist::Stopped() {SetCurrentIsPaused(false);}
 
 void Playlist::SetCurrentIsPaused(const bool paused) {
 

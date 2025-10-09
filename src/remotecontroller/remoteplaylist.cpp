@@ -2,7 +2,6 @@
 #include <QJsonObject>
 #include <QList>
 #include "remoteplaylist.h"
-#include "playlist/playlist.h"
 #include "playlist/playlistmanager.h"
 #include "playlist/playlistbackend.h"
 #include "core/player.h"

@@ -513,6 +513,11 @@ void Player::TrackEnded() {
 
   NextInternal(EngineBase::TrackChangeType::Auto, Playlist::AutoScroll::Maybe);
 
+  QJsonObject response;
+  response[QStringLiteral("resonse")] = QStringLiteral("song_changed");
+  response[QStringLiteral("id")] = playlist_manager_->active()->next_row();
+  Q_EMIT Player::sendToRemote(response);
+
 }
 
 void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll autoscroll) {

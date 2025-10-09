@@ -47,7 +47,6 @@ Q_SIGNALS:
 
 public Q_SLOTS:
   void volumeChanged(const uint volume);
-  void playlistPlay();
 };
 
 #endif // REMOTEBASICCOMMANDS_H

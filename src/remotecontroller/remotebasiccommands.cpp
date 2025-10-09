@@ -29,7 +29,7 @@ RemoteBasicCommands::RemoteBasicCommands(Application *app)
   QObject::connect(this, &RemoteBasicCommands::volumeUp , &*app_->player(), &Player::VolumeUp);
 
   QObject::connect(&*app_->player(), &Player::VolumeChanged, this, &RemoteBasicCommands::volumeChanged);
-  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlayCommand, this, &RemoteBasicCommands::playlistPlay);
+  // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlayCommand, this, &RemoteBasicCommands::playlistPlay);
 // QObject::connect(this, &RemoteBasicCommands:: , &*app_->player(), &Player::);
 }
 
@@ -40,13 +40,6 @@ void RemoteBasicCommands::volumeChanged(const uint volume)
   response[QStringLiteral("volume")] = static_cast<int>(volume);
   Q_EMIT RemoteBasicCommands::sendResponse(response);
 
-}
-
-void RemoteBasicCommands::playlistPlay()
-{
-  QJsonObject response;
-  response[QStringLiteral("response")] = QStringLiteral("play");
-  // response[QStringLiteral("row")] = app_->player()->GetCurrentItem()->
 }
 
 BasicCmdMap& RemoteBasicCommands::sendCommandMap()
