@@ -36,8 +36,8 @@
       <translation>Si vous aimez ce logiciel Strawberry et que vous pouvez en faire usage, envisagez de sponsoriser ou de faire un don.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Vous pouvez sponsoriser l&apos;auteur sur %1. Vous pouvez également effectuer un paiement unique via %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>Vous pouvez sponsoriser l&apos;auteur sur %1 ou sur %2. Vous pouvez également effectuer un paiement unique via %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
@@ -347,7 +347,7 @@
     </message>
     <message>
       <source>WaveRubber</source>
-      <translation type="unfinished">WaveRubber</translation>
+      <translation/>
     </message>
   </context>
   <context>
@@ -549,7 +549,7 @@
     </message>
     <message>
       <source>p&amp;lughw</source>
-      <translation type="unfinished">p&amp;lughw</translation>
+      <translation>p&amp;ghoul</translation>
     </message>
     <message>
       <source>pcm</source>
@@ -578,6 +578,10 @@
     <message>
       <source>Improve headphone listening of stereo audio records (bs2b)</source>
       <translation>Amélioration de l&apos;écoute sur casque des enregistrements stéréo (bs2b)</translation>
+    </message>
+    <message>
+      <source>Use playbin3 when available</source>
+      <translation>Utilise playbin3 quand il est disponible</translation>
     </message>
     <message>
       <source>Enable HTTP/2 for streaming</source>
@@ -1091,8 +1095,16 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
       <translation>Utiliser divers artistes pour les albums de compilation</translation>
     </message>
     <message>
-      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</source>
-      <translation>Ignorer les déterminants (&quot;Les&quot;, &quot;Le/La&quot;, &quot;un/une&quot;…) lors du tri des noms d&apos;artistes</translation>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
+      <translation>Ignorer les déterminants (&quot;Les&quot;, &quot;Le/La&quot;, &quot;un/une&quot;…) lors du tri des noms d&apos;artistes, de compositeurs, d&apos;interprètes</translation>
+    </message>
+    <message>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
+      <translation>Ignorer les déterminants (&quot;Les&quot;, &quot;Le/La&quot;, &quot;un/une&quot;…) lors du tri des noms d&apos;album</translation>
+    </message>
+    <message>
+      <source>Use sort tags for sorting when available</source>
+      <translation>Utilise les tags de tri lorsqu'ils sont disponibles pour effectuer le tri</translation>
     </message>
     <message>
       <source>Album cover pixmap cache</source>
@@ -1183,11 +1195,11 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     </message>
     <message>
       <source>Queue track</source>
-      <translation>Mettre cette piste en liste d&apos;attente</translation>
+      <translation>Mettre cette piste en fin de liste d&apos;attente</translation>
     </message>
     <message>
       <source>Queue to play next</source>
-      <translation>Mettre en liste d&apos;attente pour une lecture ultérieure</translation>
+      <translation>Mettre cette piste au début de la liste d&apos;attente</translation>
     </message>
     <message>
       <source>Search for this</source>
@@ -3056,7 +3068,7 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation/>
     </message>
     <message>
       <source>&amp;Music</source>
@@ -3412,7 +3424,7 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     </message>
     <message>
       <source>Queue selected tracks to play next</source>
-      <translation>Mettre les pistes sélectionnées en liste d&apos;attente pour une lecture ultérieure</translation>
+      <translation>Mettre les pistes sélectionnées au début de liste d&apos;attente</translation>
     </message>
     <message>
       <source>Toggle skip status</source>
@@ -3488,15 +3500,15 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     </message>
     <message>
       <source>Queue track</source>
-      <translation>Mettre cette piste en liste d&apos;attente</translation>
+      <translation>Mettre cette piste en fin de liste d&apos;attente</translation>
     </message>
     <message>
       <source>Queue selected tracks</source>
-      <translation>Mettre les pistes sélectionnées en liste d&apos;attente</translation>
+      <translation>Mettre les pistes sélectionnées en fin de liste d&apos;attente</translation>
     </message>
     <message>
       <source>Queue to play next</source>
-      <translation>Mettre en liste d&apos;attente pour une lecture ultérieure</translation>
+      <translation>Mettre cette piste au début de la liste d&apos;attente</translation>
     </message>
     <message>
       <source>Unskip track</source>
@@ -3981,6 +3993,10 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
     <message>
       <source>Shuffle albums</source>
       <translation>Aléatoire : albums</translation>
+    </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation>Aléatoire : groupement</translation>
     </message>
     <message>
       <source>Don&apos;t repeat</source>
@@ -4636,6 +4652,10 @@ S&apos;il n&apos;en existe pas alors Strawberry utilisera la plus grande image d
       <source>Shuffle albums</source>
       <translation>Aléatoire : albums</translation>
     </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation>Aléatoire : groupement</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistSettingsPage</name>
@@ -5059,20 +5079,24 @@ Are you sure you want to continue?</source>
       <translation>artiste</translation>
     </message>
     <message>
-      <source>searches for all artists containing the word %1. </source>
-      <translation>recherche tous les artistes contenant le mot %1. </translation>
+      <source>searches for all artists containing the word %1.</source>
+      <translation>recherche tous les artistes contenant le mot %1.</translation>
     </message>
     <message>
       <source>Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </source>
       <translation>Les termes de recherche pour les champs numériques peuvent être préfixés par %1 ou %2 pour affiner la recherche, par exemple : </translation>
     </message>
     <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation>Un mot peut être utilisé pour exclure les titres correspondants en le précédant de &quot;%1&quot;, en cas de besoin de recherche utilisant un mot contenant &quot;%1&quot;, encadrez le mot par des guillemets.</translation>
+    </message>
+    <message>
       <source>rating</source>
       <translation>notation</translation>
     </message>
     <message>
-      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
-      <translation>Plusieurs termes de recherche peuvent également être combinés avec &quot;%1&quot; (par défaut) et &quot;%2&quot;, ainsi que regroupés entre parenthèses. </translation>
+      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
+      <translation>Plusieurs termes de recherche peuvent également être combinés avec &quot;%1&quot; (par défaut) et &quot;%2&quot;, ainsi que regroupés entre parenthèses.</translation>
     </message>
     <message>
       <source>Available fields</source>
@@ -6127,7 +6151,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Queue track</source>
-      <translation>Mettre cette piste en liste d&apos;attente</translation>
+      <translation>Mettre cette piste en fin de liste d&apos;attente</translation>
     </message>
     <message>
       <source>Play next</source>
@@ -6403,11 +6427,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Queue track</source>
-      <translation>Mettre cette piste en liste d&apos;attente</translation>
+      <translation>Mettre cette piste en fin de liste d&apos;attente</translation>
     </message>
     <message>
       <source>Queue to play next</source>
-      <translation>Mettre en liste d&apos;attente pour une lecture ultérieure</translation>
+      <translation>Mettre cette piste au début de la liste d&apos;attente</translation>
     </message>
     <message>
       <source>Remove from favorites</source>
@@ -6484,7 +6508,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Queue track</source>
-      <translation>Mettre cette piste en liste d&apos;attente</translation>
+      <translation>Mettre cette piste en fin de liste d&apos;attente</translation>
     </message>
     <message>
       <source>Add to artists</source>

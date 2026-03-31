@@ -21,7 +21,7 @@
     </message>
     <message>
       <source>It is a fork of Clementine released in 2018 aimed at music collectors and audiophiles.</source>
-      <translation type="unfinished">It is a fork of Clementine released in 2018 aimed at music collectors and audiophiles.</translation>
+      <translation>2018年に音楽コレクターやオーディオマニアに向けて発売されたClementineのフォークです。</translation>
     </message>
     <message>
       <source>Strawberry is free software released under GPL. The source code is available on %1</source>
@@ -29,15 +29,15 @@
     </message>
     <message>
       <source>You should have received a copy of the GNU General Public License along with this program.  If not, see %1</source>
-      <translation type="unfinished">You should have received a copy of the GNU General Public License along with this program.  If not, see %1</translation>
+      <translation>このプログラムと一緒に GNU 一般公衆利用許諾書のコピーも受け取っているはずです。  そうでない場合は、%1 を参照してください</translation>
     </message>
     <message>
       <source>If you like Strawberry and can make use of it, consider sponsoring or donating.</source>
       <translation>もし Strawberry が気に入って利用する場合は、後援または寄付を検討してください</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation type="unfinished">You can sponsor the author on %1. You can also make a one-time payment through %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>%1, %2 の著者をスポンサーにすることができます。 %3 を通じて 1回限りの支払いを行うこともできます。</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
@@ -61,7 +61,7 @@
     </message>
     <message>
       <source>Thanks to all the other Amarok and Clementine contributors.</source>
-      <translation type="unfinished">Thanks to all the other Amarok and Clementine contributors.</translation>
+      <translation>他のすべての Amarok と Clementine の貢献者に感謝します。</translation>
     </message>
   </context>
   <context>
@@ -194,7 +194,7 @@
     </message>
     <message>
       <source>Overwrite s&amp;maller ones only</source>
-      <translation type="unfinished">Overwrite s&amp;maller ones only</translation>
+      <translation>小さいもののみ上書き</translation>
     </message>
     <message>
       <source>Size</source>
@@ -339,15 +339,15 @@
     </message>
     <message>
       <source>Turbine</source>
-      <translation type="unfinished">Turbine</translation>
+      <translation>タービン</translation>
     </message>
     <message>
       <source>Sonogram</source>
-      <translation type="unfinished">Sonogram</translation>
+      <translation>Sonogram  超音波検査</translation>
     </message>
     <message>
       <source>WaveRubber</source>
-      <translation type="unfinished">WaveRubber</translation>
+      <translation>ウェーブラバー</translation>
     </message>
   </context>
   <context>
@@ -446,7 +446,7 @@
     </message>
     <message>
       <source>Stretch image to fill playlist</source>
-      <translation type="unfinished">Stretch image to fill playlist</translation>
+      <translation>プレイリストを満たすように画像を引き伸ばす</translation>
     </message>
     <message>
       <source>Keep aspect ratio</source>
@@ -462,7 +462,7 @@
     </message>
     <message>
       <source>0px</source>
-      <translation type="unfinished">0px</translation>
+      <translation>0ピクセル</translation>
     </message>
     <message>
       <source>Opacity</source>
@@ -470,7 +470,7 @@
     </message>
     <message>
       <source>40%</source>
-      <translation type="unfinished">40%</translation>
+      <translation>40%</translation>
     </message>
     <message>
       <source>Icon sizes</source>
@@ -502,7 +502,7 @@
     </message>
     <message>
       <source>Playlist playing song color</source>
-      <translation type="unfinished">Playlist playing song color</translation>
+      <translation>プレイリスト再生中の曲の色を選択</translation>
     </message>
     <message>
       <source>System highlight color</source>
@@ -545,7 +545,7 @@
     </message>
     <message>
       <source>hw</source>
-      <translation type="unfinished">hw</translation>
+      <translation>hW</translation>
     </message>
     <message>
       <source>p&amp;lughw</source>
@@ -553,11 +553,11 @@
     </message>
     <message>
       <source>pcm</source>
-      <translation type="unfinished">pcm</translation>
+      <translation>pcm</translation>
     </message>
     <message>
       <source>Exclusive mode (Experimental)</source>
-      <translation type="unfinished">Exclusive mode (Experimental)</translation>
+      <translation>専用モード (実験的)</translation>
     </message>
     <message>
       <source>Options</source>
@@ -578,6 +578,10 @@
     <message>
       <source>Improve headphone listening of stereo audio records (bs2b)</source>
       <translation>ステレオ音源をヘッドフォンで聴く場合の改善(bs2b)</translation>
+    </message>
+    <message>
+      <source>Use playbin3 when available</source>
+      <translation type="unfinished">Use playbin3 when available</translation>
     </message>
     <message>
       <source>Enable HTTP/2 for streaming</source>
@@ -712,7 +716,7 @@
     </message>
     <message>
       <source>Show song progress on taskbar</source>
-      <translation type="unfinished">Show song progress on taskbar</translation>
+      <translation>タスクバーに曲の進行状況を表示する</translation>
     </message>
     <message>
       <source>Resume playback on start</source>
@@ -828,7 +832,7 @@
     </message>
     <message>
       <source>Volume Increment</source>
-      <translation type="unfinished">Volume Increment</translation>
+      <translation>ボリュームの増加</translation>
     </message>
   </context>
   <context>
@@ -850,7 +854,7 @@
     <name>CollectionBackend</name>
     <message>
       <source>Unable to execute collection SQL query: %1</source>
-      <translation type="unfinished">Unable to execute collection SQL query: %1</translation>
+      <translation>コレクションSQLクエリを実行できません: %1</translation>
     </message>
     <message>
       <source>Failed SQL query: %1</source>
@@ -873,7 +877,7 @@
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>メニューポップアップツールボタン</translation>
     </message>
     <message>
       <source>Entire collection</source>
@@ -992,7 +996,7 @@
     <name>CollectionLibrary</name>
     <message>
       <source>Saving playcounts and ratings</source>
-      <translation type="unfinished">Saving playcounts and ratings</translation>
+      <translation>再生回数と評価を保存</translation>
     </message>
   </context>
   <context>
@@ -1088,11 +1092,19 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Use various artists for compilation albums</source>
-      <translation type="unfinished">Use various artists for compilation albums</translation>
+      <translation>さまざまなアーティストをコンピレーションアルバムに起用</translation>
     </message>
     <message>
-      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</source>
-      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</translation>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</translation>
+    </message>
+    <message>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</translation>
+    </message>
+    <message>
+      <source>Use sort tags for sorting when available</source>
+      <translation type="unfinished">Use sort tags for sorting when available</translation>
     </message>
     <message>
       <source>Album cover pixmap cache</source>
@@ -1191,7 +1203,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Search for this</source>
-      <translation type="unfinished">Search for this</translation>
+      <translation>これを検索</translation>
     </message>
     <message>
       <source>Organize files...</source>
@@ -1235,7 +1247,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Would you like to move the other songs on this album to Various Artists as well?</source>
-      <translation type="unfinished">Would you like to move the other songs on this album to Various Artists as well?</translation>
+      <translation>このアルバムの他の曲も様々なアーティストに移動してみませんか？</translation>
     </message>
     <message>
       <source>Error</source>
@@ -1287,7 +1299,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>メニューポップアップツールボタン</translation>
     </message>
     <message>
       <source>Title</source>
@@ -1335,7 +1347,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source> pt</source>
-      <translation type="unfinished"> pt</translation>
+      <translation> pt</translation>
     </message>
     <message>
       <source>Preview</source>
@@ -1407,7 +1419,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>%filename%</source>
-      <translation type="unfinished">%filename%</translation>
+      <translation>%filename%</translation>
     </message>
     <message>
       <source>Add song filename</source>
@@ -1415,7 +1427,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>%url%</source>
-      <translation type="unfinished">%url%</translation>
+      <translation>%url%</translation>
     </message>
     <message>
       <source>Add song URL</source>
@@ -1423,7 +1435,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>%rating%</source>
-      <translation type="unfinished">%rating%</translation>
+      <translation>%rating%</translation>
     </message>
     <message>
       <source>Add song rating</source>
@@ -1431,7 +1443,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>%originalyear%</source>
-      <translation type="unfinished">%originalyear%</translation>
+      <translation>%originalyear%</translation>
     </message>
     <message>
       <source>Add song original year tag</source>
@@ -1514,7 +1526,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>kbps</source>
-      <translation type="unfinished">kbps</translation>
+      <translation>kbps</translation>
     </message>
   </context>
   <context>
@@ -1552,7 +1564,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>メニューポップアップツールボタン</translation>
     </message>
     <message>
       <source>View</source>
@@ -1568,7 +1580,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>0</source>
-      <translation type="unfinished">0</translation>
+      <translation>0</translation>
     </message>
     <message>
       <source>Fetch Missing Covers</source>
@@ -1698,11 +1710,11 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Use Spotify settings to authenticate.</source>
-      <translation type="unfinished">Use Spotify settings to authenticate.</translation>
+      <translation>Spotify設定を使用して認証します。</translation>
     </message>
     <message>
       <source>Use Qobuz settings to authenticate.</source>
-      <translation type="unfinished">Use Qobuz settings to authenticate.</translation>
+      <translation>認証にはQobuz設定を使用します。</translation>
     </message>
     <message>
       <source>%1 needs authentication.</source>
@@ -1741,14 +1753,14 @@ If there are no matches then it will use the largest image in the directory.</so
     <name>CueParser</name>
     <message>
       <source>Saving CUE files is not supported.</source>
-      <translation type="unfinished">Saving CUE files is not supported.</translation>
+      <translation>CUEファイルの保存はサポートされていません。</translation>
     </message>
   </context>
   <context>
     <name>Database</name>
     <message>
       <source>Unable to execute SQL query: %1</source>
-      <translation type="unfinished">Unable to execute SQL query: %1</translation>
+      <translation>コレクションSQLクエリを実行できません: %1</translation>
     </message>
     <message>
       <source>Failed SQL query: %1</source>
@@ -2028,7 +2040,7 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>Last played</source>
       <comment>A playlist&apos;s tag.</comment>
-      <translation type="unfinished">Last played</translation>
+      <translation>最後に再生</translation>
     </message>
     <message>
       <source>File type</source>
@@ -2096,7 +2108,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>メニューポップアップツールボタン</translation>
     </message>
     <message>
       <source>Change art</source>
@@ -2172,15 +2184,15 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Complete lyrics automatically</source>
-      <translation type="unfinished">Complete lyrics automatically</translation>
+      <translation>歌詞を自動的に完成させる</translation>
     </message>
     <message>
       <source>(different across multiple songs)</source>
-      <translation type="unfinished">(different across multiple songs)</translation>
+      <translation>(複数の曲で異なります)</translation>
     </message>
     <message>
       <source>Different art across multiple songs.</source>
-      <translation type="unfinished">Different art across multiple songs.</translation>
+      <translation>複数の曲間で異なるアート。</translation>
     </message>
     <message>
       <source>Previous</source>
@@ -2204,7 +2216,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>kbps</source>
-      <translation type="unfinished">kbps</translation>
+      <translation>kbps</translation>
     </message>
     <message>
       <source>Unknown</source>
@@ -2264,7 +2276,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Reset song play statistics</source>
-      <translation type="unfinished">Reset song play statistics</translation>
+      <translation>曲の再生統計をリセット</translation>
     </message>
     <message>
       <source>Are you sure you want to reset this song&apos;s play statistics?</source>
@@ -2272,19 +2284,19 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>loading...</source>
-      <translation type="unfinished">loading...</translation>
+      <translation>読み込んでいます…</translation>
     </message>
     <message>
       <source>Not found.</source>
-      <translation type="unfinished">Not found.</translation>
+      <translation>見つかりませんでした。</translation>
     </message>
     <message>
       <source>Could not write metadata to %1</source>
-      <translation type="unfinished">Could not write metadata to %1</translation>
+      <translation>メタデータを %1に書き込めませんでした</translation>
     </message>
     <message>
       <source>Could not write metadata to %1: %2</source>
-      <translation type="unfinished">Could not write metadata to %1: %2</translation>
+      <translation>メタデータを%1: %2に書き込めませんでした</translation>
     </message>
   </context>
   <context>
@@ -3304,7 +3316,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Ctrl+T</source>
-      <translation type="unfinished">Ctrl+T</translation>
+      <translation>Ctrl+T</translation>
     </message>
     <message>
       <source>Toggle scrobbling</source>
@@ -3364,7 +3376,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Radios</source>
-      <translation type="unfinished">Radios</translation>
+      <translation>ラジオ</translation>
     </message>
     <message>
       <source>Devices</source>
@@ -3372,19 +3384,19 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Subsonic</source>
-      <translation type="unfinished">Subsonic</translation>
+      <translation>サブソニック</translation>
     </message>
     <message>
       <source>Tidal</source>
-      <translation type="unfinished">Tidal</translation>
+      <translation>Tidal</translation>
     </message>
     <message>
       <source>Spotify</source>
-      <translation type="unfinished">Spotify</translation>
+      <translation>Spotify</translation>
     </message>
     <message>
       <source>Qobuz</source>
-      <translation type="unfinished">Qobuz</translation>
+      <translation>Qobuz</translation>
     </message>
     <message>
       <source>Show all songs</source>
@@ -3416,7 +3428,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Toggle skip status</source>
-      <translation type="unfinished">Toggle skip status</translation>
+      <translation>キュー状態の切り替え</translation>
     </message>
     <message>
       <source>Rescan song(s)...</source>
@@ -3460,7 +3472,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Strawberry running under Rosetta</source>
-      <translation type="unfinished">Strawberry running under Rosetta</translation>
+      <translation>ストロベリーをロゼッタで開く</translation>
     </message>
     <message>
       <source>You are running Strawberry under Rosetta. Running Strawberry under Rosetta is unsupported and known to have issues. You should download Strawberry for the correct CPU architecture from %1</source>
@@ -3468,7 +3480,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Sponsoring Strawberry</source>
-      <translation type="unfinished">Sponsoring Strawberry</translation>
+      <translation>ストロベリーのスポンサーになる</translation>
     </message>
     <message>
       <source>Strawberry is free and open source software. If you like Strawberry, please consider sponsoring the project. For more information about sponsorship see our website %1</source>
@@ -3781,7 +3793,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>メニューポップアップツールボタン</translation>
     </message>
     <message>
       <source>Summary</source>
@@ -3821,7 +3833,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Strawberry Red</source>
-      <translation type="unfinished">Strawberry Red</translation>
+      <translation>ストロベリーレッド</translation>
     </message>
     <message>
       <source>Custom...</source>
@@ -3897,7 +3909,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>%filename%</source>
-      <translation type="unfinished">%filename%</translation>
+      <translation>%filename%</translation>
     </message>
     <message>
       <source>Add song filename</source>
@@ -3905,7 +3917,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>%url%</source>
-      <translation type="unfinished">%url%</translation>
+      <translation>%url%</translation>
     </message>
     <message>
       <source>Add song URL</source>
@@ -3913,7 +3925,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>%originalyear%</source>
-      <translation type="unfinished">%originalyear%</translation>
+      <translation>%originalyear%</translation>
     </message>
     <message>
       <source>Add song original year tag</source>
@@ -3981,6 +3993,10 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>Shuffle albums</source>
       <translation>アルバムをシャッフル</translation>
+    </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation type="unfinished">Shuffle grouping</translation>
     </message>
     <message>
       <source>Don&apos;t repeat</source>
@@ -4193,7 +4209,7 @@ If there are no matches then it will use the largest image in the directory.</so
     <name>ParserBase</name>
     <message>
       <source>Don&apos;t know how to handle %1</source>
-      <translation type="unfinished">Don&apos;t know how to handle %1</translation>
+      <translation>%1 の処理方法がわかりません</translation>
     </message>
   </context>
   <context>
@@ -4219,11 +4235,11 @@ If there are no matches then it will use the largest image in the directory.</so
     <name>Playlist</name>
     <message>
       <source>Could not write metadata to %1</source>
-      <translation type="unfinished">Could not write metadata to %1</translation>
+      <translation>メタデータを %1に書き込めませんでした</translation>
     </message>
     <message>
       <source>Could not write metadata to %1: %2</source>
-      <translation type="unfinished">Could not write metadata to %1: %2</translation>
+      <translation>メタデータを%1: %2に書き込めませんでした</translation>
     </message>
     <message>
       <source>Title</source>
@@ -4283,7 +4299,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Skip Count</source>
-      <translation type="unfinished">Skip Count</translation>
+      <translation>スキップ回数</translation>
     </message>
     <message>
       <source>Last Played</source>
@@ -4362,11 +4378,11 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>元に戻す</translation>
     </message>
     <message>
       <source>Redo</source>
-      <translation type="unfinished">Redo</translation>
+      <translation>やり直す</translation>
     </message>
     <message>
       <source>Playlist</source>
@@ -4522,8 +4538,8 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message numerus="yes">
       <source>%n track(s)</source>
-      <translation type="unfinished">
-        <numerusform>%n track(s)</numerusform>
+      <translation>
+        <numerusform>%n 曲</numerusform>
       </translation>
     </message>
   </context>
@@ -4539,19 +4555,19 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Unknown filetype: %1</source>
-      <translation type="unfinished">Unknown filetype: %1</translation>
+      <translation>不明なファイルタイプ: %1</translation>
     </message>
     <message>
       <source>Could not open file %1</source>
-      <translation type="unfinished">Could not open file %1</translation>
+      <translation>ファイル %1を開けませんでした</translation>
     </message>
     <message>
       <source>Directory %1 does not exist.</source>
-      <translation type="unfinished">Directory %1 does not exist.</translation>
+      <translation>ディレクトリ %1 が存在しません。</translation>
     </message>
     <message>
       <source>Failed to open %1 for writing.</source>
-      <translation type="unfinished">Failed to open %1 for writing.</translation>
+      <translation>%1 を書き込み用に開けませんでした。</translation>
     </message>
   </context>
   <context>
@@ -4634,6 +4650,10 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>Shuffle albums</source>
       <translation>アルバムをシャッフル</translation>
+    </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation type="unfinished">Shuffle grouping</translation>
     </message>
   </context>
   <context>
@@ -4784,15 +4804,15 @@ Are you sure you want to continue?</source>
     <name>PlaylistView</name>
     <message>
       <source>Hz</source>
-      <translation type="unfinished">Hz</translation>
+      <translation>Hz</translation>
     </message>
     <message>
       <source>Bit</source>
-      <translation type="unfinished">Bit</translation>
+      <translation>ビット</translation>
     </message>
     <message>
       <source>kbps</source>
-      <translation type="unfinished">kbps</translation>
+      <translation>kbps</translation>
     </message>
   </context>
   <context>
@@ -4955,11 +4975,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>LUFS</source>
-      <translation type="unfinished">LUFS</translation>
+      <translation>LUFS</translation>
     </message>
     <message>
       <source>LU</source>
-      <translation type="unfinished">LU</translation>
+      <translation>LU</translation>
     </message>
     <message>
       <source>File %1 is not recognized as a valid audio file.</source>
@@ -5015,35 +5035,35 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Failed to load image from data for %1</source>
-      <translation type="unfinished">Failed to load image from data for %1</translation>
+      <translation>%1 のデータから画像を読み込めませんでした</translation>
     </message>
     <message>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>成功</translation>
     </message>
     <message>
       <source>File is unsupported</source>
-      <translation type="unfinished">File is unsupported</translation>
+      <translation>ファイルはサポートされていません</translation>
     </message>
     <message>
       <source>Filename is missing</source>
-      <translation type="unfinished">Filename is missing</translation>
+      <translation>ファイル名がありません</translation>
     </message>
     <message>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>ファイルは存在しません</translation>
     </message>
     <message>
       <source>File could not be opened</source>
-      <translation type="unfinished">File could not be opened</translation>
+      <translation>ファイルを開けませんでした</translation>
     </message>
     <message>
       <source>Could not parse file</source>
-      <translation type="unfinished">Could not parse file</translation>
+      <translation>ファイルを解析できませんでした</translation>
     </message>
     <message>
       <source>Could save file</source>
-      <translation type="unfinished">Could save file</translation>
+      <translation>ファイルを保存できました</translation>
     </message>
     <message>
       <source>Unknown error</source>
@@ -5051,26 +5071,30 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Prefix a search term with a field name to limit the search to that field, e.g.:</source>
-      <translation type="unfinished">Prefix a search term with a field name to limit the search to that field, e.g.:</translation>
+      <translation>検索をそのフィールドに限定するには、検索語の前にフィールド名を付けます。e.g.:</translation>
     </message>
     <message>
       <source>artist</source>
       <translation>アーティスト</translation>
     </message>
     <message>
-      <source>searches for all artists containing the word %1. </source>
-      <translation type="unfinished">searches for all artists containing the word %1. </translation>
+      <source>searches for all artists containing the word %1.</source>
+      <translation>%1 という単語を含むすべてのアーティストを検索します。</translation>
     </message>
     <message>
       <source>Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </source>
-      <translation type="unfinished">Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </translation>
+      <translation>数値フィールドの検索語には、先頭に %1 または %2 を付けると、検索を絞り込むことができます。例: </translation>
+    </message>
+    <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation type="unfinished">A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</translation>
     </message>
     <message>
       <source>rating</source>
       <translation>評価</translation>
     </message>
     <message>
-      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
+      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
       <translation>複数の検索語を「%1」(デフォルト) および「%2」と組み合わせたり、括弧でグループ化したりすることもできます。</translation>
     </message>
     <message>
@@ -5151,11 +5175,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>A-Z</source>
-      <translation type="unfinished">A-Z</translation>
+      <translation>A-Z</translation>
     </message>
     <message>
       <source>Z-A</source>
-      <translation type="unfinished">Z-A</translation>
+      <translation>Z-A</translation>
     </message>
     <message>
       <source>oldest first</source>
@@ -5215,7 +5239,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Happy</source>
-      <translation type="unfinished">Happy</translation>
+      <translation>Happy</translation>
     </message>
     <message>
       <source>System colors</source>
@@ -5223,33 +5247,33 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Playlist</source>
-      <translation type="unfinished">Playlist</translation>
+      <translation>プレイリスト</translation>
     </message>
     <message>
       <source>Various artists</source>
-      <translation type="unfinished">Various artists</translation>
+      <translation>さまざまなアーティスト</translation>
     </message>
     <message numerus="yes">
       <source>add %n songs</source>
-      <translation type="unfinished">
-        <numerusform>add %n songs</numerusform>
+      <translation>
+        <numerusform>%n 曲を追加</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>remove %n songs</source>
-      <translation type="unfinished">
-        <numerusform>remove %n songs</numerusform>
+      <translation>
+        <numerusform>%n 曲を削除</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <source>move %n songs</source>
-      <translation type="unfinished">
-        <numerusform>move %n songs</numerusform>
+      <translation>
+        <numerusform>%n 曲の移動</numerusform>
       </translation>
     </message>
     <message>
       <source>sort songs</source>
-      <translation type="unfinished">sort songs</translation>
+      <translation>曲の並び替え</translation>
     </message>
     <message>
       <source>shuffle songs</source>

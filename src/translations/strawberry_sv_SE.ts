@@ -36,8 +36,8 @@
       <translation>Om du gillar Strawberry och har nytta av det, överväg att sponsra eller donera.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Du kan sponsra upphovsmannen på %1. Du kan också göra en engångsbetalning genom %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>Du kan sponsra upphovsmannen på %1 eller %2. Du kan också göra en engångsbetalning genom %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
@@ -339,15 +339,15 @@
     </message>
     <message>
       <source>Turbine</source>
-      <translation type="unfinished">Turbine</translation>
+      <translation>Turbin</translation>
     </message>
     <message>
       <source>Sonogram</source>
-      <translation type="unfinished">Sonogram</translation>
+      <translation>Sonogram</translation>
     </message>
     <message>
       <source>WaveRubber</source>
-      <translation type="unfinished">WaveRubber</translation>
+      <translation>WaveRubber</translation>
     </message>
   </context>
   <context>
@@ -502,7 +502,7 @@
     </message>
     <message>
       <source>Playlist playing song color</source>
-      <translation>Låtfärg för uppspelning av spellista </translation>
+      <translation>Färg på spelad låt i spellistan</translation>
     </message>
     <message>
       <source>System highlight color</source>
@@ -514,7 +514,7 @@
     </message>
     <message>
       <source>Select playlist playing song color:</source>
-      <translation>Välj låtfärg för uppspelning av spellista:</translation>
+      <translation>Välj färg för spelad låt i spellistan:</translation>
     </message>
     <message>
       <source>Select background image</source>
@@ -545,15 +545,15 @@
     </message>
     <message>
       <source>hw</source>
-      <translation type="unfinished">hw</translation>
+      <translation>hw</translation>
     </message>
     <message>
       <source>p&amp;lughw</source>
-      <translation type="unfinished">p&amp;lughw</translation>
+      <translation>p&amp;lughw</translation>
     </message>
     <message>
       <source>pcm</source>
-      <translation type="unfinished">pcm</translation>
+      <translation>pcm</translation>
     </message>
     <message>
       <source>Exclusive mode (Experimental)</source>
@@ -578,6 +578,10 @@
     <message>
       <source>Improve headphone listening of stereo audio records (bs2b)</source>
       <translation>Förbättra hörlurslyssning av stereoljudskivor (bs2b)</translation>
+    </message>
+    <message>
+      <source>Use playbin3 when available</source>
+      <translation type="unfinished">Use playbin3 when available</translation>
     </message>
     <message>
       <source>Enable HTTP/2 for streaming</source>
@@ -649,7 +653,7 @@
     </message>
     <message>
       <source>Fallback-gain</source>
-      <translation type="unfinished">Fallback-gain</translation>
+      <translation>Reservförstärkning</translation>
     </message>
     <message>
       <source>EBU R 128 Loudness Normalization</source>
@@ -873,7 +877,7 @@
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>MenuPopupToolButton</translation>
     </message>
     <message>
       <source>Entire collection</source>
@@ -1091,8 +1095,16 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <translation>Använd olika artister för samlingsalbum</translation>
     </message>
     <message>
-      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</source>
-      <translation>Hoppa över ledande artiklar (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) när du sorterar artistnamn</translation>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</translation>
+    </message>
+    <message>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</translation>
+    </message>
+    <message>
+      <source>Use sort tags for sorting when available</source>
+      <translation type="unfinished">Use sort tags for sorting when available</translation>
     </message>
     <message>
       <source>Album cover pixmap cache</source>
@@ -1124,7 +1136,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Save playcounts to song tags when possible</source>
-      <translation>Spara antal spelningar till låttaggar när det är möjligt </translation>
+      <translation>Spara antal uppspelningar i låttaggar när det är möjligt</translation>
     </message>
     <message>
       <source>Save ratings to song tags when possible</source>
@@ -1219,7 +1231,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Rescan song(s)</source>
-      <translation>Skanna om av låt(ar)...</translation>
+      <translation>Skanna om låt(ar)</translation>
     </message>
     <message>
       <source>Show in various artists</source>
@@ -1287,7 +1299,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>MenuPopupToolButton</translation>
     </message>
     <message>
       <source>Title</source>
@@ -1552,7 +1564,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>MenuPopupToolButton</translation>
     </message>
     <message>
       <source>View</source>
@@ -2096,7 +2108,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>MenuPopupToolButton</translation>
     </message>
     <message>
       <source>Change art</source>
@@ -2240,23 +2252,23 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Album cover editing is only available for collection songs.</source>
-      <translation>Redigering av albumomslag är endast tillgänglig för samlingslåtar.</translation>
+      <translation>Redigering av albumomslag är endast tillgänglig för låtar i samlingen.</translation>
     </message>
     <message>
       <source>Cover changed: Will be cleared when saved.</source>
-      <translation>Omslaget bytt: kommer att rensas när det sparas. </translation>
+      <translation>Omslaget har ändrats: kommer att rensas när det sparas.</translation>
     </message>
     <message>
       <source>Cover changed: Will be unset when saved.</source>
-      <translation>Omslaget bytt: återställs när det sparas. </translation>
+      <translation>Omslaget har ändrats: kommer inte att vara inställt när det sparas.</translation>
     </message>
     <message>
       <source>Cover changed: Will be deleted when saved.</source>
-      <translation>Omslaget bytt: kommer att tas bort när det sparas. </translation>
+      <translation>Omslaget har ändrats: kommer att tas bort när det sparas.</translation>
     </message>
     <message>
       <source>Cover changed: Will set new when saved.</source>
-      <translation>Omslaget bytt: ställer in nytt när det sparas. </translation>
+      <translation>Omslaget har ändrats: kommer att ställa in ett nytt omslag när det sparas.</translation>
     </message>
     <message>
       <source>Never</source>
@@ -2440,7 +2452,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Icons sidebar</source>
-      <translation type="unfinished">Icons sidebar</translation>
+      <translation>Sidofält med ikoner</translation>
     </message>
     <message>
       <source>Small sidebar</source>
@@ -2749,7 +2761,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     <name>GroupByDialog</name>
     <message>
       <source>Collection advanced grouping</source>
-      <translation>Samling avancerad gruppering</translation>
+      <translation>Avancerad gruppering av samling</translation>
     </message>
     <message>
       <source>You can change the way the songs in the collection are organized.</source>
@@ -2757,7 +2769,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Group Collection by...</source>
-      <translation>Gruppera samling av...</translation>
+      <translation>Gruppera samling efter...</translation>
     </message>
     <message>
       <source>First level</source>
@@ -2882,7 +2894,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Last played</source>
-      <translation type="unfinished">Last played</translation>
+      <translation>Senast spelad</translation>
     </message>
     <message>
       <source>Play counts</source>
@@ -3650,7 +3662,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Error connecting MTP device %1: %2</source>
-      <translation type="unfinished">Error connecting MTP device %1: %2</translation>
+      <translation>Fel vid anslutning till MTP-enheten %1: %2</translation>
     </message>
   </context>
   <context>
@@ -3781,7 +3793,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>MenuPopupToolButton</translation>
     </message>
     <message>
       <source>Summary</source>
@@ -3981,6 +3993,10 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     <message>
       <source>Shuffle albums</source>
       <translation>Blanda album</translation>
+    </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation>Blanda gruppering</translation>
     </message>
     <message>
       <source>Don&apos;t repeat</source>
@@ -4343,7 +4359,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>CUE</source>
-      <translation type="unfinished">CUE</translation>
+      <translation>CUE</translation>
     </message>
     <message>
       <source>Integrated Loudness</source>
@@ -4635,6 +4651,10 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     <message>
       <source>Shuffle albums</source>
       <translation>Blanda album</translation>
+    </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation>Blanda gruppering</translation>
     </message>
   </context>
   <context>
@@ -4956,11 +4976,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>LUFS</source>
-      <translation type="unfinished">LUFS</translation>
+      <translation>LUFS</translation>
     </message>
     <message>
       <source>LU</source>
-      <translation type="unfinished">LU</translation>
+      <translation>LU</translation>
     </message>
     <message>
       <source>File %1 is not recognized as a valid audio file.</source>
@@ -5040,7 +5060,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Could not parse file</source>
-      <translation>Kunde inte analysera filen</translation>
+      <translation>Kunde inte tolka filen</translation>
     </message>
     <message>
       <source>Could save file</source>
@@ -5059,19 +5079,23 @@ Are you sure you want to continue?</source>
       <translation>artist</translation>
     </message>
     <message>
-      <source>searches for all artists containing the word %1. </source>
-      <translation>söker efter alla artister som innehåller ordet %1. </translation>
+      <source>searches for all artists containing the word %1.</source>
+      <translation>söker efter alla artister som innehåller ordet %1.</translation>
     </message>
     <message>
       <source>Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </source>
       <translation>Söktermer för numeriska fält kan prefixas med %1 eller %2 för att förfina sökningen, t.ex.:</translation>
     </message>
     <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation type="unfinished">A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</translation>
+    </message>
+    <message>
       <source>rating</source>
       <translation>betyg</translation>
     </message>
     <message>
-      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
+      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
       <translation>Flera söktermer kan också kombineras med &quot;%1&quot; (standard) och &quot;%2&quot;, samt grupperas med parenteser.</translation>
     </message>
     <message>
@@ -6076,7 +6100,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Last played</source>
-      <translation type="unfinished">Last played</translation>
+      <translation>Senast spelad</translation>
     </message>
     <message>
       <source>Most played</source>
@@ -6448,7 +6472,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>MenuPopupToolButton</translation>
     </message>
     <message>
       <source>artists</source>
@@ -6704,7 +6728,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Fingerprinting song</source>
-      <translation type="unfinished">Fingerprinting song</translation>
+      <translation>Skapar fingeravtryck för låt</translation>
     </message>
     <message>
       <source>Downloading metadata</source>
@@ -7281,7 +7305,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Opti&amp;mize for bitrate</source>
-      <translation>Optimera för bitfrekvens</translation>
+      <translation>Opti&amp;mera för bitfrekvens</translation>
     </message>
     <message>
       <source>Bitrate</source>

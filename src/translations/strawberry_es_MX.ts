@@ -36,8 +36,8 @@
       <translation>Si le gusta Strawberry y le da uso, plantéese patrocinarlo o realizar una donación.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Puede patrocinar al autor en %1. También puede realizar una aportación económica a través de %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>Puede patrocinar al autor en %1 o %2. También puede realizar una aportación económica a través de %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
@@ -580,6 +580,10 @@
       <translation>Mejora la escucha por auriculares de grabaciones de audio estéreo (bs2b)</translation>
     </message>
     <message>
+      <source>Use playbin3 when available</source>
+      <translation type="unfinished">Usar playbin3 si estan disponibles</translation>
+    </message>
+    <message>
       <source>Enable HTTP/2 for streaming</source>
       <translation>Habilitar HTTP/2 para streaming</translation>
     </message>
@@ -1090,8 +1094,16 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Usar varios artistas para los álbumes de compilación</translation>
     </message>
     <message>
-      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</source>
-      <translation>Omitir artículos principales (&quot;él&quot;, &quot;ella&quot;, &quot;un&quot;, &quot;una&quot;) al ordenar los nombres de los artistas</translation>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</translation>
+    </message>
+    <message>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</translation>
+    </message>
+    <message>
+      <source>Use sort tags for sorting when available</source>
+      <translation type="unfinished">Use sort tags for sorting when available</translation>
     </message>
     <message>
       <source>Album cover pixmap cache</source>
@@ -3982,6 +3994,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Mezclar álbumes</translation>
     </message>
     <message>
+      <source>Shuffle grouping</source>
+      <translation>Mezclar agrupamiento</translation>
+    </message>
+    <message>
       <source>Don&apos;t repeat</source>
       <translation>No repetir</translation>
     </message>
@@ -4635,6 +4651,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <source>Shuffle albums</source>
       <translation>Mezclar álbumes</translation>
     </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation>Mezclar agrupamiento</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistSettingsPage</name>
@@ -5058,20 +5078,24 @@ Are you sure you want to continue?</source>
       <translation>artista</translation>
     </message>
     <message>
-      <source>searches for all artists containing the word %1. </source>
-      <translation>busca todos los artistas que contienen la palabra %1. </translation>
+      <source>searches for all artists containing the word %1.</source>
+      <translation>busca todos los artistas que contienen la palabra %1.</translation>
     </message>
     <message>
       <source>Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </source>
       <translation>Los términos de búsqueda para campos numéricos pueden llevar %1 o %2 como prefijos para refinar la búsqueda. Por ejemplo: </translation>
     </message>
     <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation type="unfinished">A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</translation>
+    </message>
+    <message>
       <source>rating</source>
       <translation>valoración</translation>
     </message>
     <message>
-      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
-      <translation>También se pueden combinar múltiples términos de búsqueda con &quot;%1&quot; (por defecto) y &quot;%2&quot;, así como agruparlos con paréntesis. </translation>
+      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
+      <translation>También se pueden combinar múltiples términos de búsqueda con &quot;%1&quot; (por defecto) y &quot;%2&quot;, así como agruparlos con paréntesis.</translation>
     </message>
     <message>
       <source>Available fields</source>

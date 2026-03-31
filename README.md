@@ -17,7 +17,9 @@ It’s written in **C++ using the Qt framework**, designed for **audiophiles and
 - **Forum:** https://forum.strawberrymusicplayer.org
 - **GitHub:** https://github.com/strawberrymusicplayer/strawberry
 - **Latest builds:** https://builds.strawberrymusicplayer.org
-- **openSUSE Build Service:** https://build.opensuse.org/package/show/home:jonaski:audio/strawberry
+- **openSUSE Build Service:**
+  - Stable: https://build.opensuse.org/package/show/home:jonaski:strawberry/strawberry
+  - Unstable: https://build.opensuse.org/package/show/home:jonaski:strawberry-dev/strawberry
 - **Ubuntu PPAs:**
   - Stable: https://launchpad.net/~jonaski/+archive/ubuntu/strawberry
   - Unstable: https://launchpad.net/~jonaski/+archive/ubuntu/strawberry-unstable
@@ -64,7 +66,7 @@ Supporting open-source developers helps ensure continued maintenance and improve
 - Loudness analysis and EBU R128 normalization
 - Editing tags and fetching missing tags via [MusicBrainz](https://musicbrainz.org/)
 - Album art from: [Last.fm](https://www.last.fm/), [MusicBrainz](https://musicbrainz.org/), [Discogs](https://www.discogs.com/), [Musixmatch](https://www.musixmatch.com/), [Deezer](https://www.deezer.com/), [Tidal](https://www.tidal.com/), [Qobuz](https://www.qobuz.com/), [Spotify](https://www.spotify.com/)
-- Lyrics from: [Genius](https://genius.com/), [Musixmatch](https://www.musixmatch.com/), [ChartLyrics](http://www.chartlyrics.com/), [lyrics.ovh](https://lyrics.ovh/), [lololyrics](https://www.lololyrics.com/), [songlyrics](https://www.songlyrics.com/), [azlyrics](https://www.azlyrics.com/), [elyrics](https://www.elyrics.net/), [letras](https://www.letras.mus.br), [LyricFind](https://lyrics.lyricfind.com)
+- Lyrics from: [Genius](https://genius.com/), [Musixmatch](https://www.musixmatch.com/), [ChartLyrics](http://www.chartlyrics.com/), [lyrics.ovh](https://lyrics.ovh/), [lololyrics](https://www.lololyrics.com/), [songlyrics](https://www.songlyrics.com/), [azlyrics](https://www.azlyrics.com/), [elyrics](https://www.elyrics.net/), [letras](https://www.letras.mus.br), [LyricFind](https://lyrics.lyricfind.com) and [lrclib.net](https://lrclib.net/)
 - Audio analyzer and equalizer
 - Transfer music to USB, MTP and iPod devices
 - Scrobbling to [Last.fm](https://www.last.fm/) and [ListenBrainz](https://listenbrainz.org/)
@@ -107,7 +109,6 @@ To build Strawberry from source, you’ll need:
 - MTP devices: [libmtp](http://libmtp.sourceforge.net/)
 - iPod Classic: [libgpod](http://www.gtkpod.org/libgpod/)
 - EBU R128 normalization: [libebur128](https://github.com/jiixyj/libebur128)
-- Discord presence: [RapidJSON](https://rapidjson.org/)
 
 Also install GStreamer plugins **base**, **good**, and optionally **bad**, **ugly** and **libav** for full codec support.
 
@@ -126,7 +127,7 @@ Also install GStreamer plugins **base**, **good**, and optionally **bad**, **ugl
     cmake --build build --parallel $(nproc)
     sudo cmake --install build
 
-For building on Windows with Visual Studio 2022, see: :point_right: https://github.com/strawberrymusicplayer/strawberry-msvc
+For building on Windows with Visual Studio 2022, see: :point_right: https://github.com/strawberrymusicplayer/strawberry-msvc-build-tools
 
 ---
 

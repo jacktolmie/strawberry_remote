@@ -36,8 +36,8 @@
       <translation>Si le gusta Strawberry y le da uso, plantéese patrocinarlo o realizar una donación.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Puede patrocinar al autor en %1. También puede realizar una aportación económica a través de %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>Puede patrocinar al autor en %1 o %2. También puede realizar una aportación económica a través de %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
@@ -119,11 +119,11 @@
     </message>
     <message>
       <source>Failed to open cover file %1 for reading: %2</source>
-      <translation type="unfinished">Failed to open cover file %1 for reading: %2</translation>
+      <translation>No se pudo abrir el archivo de portada %1 para lectura: %2</translation>
     </message>
     <message>
       <source>Cover file %1 is empty.</source>
-      <translation type="unfinished">Cover file %1 is empty.</translation>
+      <translation>El archivo de portada %1 está vacío.</translation>
     </message>
     <message>
       <source>unknown</source>
@@ -135,27 +135,27 @@
     </message>
     <message>
       <source>Failed to open cover file %1 for writing: %2</source>
-      <translation type="unfinished">Failed to open cover file %1 for writing: %2</translation>
+      <translation>No se pudo abrir el archivo de portada %1 para escribir: %2</translation>
     </message>
     <message>
       <source>Failed writing cover to file %1: %2</source>
-      <translation type="unfinished">Failed writing cover to file %1: %2</translation>
+      <translation>Error al escribir la portada en el archivo %1: %2</translation>
     </message>
     <message>
       <source>Failed writing cover to file %1.</source>
-      <translation type="unfinished">Failed writing cover to file %1.</translation>
+      <translation>Error al escribir la portada en el archivo %1.</translation>
     </message>
     <message>
       <source>Failed to delete cover file %1: %2</source>
-      <translation type="unfinished">Failed to delete cover file %1: %2</translation>
+      <translation>No se pudo eliminar el archivo de portada %1: %2</translation>
     </message>
     <message>
       <source>Failed to write cover to file %1: %2</source>
-      <translation type="unfinished">Failed to write cover to file %1: %2</translation>
+      <translation>No se pudo escribir la portada en el archivo %1: %2</translation>
     </message>
     <message>
       <source>Could not save cover to file %1.</source>
-      <translation type="unfinished">Could not save cover to file %1.</translation>
+      <translation>No se pudo guardar la portada en el archivo %1.</translation>
     </message>
   </context>
   <context>
@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Could not save cover to file %1.</source>
-      <translation type="unfinished">Could not save cover to file %1.</translation>
+      <translation>No se pudo guardar la portada en el archivo %1.</translation>
     </message>
   </context>
   <context>
@@ -339,7 +339,7 @@
     </message>
     <message>
       <source>Turbine</source>
-      <translation type="unfinished">Turbine</translation>
+      <translation>Turbina</translation>
     </message>
     <message>
       <source>Sonogram</source>
@@ -549,7 +549,7 @@
     </message>
     <message>
       <source>p&amp;lughw</source>
-      <translation type="unfinished">p&amp;lughw</translation>
+      <translation>enchufe</translation>
     </message>
     <message>
       <source>pcm</source>
@@ -569,7 +569,7 @@
     </message>
     <message>
       <source>Upmix / downmix to</source>
-      <translation type="unfinished">Upmix / downmix to</translation>
+      <translation>Mezcla ascendente/descendente a</translation>
     </message>
     <message>
       <source>channels</source>
@@ -577,15 +577,19 @@
     </message>
     <message>
       <source>Improve headphone listening of stereo audio records (bs2b)</source>
-      <translation type="unfinished">Improve headphone listening of stereo audio records (bs2b)</translation>
+      <translation>Mejorar la escucha de grabaciones de audio estéreo con auriculares (B2B)</translation>
+    </message>
+    <message>
+      <source>Use playbin3 when available</source>
+      <translation type="unfinished">Usar playbin3 si estan disponibles</translation>
     </message>
     <message>
       <source>Enable HTTP/2 for streaming</source>
-      <translation type="unfinished">Enable HTTP/2 for streaming</translation>
+      <translation>Habilitar HTTP/2 para transmisión</translation>
     </message>
     <message>
       <source>Use strict SSL mode</source>
-      <translation type="unfinished">Use strict SSL mode</translation>
+      <translation>Utilice el modo SSL estricto</translation>
     </message>
     <message>
       <source>Buffer</source>
@@ -649,19 +653,19 @@
     </message>
     <message>
       <source>Fallback-gain</source>
-      <translation type="unfinished">Fallback-gain</translation>
+      <translation>Ganancia de respaldo</translation>
     </message>
     <message>
       <source>EBU R 128 Loudness Normalization</source>
-      <translation type="unfinished">EBU R 128 Loudness Normalization</translation>
+      <translation>Normalización de sonoridad EBU R 128</translation>
     </message>
     <message>
       <source>Perform track loudness normalization</source>
-      <translation type="unfinished">Perform track loudness normalization</translation>
+      <translation>Realizar la normalización de la sonoridad de la pista</translation>
     </message>
     <message>
       <source>Target Level</source>
-      <translation type="unfinished">Target Level</translation>
+      <translation>Nivel objetivo</translation>
     </message>
     <message>
       <source>Fading</source>
@@ -712,7 +716,7 @@
     </message>
     <message>
       <source>Show song progress on taskbar</source>
-      <translation type="unfinished">Show song progress on taskbar</translation>
+      <translation>Mostrar el progreso de la canción en la barra de tareas</translation>
     </message>
     <message>
       <source>Resume playback on start</source>
@@ -850,15 +854,15 @@
     <name>CollectionBackend</name>
     <message>
       <source>Unable to execute collection SQL query: %1</source>
-      <translation type="unfinished">Unable to execute collection SQL query: %1</translation>
+      <translation>No se puede ejecutar la consulta SQL de recopilación: %1</translation>
     </message>
     <message>
       <source>Failed SQL query: %1</source>
-      <translation type="unfinished">Failed SQL query: %1</translation>
+      <translation>Consulta SQL fallida: %1</translation>
     </message>
     <message>
       <source>Updating %1 database.</source>
-      <translation type="unfinished">Updating %1 database.</translation>
+      <translation>Actualizando la base de datos %1.</translation>
     </message>
   </context>
   <context>
@@ -873,7 +877,7 @@
     </message>
     <message>
       <source>MenuPopupToolButton</source>
-      <translation type="unfinished">MenuPopupToolButton</translation>
+      <translation>Botón de herramienta emergente de menú</translation>
     </message>
     <message>
       <source>Entire collection</source>
@@ -992,7 +996,7 @@
     <name>CollectionLibrary</name>
     <message>
       <source>Saving playcounts and ratings</source>
-      <translation type="unfinished">Saving playcounts and ratings</translation>
+      <translation>Guardar recuentos de reproducciones y calificaciones</translation>
     </message>
   </context>
   <context>
@@ -1050,11 +1054,11 @@
     </message>
     <message>
       <source>Perform song EBU R 128 analysis (required for EBU R 128 loudness normalization)</source>
-      <translation type="unfinished">Perform song EBU R 128 analysis (required for EBU R 128 loudness normalization)</translation>
+      <translation>Realizar el análisis de la canción EBU R 128 (necesario para la normalización de la sonoridad EBU R 128)</translation>
     </message>
     <message>
       <source>Expire unavailable songs after</source>
-      <translation type="unfinished">Expire unavailable songs after</translation>
+      <translation>Las canciones no disponibles expirarán después de</translation>
     </message>
     <message>
       <source>days</source>
@@ -1087,11 +1091,19 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Use various artists for compilation albums</source>
-      <translation type="unfinished">Use various artists for compilation albums</translation>
+      <translation>Utilice varios artistas para álbumes recopilatorios</translation>
     </message>
     <message>
-      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</source>
-      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</translation>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</translation>
+    </message>
+    <message>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</translation>
+    </message>
+    <message>
+      <source>Use sort tags for sorting when available</source>
+      <translation type="unfinished">Use sort tags for sorting when available</translation>
     </message>
     <message>
       <source>Album cover pixmap cache</source>
@@ -1119,27 +1131,27 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Song playcounts and ratings</source>
-      <translation type="unfinished">Song playcounts and ratings</translation>
+      <translation>Número de reproducciones y calificaciones de canciones</translation>
     </message>
     <message>
       <source>Save playcounts to song tags when possible</source>
-      <translation type="unfinished">Save playcounts to song tags when possible</translation>
+      <translation>Guarde los recuentos de reproducciones en las etiquetas de las canciones cuando sea posible</translation>
     </message>
     <message>
       <source>Save ratings to song tags when possible</source>
-      <translation type="unfinished">Save ratings to song tags when possible</translation>
+      <translation>Guarde las calificaciones en las etiquetas de las canciones cuando sea posible</translation>
     </message>
     <message>
       <source>Overwrite database playcount when songs are re-read from disk</source>
-      <translation type="unfinished">Overwrite database playcount when songs are re-read from disk</translation>
+      <translation>Sobrescribir el recuento de reproducciones de la base de datos cuando se vuelven a leer las canciones desde el disco</translation>
     </message>
     <message>
       <source>Overwrite database rating when songs are re-read from disk</source>
-      <translation type="unfinished">Overwrite database rating when songs are re-read from disk</translation>
+      <translation>Sobrescribir la clasificación de la base de datos cuando se vuelven a leer las canciones desde el disco</translation>
     </message>
     <message>
       <source>Save playcounts and ratings to files now</source>
-      <translation type="unfinished">Save playcounts and ratings to files now</translation>
+      <translation>Guarda recuentos de reproducciones y calificaciones en archivos ahora</translation>
     </message>
     <message>
       <source>Enable delete files in the right click context menu</source>
@@ -1151,7 +1163,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Write all playcounts and ratings to files</source>
-      <translation type="unfinished">Write all playcounts and ratings to files</translation>
+      <translation>Escribe todos los recuentos de reproducción y calificaciones en archivos</translation>
     </message>
     <message>
       <source>Are you sure you want to write song playcounts and ratings to file for all songs in your collection?</source>
@@ -1238,7 +1250,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Error</source>
-      <translation type="unfinished">Error</translation>
+      <translation>Error</translation>
     </message>
     <message>
       <source>None of the selected songs were suitable for copying to a device</source>
@@ -1461,11 +1473,11 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>EBU R 128 Integrated Loudness</source>
-      <translation type="unfinished">EBU R 128 Integrated Loudness</translation>
+      <translation>EBU R 128 Sonoridad integrada</translation>
     </message>
     <message>
       <source>EBU R 128 Loudness Range</source>
-      <translation type="unfinished">EBU R 128 Loudness Range</translation>
+      <translation/>
     </message>
     <message>
       <source>Show album cover</source>
@@ -3982,6 +3994,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Mezclar álbumes</translation>
     </message>
     <message>
+      <source>Shuffle grouping</source>
+      <translation>Mezclar agrupamiento</translation>
+    </message>
+    <message>
       <source>Don&apos;t repeat</source>
       <translation>No repetir</translation>
     </message>
@@ -4635,6 +4651,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <source>Shuffle albums</source>
       <translation>Mezclar álbumes</translation>
     </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation>Mezclar agrupamiento</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistSettingsPage</name>
@@ -5058,20 +5078,24 @@ Are you sure you want to continue?</source>
       <translation>artista</translation>
     </message>
     <message>
-      <source>searches for all artists containing the word %1. </source>
-      <translation type="unfinished">searches for all artists containing the word %1. </translation>
+      <source>searches for all artists containing the word %1.</source>
+      <translation type="unfinished">searches for all artists containing the word %1.</translation>
     </message>
     <message>
       <source>Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </source>
       <translation type="unfinished">Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </translation>
     </message>
     <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation type="unfinished">A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</translation>
+    </message>
+    <message>
       <source>rating</source>
       <translation type="unfinished">rating</translation>
     </message>
     <message>
-      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
-      <translation type="unfinished">Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </translation>
+      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
+      <translation type="unfinished">Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</translation>
     </message>
     <message>
       <source>Available fields</source>

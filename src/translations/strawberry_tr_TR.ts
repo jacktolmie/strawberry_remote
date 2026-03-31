@@ -36,8 +36,8 @@
       <translation>Eğer Strawberry&apos;yi beğendiyseniz ve işinize yarıyorsa sponsor olmayı düşünebilir veya bağışta bulunabilirsiniz.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Geliştiriciye %1 üzerinden sponsor olabilirsiniz. Ayrıca %2 üzerinden tek seferlik ödeme yapabilirsiniz.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>Geliştiriciye %1 veya %2 üzerinden sponsor olabilirsiniz. Ayrıca %3 üzerinden tek seferlik ödeme yapabilirsiniz.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
@@ -580,6 +580,10 @@
       <translation type="unfinished">Improve headphone listening of stereo audio records (bs2b)</translation>
     </message>
     <message>
+      <source>Use playbin3 when available</source>
+      <translation type="unfinished">Use playbin3 when available</translation>
+    </message>
+    <message>
       <source>Enable HTTP/2 for streaming</source>
       <translation type="unfinished">Enable HTTP/2 for streaming</translation>
     </message>
@@ -1091,8 +1095,16 @@ If there are no matches then it will use the largest image in the directory.</tr
       <translation>Derleme albümleri için Çeşitli Sanatçılar kullan</translation>
     </message>
     <message>
-      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</source>
-      <translation>"the", "a", "an' gibi başlıkları yok say</translation>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</translation>
+    </message>
+    <message>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</translation>
+    </message>
+    <message>
+      <source>Use sort tags for sorting when available</source>
+      <translation type="unfinished">Use sort tags for sorting when available</translation>
     </message>
     <message>
       <source>Album cover pixmap cache</source>
@@ -1187,7 +1199,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Queue to play next</source>
-      <translation>Sıradaki Yap</translation>
+      <translation>Sıradaki yap</translation>
     </message>
     <message>
       <source>Search for this</source>
@@ -2028,7 +2040,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     <message>
       <source>Last played</source>
       <comment>A playlist&apos;s tag.</comment>
-      <translation>En son çalınan</translation>
+      <translation>Son çalınma</translation>
     </message>
     <message>
       <source>File type</source>
@@ -2882,7 +2894,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Last played</source>
-      <translation>En son çalınan</translation>
+      <translation>Son çalınma</translation>
     </message>
     <message>
       <source>Play counts</source>
@@ -3196,7 +3208,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Open audio &amp;CD...</source>
-      <translation>Ses CDsi aç</translation>
+      <translation>Ses CD'si aç...</translation>
     </message>
     <message>
       <source>&amp;Cover Manager</source>
@@ -3496,7 +3508,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Queue to play next</source>
-      <translation>Sıradaki Yap</translation>
+      <translation>Sıradaki yap</translation>
     </message>
     <message>
       <source>Unskip track</source>
@@ -3575,7 +3587,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Do not show this message again.</source>
-      <translation type="unfinished">Do not show this message again.</translation>
+      <translation>Bu mesajı bir daha gösterme.</translation>
     </message>
   </context>
   <context>
@@ -3737,7 +3749,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Popup duration</source>
-      <translation type="unfinished">Popup duration</translation>
+      <translation>Açılır pencere süresi</translation>
     </message>
     <message>
       <source> seconds</source>
@@ -3745,19 +3757,19 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Disable duration</source>
-      <translation type="unfinished">Disable duration</translation>
+      <translation>Süreyi devre dışı bırak</translation>
     </message>
     <message>
       <source>Show a notification when I change the volume</source>
-      <translation type="unfinished">Show a notification when I change the volume</translation>
+      <translation>Ses seviyesini değiştirdiğimde bir bildirim göster</translation>
     </message>
     <message>
       <source>Show a notification when I change the repeat/shuffle mode</source>
-      <translation type="unfinished">Show a notification when I change the repeat/shuffle mode</translation>
+      <translation>Yinele/karıştır modunu değiştirdiğimde bir bildirim göster</translation>
     </message>
     <message>
       <source>Show a notification when I pause playback</source>
-      <translation type="unfinished">Show a notification when I pause playback</translation>
+      <translation>Oynatmayı durdurduğumda bir bildirim göster</translation>
     </message>
     <message>
       <source>Show a notification when I resume playback</source>
@@ -3769,11 +3781,11 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Custom message settings</source>
-      <translation type="unfinished">Custom message settings</translation>
+      <translation>Özel mesaj ayarları</translation>
     </message>
     <message>
       <source>Use a custom message for notifications</source>
-      <translation type="unfinished">Use a custom message for notifications</translation>
+      <translation>Bildirimler için özel bir mesaj kullan</translation>
     </message>
     <message>
       <source>Preview</source>
@@ -3801,7 +3813,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Text options</source>
-      <translation type="unfinished">Text options</translation>
+      <translation>Yazı seçenekleri</translation>
     </message>
     <message>
       <source>Choose font...</source>
@@ -3981,6 +3993,10 @@ If there are no matches then it will use the largest image in the directory.</tr
     <message>
       <source>Shuffle albums</source>
       <translation>Albümleri karıştır</translation>
+    </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation>Gruplama karıştır</translation>
     </message>
     <message>
       <source>Don&apos;t repeat</source>
@@ -4167,7 +4183,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>File extension</source>
-      <translation type="unfinished">File extension</translation>
+      <translation>Dosya uzantısı</translation>
     </message>
   </context>
   <context>
@@ -4431,7 +4447,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>&amp;Hide %1</source>
-      <translation>&amp;%1&apos;i sakla</translation>
+      <translation>&amp;%1 ögesini sakla</translation>
     </message>
   </context>
   <context>
@@ -4635,6 +4651,10 @@ If there are no matches then it will use the largest image in the directory.</tr
     <message>
       <source>Shuffle albums</source>
       <translation>Albümleri karıştır</translation>
+    </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation>Gruplama karıştır</translation>
     </message>
   </context>
   <context>
@@ -5059,20 +5079,24 @@ Devam etmek istediğinizden emin misiniz?</translation>
       <translation>sanatçı</translation>
     </message>
     <message>
-      <source>searches for all artists containing the word %1. </source>
-      <translation type="unfinished">searches for all artists containing the word %1. </translation>
+      <source>searches for all artists containing the word %1.</source>
+      <translation type="unfinished">searches for all artists containing the word %1.</translation>
     </message>
     <message>
       <source>Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </source>
       <translation type="unfinished">Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </translation>
     </message>
     <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation type="unfinished">A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</translation>
+    </message>
+    <message>
       <source>rating</source>
       <translation>derecelendirme</translation>
     </message>
     <message>
-      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
-      <translation type="unfinished">Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </translation>
+      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
+      <translation type="unfinished">Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</translation>
     </message>
     <message>
       <source>Available fields</source>
@@ -6231,7 +6255,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <name>SongLoaderInserter</name>
     <message>
       <source>Error while loading audio CD.</source>
-      <translation>Ses CD&apos;si yüklenirken hata.</translation>
+      <translation>Ses CD'si yüklenirken hata.</translation>
     </message>
     <message>
       <source>Loading tracks</source>
@@ -6407,7 +6431,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
       <source>Queue to play next</source>
-      <translation>Sıradaki Yap</translation>
+      <translation>Sıradaki yap</translation>
     </message>
     <message>
       <source>Remove from favorites</source>
@@ -7226,7 +7250,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <name>TranscoderOptionsASF</name>
     <message>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Biçim</translation>
     </message>
     <message>
       <source>Bitrate</source>
@@ -7320,7 +7344,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <name>TranscoderOptionsOpus</name>
     <message>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Biçim</translation>
     </message>
     <message>
       <source>Bitrate</source>
@@ -7328,19 +7352,19 @@ Devam etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
       <source> kbps</source>
-      <translation type="unfinished"> kbps</translation>
+      <translation> kbps</translation>
     </message>
   </context>
   <context>
     <name>TranscoderOptionsSpeex</name>
     <message>
       <source>Form</source>
-      <translation type="unfinished">Form</translation>
+      <translation>Biçim</translation>
     </message>
     <message>
       <source>Quality</source>
       <comment>Sound quality</comment>
-      <translation type="unfinished">Quality</translation>
+      <translation>Kalite</translation>
     </message>
     <message>
       <source>Bitrate</source>
@@ -7348,11 +7372,11 @@ Devam etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
       <source>automatic</source>
-      <translation type="unfinished">automatic</translation>
+      <translation>otomatik</translation>
     </message>
     <message>
       <source> kbps</source>
-      <translation type="unfinished"> kbps</translation>
+      <translation> kbps</translation>
     </message>
     <message>
       <source>Average bitrate</source>
@@ -7360,15 +7384,15 @@ Devam etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
       <source>disabled</source>
-      <translation type="unfinished">disabled</translation>
+      <translation>devre dışı</translation>
     </message>
     <message>
       <source>Encoding mode</source>
-      <translation type="unfinished">Encoding mode</translation>
+      <translation>Kodlama modu</translation>
     </message>
     <message>
       <source>Auto</source>
-      <translation type="unfinished">Auto</translation>
+      <translation>Otomatik</translation>
     </message>
     <message>
       <source>Ultra wide band (UWB)</source>

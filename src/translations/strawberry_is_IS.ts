@@ -36,8 +36,8 @@
       <translation>Ef þú kannt við Strawberry og það nýtist þér vel, ættirðu að íhuga að styrkja verkefnið.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Þú getur styrkt höfundinn á %1. Þú getur líka lagt fram eins-skiptis greiðslu í gegnum %2.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>Þú getur styrkt höfundinn á %1 eða %2. Þú getur líka lagt fram eins-skiptis greiðslu í gegnum %3.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
@@ -580,6 +580,10 @@
       <translation>Bættu hlustun með heyrnartólum á víðóma hljómplötur (bs2b)</translation>
     </message>
     <message>
+      <source>Use playbin3 when available</source>
+      <translation type="unfinished">Use playbin3 when available</translation>
+    </message>
+    <message>
       <source>Enable HTTP/2 for streaming</source>
       <translation>Virkja HTTP/2 fyrir streymi</translation>
     </message>
@@ -1091,8 +1095,16 @@ Ef engar samsvaranir finnast, verður notast víð stærstu myndina í möppunni
       <translation>Nota ýmsa flytjendur fyrir safnplötur</translation>
     </message>
     <message>
-      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</source>
-      <translation>Sleppa greinum á undan (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) þegar nöfnum flytjenda er raðað</translation>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</translation>
+    </message>
+    <message>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</translation>
+    </message>
+    <message>
+      <source>Use sort tags for sorting when available</source>
+      <translation type="unfinished">Use sort tags for sorting when available</translation>
     </message>
     <message>
       <source>Album cover pixmap cache</source>
@@ -3983,6 +3995,10 @@ Ef engar samsvaranir finnast, verður notast víð stærstu myndina í möppunni
       <translation>Stokka hljómplötur</translation>
     </message>
     <message>
+      <source>Shuffle grouping</source>
+      <translation type="unfinished">Shuffle grouping</translation>
+    </message>
+    <message>
       <source>Don&apos;t repeat</source>
       <translation>Ekki endurtaka</translation>
     </message>
@@ -4636,6 +4652,10 @@ Ef engar samsvaranir finnast, verður notast víð stærstu myndina í möppunni
       <source>Shuffle albums</source>
       <translation>Stokka hljómplötur</translation>
     </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation type="unfinished">Shuffle grouping</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistSettingsPage</name>
@@ -5059,20 +5079,24 @@ Ertu viss um að þú viljir halda áfram?</translation>
       <translation>flytjandi</translation>
     </message>
     <message>
-      <source>searches for all artists containing the word %1. </source>
-      <translation>leitar að öllum flytjendum sem innihalda orðið %1. </translation>
+      <source>searches for all artists containing the word %1.</source>
+      <translation>leitar að öllum flytjendum sem innihalda orðið %1.</translation>
     </message>
     <message>
       <source>Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </source>
       <translation>Hægt er að setja forskeytin %1 eða %2 á leitarorð fyrir tölureiti til að fínstilla leitina, t.d.: </translation>
     </message>
     <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation type="unfinished">A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</translation>
+    </message>
+    <message>
       <source>rating</source>
       <translation>einkunn</translation>
     </message>
     <message>
-      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
-      <translation>Mörg leitarorð er hægt að setja saman með with &quot;%1&quot; (sjálfgefið) og &quot;%2&quot; og einnig hópuð með svigum. </translation>
+      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
+      <translation>Mörg leitarorð er hægt að setja saman með with &quot;%1&quot; (sjálfgefið) og &quot;%2&quot; og einnig hópuð með svigum.</translation>
     </message>
     <message>
       <source>Available fields</source>

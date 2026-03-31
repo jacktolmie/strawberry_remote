@@ -36,8 +36,8 @@
       <translation>Wenn Ihnen Strawberry gefällt und Sie es nutzen können, sollten Sie sponsern oder spenden.</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>Sie können den Autor auf %1 sponsern. Sie können auch eine einmalige Zahlung über %2 vornehmen.</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>Sie können den Autor auf %1 oder %2 sponsern. Sie können auch eine einmalige Zahlung über %3 vornehmen.</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
@@ -580,6 +580,10 @@
       <translation>Kopfhörer-Wiedergabe von Stereo-Aufnahmen verbessern (bs2b)</translation>
     </message>
     <message>
+      <source>Use playbin3 when available</source>
+      <translation type="unfinished">playbin3 benutzen, wenn verfügbar</translation>
+    </message>
+    <message>
       <source>Enable HTTP/2 for streaming</source>
       <translation>HTTP/2 für Streaming aktivieren</translation>
     </message>
@@ -1091,8 +1095,16 @@ Falls es keine Treffer gibt, wird das größte Bild aus dem Verzeichnis ausgewä
       <translation type="unfinished">Use various artists for compilation albums</translation>
     </message>
     <message>
-      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</source>
-      <translation>Führende Artikel (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) beim Sortieren von Interpreten überspringen</translation>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</translation>
+    </message>
+    <message>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</translation>
+    </message>
+    <message>
+      <source>Use sort tags for sorting when available</source>
+      <translation type="unfinished">Use sort tags for sorting when available</translation>
     </message>
     <message>
       <source>Album cover pixmap cache</source>
@@ -3983,6 +3995,10 @@ Falls es keine Treffer gibt, wird das größte Bild aus dem Verzeichnis ausgewä
       <translation>Zufällige Albenreihenfolge</translation>
     </message>
     <message>
+      <source>Shuffle grouping</source>
+      <translation>Zufällige Titelsortierung</translation>
+    </message>
+    <message>
       <source>Don&apos;t repeat</source>
       <translation>Wiederholung aus</translation>
     </message>
@@ -4636,6 +4652,10 @@ Falls es keine Treffer gibt, wird das größte Bild aus dem Verzeichnis ausgewä
       <source>Shuffle albums</source>
       <translation>Zufällige Albenreihenfolge</translation>
     </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation>Zufällige Titelsortierung</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistSettingsPage</name>
@@ -5059,19 +5079,23 @@ Möchten Sie wirklich fortfahren?</translation>
       <translation>Künstler</translation>
     </message>
     <message>
-      <source>searches for all artists containing the word %1. </source>
-      <translation type="unfinished">searches for all artists containing the word %1. </translation>
+      <source>searches for all artists containing the word %1.</source>
+      <translation type="unfinished">searches for all artists containing the word %1.</translation>
     </message>
     <message>
       <source>Search terms for numerical fields can be prefixed with %1 or %2 to refine the search, e.g.: </source>
       <translation>Suchbegriffe für numerische Felder können mit %1 oder %2 vorangestellt werden, um die Suche expliziter zu machen, z.B:</translation>
     </message>
     <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation type="unfinished">A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</translation>
+    </message>
+    <message>
       <source>rating</source>
       <translation>Bewertung</translation>
     </message>
     <message>
-      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
+      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
       <translation>Mehrere Suchbegriffe können auch mit &quot;%1&quot; (und, standard) und &quot;%2&quot; (oder) kombiniert, sowie mit Klammern gruppiert werden.</translation>
     </message>
     <message>

@@ -10,7 +10,9 @@ jobs:
 
   build-opensuse:
     name: Build openSUSE
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+        (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -81,7 +83,6 @@ jobs:
             gtest
             gmock
             sparsehash-devel
-            rapidjson-devel
       - name: Install kdsingleapplication-qt6-devel
         if: matrix.opensuse_version != 'leap:15.6'
         run: zypper -n --gpg-auto-import-keys in kdsingleapplication-qt6-devel
@@ -97,7 +98,7 @@ jobs:
           cmake --build build --config Release --parallel 4
           cmake --install build
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -134,14 +135,14 @@ jobs:
         run: echo "subdir=$(echo ${{matrix.opensuse_version}} | sed 's/leap:/lp/g' | sed 's/\.//g')" > $GITHUB_OUTPUT
       - name: Upload source
         if: matrix.opensuse_version == 'tumbleweed'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: source
           path: |
             /usr/src/packages/SOURCES/*.xz
       - name: Upload rpm
         if: matrix.opensuse_version != 'tumbleweed'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: opensuse-${{steps.set-subdir.outputs.subdir}}
           path: |
@@ -151,12 +152,14 @@ jobs:
 
   build-fedora:
     name: Build Fedora
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+        (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        fedora_version: [ '41', '42', '43' ]
+        fedora_version: [ '42', '43', '44' ]
     container:
       image: fedora:${{matrix.fedora_version}}
     steps:
@@ -207,9 +210,8 @@ jobs:
             gtest-devel
             gmock-devel
             sparsehash-devel
-            rapidjson-devel
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -234,7 +236,7 @@ jobs:
         working-directory: build
         run: rpmbuild -ba strawberry.spec
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: fedora-${{matrix.fedora_version}}
           path: |
@@ -244,7 +246,9 @@ jobs:
 
   build-openmandriva:
     name: Build OpenMandriva
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+        (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -299,15 +303,15 @@ jobs:
           qt6-cmake
           qt6-qtbase-tools
           qt6-qttools-linguist
+          qt6-qtbase-theme-gtk3
           desktop-file-utils
           appstream
           appstream-util
           hicolor-icon-theme
-          rapidjson
       - name: Remove files
         run: rm -rf /usr/lib64/qt6/lib/cmake/Qt6Sql/{Qt6QMYSQL*,Qt6QODBCD*,Qt6QPSQL*,Qt6QIBase*}
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -329,11 +333,12 @@ jobs:
       - name: Build RPM
         env:
           RPM_BUILD_NCPUS: 4
+          CXXFLAGS: "-Wno-error=c2y-extensions"
         working-directory: build
         run: rpmbuild -ba strawberry.spec
       - name: Upload artifacts
         if: matrix.openmandriva_version != 'cooker'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: openmandriva-${{matrix.openmandriva_version}}
           path: |
@@ -343,7 +348,9 @@ jobs:
 
   build-mageia:
     name: Build Mageia
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+        (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -399,7 +406,6 @@ jobs:
           appstream-util
           hicolor-icon-theme
           gtest
-          rapidjson
       - name: Build and install KDSingleApplication
         if: matrix.mageia_version == '9'
         run: |
@@ -409,7 +415,7 @@ jobs:
           cmake --build build --config Release --parallel 4
           cmake --install build
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -434,7 +440,7 @@ jobs:
         working-directory: build
         run: rpmbuild -ba strawberry.spec
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: mageia-${{matrix.mageia_version}}
           path: |
@@ -444,7 +450,9 @@ jobs:
 
   build-debian:
     name: Build Debian
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+        (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -498,7 +506,6 @@ jobs:
             qt6-tools-dev
             qt6-tools-dev-tools
             qt6-l10n-tools
-            rapidjson-dev
       - name: Install KDSingleApplication
         if: matrix.debian_version != 'bookworm'
         run: apt install -y libkdsingleapplication-qt6-dev
@@ -511,7 +518,7 @@ jobs:
           cmake --build build --config Release --parallel 4
           cmake --install build
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -528,7 +535,7 @@ jobs:
       - name: Copy deb
         run: cp ../*.deb .
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: debian-${{matrix.debian_version}}
           path: |
@@ -537,12 +544,14 @@ jobs:
 
   build-ubuntu:
     name: Build Ubuntu
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+        (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        ubuntu_version: [ 'noble', 'plucky', 'questing' ]
+        ubuntu_version: [ 'noble', 'questing', 'resolute' ]
     container:
       image: ubuntu:${{matrix.ubuntu_version}}
     steps:
@@ -594,12 +603,11 @@ jobs:
             qt6-tools-dev
             qt6-tools-dev-tools
             qt6-l10n-tools
-            rapidjson-dev
       - name: Install KDSingleApplication
-        if: matrix.ubuntu_version != 'noble' && matrix.ubuntu_version != 'plucky'
+        if: matrix.ubuntu_version != 'noble'
         run: apt install -y libkdsingleapplication-qt6-dev
       - name: Build and install KDSingleApplication
-        if: matrix.ubuntu_version == 'noble' || matrix.ubuntu_version == 'plucky'
+        if: matrix.ubuntu_version == 'noble'
         run: |
           git clone --depth 1 --recurse-submodules https://github.com/KDAB/KDSingleApplication
           cd KDSingleApplication
@@ -607,7 +615,7 @@ jobs:
           cmake --build build --config Release --parallel 4
           cmake --install build
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -624,7 +632,7 @@ jobs:
       - name: Copy deb
         run: cp ../*.deb ../*.ddeb .
       - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ubuntu-${{matrix.ubuntu_version}}
           path: |
@@ -634,12 +642,14 @@ jobs:
 
   upload-ubuntu-ppa:
     name: Upload Ubuntu PPA
-    if: github.repository == 'strawberrymusicplayer/strawberry' && github.event.pull_request.head.repo.fork == false && (github.event_name == 'release' || (github.event_name == 'push' && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci' || github.ref == 'refs/heads/1.1')))
+    if: github.repository == 'strawberrymusicplayer/strawberry' &&
+        github.event.pull_request.head.repo.fork == false &&
+        (github.event_name == 'release' || (github.event_name == 'push' && (github.ref_name == 'master' || github.ref_name == 'ci')))
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        ubuntu_version: [ 'noble', 'plucky', 'questing' ]
+        ubuntu_version: [ 'noble', 'questing', 'resolute' ]
     container:
       image: ubuntu:${{matrix.ubuntu_version}}
     steps:
@@ -692,14 +702,13 @@ jobs:
             gstreamer1.0-alsa
             gstreamer1.0-pulseaudio
             libkdsingleapplication-qt6-dev
-            rapidjson-dev
       - name: Install keyboxd
         if: matrix.ubuntu_version == 'noble'
         env:
           DEBIAN_FRONTEND: noninteractive
         run: apt install -y keyboxd
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -716,7 +725,7 @@ jobs:
       - name: Delete build directory
         run: rm -rf build
       - name: Import Ubuntu PPA GPG private key
-        uses: crazy-max/ghaction-import-gpg@v6
+        uses: crazy-max/ghaction-import-gpg@v7
         with:
           gpg_private_key: ${{secrets.UBUNTU_PPA_GPG_PRIVATE_KEY}}
       - name: dpkg-buildpackage
@@ -731,21 +740,28 @@ jobs:
 
   build-freebsd:
     name: Build FreeBSD
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
         submodules: recursive
+    - name: Free disk space
+      run: |
+        df -h
+        sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo apt-get clean
+        df -h
     - name: Build FreeBSD
       id: build-freebsd
-      uses: vmactions/freebsd-vm@v1.2.4
+      uses: vmactions/freebsd-vm@v1.4.3
       with:
         usesh: true
-        mem: 4096
-        prepare: pkg install -y git cmake pkgconf boost-libs alsa-lib glib qt6-base qt6-tools sqlite gstreamer1 gstreamer1-plugins chromaprint libebur128 taglib libcdio libmtp gdk-pixbuf2 libgpod fftw3 icu kdsingleapplication googletest pulseaudio sparsehash rapidjson
+        mem: 8192
+        prepare: pkg install -y git cmake pkgconf boost-libs alsa-lib glib qt6-base qt6-tools sqlite gstreamer1 gstreamer1-plugins chromaprint libebur128 taglib libcdio libmtp gdk-pixbuf2 libgpod fftw3 icu kdsingleapplication googletest pulseaudio sparsehash
         run: |
           set -e
           git config --global --add safe.directory ${GITHUB_WORKSPACE}
@@ -756,21 +772,22 @@ jobs:
 
   build-openbsd:
     name: Build OpenBSD
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
         submodules: recursive
     - name: Build OpenBSD
       id: build-openbsd
-      uses: vmactions/openbsd-vm@v1.2.0
+      uses: vmactions/openbsd-vm@v1.3.7
       with:
         usesh: true
         mem: 4096
-        prepare: pkg_add git cmake pkgconf boost glib2 qt6-qtbase qt6-qttools sqlite gstreamer1 gstreamer1-plugins-base chromaprint libebur128 taglib libcdio libmtp gdk-pixbuf libgpod fftw3 icu4c kdsingleapplication pulseaudio sparsehash rapidjson
+        prepare: pkg_add git cmake pkgconf boost glib2 qt6-qtbase qt6-qttools sqlite gstreamer1 gstreamer1-plugins-base chromaprint libebur128 taglib libcdio libmtp gdk-pixbuf libgpod fftw3 icu4c kdsingleapplication pulseaudio sparsehash
         run: |
           set -e
           export LDFLAGS="-L/usr/local/lib"
@@ -782,12 +799,14 @@ jobs:
 
   build-macos-public:
     name: Build macOS Public
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+        (github.event_name == 'release')
 
     strategy:
       fail-fast: false
       matrix:
-        runner: [ 'macos-13', 'macos-15' ]
+        runner: [ 'macos-15-intel', 'macos-15' ]
         buildtype: [ 'release' ]
 
     runs-on: ${{ matrix.runner }}
@@ -826,14 +845,14 @@ jobs:
           rm -f uninstall.sh
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
 
       - name: Import certificate file
         if: github.repository == 'strawberrymusicplayer/strawberry' && github.event.pull_request.head.repo.fork == false
-        uses: apple-actions/import-codesign-certs@v5
+        uses: apple-actions/import-codesign-certs@v6
         with:
           p12-file-base64: ${{ secrets.APPLE_DEVELOPER_ID_CERTIFICATE }}
           p12-password: ${{ secrets.APPLE_DEVELOPER_ID_CERTIFICATE_PASSWORD }}
@@ -890,9 +909,9 @@ jobs:
         run: make deploy
 
       - name: Manually Codesign
-        if: github.repository == 'strawberrymusicplayer/strawberry' && github.event.pull_request.head.repo.fork == false && matrix.runner == 'macos-13'
+        if: github.repository == 'strawberrymusicplayer/strawberry' && github.event.pull_request.head.repo.fork == false && matrix.runner == 'macos-15-intel'
         working-directory: build
-        run: codesign -s 383J84DVB6 -f strawberry.app/Contents/Frameworks/{libpcre2-8.0.dylib,libpcre2-16.0.dylib,libpng16.16.dylib,libfreetype.6.dylib,libzstd.1.dylib} strawberry.app/Contents/Frameworks/png.framework/png strawberry.app
+        run: codesign -s 383J84DVB6 -f strawberry.app/Contents/Frameworks/{libpcre2-8.0.dylib,libpcre2-16.0.dylib,libpng16.16.dylib,libfreetype.6.dylib,libzstd.1.dylib,libbrotlicommon.1.dylib,libbrotlienc.1.dylib,libbrotlidec.1.dylib,libsoup-3.0.0.dylib,libnghttp2.14.dylib,libpsl.5.dylib} strawberry.app/Contents/Frameworks/png.framework/png strawberry.app
 
       - name: Manually Codesign
         if: github.repository == 'strawberrymusicplayer/strawberry' && github.event.pull_request.head.repo.fork == false && matrix.runner == 'macos-15'
@@ -977,7 +996,7 @@ jobs:
         run: echo "cmake_buildtype=$(echo ${{env.buildtype}} | awk '{print toupper(substr($0,0,1))tolower(substr($0,2))}')" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -1064,12 +1083,14 @@ jobs:
 
   build-windows-mingw:
     name: Build Windows MinGW
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+        (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        arch: [ 'i686', 'x86_64' ]
+        arch: [ 'x86_64' ]
         buildtype: [ 'debug', 'release' ]
     container:
       image: jonaski/strawberry-mxe-${{matrix.arch}}-${{matrix.buildtype}}
@@ -1080,7 +1101,7 @@ jobs:
         run: echo "cmake_buildtype=$(echo ${{matrix.buildtype}} | sed 's/.*/\u&/')" >> $GITHUB_ENV
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -1142,7 +1163,7 @@ jobs:
 
       - name: Copy Qt imageformats
         working-directory: build
-        run: cp /strawberry-mxe/usr/${{matrix.arch}}-w64-mingw32.shared/qt6/plugins/imageformats/{qgif.dll,qico.dll,qjpeg.dll} ${GITHUB_WORKSPACE}/build/imageformats/
+        run: cp /strawberry-mxe/usr/${{matrix.arch}}-w64-mingw32.shared/qt6/plugins/imageformats/{qgif.dll,qico.dll,qjpeg.dll,qtiff.dll,qjp2.dll,qwebp.dll} ${GITHUB_WORKSPACE}/build/imageformats/
 
       - name: Copy gstreamer plugins
         working-directory: build
@@ -1253,7 +1274,9 @@ jobs:
 
   build-windows-msvc:
     name: Build Windows MSVC
-    if: github.repository != 'strawberrymusicplayer/strawberry-private' && github.ref != 'refs/heads/l10n_master'
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+        (github.event_name == 'release')
     strategy:
       fail-fast: false
       matrix:
@@ -1266,16 +1289,6 @@ jobs:
          - name: "x86_64 release"
            runner: windows-2022
            arch: x86_64
-           buildtype: release
-
-         - name: "x86 debug"
-           runner: windows-2022
-           arch: x86
-           buildtype: debug
-
-         - name: "x86 release"
-           runner: windows-2022
-           arch: x86
            buildtype: release
 
          - name: "arm64 debug"
@@ -1310,7 +1323,7 @@ jobs:
       - name: Set SDK version
         if: matrix.arch != 'arm64'
         shell: bash
-        run: echo "sdk_version=10.0.19041.0" >> $GITHUB_ENV
+        run: echo "sdk_version=10.0.22621.0" >> $GITHUB_ENV
 
       - name: Set SDK version
         if: matrix.arch == 'arm64'
@@ -1321,12 +1334,8 @@ jobs:
         shell: cmd
         run: choco install --no-progress rsync
 
-      - name: Set SSH command
-        shell: bash
-        run: echo "ssh_command=/c/ProgramData/chocolatey/lib/rsync/tools/$(ls -1 /c/ProgramData/chocolatey/lib/rsync/tools/ | grep -v '\.zip$' | grep '^cwrsync' | tail -1)/bin/ssh.exe" >> $GITHUB_ENV
-
       - name: Cleanup PATH
-        uses: egor-tensin/cleanup-path@v4
+        uses: egor-tensin/cleanup-path@v5
         with:
           dirs: ${{env.prefix_path_backslash}}\bin;C:\Windows;C:\Windows\system32;C:\Program Files\Git\bin;C:\Program Files\CMake\bin;C:\Program Files\GitHub CLI;C:\ProgramData\Chocolatey\bin;C:\Program Files (x86)\NSIS
 
@@ -1355,7 +1364,7 @@ jobs:
 
       - name: Delete conflicting files
         shell: bash
-        run: rm -rf /c/{msys64,mingw32,mingw64} /c/strawberry/c "/c/program files/OpenSSL"
+        run: rm -rf /c/{msys64,mingw32,mingw64,clangarm64} /c/strawberry/c "/c/program files/OpenSSL"
 
       - name: Delete conflicting icu
         shell: bash
@@ -1409,7 +1418,7 @@ jobs:
           vsversion: 2022
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           submodules: recursive
@@ -1589,7 +1598,7 @@ jobs:
       - name: Download MSVC runtime
         shell: bash
         working-directory: build
-        run: curl -f -O -L https://aka.ms/vs/17/release/vc_redist.$(test "${{matrix.arch}}" = "x86_64" && echo "x64" || echo "${{matrix.arch}}").exe
+        run: curl -f -O -L https://aka.ms/vc14/vc_redist.$(test "${{matrix.arch}}" = "x86_64" && echo "x64" || echo "${{matrix.arch}}").exe
 
       - name: Create nsis installer
         shell: cmd
@@ -1623,12 +1632,14 @@ jobs:
       - name: rsync
         if: steps.set-upload-path.outputs.upload_path != ''
         shell: bash
-        run: rsync -e "${{env.ssh_command}} -p ${{secrets.SSH_PORT}} -o StrictHostKeyChecking=no" -var build/StrawberrySetup*.exe ${{secrets.SSH_USER}}@${{secrets.SSH_HOST}}:${{steps.set-upload-path.outputs.upload_path}}/
+        run: rsync -e "/c/ProgramData/chocolatey/lib/rsync/tools/bin/ssh.exe -p ${{secrets.SSH_PORT}} -o StrictHostKeyChecking=no" -var build/StrawberrySetup*.exe ${{secrets.SSH_USER}}@${{secrets.SSH_HOST}}:${{steps.set-upload-path.outputs.upload_path}}/
 
 
   upload:
     name: Upload
-    if: (success() || failure()) && github.repository == 'strawberrymusicplayer/strawberry' && (github.event_name == 'release' || (github.event_name == 'push' && github.event.pull_request.head.repo.fork == false && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci')))
+    if: (success() || failure()) &&
+        github.repository == 'strawberrymusicplayer/strawberry' &&
+        (github.event_name == 'release' || (github.event_name == 'push' && github.event.pull_request.head.repo.fork == false && (github.ref_name == 'master' || github.ref_name == 'ci')))
     runs-on: ubuntu-latest
     needs:
       - build-opensuse
@@ -1642,11 +1653,11 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: sudo apt install -y git rsync
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
       - name: SSH Setup
@@ -1690,7 +1701,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: sudo apt install -y git jq gh
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Show release assets
@@ -1698,7 +1709,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: gh release view "${{github.event.release.tag_name}}" --json assets | jq -r '.assets[].name'
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
       - name: Add artifacts to release

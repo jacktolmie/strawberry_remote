@@ -44,8 +44,8 @@ namespace {
 class PlaylistTest : public ::testing::Test {
  protected:
   PlaylistTest()
-    : playlist_(nullptr, nullptr, nullptr, nullptr, nullptr, 1),
-      sequence_(nullptr, new DummySettingsProvider) {}
+      : playlist_(nullptr, nullptr, nullptr, nullptr, nullptr, 1),
+        sequence_(nullptr, new DummySettingsProvider) {}
 
   void SetUp() override {
     playlist_.set_sequence(&sequence_);
@@ -439,7 +439,7 @@ TEST_F(PlaylistTest, ShuffleThenNext) {
   // Add 100 items
   PlaylistItemPtrList items;
   items.reserve(100);
-  for (int i=0 ; i<100 ; ++i)
+  for (int i = 0; i < 100; ++i)
     items << MakeMockItemP(u"Item "_s + QString::number(i));
   playlist_.InsertItems(items);
 
@@ -448,7 +448,7 @@ TEST_F(PlaylistTest, ShuffleThenNext) {
   // Shuffle until the current index is not at the end
   Q_FOREVER {
     playlist_.Shuffle();
-    if (playlist_.current_row() != items.count()-1)
+    if (playlist_.current_row() != items.count() - 1)
       break;
   }
 
@@ -456,21 +456,21 @@ TEST_F(PlaylistTest, ShuffleThenNext) {
   EXPECT_EQ(u"Item 0"_s, playlist_.current_item()->EffectiveMetadata().title());
   EXPECT_EQ(u"Item 0"_s, playlist_.data(playlist_.index(index, static_cast<int>(Playlist::Column::Title))));
   EXPECT_EQ(index, playlist_.last_played_row());
-  //EXPECT_EQ(index + 1, playlist_.next_row());
+  // EXPECT_EQ(index + 1, playlist_.next_row());
 
   // Shuffle until the current index *is* at the end
-  //forever {
-    //playlist_.Shuffle();
-    //if (playlist_.current_row() == items.count()-1)
-      //break;
-  //}
+  // forever {
+  // playlist_.Shuffle();
+  // if (playlist_.current_row() == items.count()-1)
+  // break;
+  // }
 
   index = playlist_.current_row();
   EXPECT_EQ(u"Item 0"_s, playlist_.current_item()->EffectiveMetadata().title());
   EXPECT_EQ(u"Item 0"_s, playlist_.data(playlist_.index(index, static_cast<int>(Playlist::Column::Title))));
   EXPECT_EQ(index, playlist_.last_played_row());
-  //EXPECT_EQ(-1, playlist_.next_row());
-  //EXPECT_EQ(index-1, playlist_.previous_row());
+  // EXPECT_EQ(-1, playlist_.next_row());
+  // EXPECT_EQ(index-1, playlist_.previous_row());
 
 }
 
@@ -543,5 +543,47 @@ TEST_F(PlaylistTest, CollectionIdMapMulti) {
 
 }
 
+
+TEST_F(PlaylistTest, PreviousRowIsNonMutating) {
+
+  playlist_.InsertItems(PlaylistItemPtrList() << MakeMockItemP(u"One"_s) << MakeMockItemP(u"Two"_s) << MakeMockItemP(u"Three"_s));
+  ASSERT_EQ(3, playlist_.rowCount(QModelIndex()));
+
+  playlist_.set_current_row(0);
+  playlist_.set_current_row(1);
+  playlist_.set_current_row(2);
+
+  // previous_row() should return the same row each time without consuming history
+  EXPECT_EQ(1, playlist_.previous_row());
+  EXPECT_EQ(1, playlist_.previous_row());
+  EXPECT_EQ(1, playlist_.previous_row());
+
+}
+
+TEST_F(PlaylistTest, TakePreviousRowConsumesHistory) {
+
+  playlist_.InsertItems(PlaylistItemPtrList() << MakeMockItemP(u"One"_s) << MakeMockItemP(u"Two"_s) << MakeMockItemP(u"Three"_s));
+  ASSERT_EQ(3, playlist_.rowCount(QModelIndex()));
+
+  playlist_.set_current_row(0);
+  playlist_.set_current_row(1);
+  playlist_.set_current_row(2);
+
+  // take_previous_row() should return the same row as previous_row() before consuming
+  const int previous_row = playlist_.previous_row();
+  const int take_previous_row = playlist_.take_previous_row(false);
+  EXPECT_EQ(previous_row, take_previous_row);
+
+  // After consuming row 1, previous_row() and take_previous_row() should now see row 0 as the previous
+  EXPECT_EQ(0, playlist_.previous_row());
+  EXPECT_EQ(0, playlist_.take_previous_row(false));
+
+  // History is now empty; should fall back to sequence-based previous (row 1, the item before row 2)
+  EXPECT_EQ(1, playlist_.take_previous_row(false));
+
+  // Verify fallback is stable: repeated calls without new history still return the sequence-based previous
+  EXPECT_EQ(1, playlist_.take_previous_row(false));
+
+}
 
 }  // namespace

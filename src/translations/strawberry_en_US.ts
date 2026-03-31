@@ -36,7 +36,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
+        <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -580,6 +580,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+      <source>Use playbin3 when available</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Enable HTTP/2 for streaming</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1090,8 +1094,16 @@ If there are no matches then it will use the largest image in the directory.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</source>
-        <translation type="unfinished"></translation>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
+      <source>Use sort tags for sorting when available</source>
+      <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Album cover pixmap cache</source>
@@ -3982,6 +3994,10 @@ If there are no matches then it will use the largest image in the directory.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Shuffle grouping</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Don&apos;t repeat</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4633,6 +4649,10 @@ If there are no matches then it will use the largest image in the directory.</so
         <source>Shuffle albums</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Shuffle grouping</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>PlaylistSettingsPage</name>
@@ -5055,7 +5075,7 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>searches for all artists containing the word %1. </source>
+        <source>searches for all artists containing the word %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5063,11 +5083,15 @@ Are you sure you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>rating</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
+        <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

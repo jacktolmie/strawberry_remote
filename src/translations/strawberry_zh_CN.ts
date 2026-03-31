@@ -36,8 +36,8 @@
       <translation>如果您喜欢 Strawberry 并能用得上它，请考虑赞助或捐赠。</translation>
     </message>
     <message>
-      <source>You can sponsor the author on %1. You can also make a one-time payment through %2.</source>
-      <translation>您可以在 %1 赞助作者。您也可以通过 %2 进行一次性付款。</translation>
+      <source>You can sponsor the author on %1 or %2. You can also make a one-time payment through %3.</source>
+      <translation>您可以在 %1 或 %2 赞助作者。您也可以通过 %3 进行一次性付款。</translation>
     </message>
     <message>
       <source>Author and maintainer</source>
@@ -580,6 +580,10 @@
       <translation>改善立体声音频唱片的耳机聆听（bs2b）</translation>
     </message>
     <message>
+      <source>Use playbin3 when available</source>
+      <translation type="unfinished">Use playbin3 when available</translation>
+    </message>
+    <message>
       <source>Enable HTTP/2 for streaming</source>
       <translation>启用 HTTP/2 流媒体</translation>
     </message>
@@ -1091,8 +1095,16 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>合辑使用各种艺术家</translation>
     </message>
     <message>
-      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artist names</source>
-      <translation>排序艺术家名称时跳过前导冠词（“the”，“a”，“an”）</translation>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</translation>
+    </message>
+    <message>
+      <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
+      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</translation>
+    </message>
+    <message>
+      <source>Use sort tags for sorting when available</source>
+      <translation type="unfinished">Use sort tags for sorting when available</translation>
     </message>
     <message>
       <source>Album cover pixmap cache</source>
@@ -3983,6 +3995,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>乱序专辑</translation>
     </message>
     <message>
+      <source>Shuffle grouping</source>
+      <translation type="unfinished">Shuffle grouping</translation>
+    </message>
+    <message>
       <source>Don&apos;t repeat</source>
       <translation>不循环播放</translation>
     </message>
@@ -4635,6 +4651,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <source>Shuffle albums</source>
       <translation>乱序专辑</translation>
     </message>
+    <message>
+      <source>Shuffle grouping</source>
+      <translation type="unfinished">Shuffle grouping</translation>
+    </message>
   </context>
   <context>
     <name>PlaylistSettingsPage</name>
@@ -5058,7 +5078,7 @@ Are you sure you want to continue?</source>
       <translation>艺术家</translation>
     </message>
     <message>
-      <source>searches for all artists containing the word %1. </source>
+      <source>searches for all artists containing the word %1.</source>
       <translation>搜索所有包含单词 %1 的艺术家。</translation>
     </message>
     <message>
@@ -5066,11 +5086,15 @@ Are you sure you want to continue?</source>
       <translation>数字字段的搜索词可以用 %1 或 %2 前缀来细化搜索，例如：</translation>
     </message>
     <message>
+      <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
+      <translation type="unfinished">A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</translation>
+    </message>
+    <message>
       <source>rating</source>
       <translation>评分</translation>
     </message>
     <message>
-      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses. </source>
+      <source>Multiple search terms can also be combined with &quot;%1&quot; (default) and &quot;%2&quot;, as well as grouped with parentheses.</source>
       <translation>多个搜索词也可以与 &quot;%1&quot;（默认）和 &quot;%2&quot; 组合，以及用括号分组。</translation>
     </message>
     <message>
