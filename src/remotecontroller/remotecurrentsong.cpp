@@ -2,6 +2,8 @@
 #include "constants/timeconstants.h"
 #include "remotecontroller/remoteguivalues.h"
 
+using namespace Qt::Literals::StringLiterals;
+
 RemoteCurrentSong::RemoteCurrentSong(Application *app, QObject *parent)
   : QObject{parent},
     app_(app)
@@ -16,11 +18,11 @@ RemoteCurrentSong::RemoteCurrentSong(Application *app, QObject *parent)
 QJsonObject RemoteCurrentSong::songInfo(Song song){
   // Create JSON object from sent song.
   QJsonObject songData;
-  songData[QStringLiteral("id")] =      song.id();
-  songData[QStringLiteral("artist")] =  song.artist();
-  songData[QStringLiteral("album")] =   song.album();
-  songData[QStringLiteral("title")] =   song.PrettyTitle();
-  songData[QStringLiteral("length")] =  song.length_nanosec() / kNsecPerMsec;
+  songData[u"id"_s] =      song.id();
+  songData[u"artist"_s] =  song.artist();
+  songData[u"album"_s] =   song.album();
+  songData[u"title"_s] =   song.PrettyTitle();
+  songData[u"length"_s] =  song.length_nanosec() / kNsecPerMsec;
   // coverFinder->findRemoteUrlForSong(song);
   return songData;
 }

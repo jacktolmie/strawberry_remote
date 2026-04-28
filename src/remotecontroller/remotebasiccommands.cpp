@@ -4,6 +4,9 @@
 #include "remotecontroller/remoteconstants.h"
 #include "core/player.h"
 #include "playlist/playlistmanager.h"
+#include "remotecontroller/remotejsoncreator.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 RemoteBasicCommands::RemoteBasicCommands(Application *app)
     : app_(app)
@@ -35,11 +38,10 @@ RemoteBasicCommands::RemoteBasicCommands(Application *app)
 
 void RemoteBasicCommands::volumeChanged(const uint volume)
 {
-  QJsonObject response;
-  response[QStringLiteral("event")] = QStringLiteral("volumeChanged");
-  response[QStringLiteral("volume")] = static_cast<int>(volume);
-  Q_EMIT RemoteBasicCommands::sendResponse(response);
-
+  Q_EMIT RemoteBasicCommands::sendResponse(RemoteJsonCreator::createResponse({
+    {u"event"_s, u"Volume Changed new function"_s},
+    { u"value"_s,  QString::number(volume)}
+  }));
 }
 
 BasicCmdMap& RemoteBasicCommands::sendCommandMap()
@@ -53,38 +55,38 @@ void RemoteBasicCommands::createCommandMap()
   auto parseUintArg{remoteconstants::parseUintArg};
 
   // Basic audio playback funtions.
-  commandMap[QStringLiteral("play")] = [this](const auto&){Q_EMIT RemoteBasicCommands::play(app_->player()->engine()->position_nanosec());};
-  commandMap[QStringLiteral("play-pause")] = [this](const auto&) {Q_EMIT RemoteBasicCommands::playPause();};
-  commandMap[QStringLiteral("pause")] = [this](const auto&){Q_EMIT RemoteBasicCommands::pause();};
-  commandMap[QStringLiteral("stop")] = [this](const auto&){Q_EMIT RemoteBasicCommands::stop(false);};
-  commandMap[QStringLiteral("next")] = [this](const auto&){Q_EMIT RemoteBasicCommands::next();};
-  commandMap[QStringLiteral("previous")] = [this](const auto&){Q_EMIT RemoteBasicCommands::previous();};
-  commandMap[QStringLiteral("stop-after-current")] = [this](const auto&){Q_EMIT RemoteBasicCommands::stopAfterCurrent();};
-  commandMap[QStringLiteral("restart-or-previous")] = [this](const auto&){Q_EMIT RemoteBasicCommands::restartOrPrevious();};
+  commandMap[u"play"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::play(app_->player()->engine()->position_nanosec());};
+  commandMap[u"play-pause"_s] = [this](const auto&) {Q_EMIT RemoteBasicCommands::playPause();};
+  commandMap[u"pause"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::pause();};
+  commandMap[u"stop"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::stop(false);};
+  commandMap[u"next"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::next();};
+  commandMap[u"previous"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::previous();};
+  commandMap[u"stop-after-current"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::stopAfterCurrent();};
+  commandMap[u"restart-or-previous"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::restartOrPrevious();};
 
   // Basic volume changes.
-  commandMap[QStringLiteral("volume")] = [this, parseUintArg](const QStringList& args){
+  commandMap[u"volume"_s] = [this, parseUintArg](const QStringList& args){
     bool ok;
     quint32 vol = parseUintArg(args, ok);
     qDebug() << "Remote volume with value: "<< vol;
     if (ok) Q_EMIT RemoteBasicCommands::volume(qBound(0u, vol, 100u));
   };
-  commandMap[QStringLiteral("volume-up")] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeUp();};
-  commandMap[QStringLiteral("volume-down")] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeDown();};
+  commandMap[u"volume-up"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeUp();};
+  commandMap[u"volume-down"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeDown();};
   // Delete when done testing song timer position
-  commandMap[QStringLiteral("current")] = [this](const auto&){qDebug() << "Remote Current time: "<< app_->player()->engine()->position_nanosec() / kNsecPerMsec;};
+  commandMap[u"current"_s] = [this](const auto&){qDebug() << "Remote Current time: "<< app_->player()->engine()->position_nanosec() / kNsecPerMsec;};
 
-  commandMap[QStringLiteral("mute")] = [this](const auto&){ Q_EMIT RemoteBasicCommands::mute();};
+  commandMap[u"mute"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::mute();};
 
   // Basic seek commands.
-  commandMap[QStringLiteral("seek-to")] = [this, parseUintArg](const QStringList& args){
+  commandMap[u"seek-to"_s] = [this, parseUintArg](const QStringList& args){
     bool ok;
     quint32 seconds = parseUintArg(args, ok);
     if (ok) Q_EMIT RemoteBasicCommands::seekTo(seconds);
   };
 
-  commandMap[QStringLiteral("seek-backward")] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekBackward();};
-  commandMap[QStringLiteral("seek-forward")] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekForward();};
+  commandMap[u"seek-backward"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekBackward();};
+  commandMap[u"seek-forward"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekForward();};
 
-  // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->;};
+  // commandMap[u"play"_s)] = [this](const auto&){ app_->;};
 }

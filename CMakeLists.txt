@@ -407,7 +407,7 @@ endif()
 find_package(Qt6 REQUIRED COMPONENTS Core)
 find_package(Qt6 REQUIRED COMPONENTS Core)
 
-add_executable(strawberry )
+add_executable(strawberry)
 
 if(APPLE)
   set_target_properties(strawberry PROPERTIES MACOSX_BUNDLE TRUE)
@@ -839,9 +839,9 @@ set(SOURCES
   src/remotecontroller/remotecontroller.cpp
   src/remotecontroller/remotecurrentsong.cpp
   src/remotecontroller/remoteguivalues.cpp
+  src/remotecontroller/remotejsoncreator.cpp
   src/remotecontroller/remoteplaylist.cpp
   src/remotecontroller/remotesettings.cpp
-
 )
 
 set(HEADERS
@@ -1140,6 +1140,7 @@ set(HEADERS
   src/remotecontroller/remotecontroller.h
   src/remotecontroller/remotecurrentsong.h
   src/remotecontroller/remoteguivalues.h
+  src/remotecontroller/remotejsoncreator.h
   src/remotecontroller/remoteplaylist.h
   src/remotecontroller/remotesettings.h  
 )

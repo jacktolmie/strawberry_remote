@@ -6,8 +6,6 @@
 
 #include "core/application.h"
 
-// class QTcpSocket;
-
 using PlaylistCmdMap = QMap<QString, std::function<QJsonObject(const QStringList&)>>;
 
 class RemotePlaylist : public QObject
@@ -39,7 +37,7 @@ class RemotePlaylist : public QObject
   QJsonObject sendRemoteActive(const QStringList& args);
 
   // Make playlists to send back to device.
-  QJsonObject makeAllPlaylist();
+  QJsonObject makeAllPlaylists();
   QJsonObject makeCurrentPlaylist();
   QJsonObject makePlaylistData(const int id);
 

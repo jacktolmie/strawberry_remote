@@ -15,7 +15,6 @@
 #include "ui_mainwindow.h"
 #include "remotecontroller/remotesettings.h"
 #include "remotecontroller/remotecommands.h"
-#include "includes/shared_ptr.h"
 #include "playlist/playlist.h"
 
 enum class ClientState {
@@ -35,7 +34,6 @@ class RemoteController : public QObject
   Q_OBJECT
 public:
   explicit RemoteController(const Application* app, const Ui_MainWindow* mainUi , QObject *parent = nullptr);
-  // explicit RemoteController(const SharedPtr<RemoteSettings> data, QObject *parent = nullptr);
   ~RemoteController() = default;
 
   void Exit();

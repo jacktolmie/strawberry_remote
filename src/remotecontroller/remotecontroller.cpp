@@ -8,6 +8,7 @@
 #include <QString>
 #include "core/player.h"
 
+using namespace Qt::Literals::StringLiterals;
 
 RemoteController::RemoteController(const Application* app, const Ui_MainWindow *mainUi , QObject *parent)
     : QObject{parent},
@@ -136,7 +137,7 @@ void RemoteController::onReadyRead()
       if (!socket->canReadLine()) return;
 
       QString line = QString::fromUtf8(socket->readLine().trimmed());
-      if (!line.startsWith(QStringLiteral("PROOF "))) {
+      if (!line.startsWith(u"PROOF "_s)) {
         qDebug() << "Bad protocol from client. Kicking.";
         socket->close();
         return;

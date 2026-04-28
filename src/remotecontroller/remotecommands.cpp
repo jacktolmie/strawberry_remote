@@ -5,8 +5,11 @@
 #include <QJsonDocument>
 
 #include "remotecommands.h"
+#include "remotecontroller/remotejsoncreator.h"
 #include "playlist/playlistmanager.h"
 #include "core/player.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   QObject{parent},
@@ -29,14 +32,14 @@ void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& com
   // Check if sent command is in basicCommandMap.
   if(basicCmdMap.contains(command)){
     basicCmdMap[command](args);
-    RemoteCommands::getResponse(QJsonObject{{QStringLiteral("response"), QStringLiteral("Running command: %1").arg(command)}});
+    RemoteCommands::getResponse(RemoteJsonCreator::createResponse(u"response"_s, u"Running command: "_s + command));
   }
   else if (playlistCmdMap.contains(command)){
     RemoteCommands::getResponse(playlistCmdMap[command](args));
   }
   else{
   // If sent command does not match anything, send message back to device.
-    RemoteCommands::getResponse(QJsonObject{{QStringLiteral("response"), QStringLiteral("The command %1 was not found").arg(command)}});
+    RemoteCommands::getResponse(RemoteJsonCreator::createResponse(u"error"_s, u"The command %1 was not found"_s + command ));
   }
 
   if(values) values->triggerUpdate(clientSocket);
@@ -59,7 +62,7 @@ void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
 
   QJsonObject obj{doc.object()};
 
-  QString command{QStringLiteral("command")};
+  QString command{u"event"_s};
   if (!obj.contains(command) || !obj[command].isString()) {
     qWarning() << "JSON command is missing a 'command' string field.";
     return;
@@ -68,13 +71,13 @@ void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
   command = obj[command].toString().toLower();
 
   QStringList args;
-  QString value{QStringLiteral("value")};
-  QString arg{QStringLiteral("args")};
+  QString value{u"value"_s};
+  QString arg{u"args"_s};
 
     if (obj.contains(value)) {
         args.append(obj[value].toVariant().toString());
     }
-    //    This handles cases like { "command": "rename", "args": ["oldName", "newName"] }
+    //    This handles cases like { "event": "rename", "args": ["oldName", "newName"] }
     else if (obj.contains(arg) && obj[arg].isArray()) {
         QJsonArray argArray = obj[arg].toArray();
         for (const QJsonValue& val : std::as_const(argArray)) {

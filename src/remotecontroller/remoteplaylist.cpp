@@ -7,6 +7,9 @@
 #include "core/player.h"
 #include "remotecontroller/remoteconstants.h"
 #include "remotecontroller/remotecurrentsong.h"
+#include "remotecontroller/remotejsoncreator.h"
+
+using namespace Qt::Literals::StringLiterals;
 
 RemotePlaylist::RemotePlaylist(Application* app, QObject *parent)
     : QObject{parent},
@@ -43,16 +46,21 @@ RemotePlaylist::RemotePlaylist(Application* app, QObject *parent)
 
 QJsonObject RemotePlaylist::renameCurrentPlaylist(const QStringList& args)
 {
-  if(args.size() < 2)   return QJsonObject{{QStringLiteral("response"), QStringLiteral("Not enough arguments passed. Needs 2")}};
+  if(args.size() < 2)   return RemoteJsonCreator::createResponse(u"error"_s, u"Not enough arguments passed. Needs 2"_s);
 
   bool ok;
   quint32 id{remoteconstants::parseUintArg(args, ok)};
   QString name{args[1]};
   if(ok){
     Q_EMIT RemotePlaylist::remoteRenamePlaylist(id, name);
-    return QJsonObject{{QStringLiteral("response"), QStringLiteral("Renamed playlist %1").arg(app_->playlist_manager()->GetPlaylistName(id))}};
+
+    return RemoteJsonCreator::createResponse({
+      {u"response"_s, u"Renames playlist"_s},
+      {u"value"_s, app_->playlist_manager()->GetPlaylistName(id)}
+    });
   }
-  return QJsonObject{{QStringLiteral("response"), QStringLiteral("Playlist %1 not found").arg(args[0])}};
+
+  return RemoteJsonCreator::createResponse({ {u"error"_s, u"Playlist not found"_s}, {u"value"_s, args[0]} });
 }
 
 QJsonObject RemotePlaylist::shuffleAllPlaylists()
@@ -66,57 +74,64 @@ QJsonObject RemotePlaylist::shuffleAllPlaylists()
     Q_EMIT RemotePlaylist::shufflePlaylist();
   }
   Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(currentId);
-  return QJsonObject{{QStringLiteral("response"), QStringLiteral("Shuffled all playlists")}};
+  return RemoteJsonCreator::createResponse(u"response"_s, u"Shuffled all playlists"_s);
 }
 
 QJsonObject RemotePlaylist::deleteCurrentDevicePlaylist(const QStringList& args)
 {
-  if(args.empty()) return QJsonObject{{QStringLiteral("response"), QStringLiteral("Not enough arguments passed. Needs 1")}};
+  if(args.empty()) return RemoteJsonCreator::createResponse(u"error"_s, u"Not enough arguments passed. Needs 1"_s);
 
-  QString name{QStringLiteral("No name")};
+  QString name{u"No name"_s};
   bool ok;
   quint32 id{remoteconstants::parseUintArg(args,ok)};
   if(ok){
       name = {app_->playlist_backend()->GetPlaylist(id).name };
       Q_EMIT RemotePlaylist::deletePlaylist(id);
-      return QJsonObject{{QStringLiteral("response"), QStringLiteral("Deleted playlist %1").arg(name)}} ;
+
+      return RemoteJsonCreator::createResponse({ {u"response"_s, u"Deleted playlist"_s}, {u"value"_s, name} });
   }
-  return QJsonObject{{QStringLiteral("response"), QStringLiteral("No playlist %1 found").arg(name)}} ;
+  return RemoteJsonCreator::createResponse({ {u"error"_s, u"Playlist not found"_s}, {u"value"_s, name} });
 }
 
 QJsonObject RemotePlaylist::setFavouritePlaylist(const QStringList& args)
 {
-  if(args.size() < 2) return QJsonObject{{QStringLiteral("response"), QStringLiteral("Not enough arguments passed. Needs 2")}};
+  if(args.size() < 2) return RemoteJsonCreator::createResponse(u"error"_s, u"Not enough arguments passed. Needs 2"_s);
 
   bool ok;
   quint32 id{remoteconstants::parseUintArg(args,ok)};
 
   if(ok){
-    bool isFavourite{static_cast<bool>(args[1].toUInt())};   //{app_->playlist_manager()->IsPlaylistFavorite(id)};
+    bool isFavourite{static_cast<bool>(args[1].toUInt())};
     Q_EMIT RemotePlaylist::remoteFavouritePlaylist(id, isFavourite);
-    return QJsonObject{{QStringLiteral("response"), QStringLiteral("Is playlist a favourite? %1").arg(app_->playlist_manager()->playlist(id)->is_favorite())}};
+    return RemoteJsonCreator::createResponse({
+      {u"response"_s, u"Is playlist a facourite"_s},
+      {u"value"_s, QString::number(app_->playlist_manager()->playlist(id)->is_favorite())}
+    });
   }
-  return QJsonObject{{QStringLiteral("response"), QStringLiteral("Playlist not found")}} ;
+  return RemoteJsonCreator::createResponse(u"error"_s, u"Playlist not found"_s);
 }
 
 QJsonObject RemotePlaylist::setCurrentPlaylist(const QStringList& args)
 {
-  if(args.empty()) return QJsonObject{{QStringLiteral("response"), QStringLiteral("Not enough arguments passed. Needs 1")}};
+  if(args.empty()) return RemoteJsonCreator::createResponse(u"error"_s, u"Not enough arguments passed. Needs 1"_s);
 
   bool ok;
   quint32 id{remoteconstants::parseUintArg(args, ok)};
   if(ok){
     Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(id);
-    return QJsonObject{{QStringLiteral("response"), QStringLiteral("Set current playlist to %1").arg(app_->playlist_manager()->current()->objectName())}};
+    return RemoteJsonCreator::createResponse({
+      {u"response"_s, u"Set current playlist to"_s},
+      {u"value"_s, app_->playlist_manager()->current()->objectName()}
+    });
   }
-  return QJsonObject{{QStringLiteral("response"), QStringLiteral("Wrong argument sent: ").arg(args.first())}};
+  return RemoteJsonCreator::createResponse({ {u"error"_s, u"Wrong argument sent"_s}, {u"value"_s, args.first()} });
 }
 
 QJsonObject RemotePlaylist::makePlaylistData(const int id)
 {
   QJsonObject playlistObject;
-  playlistObject[QStringLiteral("name")] = app_->playlist_manager()->playlist_name(id);
-  playlistObject[QStringLiteral("id")] = id;
+  playlistObject[u"name"_s] = app_->playlist_manager()->playlist_name(id);
+  playlistObject[u"id"_s] = id;
   // Array to hold the songs in the playlist.
   QJsonArray songsArray;
 
@@ -131,12 +146,12 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id)
     songsArray.append(songInfo.songInfo(song));
   }
 
-  playlistObject[QStringLiteral("songs")] = songsArray;
+  playlistObject[u"songs"_s] = songsArray;
 
   return playlistObject;
 }
 
-QJsonObject RemotePlaylist::makeAllPlaylist()
+QJsonObject RemotePlaylist::makeAllPlaylists()
 {
   QJsonArray playlistArray;
 
@@ -148,17 +163,19 @@ QJsonObject RemotePlaylist::makeAllPlaylist()
   }
 
   QJsonObject response;
-  response[QStringLiteral("command")] = QStringLiteral("all_playlists");
-  response[QStringLiteral("playlists")] = playlistArray;
+  response[u"type"_s] = u"event"_s;
+  response[u"event"_s] = u"make_all_playlists"_s;
+  response[u"playlists"_s] = playlistArray;
   return response;
 }
 
 QJsonObject RemotePlaylist::makeCurrentPlaylist()
 {
   QJsonObject response;
-  response[QStringLiteral("command")] = QStringLiteral("current_playlist");
+  response[u"type"_s] = u"event"_s;
+  response[u"event"_s] = u"make_current_playlist"_s;
 
-  response[QStringLiteral("playlist")] = RemotePlaylist::makePlaylistData(app_->playlist_manager()->current_id());
+  response[u"playlist"_s] = RemotePlaylist::makePlaylistData(app_->playlist_manager()->current_id());
 
   return response;
 }
@@ -175,99 +192,105 @@ QJsonObject RemotePlaylist::closeCurrentPlaylist(const QStringList& args)
   if (ok){
     int current{app_->playlist_manager()->current_id()};
     Q_EMIT closePlaylist(id);
-    if (current != app_->playlist_manager()->current_id()) return QJsonObject{{QStringLiteral("response"), QStringLiteral("Playlist closed")}};
-    else return QJsonObject{{QStringLiteral("response"), QStringLiteral("Playlist not closed")}};
+    if (current != app_->playlist_manager()->current_id()) return RemoteJsonCreator::createResponse(u"response"_s, u"Playlist closed"_s);
+    else return RemoteJsonCreator::createResponse(u"error"_s, u"Playlist not closed"_s);
   }
-  return QJsonObject{{QStringLiteral("response"), QStringLiteral("Wrong argument sent: %1").arg(args.first())}};
+  return RemoteJsonCreator::createResponse({ {u"error"_s, u"Wrong argument sent"_s}, {u"value"_s, args.first()} });
 }
 
 void RemotePlaylist::playlistChanged()
 {
-  auto playlist{RemotePlaylist::makeCurrentPlaylist()};
-  Q_EMIT RemotePlaylist::sendResponse(playlist);
+  Q_EMIT RemotePlaylist::sendResponse(RemotePlaylist::makeCurrentPlaylist());
+  // auto playlist{RemotePlaylist::makeCurrentPlaylist()};
+  // Q_EMIT RemotePlaylist::sendResponse(playlist);
 }
 
 void RemotePlaylist::deleteServerPlaylist(const int id)
 {
-  QJsonObject response{{QStringLiteral("response"), QStringLiteral("Deleted playlist with ID: %1").arg(id)}};
-  Q_EMIT RemotePlaylist::sendResponse(response);
+  Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
+    {u"response"_s, u"Deleted playlist with ID"_s},
+    {u"value"_s, QString::number(id)}
+  }));
 }
 
 void RemotePlaylist::closeServerPlaylist(const int id)
 {
-  QJsonObject response{{QStringLiteral("response"), QStringLiteral("Close playlist with ID: %1").arg(id)}};
-  Q_EMIT RemotePlaylist::sendResponse(response);
+  Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
+    {u"response"_s, u"Closed playlist with ID"_s},
+    {u"value"_s, QString::number(id)}
+  }));
 }
 
 void RemotePlaylist::favouriteServerPlaylist(const int id, bool favourite)
 {
-  QJsonObject response;
-  response[QStringLiteral("command")] = QStringLiteral("favourite_playlist");
-  response[QStringLiteral("id")] = id;
-  response[QStringLiteral("favourite")] = favourite;
-  Q_EMIT RemotePlaylist::sendResponse(response);
+  Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
+    {u"event"_s, u"favourite_playlist"_s},
+    {u"id"_s, QString::number(id)},
+    {u"favourite"_s, QString::number(favourite)}
+  }));
 }
 
 void RemotePlaylist::serverRenamePlaylist(const int id, const QString& name)
 {
-  QJsonObject response;
-  response[QStringLiteral("command")] = QStringLiteral("rename_playlist");
-  response[QStringLiteral("id")] = id;
-  response[QStringLiteral("name")] = name;
-  Q_EMIT RemotePlaylist::sendResponse(response);
+  Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
+    {u"event"_s, u"rename_playlist"_s},
+    {u"id"_s, QString::number(id)},
+    {u"name"_s, name}
+  }));
 }
 
 void RemotePlaylist::activeChanged(const int id)
 {
-  QJsonObject response;
-  response[QStringLiteral("command")] = QStringLiteral("active_playlist");
-  response[QStringLiteral("id")] = id;
-  Q_EMIT RemotePlaylist::sendResponse(response);
+  Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
+    {u"event"_s, u"active_playlist"_s},
+    {u"id"_s, QString::number(id)}
+  }));
 }
 
 QJsonObject RemotePlaylist::sendRemoteActive(const QStringList& args)
 {
-  if(args.empty()) return QJsonObject{{QStringLiteral("response"), QStringLiteral("Not enough arguments passed. Needs 1")}};
+  if(args.empty()) return RemoteJsonCreator::createResponse(u"error"_s, u"Not enough arguments passed. Needs 1"_s);
 
   bool ok;
   quint32 id{remoteconstants::parseUintArg(args, ok)};
   if(ok){
     Q_EMIT RemotePlaylist::setActivePlaylist(id);
     Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(id);
-    return QJsonObject{{QStringLiteral("response"), QStringLiteral("Sent active playlist")}};
+
+    return RemoteJsonCreator::createResponse(u"response"_s, u"Sent active playlist"_s);
   }
-  return QJsonObject{{QStringLiteral("response"), QStringLiteral("Wrong argument sent")}};
+  return RemoteJsonCreator::createResponse(u"error"_s, u"Wrong argument sent"_s);
 }
 
 void RemotePlaylist::createCommandMap()
 {
-  commandMap[QStringLiteral("clear-playlist")] = [this](const auto&){
+  commandMap[u"clear-playlist"_s] = [this](const auto&){
     Q_EMIT RemotePlaylist::clearPlaylist();
-    return QJsonObject{{QStringLiteral("response"), QStringLiteral("Cleared playlist %1").arg(app_->playlist_manager()->current()->objectName())}};
+    return RemoteJsonCreator::createResponse({ {u"response"_s, u"Cleared playlist"_s}, {u"value"_s, app_->playlist_manager()->current()->objectName()} });
   };
-  commandMap[QStringLiteral("close-playlist")] = [this](const QStringList& args){ return RemotePlaylist::closeCurrentPlaylist(args);};
-  commandMap[QStringLiteral("delete-current-playlist")] = [this](const QStringList& args){return RemotePlaylist::deleteCurrentDevicePlaylist(args);};
-  commandMap[QStringLiteral("favourite-playlist")] = [this](const QStringList& args){ return RemotePlaylist::setFavouritePlaylist(args);};
-  commandMap[QStringLiteral("remove-current-song-playlist")] = [this](const auto&){
+  commandMap[u"close-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::closeCurrentPlaylist(args);};
+  commandMap[u"delete-current-playlist"_s] = [this](const QStringList& args){return RemotePlaylist::deleteCurrentDevicePlaylist(args);};
+  commandMap[u"favourite-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::setFavouritePlaylist(args);};
+  commandMap[u"remove-current-song-playlist"_s] = [this](const auto&){
     auto songName{app_->playlist_manager()->current()->current_item_metadata().song_id()};
     Q_EMIT RemotePlaylist::removeCurrentSong();
-    return QJsonObject{{QStringLiteral("response"), QStringLiteral("Removed %1 from playlist").arg(songName)}};
+    return RemoteJsonCreator::createResponse({ {u"response"_s, u"Removed song from playlist"_s}, {u"value"_s, songName} });
   };
-  commandMap[QStringLiteral("remove-duplicates-playlist")] = [this](const auto&){
+  commandMap[u"remove-duplicates-playlist"_s] = [this](const auto&){
     Q_EMIT RemotePlaylist::removeDuplicates();
-    return QJsonObject{{QStringLiteral("response"), QStringLiteral("Removed duplicates from plalylist")}};
+    return RemoteJsonCreator::createResponse(u"response"_s, u"Removed duplicates from plalylist"_s);
   };
-  commandMap[QStringLiteral("rename-playlist")] = [this](const QStringList& args){return RemotePlaylist::renameCurrentPlaylist(args);};
-  commandMap[QStringLiteral("set-current-playlist")] = [this](const QStringList& args){ return RemotePlaylist::setCurrentPlaylist(args);};
-  commandMap[QStringLiteral("shuffle-playlist")] = [this](const auto&){
+  commandMap[u"rename-playlist"_s] = [this](const QStringList& args){return RemotePlaylist::renameCurrentPlaylist(args);};
+  commandMap[u"set-current-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::setCurrentPlaylist(args);};
+  commandMap[u"shuffle-playlist"_s] = [this](const auto&){
     Q_EMIT RemotePlaylist::shufflePlaylist();
-    return QJsonObject{{QStringLiteral("response"), QStringLiteral("Shuffled playlist")}};
+    return RemoteJsonCreator::createResponse(u"response"_s, u"Shuffled playlist"_s);
   };
-  commandMap[QStringLiteral("shuffle-all-playlists")] = [this](const auto&){ return RemotePlaylist::shuffleAllPlaylists();};
-  commandMap[QStringLiteral("send-active-playlist")] = [this](const QStringList& args){ return RemotePlaylist::sendRemoteActive(args);};
-  commandMap[QStringLiteral("send-playlist")] = [this](const auto&){ return RemotePlaylist::makeCurrentPlaylist();};
-  commandMap[QStringLiteral("send-all-playlists")] = [this](const auto&){ return RemotePlaylist::makeAllPlaylist();};
+  commandMap[u"shuffle-all-playlists"_s] = [this](const auto&){ return RemotePlaylist::shuffleAllPlaylists();};
+  commandMap[u"send-active-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::sendRemoteActive(args);};
+  commandMap[u"send-playlist"_s] = [this](const auto&){ return RemotePlaylist::makeCurrentPlaylist();};
+  commandMap[u"send-all-playlists"_s] = [this](const auto&){ return RemotePlaylist::makeAllPlaylists();};
 
-  // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->playlist_manager()->;};
-  // commandMap[QStringLiteral("play")] = [this](const auto&){ app_->playlist_manager()->;};
+  // commandMap[u"play"_s] = [this](const auto&){ app_->playlist_manager()->;};
+  // commandMap[u"play"_s] = [this](const auto&){ app_->playlist_manager()->;};
 }

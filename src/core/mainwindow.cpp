@@ -20,6 +20,7 @@
  */
 
 #include "config.h"
+#include "remotecontroller/remotejsoncreator.h"
 #include "version.h"
 
 #include <cmath>
@@ -1656,10 +1657,10 @@ void MainWindow::PlayIndex(const QModelIndex &idx, Playlist::AutoScroll autoscro
   app_->playlist_manager()->SetActiveToCurrent();
   app_->player()->PlayAt(row, false, 0, EngineBase::TrackChangeType::Manual, autoscroll, true);
 
-  QJsonObject response;
-  response[QStringLiteral("response")] = QStringLiteral("song_changed");
-  response[QStringLiteral("row")] = row;
-  Q_EMIT app_->playlist_manager()->sendPlaylistResponse(response);
+  // Delete if not being used.
+  // Q_EMIT app_->playlist_manager()->sendPlaylistResponse( RemoteJsonCreator::createResponse({ {u"event"_s, u"song_changed11"_s}, {u"row"_s, QString::number(row)} }));
+
+
 }
 
 void MainWindow::PlaylistDoubleClick(const QModelIndex &idx) {
@@ -1687,10 +1688,10 @@ void MainWindow::PlaylistDoubleClick(const QModelIndex &idx) {
       break;
   }
 
-  QJsonObject response;
-  response[QStringLiteral("response")] = QStringLiteral("song_changed");
-  response[QStringLiteral("id")] = source_idx.row();
-  Q_EMIT app_->playlist_manager()->sendPlaylistResponse(response);
+  Q_EMIT app_->playlist_manager()->sendPlaylistResponse(RemoteJsonCreator::createResponse({
+    {u"event"_s, u"song_changed"_s},
+    {u"id"_s, QString::number(source_idx.row())}
+  }));
 }
 
 void MainWindow::VolumeWheelEvent(const int delta) {

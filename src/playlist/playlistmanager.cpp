@@ -45,6 +45,7 @@
 #include "includes/shared_ptr.h"
 #include "core/settings.h"
 #include "constants/filenameconstants.h"
+#include "remotecontroller/remotejsoncreator.h"
 #include "utilities/timeutils.h"
 #include "collection/collectionbackend.h"
 #include "covermanager/currentalbumcoverloader.h"
@@ -397,11 +398,12 @@ void PlaylistManager::SetActivePlaylist(const int id) {
   Q_EMIT ActiveChanged(active());
 
   // Send active playlist id to remote device.
-  QJsonObject response;
-  response[QStringLiteral("response")] = QStringLiteral("active_playlist");
-  response[QStringLiteral("id")] = id;
-  response[QStringLiteral("row")] = active()->last_played_row();
-  Q_EMIT PlaylistManager::sendPlaylistResponse(response);
+  Q_EMIT PlaylistManager::sendPlaylistResponse(RemoteJsonCreator::createResponse({
+    {u"event"_s, u"active_playlist"_s},
+    {u"id"_s, QString::number(id)},
+    {u"row"_s, QString::number(active()->last_played_row())}
+  }));
+
   active()->Playing();
 }
 
