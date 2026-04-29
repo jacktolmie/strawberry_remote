@@ -21,7 +21,7 @@
     </message>
     <message>
       <source>It is a fork of Clementine released in 2018 aimed at music collectors and audiophiles.</source>
-      <translation>Det är en förgrening av Clementine som släpptes 2018 riktad till musiksamlare och audiofiler.</translation>
+      <translation>Det är en förgrening av Clementine som släpptes 2018 riktad till musiksamlare och audioentusiaster.</translation>
     </message>
     <message>
       <source>Strawberry is free software released under GPL. The source code is available on %1</source>
@@ -166,7 +166,7 @@
     </message>
     <message>
       <source>Output</source>
-      <translation>Utgång</translation>
+      <translation>Utmatning</translation>
     </message>
     <message>
       <source>Enter a filename for exported covers (no extension):</source>
@@ -237,7 +237,7 @@
     </message>
     <message>
       <source>Closing this window will stop searching for album covers.</source>
-      <translation>Stängning av det här fönstret kommer att stoppa sökningen efter albumomslag.</translation>
+      <translation>Om du stänger det här fönstret stoppas sökningen efter albumomslag.</translation>
     </message>
     <message>
       <source>Don&apos;t stop!</source>
@@ -253,7 +253,7 @@
     </message>
     <message>
       <source>Got %1 covers out of %2 (%3 failed)</source>
-      <translation>Erhöll %1 omslag av %2 (%3 misslyckades)</translation>
+      <translation>Hämtade %1 omslag av %2 (%3 misslyckades)</translation>
     </message>
     <message>
       <source>%1 transferred</source>
@@ -269,7 +269,7 @@
     </message>
     <message>
       <source>Exported %1 covers out of %2 (%3 skipped)</source>
-      <translation>Exporterat %1 omslag av %2 (%3 överhoppade)</translation>
+      <translation>Exporterat %1 omslag av %2 (%3 hoppades över)</translation>
     </message>
     <message>
       <source>Could not save cover to file %1.</source>
@@ -358,15 +358,11 @@
     </message>
     <message>
       <source>Style</source>
-      <translation>Format</translation>
+      <translation>Stil</translation>
     </message>
     <message>
       <source>Use system theme icons</source>
       <translation>Använd systemtemaikoner</translation>
-    </message>
-    <message>
-      <source>Settings require restart.</source>
-      <translation>Inställningar kräver omstart.</translation>
     </message>
     <message>
       <source>Tabbar colors</source>
@@ -520,6 +516,10 @@
       <source>Select background image</source>
       <translation>Väl en bakgrundsbild</translation>
     </message>
+    <message>
+      <source>You need to restart Strawberry for this setting to take affect.</source>
+      <translation>Du måste starta om Strawberry för att den här inställningen ska börja gälla.</translation>
+    </message>
   </context>
   <context>
     <name>BackendSettingsPage</name>
@@ -529,7 +529,7 @@
     </message>
     <message>
       <source>Audio output</source>
-      <translation>Ljudutgång</translation>
+      <translation>Ljudutmatning</translation>
     </message>
     <message>
       <source>Device</source>
@@ -537,7 +537,7 @@
     </message>
     <message>
       <source>Output</source>
-      <translation>Utgång</translation>
+      <translation>Utmatning</translation>
     </message>
     <message>
       <source>ALSA plugin:</source>
@@ -585,7 +585,7 @@
     </message>
     <message>
       <source>Enable HTTP/2 for streaming</source>
-      <translation>Aktivera HTTP/2 för att flöda</translation>
+      <translation>Aktivera HTTP/2 för strömning</translation>
     </message>
     <message>
       <source>Use strict SSL mode</source>
@@ -601,15 +601,15 @@
     </message>
     <message>
       <source>Buffer duration</source>
-      <translation>Buffert varaktighet</translation>
+      <translation>Buffertlängd</translation>
     </message>
     <message>
       <source>High watermark</source>
-      <translation>Hög vattenstämpel</translation>
+      <translation>Övre buffertgräns</translation>
     </message>
     <message>
       <source>Low watermark</source>
-      <translation>Låg vattenstämpel</translation>
+      <translation>Nedre buffertgräns</translation>
     </message>
     <message>
       <source>Defaults</source>
@@ -695,6 +695,10 @@
       <source>Fade out on pause / fade in on resume</source>
       <translation>Tona ut vid pausning / tona in vid återupptagning</translation>
     </message>
+    <message>
+      <source>You need to restart Strawberry for this setting to take affect</source>
+      <translation type="unfinished">You need to restart Strawberry for this setting to take affect</translation>
+    </message>
   </context>
   <context>
     <name>BehaviourSettingsPage</name>
@@ -712,7 +716,7 @@
     </message>
     <message>
       <source>Show song progress on system tray icon</source>
-      <translation>Visa sångförlopp på systemfältikonen</translation>
+      <translation>Visa låtförlopp på systemfältikonen</translation>
     </message>
     <message>
       <source>Show song progress on taskbar</source>
@@ -724,7 +728,7 @@
     </message>
     <message>
       <source>Show playing widget</source>
-      <translation>Visa spelande gränssnittskomponent</translation>
+      <translation>Visa uppspelningsgränssnittskomponenten</translation>
     </message>
     <message>
       <source>On startup</source>
@@ -764,7 +768,7 @@
     </message>
     <message>
       <source>Using the menu to add a song will...</source>
-      <translation>Använda menyn för att lägga till en låt kommer att...</translation>
+      <translation>Om du lägger till en låt via menyn kommer det att...</translation>
     </message>
     <message>
       <source>Never start playing</source>
@@ -788,7 +792,7 @@
     </message>
     <message>
       <source>Restart song, then jump to previous if pressed again</source>
-      <translation>Starta om låten, hoppa till föregående låt vid dubbelklickning</translation>
+      <translation>Starta om låten, hoppa sedan till föregående om du trycker igen</translation>
     </message>
     <message>
       <source>Double clicking a song will...</source>
@@ -796,11 +800,11 @@
     </message>
     <message>
       <source>Append to the playlist</source>
-      <translation>Lägga till i spellistan</translation>
+      <translation>Lägg till i spellistan</translation>
     </message>
     <message>
       <source>Replace the playlist</source>
-      <translation>Ersätta spellistan</translation>
+      <translation>Ersätt spellistan</translation>
     </message>
     <message>
       <source>Open in new playlist</source>
@@ -808,7 +812,7 @@
     </message>
     <message>
       <source>Add to the queue</source>
-      <translation>Lägga till i kön</translation>
+      <translation>Lägg till i kön</translation>
     </message>
     <message>
       <source>Double clicking a song in the playlist will...</source>
@@ -836,18 +840,22 @@
     </message>
   </context>
   <context>
-    <name>CddaSongLoader</name>
+    <name>CDDASongLoader</name>
+    <message>
+      <source>Could not create cdiocddasrc</source>
+      <translation type="unfinished">Could not create cdiocddasrc</translation>
+    </message>
     <message>
       <source>Error while setting CDDA device to ready state.</source>
-      <translation>Fel när CDDA-enheten ställdes till klartillstånd.</translation>
+      <translation type="unfinished">Error while setting CDDA device to ready state.</translation>
     </message>
     <message>
       <source>Error while setting CDDA device to pause state.</source>
-      <translation>Fel när CDDA-enheten ställdes till pausläge.</translation>
+      <translation type="unfinished">Error while setting CDDA device to pause state.</translation>
     </message>
     <message>
       <source>Error while querying CDDA tracks.</source>
-      <translation>Fel vid förfrågan om CDDA-spår.</translation>
+      <translation type="unfinished">Error while querying CDDA tracks.</translation>
     </message>
   </context>
   <context>
@@ -912,12 +920,40 @@
       <translation>Hantera sparade grupperingar</translation>
     </message>
     <message>
-      <source>Show</source>
-      <translation>Visa</translation>
+      <source>Any rating</source>
+      <translation type="unfinished">Any rating</translation>
+    </message>
+    <message>
+      <source>Rating non null</source>
+      <translation type="unfinished">Rating non null</translation>
+    </message>
+    <message>
+      <source>Rating greater than 1 star</source>
+      <translation type="unfinished">Rating greater than 1 star</translation>
+    </message>
+    <message>
+      <source>Rating greater than 2 stars</source>
+      <translation type="unfinished">Rating greater than 2 stars</translation>
+    </message>
+    <message>
+      <source>Rating greater than 3 stars</source>
+      <translation type="unfinished">Rating greater than 3 stars</translation>
+    </message>
+    <message>
+      <source>Rating greater than 4 stars</source>
+      <translation type="unfinished">Rating greater than 4 stars</translation>
     </message>
     <message>
       <source>Group by</source>
       <translation>Gruppera efter</translation>
+    </message>
+    <message>
+      <source>Filter by age</source>
+      <translation type="unfinished">Filter by age</translation>
+    </message>
+    <message>
+      <source>Filter by rating</source>
+      <translation type="unfinished">Filter by rating</translation>
     </message>
     <message>
       <source>Display options</source>
@@ -994,6 +1030,10 @@
   </context>
   <context>
     <name>CollectionLibrary</name>
+    <message>
+      <source>Support for sort tags artist, album, album artist, title, composer, and performer</source>
+      <translation>Stöd för sorteringstaggar artist, album, albumartist, titel, kompositör och framförare</translation>
+    </message>
     <message>
       <source>Saving playcounts and ratings</source>
       <translation>Sparar antal spelningar och betyg</translation>
@@ -1096,7 +1136,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
-      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</translation>
+      <translation>Hoppa över inledande artiklar ("den", "en", "ett") när du sorterar artister, kompositörer och framförare</translation>
     </message>
     <message>
       <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
@@ -1383,7 +1423,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Add song performer tag</source>
-      <translation>Lägg till tagg för aktör</translation>
+      <translation>Lägg till tagg för framförare</translation>
     </message>
     <message>
       <source>Add song grouping tag</source>
@@ -1411,7 +1451,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Add song skip count</source>
-      <translation>Lägg till antal överhoppningar</translation>
+      <translation>Lägg till överhoppningsantal</translation>
     </message>
     <message>
       <source>Add a new line if supported by the notification type</source>
@@ -1442,12 +1482,32 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <translation>Lägg till låtbetyg</translation>
     </message>
     <message>
-      <source>%originalyear%</source>
-      <translation>%originalyear%</translation>
-    </message>
-    <message>
       <source>Add song original year tag</source>
       <translation>Lägg till låtens originalårstagg</translation>
+    </message>
+    <message>
+      <source>Add song artistsort tag</source>
+      <translation type="unfinished">Add song artistsort tag</translation>
+    </message>
+    <message>
+      <source>Add song albumartistsort tag</source>
+      <translation type="unfinished">Add song albumartistsort tag</translation>
+    </message>
+    <message>
+      <source>Add song titlesort tag</source>
+      <translation type="unfinished">Add song titlesort tag</translation>
+    </message>
+    <message>
+      <source>Add song composersort tag</source>
+      <translation type="unfinished">Add song composersort tag</translation>
+    </message>
+    <message>
+      <source>Add song performersort tag</source>
+      <translation>Lägg till sorteringstagg för låtframförare</translation>
+    </message>
+    <message>
+      <source>Add song albumsort tag</source>
+      <translation type="unfinished">Add song albumsort tag</translation>
     </message>
   </context>
   <context>
@@ -1470,15 +1530,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Bitrate</source>
-      <translation>Bitfrekvens</translation>
-    </message>
-    <message>
-      <source>EBU R 128 Integrated Loudness</source>
-      <translation>EBU R 128 integrerad ljudstyrka</translation>
-    </message>
-    <message>
-      <source>EBU R 128 Loudness Range</source>
-      <translation>EBU R 128 ljudstyrkeintervall</translation>
+      <translation>Bithastighet</translation>
     </message>
     <message>
       <source>Show album cover</source>
@@ -1611,7 +1663,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Got %1 covers out of %2 (%3 failed)</source>
-      <translation>Erhöll %1 omslag av %2 (%3 misslyckades)</translation>
+      <translation>Hämtade %1 omslag av %2 (%3 misslyckades)</translation>
     </message>
     <message>
       <source>Covers from %1</source>
@@ -1989,6 +2041,13 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
   </context>
   <context>
+    <name>DiscordRichPresence</name>
+    <message>
+      <source>on </source>
+      <translation type="unfinished">on </translation>
+    </message>
+  </context>
+  <context>
     <name>DynamicPlaylistControls</name>
     <message>
       <source>Dynamic mode is on</source>
@@ -2068,7 +2127,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Skip count</source>
-      <translation>Antal överhoppningar</translation>
+      <translation>Överhoppningsantal</translation>
     </message>
     <message>
       <source>Sample rate</source>
@@ -2164,7 +2223,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Performer</source>
-      <translation>Aktör</translation>
+      <translation>Framförare</translation>
     </message>
     <message>
       <source>Compilation</source>
@@ -2298,6 +2357,42 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <source>Could not write metadata to %1: %2</source>
       <translation>Det gick inte att skriva metadata till %1:%2</translation>
     </message>
+    <message>
+      <source>ID3v2 version:</source>
+      <translation type="unfinished">ID3v2 version:</translation>
+    </message>
+    <message>
+      <source>2.3</source>
+      <translation type="unfinished">2.3</translation>
+    </message>
+    <message>
+      <source>2.4</source>
+      <translation type="unfinished">2.4</translation>
+    </message>
+    <message>
+      <source>Performer sort</source>
+      <translation>Sortera framförare</translation>
+    </message>
+    <message>
+      <source>Title sort</source>
+      <translation type="unfinished">Title sort</translation>
+    </message>
+    <message>
+      <source>Album artist sort</source>
+      <translation type="unfinished">Album artist sort</translation>
+    </message>
+    <message>
+      <source>Artist sort</source>
+      <translation type="unfinished">Artist sort</translation>
+    </message>
+    <message>
+      <source>Album sort</source>
+      <translation type="unfinished">Album sort</translation>
+    </message>
+    <message>
+      <source>Composer sort</source>
+      <translation type="unfinished">Composer sort</translation>
+    </message>
   </context>
   <context>
     <name>Equalizer</name>
@@ -2425,6 +2520,10 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <source>Are you sure you want to delete the &quot;%1&quot; preset?</source>
       <translation>Är du säker på att du vill ta bort förinställningen &quot;%1&quot;?</translation>
     </message>
+    <message>
+      <source>You need to restart playback for this setting to take affect.</source>
+      <translation type="unfinished">You need to restart playback for this setting to take affect.</translation>
+    </message>
   </context>
   <context>
     <name>EqualizerSlider</name>
@@ -2484,6 +2583,22 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <source>Form</source>
       <translation>Formulär</translation>
     </message>
+    <message>
+      <source>Add root directory</source>
+      <translation type="unfinished">Add root directory</translation>
+    </message>
+    <message>
+      <source>Remove selected root directory</source>
+      <translation type="unfinished">Remove selected root directory</translation>
+    </message>
+    <message>
+      <source>Toggle between list and tree view</source>
+      <translation type="unfinished">Toggle between list and tree view</translation>
+    </message>
+    <message>
+      <source>Select folder to add as tree root</source>
+      <translation type="unfinished">Select folder to add as tree root</translation>
+    </message>
   </context>
   <context>
     <name>FileViewList</name>
@@ -2522,6 +2637,49 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     <message>
       <source>Show in file browser...</source>
       <translation>Visa i filhanterare...</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileViewTree</name>
+    <message>
+      <source>Append to current playlist</source>
+      <translation>Lägg till i aktuell spellista</translation>
+    </message>
+    <message>
+      <source>Replace current playlist</source>
+      <translation type="unfinished">Replace current playlist</translation>
+    </message>
+    <message>
+      <source>Open in new playlist</source>
+      <translation type="unfinished">Open in new playlist</translation>
+    </message>
+    <message>
+      <source>Copy to collection...</source>
+      <translation type="unfinished">Copy to collection...</translation>
+    </message>
+    <message>
+      <source>Move to collection...</source>
+      <translation type="unfinished">Move to collection...</translation>
+    </message>
+    <message>
+      <source>Copy to device...</source>
+      <translation type="unfinished">Copy to device...</translation>
+    </message>
+    <message>
+      <source>Delete from disk...</source>
+      <translation type="unfinished">Delete from disk...</translation>
+    </message>
+    <message>
+      <source>Edit track information...</source>
+      <translation type="unfinished">Edit track information...</translation>
+    </message>
+    <message>
+      <source>Show in file browser...</source>
+      <translation type="unfinished">Show in file browser...</translation>
+    </message>
+    <message>
+      <source>Files</source>
+      <translation type="unfinished">Files</translation>
     </message>
   </context>
   <context>
@@ -2567,29 +2725,6 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     <message>
       <source>An error occurred loading the iTunes database</source>
       <translation>Ett fel uppstod vid inläsning av iTunes-databasen</translation>
-    </message>
-  </context>
-  <context>
-    <name>GeniusLyricsProvider</name>
-    <message>
-      <source>Genius Authentication</source>
-      <translation>Genius-autentisering</translation>
-    </message>
-    <message>
-      <source>Please open this URL in your browser</source>
-      <translation>Öppna den här URL:n i din webbläsare</translation>
-    </message>
-    <message>
-      <source>Redirect missing token code!</source>
-      <translation>Omdirigering saknar token-kod!</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser.</source>
-      <translation>Tog emot ogiltigt svar från webbläsaren.</translation>
-    </message>
-    <message>
-      <source>Redirect from Genius is missing query items code or state.</source>
-      <translation>Omdirigering från Genius saknar förfrågningsobjektkod eller tillstånd.</translation>
     </message>
   </context>
   <context>
@@ -2833,7 +2968,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Performer</source>
-      <translation>Aktör</translation>
+      <translation>Framförare</translation>
     </message>
     <message>
       <source>Grouping</source>
@@ -2853,7 +2988,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Bitrate</source>
-      <translation>Bitfrekvens</translation>
+      <translation>Bithastighet</translation>
     </message>
     <message>
       <source>Second level</source>
@@ -2946,6 +3081,41 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
   </context>
   <context>
+    <name>LastFMScrobbler</name>
+    <message>
+      <source>%1 Scrobbler Authentication</source>
+      <translation type="unfinished">%1 Scrobbler Authentication</translation>
+    </message>
+    <message>
+      <source>Open URL in web browser?</source>
+      <translation type="unfinished">Open URL in web browser?</translation>
+    </message>
+    <message>
+      <source>Press &quot;Save&quot; to copy the URL to clipboard and manually open it in a web browser.</source>
+      <translation type="unfinished">Press &quot;Save&quot; to copy the URL to clipboard and manually open it in a web browser.</translation>
+    </message>
+    <message>
+      <source>Could not open URL. Please open this URL in your browser</source>
+      <translation type="unfinished">Could not open URL. Please open this URL in your browser</translation>
+    </message>
+    <message>
+      <source>Invalid reply from web browser. Missing token.</source>
+      <translation type="unfinished">Invalid reply from web browser. Missing token.</translation>
+    </message>
+    <message>
+      <source>Received invalid reply from web browser. Try another browser.</source>
+      <translation type="unfinished">Received invalid reply from web browser. Try another browser.</translation>
+    </message>
+    <message>
+      <source>Scrobbler %1 is not authenticated!</source>
+      <translation type="unfinished">Scrobbler %1 is not authenticated!</translation>
+    </message>
+    <message>
+      <source>Scrobbler %1 error: %2</source>
+      <translation type="unfinished">Scrobbler %1 error: %2</translation>
+    </message>
+  </context>
+  <context>
     <name>LastPlayedItemDelegate</name>
     <message>
       <source>Never</source>
@@ -2961,22 +3131,6 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
   </context>
   <context>
     <name>ListenBrainzScrobbler</name>
-    <message>
-      <source>ListenBrainz Authentication</source>
-      <translation>ListenBrainz-autentisering</translation>
-    </message>
-    <message>
-      <source>Please open this URL in your browser</source>
-      <translation>Öppna den här URL:n i din webbläsare</translation>
-    </message>
-    <message>
-      <source>Redirect missing token code!</source>
-      <translation>Omdirigering saknar token-kod!</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser.</source>
-      <translation>Tog emot ogiltigt svar från webbläsaren.</translation>
-    </message>
     <message>
       <source>Unable to scrobble %1 - %2 because of error: %3</source>
       <translation>Det gick inte att skrobbla %1 - %2 på grund av fel: %3</translation>
@@ -3435,6 +3589,10 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <translation>Skanna om låt(ar)...</translation>
     </message>
     <message>
+      <source>Fetch metadata from service</source>
+      <translation type="unfinished">Fetch metadata from service</translation>
+    </message>
+    <message>
       <source>Copy URL(s)...</source>
       <translation>Kopiera URL(er)...</translation>
     </message>
@@ -3605,7 +3763,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Moodbar style</source>
-      <translation>Format på stämningsdiagrammet</translation>
+      <translation>Stil på stämningsdiagrammet</translation>
     </message>
   </context>
   <context>
@@ -3620,7 +3778,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Moodbar style</source>
-      <translation>Format på stämningsdiagrammet</translation>
+      <translation>Stil på stämningsdiagrammet</translation>
     </message>
     <message>
       <source>Save the .mood files directly in the songs folders</source>
@@ -3869,7 +4027,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Add song performer tag</source>
-      <translation>Lägg till tagg för aktör</translation>
+      <translation>Lägg till tagg för låtframförare</translation>
     </message>
     <message>
       <source>Add song grouping tag</source>
@@ -3897,7 +4055,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Add song skip count</source>
-      <translation>Lägg till antal överhoppningar</translation>
+      <translation>Lägg till överhoppningsantal</translation>
     </message>
     <message>
       <source>Add song rating</source>
@@ -3938,6 +4096,61 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     <message>
       <source>Drag to reposition</source>
       <translation>Dra för att ändra position</translation>
+    </message>
+    <message>
+      <source>Discord</source>
+      <translation type="unfinished">Discord</translation>
+    </message>
+    <message>
+      <source>Enable Rich Presence</source>
+      <translation type="unfinished">Enable Rich Presence</translation>
+    </message>
+    <message>
+      <source>&quot;Listening to...&quot;</source>
+      <translation type="unfinished">&quot;Listening to...&quot;</translation>
+    </message>
+    <message>
+      <source>Strawberry</source>
+      <translation type="unfinished">Strawberry</translation>
+    </message>
+    <message>
+      <source>Artist name</source>
+      <translation type="unfinished">Artist name</translation>
+    </message>
+    <message>
+      <source>Song title</source>
+      <translation type="unfinished">Song title</translation>
+    </message>
+  </context>
+  <context>
+    <name>OAuthenticator</name>
+    <message>
+      <source>Authentication</source>
+      <translation type="unfinished">Authentication</translation>
+    </message>
+    <message>
+      <source>Please open this URL in your browser</source>
+      <translation type="unfinished">Please open this URL in your browser</translation>
+    </message>
+    <message>
+      <source>Received invalid reply from web browser.</source>
+      <translation type="unfinished">Received invalid reply from web browser.</translation>
+    </message>
+    <message>
+      <source>Redirect URL is missing query.</source>
+      <translation type="unfinished">Redirect URL is missing query.</translation>
+    </message>
+    <message>
+      <source>Request URL is missing code!</source>
+      <translation type="unfinished">Request URL is missing code!</translation>
+    </message>
+    <message>
+      <source>Request URL is missing state!</source>
+      <translation type="unfinished">Request URL is missing state!</translation>
+    </message>
+    <message>
+      <source>Request URL has wrong state %1 != %2</source>
+      <translation type="unfinished">Request URL has wrong state %1 != %2</translation>
     </message>
   </context>
   <context>
@@ -4134,7 +4347,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Performer</source>
-      <translation>Aktör</translation>
+      <translation>Framförare</translation>
     </message>
     <message>
       <source>Grouping</source>
@@ -4171,7 +4384,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     <message>
       <source>Bitrate</source>
       <comment>Refers to bitrate in file organize dialog.</comment>
-      <translation>Bitfrekvens</translation>
+      <translation>Bithastighet</translation>
     </message>
     <message>
       <source>Sample rate</source>
@@ -4211,6 +4424,14 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <source>Don&apos;t know how to handle %1</source>
       <translation>Vet inte hur man hanterar %1</translation>
     </message>
+    <message>
+      <source>File %1 does not exist</source>
+      <translation type="unfinished">File %1 does not exist</translation>
+    </message>
+    <message>
+      <source>Could not read file %1: %2</source>
+      <translation type="unfinished">Could not read file %1: %2</translation>
+    </message>
   </context>
   <context>
     <name>PlayingWidget</name>
@@ -4246,12 +4467,24 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <translation>Titel</translation>
     </message>
     <message>
+      <source>Title Sort</source>
+      <translation type="unfinished">Title Sort</translation>
+    </message>
+    <message>
       <source>Artist</source>
       <translation>Artist</translation>
     </message>
     <message>
+      <source>Artist Sort</source>
+      <translation type="unfinished">Artist Sort</translation>
+    </message>
+    <message>
       <source>Album</source>
       <translation>Album</translation>
+    </message>
+    <message>
+      <source>Album Sort</source>
+      <translation type="unfinished">Album Sort</translation>
     </message>
     <message>
       <source>Track</source>
@@ -4282,12 +4515,24 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <translation>Albumartist</translation>
     </message>
     <message>
+      <source>Album Artist Sort</source>
+      <translation type="unfinished">Album Artist Sort</translation>
+    </message>
+    <message>
       <source>Composer</source>
       <translation>Kompositör</translation>
     </message>
     <message>
+      <source>Composer Sort</source>
+      <translation type="unfinished">Composer Sort</translation>
+    </message>
+    <message>
       <source>Performer</source>
-      <translation>Aktör</translation>
+      <translation>Framförare</translation>
+    </message>
+    <message>
+      <source>Performer Sort</source>
+      <translation>Sortera framförare</translation>
     </message>
     <message>
       <source>Grouping</source>
@@ -4299,7 +4544,7 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Skip Count</source>
-      <translation>Hoppa över räkning</translation>
+      <translation>Överhoppningsantal</translation>
     </message>
     <message>
       <source>Last Played</source>
@@ -4315,11 +4560,11 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     </message>
     <message>
       <source>Bitrate</source>
-      <translation>Bitfrekvens</translation>
+      <translation>Bithastighet</translation>
     </message>
     <message>
-      <source>File Name</source>
-      <translation>Filnamn</translation>
+      <source>Initial key</source>
+      <translation type="unfinished">Initial key</translation>
     </message>
     <message>
       <source>File Name (without path)</source>
@@ -4350,12 +4595,24 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
       <translation>Källa</translation>
     </message>
     <message>
+      <source>Moodbar</source>
+      <translation type="unfinished">Moodbar</translation>
+    </message>
+    <message>
+      <source>BPM</source>
+      <translation type="unfinished">BPM</translation>
+    </message>
+    <message>
       <source>Mood</source>
       <translation>Stämning</translation>
     </message>
     <message>
       <source>Rating</source>
       <translation>Betyg</translation>
+    </message>
+    <message>
+      <source>URL</source>
+      <translation type="unfinished">URL</translation>
     </message>
     <message>
       <source>CUE</source>
@@ -4480,6 +4737,10 @@ Om det inte finns några matchningar så kommer den största bilden i mappen att
     <message>
       <source>Playlist</source>
       <translation>Spellista</translation>
+    </message>
+    <message>
+      <source>Copy songs to playlist</source>
+      <translation type="unfinished">Copy songs to playlist</translation>
     </message>
     <message>
       <source>Copy to device</source>
@@ -4955,6 +5216,10 @@ Are you sure you want to continue?</source>
       <translation>Visa versionsinformation</translation>
     </message>
     <message>
+      <source>Create fingerprint</source>
+      <translation type="unfinished">Create fingerprint</translation>
+    </message>
+    <message>
       <source>Failed to create directory %1.</source>
       <translation>Det gick inte att skapa katalogen %1.</translation>
     </message>
@@ -4981,10 +5246,6 @@ Are you sure you want to continue?</source>
     <message>
       <source>LU</source>
       <translation>LU</translation>
-    </message>
-    <message>
-      <source>File %1 is not recognized as a valid audio file.</source>
-      <translation>Filen %1 känns inte igen som en giltig ljudfil.</translation>
     </message>
     <message>
       <source>1 day</source>
@@ -5063,8 +5324,8 @@ Are you sure you want to continue?</source>
       <translation>Kunde inte tolka filen</translation>
     </message>
     <message>
-      <source>Could save file</source>
-      <translation>Det gick att spara filen</translation>
+      <source>Could not save file</source>
+      <translation type="unfinished">Could not save file</translation>
     </message>
     <message>
       <source>Unknown error</source>
@@ -5304,6 +5565,17 @@ Are you sure you want to continue?</source>
     </message>
   </context>
   <context>
+    <name>QobuzMetadataRequest</name>
+    <message>
+      <source>Not authenticated</source>
+      <translation type="unfinished">Not authenticated</translation>
+    </message>
+    <message>
+      <source>No track ID</source>
+      <translation type="unfinished">No track ID</translation>
+    </message>
+  </context>
+  <context>
     <name>QobuzRequest</name>
     <message>
       <source>Receiving artists...</source>
@@ -5357,24 +5629,44 @@ Are you sure you want to continue?</source>
   <context>
     <name>QobuzService</name>
     <message>
-      <source>Authenticating...</source>
-      <translation>Autentisering...</translation>
-    </message>
-    <message>
-      <source>Maximum number of login attempts reached.</source>
-      <translation>Högsta antalet inloggningsförsök har uppnåtts.</translation>
-    </message>
-    <message>
       <source>Missing Qobuz app ID.</source>
       <translation>Qobuz-app-id saknas.</translation>
     </message>
     <message>
-      <source>Missing Qobuz username.</source>
-      <translation>Qobuz-användarnamn saknas.</translation>
+      <source>Missing app ID. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing app ID. Please fetch credentials first.</translation>
     </message>
     <message>
-      <source>Missing Qobuz password.</source>
-      <translation>Qobuz-lösenord saknas.</translation>
+      <source>Missing app secret. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing app secret. Please fetch credentials first.</translation>
+    </message>
+    <message>
+      <source>Missing private key. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing private key. Please fetch credentials first.</translation>
+    </message>
+    <message>
+      <source>Failed to start local server for OAuth redirect: %1</source>
+      <translation type="unfinished">Failed to start local server for OAuth redirect: %1</translation>
+    </message>
+    <message>
+      <source>Failed to open the web browser. Please open this URL manually: %1</source>
+      <translation type="unfinished">Failed to open the web browser. Please open this URL manually: %1</translation>
+    </message>
+    <message>
+      <source>Waiting for browser authentication...</source>
+      <translation type="unfinished">Waiting for browser authentication...</translation>
+    </message>
+    <message>
+      <source>OAuth redirect failed: %1</source>
+      <translation type="unfinished">OAuth redirect failed: %1</translation>
+    </message>
+    <message>
+      <source>OAuth redirect is missing authorization code.</source>
+      <translation type="unfinished">OAuth redirect is missing authorization code.</translation>
+    </message>
+    <message>
+      <source>Exchanging authorization code...</source>
+      <translation type="unfinished">Exchanging authorization code...</translation>
     </message>
     <message>
       <source>Not authenticated with Qobuz.</source>
@@ -5383,6 +5675,10 @@ Are you sure you want to continue?</source>
     <message>
       <source>Missing Qobuz app ID or secret.</source>
       <translation>Qobuz-app-ID eller hemlighet saknas.</translation>
+    </message>
+    <message>
+      <source>Not authenticated. Please login to Qobuz in the settings.</source>
+      <translation type="unfinished">Not authenticated. Please login to Qobuz in the settings.</translation>
     </message>
   </context>
   <context>
@@ -5396,24 +5692,12 @@ Are you sure you want to continue?</source>
       <translation>Aktivera</translation>
     </message>
     <message>
-      <source>Qobuz support is not official and requires an API app ID and secret from a registered application to work. We can&apos;t help you getting these.</source>
-      <translation>Qobuz stöds inte officiellt och kräver ett API-app-ID och hemlighet från en registrerad applikation för att fungera. Vi kan inte hjälpa dig att få dessa.</translation>
-    </message>
-    <message>
       <source>Authentication</source>
       <translation>Autentisering</translation>
     </message>
     <message>
       <source>App ID</source>
       <translation>App-ID</translation>
-    </message>
-    <message>
-      <source>Username</source>
-      <translation>Användarnamn</translation>
-    </message>
-    <message>
-      <source>Password</source>
-      <translation>Lösenord</translation>
     </message>
     <message>
       <source>App Secret</source>
@@ -5456,28 +5740,56 @@ Are you sure you want to continue?</source>
       <translation>Hämta albumomslag</translation>
     </message>
     <message>
-      <source>Base64 encoded secret</source>
-      <translation>Base64-kodad hemlighet</translation>
-    </message>
-    <message>
       <source>Configuration incomplete</source>
       <translation>Konfigurationen ofullständig</translation>
     </message>
     <message>
-      <source>Missing app id.</source>
-      <translation>App-id saknas.</translation>
+      <source>Missing app id. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing app id. Please fetch credentials first.</translation>
     </message>
     <message>
-      <source>Missing username.</source>
-      <translation>Användarnamn saknas.</translation>
+      <source>Missing app secret. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing app secret. Please fetch credentials first.</translation>
     </message>
     <message>
-      <source>Missing password.</source>
-      <translation>Lösenord saknas.</translation>
+      <source>Missing private key. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing private key. Please fetch credentials first.</translation>
     </message>
     <message>
       <source>Authentication failed</source>
       <translation>Autentisering misslyckades</translation>
+    </message>
+    <message>
+      <source>Fetching...</source>
+      <translation type="unfinished">Fetching...</translation>
+    </message>
+    <message>
+      <source>Credentials fetched</source>
+      <translation type="unfinished">Credentials fetched</translation>
+    </message>
+    <message>
+      <source>Credentials have been successfully fetched. Click Login to authenticate via your browser.</source>
+      <translation type="unfinished">Credentials have been successfully fetched. Click Login to authenticate via your browser.</translation>
+    </message>
+    <message>
+      <source>Credential fetch failed</source>
+      <translation type="unfinished">Credential fetch failed</translation>
+    </message>
+    <message>
+      <source>Fetch Credentials</source>
+      <translation type="unfinished">Fetch Credentials</translation>
+    </message>
+    <message>
+      <source>Remove (Remastered), etc from song titles</source>
+      <translation type="unfinished">Remove (Remastered), etc from song titles</translation>
+    </message>
+    <message>
+      <source>Private key</source>
+      <translation type="unfinished">Private key</translation>
+    </message>
+    <message>
+      <source>Automatically fetch app ID, app secret and private key from Qobuz web player</source>
+      <translation type="unfinished">Automatically fetch app ID, app secret and private key from Qobuz web player</translation>
     </message>
   </context>
   <context>
@@ -5485,6 +5797,10 @@ Are you sure you want to continue?</source>
     <message>
       <source>Missing Qobuz app ID or secret.</source>
       <translation>Qobuz-app-ID eller hemlighet saknas.</translation>
+    </message>
+    <message>
+      <source>Not authenticated. Please log in on the Qobuz settings page.</source>
+      <translation type="unfinished">Not authenticated. Please log in on the Qobuz settings page.</translation>
     </message>
     <message>
       <source>Cancelled.</source>
@@ -5684,7 +6000,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Performer</source>
-      <translation>Aktör</translation>
+      <translation>Framförare</translation>
     </message>
     <message>
       <source>Grouping</source>
@@ -5708,7 +6024,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Bitrate</source>
-      <translation>Bitfrekvens</translation>
+      <translation>Bithastighet</translation>
     </message>
     <message>
       <source>Unknown</source>
@@ -5814,10 +6130,6 @@ Are you sure you want to continue?</source>
       <translation>Logga in</translation>
     </message>
     <message>
-      <source>Libre.fm</source>
-      <translation>Libre.fm</translation>
-    </message>
-    <message>
       <source>Listenbrainz</source>
       <translation>Listenbrainz</translation>
     </message>
@@ -5844,41 +6156,6 @@ Are you sure you want to continue?</source>
     <message>
       <source>Spotify</source>
       <translation>Spotify</translation>
-    </message>
-  </context>
-  <context>
-    <name>ScrobblingAPI20</name>
-    <message>
-      <source>%1 Scrobbler Authentication</source>
-      <translation>%1 skrobblarautentisering</translation>
-    </message>
-    <message>
-      <source>Open URL in web browser?</source>
-      <translation>Öppna URL i webbläsaren?</translation>
-    </message>
-    <message>
-      <source>Press &quot;Save&quot; to copy the URL to clipboard and manually open it in a web browser.</source>
-      <translation>Tryck på &quot;Spara&quot; för att kopiera URL:n till urklipp och öppna den manuellt i en webbläsare.</translation>
-    </message>
-    <message>
-      <source>Could not open URL. Please open this URL in your browser</source>
-      <translation>Det gick inte att öppna URL:n. Öppna den här URL:n i din webbläsare</translation>
-    </message>
-    <message>
-      <source>Invalid reply from web browser. Missing token.</source>
-      <translation>Ogiltigt svar från webbläsaren. Saknar token.</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser. Try another browser.</source>
-      <translation>Fick ogiltigt svar från webbläsaren. Prova en annan webbläsare.</translation>
-    </message>
-    <message>
-      <source>Scrobbler %1 is not authenticated!</source>
-      <translation>Skrobblare %1 är inte autentiserad!</translation>
-    </message>
-    <message>
-      <source>Scrobbler %1 error: %2</source>
-      <translation>Skrobblare %1 fel: %2</translation>
     </message>
   </context>
   <context>
@@ -6161,6 +6438,14 @@ Are you sure you want to continue?</source>
       <source>Edit smart playlist...</source>
       <translation>Redigera smart spellista...</translation>
     </message>
+    <message>
+      <source>Are you sure you want to restore the default smart playlists? This will remove all custom smart playlists</source>
+      <translation type="unfinished">Are you sure you want to restore the default smart playlists? This will remove all custom smart playlists</translation>
+    </message>
+    <message>
+      <source>Restore defaults</source>
+      <translation type="unfinished">Restore defaults</translation>
+    </message>
   </context>
   <context>
     <name>SnapDialog</name>
@@ -6267,6 +6552,21 @@ Are you sure you want to continue?</source>
     </message>
   </context>
   <context>
+    <name>SpotifyMetadataRequest</name>
+    <message>
+      <source>Not authenticated</source>
+      <translation type="unfinished">Not authenticated</translation>
+    </message>
+    <message>
+      <source>No track ID</source>
+      <translation type="unfinished">No track ID</translation>
+    </message>
+    <message>
+      <source>No pending song for track ID</source>
+      <translation type="unfinished">No pending song for track ID</translation>
+    </message>
+  </context>
+  <context>
     <name>SpotifyRequest</name>
     <message>
       <source>Authenticating...</source>
@@ -6323,22 +6623,6 @@ Are you sure you want to continue?</source>
   </context>
   <context>
     <name>SpotifyService</name>
-    <message>
-      <source>Spotify Authentication</source>
-      <translation>Spotify-autentisering</translation>
-    </message>
-    <message>
-      <source>Please open this URL in your browser</source>
-      <translation>Öppna den här URL:n i din webbläsare</translation>
-    </message>
-    <message>
-      <source>Redirect missing token code or state!</source>
-      <translation>Omdirigering saknar tokenkod eller tillstånd!</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser.</source>
-      <translation>Tog emot ogiltigt svar från webbläsaren.</translation>
-    </message>
     <message>
       <source>Not authenticated with Spotify.</source>
       <translation>Inte autentiserad med Spotify.</translation>
@@ -6401,6 +6685,10 @@ Are you sure you want to continue?</source>
     <message>
       <source>Authentication failed</source>
       <translation>Autentisering misslyckades</translation>
+    </message>
+    <message>
+      <source>Remove (Remastered), etc from song titles</source>
+      <translation type="unfinished">Remove (Remastered), etc from song titles</translation>
     </message>
   </context>
   <context>
@@ -6738,10 +7026,6 @@ Are you sure you want to continue?</source>
   <context>
     <name>TidalRequest</name>
     <message>
-      <source>Authenticating...</source>
-      <translation>Autentisering...</translation>
-    </message>
-    <message>
       <source>Receiving artists...</source>
       <translation>Tar emot artister...</translation>
     </message>
@@ -6789,32 +7073,8 @@ Are you sure you want to continue?</source>
   <context>
     <name>TidalService</name>
     <message>
-      <source>Reply from Tidal is missing query items.</source>
-      <translation>Svar från Tidal saknar förfrågningsobjekt.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal API token.</source>
-      <translation>Tidal-API-token saknas.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal username.</source>
-      <translation>Tidal-användarnamn saknas.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal password.</source>
-      <translation>Tidal-lösenord saknas.</translation>
-    </message>
-    <message>
-      <source>Not authenticated with Tidal and reached maximum number of login attempts.</source>
-      <translation>Inte autentiserad med Tidal och nådde högsta antalet inloggningsförsök.</translation>
-    </message>
-    <message>
       <source>Not authenticated with Tidal.</source>
       <translation>Inte autentiserad med Tidal.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal API token, username or password.</source>
-      <translation>Användarnamn eller lösenord saknas för Tidal API-token.</translation>
     </message>
   </context>
   <context>
@@ -6836,24 +7096,8 @@ Are you sure you want to continue?</source>
       <translation>Autentisering</translation>
     </message>
     <message>
-      <source>Use OAuth</source>
-      <translation>Använd OAuth</translation>
-    </message>
-    <message>
       <source>Client ID</source>
       <translation>Klient-ID</translation>
-    </message>
-    <message>
-      <source>API Token</source>
-      <translation>API-token</translation>
-    </message>
-    <message>
-      <source>Username</source>
-      <translation>Användarnamn</translation>
-    </message>
-    <message>
-      <source>Password</source>
-      <translation>Lösenord</translation>
     </message>
     <message>
       <source>Login</source>
@@ -6916,20 +7160,12 @@ Are you sure you want to continue?</source>
       <translation>Tidal-klient-ID saknas.</translation>
     </message>
     <message>
-      <source>Missing API token.</source>
-      <translation>API-token saknas.</translation>
-    </message>
-    <message>
-      <source>Missing username.</source>
-      <translation>Användarnamn saknas.</translation>
-    </message>
-    <message>
-      <source>Missing password.</source>
-      <translation>Lösenord saknas.</translation>
-    </message>
-    <message>
       <source>Authentication failed</source>
       <translation>Autentisering misslyckades</translation>
+    </message>
+    <message>
+      <source>Remove (Remastered), etc from song titles</source>
+      <translation type="unfinished">Remove (Remastered), etc from song titles</translation>
     </message>
   </context>
   <context>
@@ -6937,10 +7173,6 @@ Are you sure you want to continue?</source>
     <message>
       <source>Not authenticated with Tidal.</source>
       <translation>Inte autentiserad med Tidal.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal API token, username or password.</source>
-      <translation>Användarnamn eller lösenord saknas för Tidal API-token.</translation>
     </message>
     <message>
       <source>Cancelled.</source>
@@ -7013,6 +7245,10 @@ Are you sure you want to continue?</source>
       <source>Saving tracks</source>
       <translation>Sparar spår</translation>
     </message>
+    <message>
+      <source>Album artist</source>
+      <translation type="unfinished">Album artist</translation>
+    </message>
   </context>
   <context>
     <name>TrackSlider</name>
@@ -7065,7 +7301,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Output options</source>
-      <translation>Alternativ för utgång</translation>
+      <translation>Alternativ för utmatning</translation>
     </message>
     <message>
       <source>Audio format</source>
@@ -7195,7 +7431,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Bitrate</source>
-      <translation>Bitfrekvens</translation>
+      <translation>Bithastighet</translation>
     </message>
     <message>
       <source> kbps</source>
@@ -7254,7 +7490,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Bitrate</source>
-      <translation>Bitfrekvens</translation>
+      <translation>Bithastighet</translation>
     </message>
     <message>
       <source> kbps</source>
@@ -7305,11 +7541,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Opti&amp;mize for bitrate</source>
-      <translation>Opti&amp;mera för bitfrekvens</translation>
+      <translation>Opti&amp;mera för bithastighet</translation>
     </message>
     <message>
       <source>Bitrate</source>
-      <translation>Bitfrekvens</translation>
+      <translation>Bithastighet</translation>
     </message>
     <message>
       <source> kbps</source>
@@ -7317,7 +7553,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Constant bitrate</source>
-      <translation>Konstant bitfrekvens</translation>
+      <translation>Konstant bithastighet</translation>
     </message>
     <message>
       <source>Encoding engine quality</source>
@@ -7348,7 +7584,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Bitrate</source>
-      <translation>Bitfrekvens</translation>
+      <translation>Bithastighet</translation>
     </message>
     <message>
       <source> kbps</source>
@@ -7368,7 +7604,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Bitrate</source>
-      <translation>Bitfrekvens</translation>
+      <translation>Bithastighet</translation>
     </message>
     <message>
       <source>automatic</source>
@@ -7380,7 +7616,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Average bitrate</source>
-      <translation>Genomsnittlig bitfrekvens</translation>
+      <translation>Genomsnittlig bithastighet</translation>
     </message>
     <message>
       <source>disabled</source>
@@ -7440,11 +7676,11 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Use bitrate management engine</source>
-      <translation>Använd motor för hantering av bitfrekvens</translation>
+      <translation>Använd motor för hantering av bithastighet</translation>
     </message>
     <message>
       <source>Target bitrate</source>
-      <translation>Önskad bitfrekvens</translation>
+      <translation>Önskad bithastighet</translation>
     </message>
     <message>
       <source> kbps</source>
@@ -7452,7 +7688,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Minimum bitrate</source>
-      <translation>Lägsta bitfrekvensen</translation>
+      <translation>Lägsta bithastigheten</translation>
     </message>
     <message>
       <source>disabled</source>
@@ -7460,7 +7696,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Maximum bitrate</source>
-      <translation>Högsta bitfrekvensen</translation>
+      <translation>Högsta bithastigheten</translation>
     </message>
   </context>
   <context>

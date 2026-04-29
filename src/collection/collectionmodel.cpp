@@ -276,6 +276,15 @@ void CollectionModel::SetFilterMaxAge(const int filter_max_age) {
 
 }
 
+void CollectionModel::SetFilterMinRating(const float filter_min_rating) {
+
+  if (options_current_.filter_options.min_rating() != filter_min_rating) {
+    options_current_.filter_options.set_min_rating(filter_min_rating);
+    ScheduleReset();
+  }
+
+}
+
 QVariant CollectionModel::data(const QModelIndex &idx, const int role) const {
 
   return data(IndexToItem(idx), role);
@@ -430,7 +439,7 @@ void CollectionModel::ScheduleUpdate(const CollectionModelUpdate::Type type, con
 
 void CollectionModel::ScheduleReset() {
 
-  if (!updates_.isEmpty() && updates_.first().type == CollectionModelUpdate::Type::Reset) return;
+  if (!updates_.isEmpty() && updates_.constFirst().type == CollectionModelUpdate::Type::Reset) return;
 
   ScheduleUpdate(CollectionModelUpdate::Type::Reset);
 

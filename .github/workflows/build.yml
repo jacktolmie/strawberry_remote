@@ -586,7 +586,6 @@ jobs:
             libicu-dev
             libgstreamer1.0-dev
             libgstreamer-plugins-base1.0-dev
-            libgstreamer-plugins-good1.0-dev
             gstreamer1.0-alsa
             gstreamer1.0-pulseaudio
             libchromaprint-dev
@@ -684,7 +683,6 @@ jobs:
             libicu-dev
             libgstreamer1.0-dev
             libgstreamer-plugins-base1.0-dev
-            libgstreamer-plugins-good1.0-dev
             libchromaprint-dev
             libebur128-dev
             libfftw3-dev
@@ -757,7 +755,7 @@ jobs:
         df -h
     - name: Build FreeBSD
       id: build-freebsd
-      uses: vmactions/freebsd-vm@v1.4.3
+      uses: vmactions/freebsd-vm@v1.4.5
       with:
         usesh: true
         mem: 8192
@@ -783,7 +781,7 @@ jobs:
         submodules: recursive
     - name: Build OpenBSD
       id: build-openbsd
-      uses: vmactions/openbsd-vm@v1.3.7
+      uses: vmactions/openbsd-vm@v1.4.0
       with:
         usesh: true
         mem: 4096
@@ -852,7 +850,7 @@ jobs:
 
       - name: Import certificate file
         if: github.repository == 'strawberrymusicplayer/strawberry' && github.event.pull_request.head.repo.fork == false
-        uses: apple-actions/import-codesign-certs@v6
+        uses: apple-actions/import-codesign-certs@v7
         with:
           p12-file-base64: ${{ secrets.APPLE_DEVELOPER_ID_CERTIFICATE }}
           p12-password: ${{ secrets.APPLE_DEVELOPER_ID_CERTIFICATE_PASSWORD }}
@@ -1422,10 +1420,6 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-
-      - name: Add safe git directory
-        shell: bash
-        run: git config --global --add safe.directory ${GITHUB_WORKSPACE}
 
       - name: Create Build Environment
         shell: cmd

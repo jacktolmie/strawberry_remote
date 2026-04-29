@@ -95,7 +95,7 @@
     </message>
     <message>
       <source>Unset cover</source>
-      <translation>Сбросить обложку</translation>
+      <translation>Отвязать обложку</translation>
     </message>
     <message>
       <source>Delete cover</source>
@@ -178,7 +178,7 @@
     </message>
     <message>
       <source>Export embedded covers</source>
-      <translation>Экспорт вложенных обложек</translation>
+      <translation>Экспорт встроенных обложек</translation>
     </message>
     <message>
       <source>Existing covers</source>
@@ -202,7 +202,7 @@
     </message>
     <message>
       <source>Scale size</source>
-      <translation>Размер масштабирования</translation>
+      <translation>Изменить размер</translation>
     </message>
     <message>
       <source>Size:</source>
@@ -249,7 +249,7 @@
     </message>
     <message>
       <source>Various artists</source>
-      <translation>Различные артисты</translation>
+      <translation>Разные артисты</translation>
     </message>
     <message>
       <source>Got %1 covers out of %2 (%3 failed)</source>
@@ -363,10 +363,6 @@
     <message>
       <source>Use system theme icons</source>
       <translation>Использовать системную тему значков</translation>
-    </message>
-    <message>
-      <source>Settings require restart.</source>
-      <translation>Для применения настроек требуется перезапуск.</translation>
     </message>
     <message>
       <source>Tabbar colors</source>
@@ -520,6 +516,10 @@
       <source>Select background image</source>
       <translation>Выбрать фоновое изображение</translation>
     </message>
+    <message>
+      <source>You need to restart Strawberry for this setting to take affect.</source>
+      <translation>Вам необходимо перезапустить Strawberry, чтобы применить эту настройку.</translation>
+    </message>
   </context>
   <context>
     <name>BackendSettingsPage</name>
@@ -581,7 +581,7 @@
     </message>
     <message>
       <source>Use playbin3 when available</source>
-      <translation type="unfinished">Use playbin3 when available</translation>
+      <translation>Использовать playbin3 при наличии</translation>
     </message>
     <message>
       <source>Enable HTTP/2 for streaming</source>
@@ -625,11 +625,11 @@
     </message>
     <message>
       <source>Replay Gain</source>
-      <translation>Нормализация громкости (Replay Gain)</translation>
+      <translation>Нормализация громкости Replay Gain</translation>
     </message>
     <message>
       <source>Use Replay Gain metadata if it is available</source>
-      <translation>Использовать метаданные нормализации (Replay Gain) по возможности</translation>
+      <translation>Использовать метаданные нормализации Replay Gain по возможности</translation>
     </message>
     <message>
       <source>Replay Gain mode</source>
@@ -661,7 +661,7 @@
     </message>
     <message>
       <source>Perform track loudness normalization</source>
-      <translation>Нормализовать громкость дорожки</translation>
+      <translation>Выполнять нормализацию громкости трека</translation>
     </message>
     <message>
       <source>Target Level</source>
@@ -694,6 +694,10 @@
     <message>
       <source>Fade out on pause / fade in on resume</source>
       <translation>Затухание при паузе / нарастание при продолжении воспроизведения</translation>
+    </message>
+    <message>
+      <source>You need to restart Strawberry for this setting to take affect</source>
+      <translation>Вам необходимо перезапустить Strawberry, чтобы применить эту настройку</translation>
     </message>
   </context>
   <context>
@@ -820,7 +824,7 @@
     </message>
     <message>
       <source>Seeking using a keyboard shortcut or mouse wheel</source>
-      <translation>Перемотка с помощью горячих клавиш клавиатуры или колеса мыши</translation>
+      <translation>Перемотка с помощью горячих клавиш или колеса мыши</translation>
     </message>
     <message>
       <source>Time step</source>
@@ -836,7 +840,11 @@
     </message>
   </context>
   <context>
-    <name>CddaSongLoader</name>
+    <name>CDDASongLoader</name>
+    <message>
+      <source>Could not create cdiocddasrc</source>
+      <translation>Не удалось создать Cdiocddasrc</translation>
+    </message>
     <message>
       <source>Error while setting CDDA device to ready state.</source>
       <translation>Ошибка при установке устройства CDDA в состояние готовности.</translation>
@@ -912,12 +920,40 @@
       <translation>Менеджер сохранённых групп</translation>
     </message>
     <message>
-      <source>Show</source>
-      <translation>Показать</translation>
+      <source>Any rating</source>
+      <translation>Любая оценка</translation>
+    </message>
+    <message>
+      <source>Rating non null</source>
+      <translation>Оценка не нулевая</translation>
+    </message>
+    <message>
+      <source>Rating greater than 1 star</source>
+      <translation>Оценка выше 1 звезды</translation>
+    </message>
+    <message>
+      <source>Rating greater than 2 stars</source>
+      <translation>Оценка выше 2 звёзд</translation>
+    </message>
+    <message>
+      <source>Rating greater than 3 stars</source>
+      <translation>Оценка выше 3 звёзд</translation>
+    </message>
+    <message>
+      <source>Rating greater than 4 stars</source>
+      <translation>Оценка выше 4 звёзд</translation>
     </message>
     <message>
       <source>Group by</source>
       <translation>Группировать по</translation>
+    </message>
+    <message>
+      <source>Filter by age</source>
+      <translation>Фильтр по возрасту</translation>
+    </message>
+    <message>
+      <source>Filter by rating</source>
+      <translation>Фильтр по оценке</translation>
     </message>
     <message>
       <source>Display options</source>
@@ -995,6 +1031,10 @@
   <context>
     <name>CollectionLibrary</name>
     <message>
+      <source>Support for sort tags artist, album, album artist, title, composer, and performer</source>
+      <translation>Поддержка сортировки тегов артиста, альбома, исполнителя альбома, названия, композитора и исполнителя</translation>
+    </message>
+    <message>
       <source>Saving playcounts and ratings</source>
       <translation>Сохраняются счётчики прослушивания и оценки</translation>
     </message>
@@ -1003,7 +1043,7 @@
     <name>CollectionModel</name>
     <message>
       <source>Various artists</source>
-      <translation>Различные артисты</translation>
+      <translation>Разные артисты</translation>
     </message>
     <message>
       <source>Loading...</source>
@@ -1026,7 +1066,7 @@
     </message>
     <message>
       <source>Add new folder...</source>
-      <translation>Добавить новую папку…</translation>
+      <translation>Добавить папку…</translation>
     </message>
     <message>
       <source>Remove folder</source>
@@ -1096,15 +1136,17 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</source>
-      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting artists, composers and performers</translation>
+      <translation>Опускать начальные артикли («the», «a», «an») при сортировке артистов, композиторов и исполнителей
+
+Не учитывать</translation>
     </message>
     <message>
       <source>Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</source>
-      <translation type="unfinished">Skip leading articles (&quot;the&quot;, &quot;a&quot;, &quot;an&quot;) when sorting albums</translation>
+      <translation>Опускать начальные артикли («the», «a», «an») при сортировке альбомов</translation>
     </message>
     <message>
       <source>Use sort tags for sorting when available</source>
-      <translation type="unfinished">Use sort tags for sorting when available</translation>
+      <translation>Использовать теги сортировки при наличии</translation>
     </message>
     <message>
       <source>Album cover pixmap cache</source>
@@ -1235,11 +1277,11 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Show in various artists</source>
-      <translation>Показывать в «Различных артистах»</translation>
+      <translation>Показывать в «Разных артистах»</translation>
     </message>
     <message>
       <source>Don&apos;t show in various artists</source>
-      <translation>Не показывать в «Различных артистах»</translation>
+      <translation>Не показывать в «Разных артистах»</translation>
     </message>
     <message>
       <source>There are other songs in this album</source>
@@ -1247,7 +1289,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Would you like to move the other songs on this album to Various Artists as well?</source>
-      <translation>Хотите ли вы переместить и другие песни из этого альбома в «Различные артисты»?</translation>
+      <translation>Хотите ли вы переместить и другие песни из этого альбома в «Разные артисты»?</translation>
     </message>
     <message>
       <source>Error</source>
@@ -1442,12 +1484,32 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Оценить песню</translation>
     </message>
     <message>
-      <source>%originalyear%</source>
-      <translation>%originalyear%</translation>
-    </message>
-    <message>
       <source>Add song original year tag</source>
       <translation>Добавить тег «Год оригинала»</translation>
+    </message>
+    <message>
+      <source>Add song artistsort tag</source>
+      <translation>Добавить тег песни artistsort</translation>
+    </message>
+    <message>
+      <source>Add song albumartistsort tag</source>
+      <translation>Добавить тег песни albumartistsort</translation>
+    </message>
+    <message>
+      <source>Add song titlesort tag</source>
+      <translation>Добавить тег песни titlesort</translation>
+    </message>
+    <message>
+      <source>Add song composersort tag</source>
+      <translation>Добавить тег песни composersort</translation>
+    </message>
+    <message>
+      <source>Add song performersort tag</source>
+      <translation>Добавить тег песни performersort</translation>
+    </message>
+    <message>
+      <source>Add song albumsort tag</source>
+      <translation>Добавить тег песни albumsort</translation>
     </message>
   </context>
   <context>
@@ -1471,14 +1533,6 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>Bitrate</source>
       <translation>Битрейт</translation>
-    </message>
-    <message>
-      <source>EBU R 128 Integrated Loudness</source>
-      <translation>Встроенная громкость EBU R 128</translation>
-    </message>
-    <message>
-      <source>EBU R 128 Loudness Range</source>
-      <translation>Диапазон громкости EBU R 128</translation>
     </message>
     <message>
       <source>Show album cover</source>
@@ -1734,7 +1788,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Manually unset (%1)</source>
-      <translation>Вручную не задана (%1)</translation>
+      <translation>Вручную отвязана (%1)</translation>
     </message>
     <message>
       <source>Set through album cover search (%1)</source>
@@ -1746,7 +1800,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Embedded album cover art (%1)</source>
-      <translation>Вложенная обложка альбома (%1)</translation>
+      <translation>Встроенная обложка альбома (%1)</translation>
     </message>
   </context>
   <context>
@@ -1989,6 +2043,13 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
   </context>
   <context>
+    <name>DiscordRichPresence</name>
+    <message>
+      <source>on </source>
+      <translation>в </translation>
+    </message>
+  </context>
+  <context>
     <name>DynamicPlaylistControls</name>
     <message>
       <source>Dynamic mode is on</source>
@@ -2035,7 +2096,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Art Embedded</source>
-      <translation>Вложенная обложка</translation>
+      <translation>Встроенная обложка</translation>
     </message>
     <message>
       <source>Last played</source>
@@ -2116,7 +2177,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Embedded cover</source>
-      <translation>Вложенная обложка</translation>
+      <translation>Встроенная обложка</translation>
     </message>
     <message>
       <source>Disc</source>
@@ -2236,7 +2297,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Cover is unset.</source>
-      <translation>Обложка не задана.</translation>
+      <translation>Обложка отвязана.</translation>
     </message>
     <message>
       <source>Cover from embedded image.</source>
@@ -2260,7 +2321,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Cover changed: Will be unset when saved.</source>
-      <translation>Смена обложки: будет снята при сохранении.</translation>
+      <translation>Смена обложки: будет отвязана при сохранении.</translation>
     </message>
     <message>
       <source>Cover changed: Will be deleted when saved.</source>
@@ -2297,6 +2358,42 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>Could not write metadata to %1: %2</source>
       <translation>Не удалось записать метаданные в %1: %2</translation>
+    </message>
+    <message>
+      <source>ID3v2 version:</source>
+      <translation>Версия ID3v2:</translation>
+    </message>
+    <message>
+      <source>2.3</source>
+      <translation>2.3</translation>
+    </message>
+    <message>
+      <source>2.4</source>
+      <translation>2.4</translation>
+    </message>
+    <message>
+      <source>Performer sort</source>
+      <translation>Сортировка исполнителя</translation>
+    </message>
+    <message>
+      <source>Title sort</source>
+      <translation>Сортировка заголовка</translation>
+    </message>
+    <message>
+      <source>Album artist sort</source>
+      <translation>Сортировка артиста альбома</translation>
+    </message>
+    <message>
+      <source>Artist sort</source>
+      <translation>Сортировка артиста</translation>
+    </message>
+    <message>
+      <source>Album sort</source>
+      <translation>Сортировка альбома</translation>
+    </message>
+    <message>
+      <source>Composer sort</source>
+      <translation>Сортировка композитора</translation>
     </message>
   </context>
   <context>
@@ -2399,7 +2496,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Soft</source>
-      <translation>Лёгкая</translation>
+      <translation>Мягкая</translation>
     </message>
     <message>
       <source>Ska</source>
@@ -2424,6 +2521,10 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>Are you sure you want to delete the &quot;%1&quot; preset?</source>
       <translation>Вы действительно хотите удалить предустановку «%1»?</translation>
+    </message>
+    <message>
+      <source>You need to restart playback for this setting to take affect.</source>
+      <translation>Вам необходимо перезапустить воспроизведение, чтобы применить эту настройку.</translation>
     </message>
   </context>
   <context>
@@ -2484,6 +2585,22 @@ If there are no matches then it will use the largest image in the directory.</so
       <source>Form</source>
       <translation>Форма</translation>
     </message>
+    <message>
+      <source>Add root directory</source>
+      <translation>Добавить корневой каталог</translation>
+    </message>
+    <message>
+      <source>Remove selected root directory</source>
+      <translation>Удалить выбранный корневой каталог</translation>
+    </message>
+    <message>
+      <source>Toggle between list and tree view</source>
+      <translation>Переключение между списком и деревом</translation>
+    </message>
+    <message>
+      <source>Select folder to add as tree root</source>
+      <translation>Выберите папку для добавления в корень дерева</translation>
+    </message>
   </context>
   <context>
     <name>FileViewList</name>
@@ -2522,6 +2639,49 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>Show in file browser...</source>
       <translation>Показать в проводнике…</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileViewTree</name>
+    <message>
+      <source>Append to current playlist</source>
+      <translation>Добавить в текущий плейлист</translation>
+    </message>
+    <message>
+      <source>Replace current playlist</source>
+      <translation>Заменить текущий плейлист</translation>
+    </message>
+    <message>
+      <source>Open in new playlist</source>
+      <translation>Открыть в новом плейлисте</translation>
+    </message>
+    <message>
+      <source>Copy to collection...</source>
+      <translation>Копировать в фонотеку…</translation>
+    </message>
+    <message>
+      <source>Move to collection...</source>
+      <translation>Перенести в фонотеку…</translation>
+    </message>
+    <message>
+      <source>Copy to device...</source>
+      <translation>Копировать на устройство…</translation>
+    </message>
+    <message>
+      <source>Delete from disk...</source>
+      <translation>Удалить с диска…</translation>
+    </message>
+    <message>
+      <source>Edit track information...</source>
+      <translation>Править сведения трека…</translation>
+    </message>
+    <message>
+      <source>Show in file browser...</source>
+      <translation>Показать в проводнике…</translation>
+    </message>
+    <message>
+      <source>Files</source>
+      <translation>Файлы</translation>
     </message>
   </context>
   <context>
@@ -2567,29 +2727,6 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>An error occurred loading the iTunes database</source>
       <translation>Произошла ошибка при загрузке базы данных iTunes</translation>
-    </message>
-  </context>
-  <context>
-    <name>GeniusLyricsProvider</name>
-    <message>
-      <source>Genius Authentication</source>
-      <translation>Аутентификация Genius</translation>
-    </message>
-    <message>
-      <source>Please open this URL in your browser</source>
-      <translation>Пожалуйста, откройте эту ссылку в вашем браузере</translation>
-    </message>
-    <message>
-      <source>Redirect missing token code!</source>
-      <translation>В перенаправлении отсутствует код токена!</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser.</source>
-      <translation>Получен неверный ответ от веб-браузера.</translation>
-    </message>
-    <message>
-      <source>Redirect from Genius is missing query items code or state.</source>
-      <translation>В перенаправлении с Genius отсутствует код или состояние элементов запроса.</translation>
     </message>
   </context>
   <context>
@@ -2682,7 +2819,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Toggle Pretty OSD</source>
-      <translation>Показать/скрыть модное экранное меню</translation>
+      <translation>Показать/скрыть графическое уведомление</translation>
     </message>
     <message>
       <source>Change shuffle mode</source>
@@ -2717,7 +2854,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>You need to launch System Preferences and allow Strawberry to &quot;&lt;span style=&quot;font-style:italic&quot;&gt;control your computer&lt;/span&gt;&quot; to use global shortcuts in Strawberry.</source>
-      <translation>Вы должны запустить «Параметры системы» и позволить Clemetine «&lt;span style=&quot; font-style:italic;&quot;&gt;управлять вашим компьютером&lt;/span&gt;» для использования глобальных горячих клавиш в Strawberry.</translation>
+      <translation>Вы должны запустить «Параметры системы» и позволить Strawberry «&lt;span style=&quot; font-style:italic;&quot;&gt;управлять вашим компьютером&lt;/span&gt;» для использования глобальных горячих клавиш в Strawberry.</translation>
     </message>
     <message>
       <source>Action</source>
@@ -2946,6 +3083,41 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
   </context>
   <context>
+    <name>LastFMScrobbler</name>
+    <message>
+      <source>%1 Scrobbler Authentication</source>
+      <translation>Аутентификация скробблера %1</translation>
+    </message>
+    <message>
+      <source>Open URL in web browser?</source>
+      <translation>Открыть адрес в веб-браузере?</translation>
+    </message>
+    <message>
+      <source>Press &quot;Save&quot; to copy the URL to clipboard and manually open it in a web browser.</source>
+      <translation>Нажмите «Сохранить», чтобы скопировать адрес в буфер обмена и вручную открыть его в веб-браузере.</translation>
+    </message>
+    <message>
+      <source>Could not open URL. Please open this URL in your browser</source>
+      <translation>Не удалось открыть адрес. Пожалуйста, откройте эту ссылку в вашем браузере</translation>
+    </message>
+    <message>
+      <source>Invalid reply from web browser. Missing token.</source>
+      <translation>Неверный ответ от веб-браузера. Отсутствует токен.</translation>
+    </message>
+    <message>
+      <source>Received invalid reply from web browser. Try another browser.</source>
+      <translation>Получен неверный ответ от веб-браузера. Попробуйте другой браузер.</translation>
+    </message>
+    <message>
+      <source>Scrobbler %1 is not authenticated!</source>
+      <translation>Скробблер %1 не аутентифицирован!</translation>
+    </message>
+    <message>
+      <source>Scrobbler %1 error: %2</source>
+      <translation>Ошибка %1 скробблера: %2</translation>
+    </message>
+  </context>
+  <context>
     <name>LastPlayedItemDelegate</name>
     <message>
       <source>Never</source>
@@ -2961,22 +3133,6 @@ If there are no matches then it will use the largest image in the directory.</so
   </context>
   <context>
     <name>ListenBrainzScrobbler</name>
-    <message>
-      <source>ListenBrainz Authentication</source>
-      <translation>Аутентификация ListenBrainz</translation>
-    </message>
-    <message>
-      <source>Please open this URL in your browser</source>
-      <translation>Пожалуйста, откройте эту ссылку в вашем браузере</translation>
-    </message>
-    <message>
-      <source>Redirect missing token code!</source>
-      <translation>В перенаправлении отсутствует код токена!</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser.</source>
-      <translation>Получен неверный ответ от веб-браузера.</translation>
-    </message>
     <message>
       <source>Unable to scrobble %1 - %2 because of error: %3</source>
       <translation>Не удаётся заскробблить %1 — %2 из-за ошибки: %3</translation>
@@ -3435,6 +3591,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Пересканировать песни…</translation>
     </message>
     <message>
+      <source>Fetch metadata from service</source>
+      <translation>Получить метаданные из службы</translation>
+    </message>
+    <message>
       <source>Copy URL(s)...</source>
       <translation>Копировать адрес(а)…</translation>
     </message>
@@ -3737,7 +3897,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Show a pretty OSD</source>
-      <translation>Показывать модное экранное меню</translation>
+      <translation>Показывать графическое уведомление</translation>
     </message>
     <message>
       <source>Show a popup fro&amp;m the system tray</source>
@@ -3805,7 +3965,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Pretty OSD options</source>
-      <translation>Параметры модного экранного меню</translation>
+      <translation>Параметры графическое уведомление</translation>
     </message>
     <message>
       <source>Background color</source>
@@ -3939,6 +4099,61 @@ If there are no matches then it will use the largest image in the directory.</so
       <source>Drag to reposition</source>
       <translation>Перетащите для размещения</translation>
     </message>
+    <message>
+      <source>Discord</source>
+      <translation>Дискорд</translation>
+    </message>
+    <message>
+      <source>Enable Rich Presence</source>
+      <translation>Включить режим Rich Presence</translation>
+    </message>
+    <message>
+      <source>&quot;Listening to...&quot;</source>
+      <translation>«Слушает…»</translation>
+    </message>
+    <message>
+      <source>Strawberry</source>
+      <translation>Strawberry</translation>
+    </message>
+    <message>
+      <source>Artist name</source>
+      <translation>Имя артиста</translation>
+    </message>
+    <message>
+      <source>Song title</source>
+      <translation>Название песни</translation>
+    </message>
+  </context>
+  <context>
+    <name>OAuthenticator</name>
+    <message>
+      <source>Authentication</source>
+      <translation>Аутентификация</translation>
+    </message>
+    <message>
+      <source>Please open this URL in your browser</source>
+      <translation>Пожалуйста, откройте эту ссылку в вашем браузере</translation>
+    </message>
+    <message>
+      <source>Received invalid reply from web browser.</source>
+      <translation>Получен неверный ответ от веб-браузера.</translation>
+    </message>
+    <message>
+      <source>Redirect URL is missing query.</source>
+      <translation>В адресе перенаправления отсутствует запрос.</translation>
+    </message>
+    <message>
+      <source>Request URL is missing code!</source>
+      <translation>В адресе перенаправления отсутствует код!</translation>
+    </message>
+    <message>
+      <source>Request URL is missing state!</source>
+      <translation>В адресе запроса отсутствует состояние!</translation>
+    </message>
+    <message>
+      <source>Request URL has wrong state %1 != %2</source>
+      <translation>Адрес запроса имеет неверное состояние %1 != %2</translation>
+    </message>
   </context>
   <context>
     <name>OSDBase</name>
@@ -4060,9 +4275,9 @@ If there are no matches then it will use the largest image in the directory.</so
       <source>&lt;p&gt;Tokens start with %, for example: %artist %album %title &lt;/p&gt;
 
 &lt;p&gt;If you surround sections of text that contain a token with curly-braces, that section will be hidden if the token is empty.&lt;/p&gt;</source>
-      <translation>&lt;p&gt;Токены начинаются со знака %, например: %artist %album %title &lt;/p&gt;
+      <translation>&lt;p&gt;В именах файлов можно использовать переменные, начинающиеся с %, напр.: %artist %album %title &lt;/p&gt;
 
-&lt;p&gt;Если вы окружили часть текста фигурными скобками, то эта часть текста не будет видна при пустом токене&lt;/p&gt;</translation>
+&lt;p&gt; Если заключить часть пути в фигурные скобки, она будет скрыта, если соответствующая переменная пуста&lt;/p&gt;</translation>
     </message>
     <message>
       <source>Insert...</source>
@@ -4211,6 +4426,14 @@ If there are no matches then it will use the largest image in the directory.</so
       <source>Don&apos;t know how to handle %1</source>
       <translation>Неизвестно, как обработать %1</translation>
     </message>
+    <message>
+      <source>File %1 does not exist</source>
+      <translation>Файл %1 не существует</translation>
+    </message>
+    <message>
+      <source>Could not read file %1: %2</source>
+      <translation>Не удалось прочитать файл %1: %2</translation>
+    </message>
   </context>
   <context>
     <name>PlayingWidget</name>
@@ -4246,12 +4469,24 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Название</translation>
     </message>
     <message>
+      <source>Title Sort</source>
+      <translation>Сортировка заголовка</translation>
+    </message>
+    <message>
       <source>Artist</source>
       <translation>Артист</translation>
     </message>
     <message>
+      <source>Artist Sort</source>
+      <translation>Сортировка артиста</translation>
+    </message>
+    <message>
       <source>Album</source>
       <translation>Альбом</translation>
+    </message>
+    <message>
+      <source>Album Sort</source>
+      <translation>Сортировка альбома</translation>
     </message>
     <message>
       <source>Track</source>
@@ -4282,12 +4517,24 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Артист альбома</translation>
     </message>
     <message>
+      <source>Album Artist Sort</source>
+      <translation>Сортировка артиста альбома</translation>
+    </message>
+    <message>
       <source>Composer</source>
       <translation>Композитор</translation>
     </message>
     <message>
+      <source>Composer Sort</source>
+      <translation>Сортировка композитора</translation>
+    </message>
+    <message>
       <source>Performer</source>
       <translation>Исполнитель</translation>
+    </message>
+    <message>
+      <source>Performer Sort</source>
+      <translation>Сортировка исполнителя</translation>
     </message>
     <message>
       <source>Grouping</source>
@@ -4318,8 +4565,8 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Битрейт</translation>
     </message>
     <message>
-      <source>File Name</source>
-      <translation>Имя файла</translation>
+      <source>Initial key</source>
+      <translation>Исходная тональность</translation>
     </message>
     <message>
       <source>File Name (without path)</source>
@@ -4350,12 +4597,24 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Источник</translation>
     </message>
     <message>
+      <source>Moodbar</source>
+      <translation>Индикатор тона</translation>
+    </message>
+    <message>
+      <source>BPM</source>
+      <translation>BPM</translation>
+    </message>
+    <message>
       <source>Mood</source>
       <translation>Тон</translation>
     </message>
     <message>
       <source>Rating</source>
       <translation>Оценка</translation>
+    </message>
+    <message>
+      <source>URL</source>
+      <translation>Адрес</translation>
     </message>
     <message>
       <source>CUE</source>
@@ -4482,6 +4741,10 @@ If there are no matches then it will use the largest image in the directory.</so
       <translation>Плейлист</translation>
     </message>
     <message>
+      <source>Copy songs to playlist</source>
+      <translation>Копировать песни в плейлист</translation>
+    </message>
+    <message>
       <source>Copy to device</source>
       <translation>Копировать на устройство</translation>
     </message>
@@ -4542,7 +4805,7 @@ If there are no matches then it will use the largest image in the directory.</so
         <numerusform>%n дорожка</numerusform>
         <numerusform>%n дорожки</numerusform>
         <numerusform>%n дорожек</numerusform>
-        <numerusform>%n дорожек</numerusform>
+        <numerusform>%n треков</numerusform>
       </translation>
     </message>
   </context>
@@ -4957,6 +5220,10 @@ Are you sure you want to continue?</source>
       <translation>Вывести информацию о версии</translation>
     </message>
     <message>
+      <source>Create fingerprint</source>
+      <translation>Создать отпечаток пальца</translation>
+    </message>
+    <message>
       <source>Failed to create directory %1.</source>
       <translation>Не удалось создать каталог %1.</translation>
     </message>
@@ -4974,7 +5241,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Unknown</source>
-      <translation>Неизвестный</translation>
+      <translation>Неизвестно</translation>
     </message>
     <message>
       <source>LUFS</source>
@@ -4983,10 +5250,6 @@ Are you sure you want to continue?</source>
     <message>
       <source>LU</source>
       <translation>Eдиница громкости (LU)</translation>
-    </message>
-    <message>
-      <source>File %1 is not recognized as a valid audio file.</source>
-      <translation>Файл %1 не распознан как допустимый аудиофайл.</translation>
     </message>
     <message>
       <source>1 day</source>
@@ -5065,7 +5328,7 @@ Are you sure you want to continue?</source>
       <translation>Не удалось разобрать файл</translation>
     </message>
     <message>
-      <source>Could save file</source>
+      <source>Could not save file</source>
       <translation>Не удалось сохранить файл</translation>
     </message>
     <message>
@@ -5090,7 +5353,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</source>
-      <translation type="unfinished">A word can be excluded with a preceding &quot;%1&quot;, if you need to search for a word including &quot;%1&quot;, place quotes around the word.</translation>
+      <translation>Можно исключить слово с предыдущим «%1», если вам нужно искать слово, включая «%1», поместите кавычки вокруг слова.</translation>
     </message>
     <message>
       <source>rating</source>
@@ -5254,7 +5517,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Various artists</source>
-      <translation>Различные артисты</translation>
+      <translation>Разные артисты</translation>
     </message>
     <message numerus="yes">
       <source>add %n songs</source>
@@ -5312,6 +5575,17 @@ Are you sure you want to continue?</source>
     </message>
   </context>
   <context>
+    <name>QobuzMetadataRequest</name>
+    <message>
+      <source>Not authenticated</source>
+      <translation>Не аутентифицирован</translation>
+    </message>
+    <message>
+      <source>No track ID</source>
+      <translation>Нет ИД трека</translation>
+    </message>
+  </context>
+  <context>
     <name>QobuzRequest</name>
     <message>
       <source>Receiving artists...</source>
@@ -5365,24 +5639,44 @@ Are you sure you want to continue?</source>
   <context>
     <name>QobuzService</name>
     <message>
-      <source>Authenticating...</source>
-      <translation>Аутентификация…</translation>
-    </message>
-    <message>
-      <source>Maximum number of login attempts reached.</source>
-      <translation>Достигнут максимум попыток входа в систему.</translation>
-    </message>
-    <message>
       <source>Missing Qobuz app ID.</source>
       <translation>Отсутствует идентификатор приложения Qobuz.</translation>
     </message>
     <message>
-      <source>Missing Qobuz username.</source>
-      <translation>Отсутствует имя пользователя Qobuz.</translation>
+      <source>Missing app ID. Please fetch credentials first.</source>
+      <translation>Отсутствует идентификатор приложения. Пожалуйста, сначала получите учётные данные.</translation>
     </message>
     <message>
-      <source>Missing Qobuz password.</source>
-      <translation>Отсутствует пароль Qobuz.</translation>
+      <source>Missing app secret. Please fetch credentials first.</source>
+      <translation>Отсутствует секретный ключ приложения. Пожалуйста, сначала получите учётные данные.</translation>
+    </message>
+    <message>
+      <source>Missing private key. Please fetch credentials first.</source>
+      <translation>Отсутствует закрытый ключ. Пожалуйста, сначала получите учётные данные.</translation>
+    </message>
+    <message>
+      <source>Failed to start local server for OAuth redirect: %1</source>
+      <translation>Не удалось запустить локальный сервер для перенаправления OAuth: %1</translation>
+    </message>
+    <message>
+      <source>Failed to open the web browser. Please open this URL manually: %1</source>
+      <translation>Не удалось открыть веб-браузер. Пожалуйста, откройте этот URL вручную: %1</translation>
+    </message>
+    <message>
+      <source>Waiting for browser authentication...</source>
+      <translation>Ожидание аутентификации в браузере...</translation>
+    </message>
+    <message>
+      <source>OAuth redirect failed: %1</source>
+      <translation>Ошибка перенаправления OAuth: %1</translation>
+    </message>
+    <message>
+      <source>OAuth redirect is missing authorization code.</source>
+      <translation>В перенаправлении OAuth отсутствует код авторизации.</translation>
+    </message>
+    <message>
+      <source>Exchanging authorization code...</source>
+      <translation>Обмен кода авторизации...</translation>
     </message>
     <message>
       <source>Not authenticated with Qobuz.</source>
@@ -5391,6 +5685,10 @@ Are you sure you want to continue?</source>
     <message>
       <source>Missing Qobuz app ID or secret.</source>
       <translation>Отсутствует идентификатор приложения Qobuz или секрет.</translation>
+    </message>
+    <message>
+      <source>Not authenticated. Please login to Qobuz in the settings.</source>
+      <translation>Не выполнена аутентификация. Пожалуйста, войдите в Qobuz в настройках.</translation>
     </message>
   </context>
   <context>
@@ -5404,24 +5702,12 @@ Are you sure you want to continue?</source>
       <translation>Включить</translation>
     </message>
     <message>
-      <source>Qobuz support is not official and requires an API app ID and secret from a registered application to work. We can&apos;t help you getting these.</source>
-      <translation>Поддержка Qobuz не является официальной, для работы требуется идентификатор приложения API и секретный ключ зарегистрированного приложения. Мы не можем помочь вам в их получении.</translation>
-    </message>
-    <message>
       <source>Authentication</source>
       <translation>Аутентификация</translation>
     </message>
     <message>
       <source>App ID</source>
       <translation>ИД приложения</translation>
-    </message>
-    <message>
-      <source>Username</source>
-      <translation>Имя пользователя</translation>
-    </message>
-    <message>
-      <source>Password</source>
-      <translation>Пароль</translation>
     </message>
     <message>
       <source>App Secret</source>
@@ -5464,28 +5750,56 @@ Are you sure you want to continue?</source>
       <translation>Скачивать обложки альбомов</translation>
     </message>
     <message>
-      <source>Base64 encoded secret</source>
-      <translation>Секретный ключ в кодировке Base64</translation>
-    </message>
-    <message>
       <source>Configuration incomplete</source>
       <translation>Конфигурация не завершена</translation>
     </message>
     <message>
-      <source>Missing app id.</source>
-      <translation>Отсутствуют ИД приложения.</translation>
+      <source>Missing app id. Please fetch credentials first.</source>
+      <translation>Отсутствует идентификатор приложения. Пожалуйста, сначала получите учётные данные.</translation>
     </message>
     <message>
-      <source>Missing username.</source>
-      <translation>Отсутствует имя пользователя.</translation>
+      <source>Missing app secret. Please fetch credentials first.</source>
+      <translation>Отсутствует секретный ключ приложения. Пожалуйста, сначала получите учётные данные.</translation>
     </message>
     <message>
-      <source>Missing password.</source>
-      <translation>Отсутствует пароль.</translation>
+      <source>Missing private key. Please fetch credentials first.</source>
+      <translation>Отсутствует закрытый ключ. Пожалуйста, сначала получите учётные данные.</translation>
     </message>
     <message>
       <source>Authentication failed</source>
       <translation>Ошибка аутентификации</translation>
+    </message>
+    <message>
+      <source>Fetching...</source>
+      <translation>Получение…</translation>
+    </message>
+    <message>
+      <source>Credentials fetched</source>
+      <translation>Учётные данные получены</translation>
+    </message>
+    <message>
+      <source>Credentials have been successfully fetched. Click Login to authenticate via your browser.</source>
+      <translation>Учётные данные успешно получены. Нажмите «Войти», чтобы пройти аутентификацию через ваш браузер.</translation>
+    </message>
+    <message>
+      <source>Credential fetch failed</source>
+      <translation>Не удалось получить учётные данные</translation>
+    </message>
+    <message>
+      <source>Fetch Credentials</source>
+      <translation>Получить учётные данные</translation>
+    </message>
+    <message>
+      <source>Remove (Remastered), etc from song titles</source>
+      <translation>Удалять (Remastered) и прочее из названий песен</translation>
+    </message>
+    <message>
+      <source>Private key</source>
+      <translation>Закрытый ключ</translation>
+    </message>
+    <message>
+      <source>Automatically fetch app ID, app secret and private key from Qobuz web player</source>
+      <translation>Автоматически получить идентификатор приложения, секретный ключ приложения и закрытый ключ из веб-плеера Qobuz</translation>
     </message>
   </context>
   <context>
@@ -5493,6 +5807,10 @@ Are you sure you want to continue?</source>
     <message>
       <source>Missing Qobuz app ID or secret.</source>
       <translation>Отсутствует идентификатор приложения Qobuz или секрет.</translation>
+    </message>
+    <message>
+      <source>Not authenticated. Please log in on the Qobuz settings page.</source>
+      <translation>Не выполнена аутентификация. Пожалуйста, войдите на странице настроек Qobuz.</translation>
     </message>
     <message>
       <source>Cancelled.</source>
@@ -5507,7 +5825,7 @@ Are you sure you want to continue?</source>
         <numerusform>%n дорожка</numerusform>
         <numerusform>%n дорожки</numerusform>
         <numerusform>%n дорожек</numerusform>
-        <numerusform>%n дорожек</numerusform>
+        <numerusform>%n треков</numerusform>
       </translation>
     </message>
   </context>
@@ -5824,10 +6142,6 @@ Are you sure you want to continue?</source>
       <translation>Вход</translation>
     </message>
     <message>
-      <source>Libre.fm</source>
-      <translation>Libre.fm</translation>
-    </message>
-    <message>
       <source>Listenbrainz</source>
       <translation>Listenbrainz</translation>
     </message>
@@ -5854,41 +6168,6 @@ Are you sure you want to continue?</source>
     <message>
       <source>Spotify</source>
       <translation>Spotify</translation>
-    </message>
-  </context>
-  <context>
-    <name>ScrobblingAPI20</name>
-    <message>
-      <source>%1 Scrobbler Authentication</source>
-      <translation>Аутентификация скробблера %1</translation>
-    </message>
-    <message>
-      <source>Open URL in web browser?</source>
-      <translation>Открыть адрес в веб-браузере?</translation>
-    </message>
-    <message>
-      <source>Press &quot;Save&quot; to copy the URL to clipboard and manually open it in a web browser.</source>
-      <translation>Нажмите «Сохранить», чтобы скопировать адрес в буфер обмена и вручную открыть его в веб-браузере.</translation>
-    </message>
-    <message>
-      <source>Could not open URL. Please open this URL in your browser</source>
-      <translation>Не удалось открыть адрес. Пожалуйста, откройте эту ссылку в вашем браузере</translation>
-    </message>
-    <message>
-      <source>Invalid reply from web browser. Missing token.</source>
-      <translation>Неверный ответ от веб-браузера. Отсутствует токен.</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser. Try another browser.</source>
-      <translation>Получен неверный ответ от веб-браузера. Попробуйте другой браузер.</translation>
-    </message>
-    <message>
-      <source>Scrobbler %1 is not authenticated!</source>
-      <translation>Скробблер %1 не аутентифицирован!</translation>
-    </message>
-    <message>
-      <source>Scrobbler %1 error: %2</source>
-      <translation>Ошибка %1 скробблера: %2</translation>
     </message>
   </context>
   <context>
@@ -6094,7 +6373,7 @@ Are you sure you want to continue?</source>
     <name>SmartPlaylists</name>
     <message>
       <source>Newest tracks</source>
-      <translation>Свежие треки</translation>
+      <translation>Новые треки</translation>
     </message>
     <message>
       <source>50 random tracks</source>
@@ -6102,7 +6381,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Ever played</source>
-      <translation>Когда-либо прослушивались</translation>
+      <translation>Прослушанные</translation>
     </message>
     <message>
       <source>Never played</source>
@@ -6126,7 +6405,7 @@ Are you sure you want to continue?</source>
     </message>
     <message>
       <source>Dynamic random mix</source>
-      <translation>Динамичный случайный микс</translation>
+      <translation>Динамическая случайная выборка</translation>
     </message>
   </context>
   <context>
@@ -6170,6 +6449,14 @@ Are you sure you want to continue?</source>
     <message>
       <source>Edit smart playlist...</source>
       <translation>Править умный плейлист…</translation>
+    </message>
+    <message>
+      <source>Are you sure you want to restore the default smart playlists? This will remove all custom smart playlists</source>
+      <translation>Вы уверены, что хотите восстановить умные плейлисты по умолчанию? Это удалит все пользовательские умные списки</translation>
+    </message>
+    <message>
+      <source>Restore defaults</source>
+      <translation>Восстановить настройки по умолчанию</translation>
     </message>
   </context>
   <context>
@@ -6277,6 +6564,21 @@ Are you sure you want to continue?</source>
     </message>
   </context>
   <context>
+    <name>SpotifyMetadataRequest</name>
+    <message>
+      <source>Not authenticated</source>
+      <translation>Не аутентифицирован</translation>
+    </message>
+    <message>
+      <source>No track ID</source>
+      <translation>Нет ИД трека</translation>
+    </message>
+    <message>
+      <source>No pending song for track ID</source>
+      <translation>Нет ожидающей песни для ИД трека</translation>
+    </message>
+  </context>
+  <context>
     <name>SpotifyRequest</name>
     <message>
       <source>Authenticating...</source>
@@ -6334,24 +6636,8 @@ Are you sure you want to continue?</source>
   <context>
     <name>SpotifyService</name>
     <message>
-      <source>Spotify Authentication</source>
-      <translation>Аутентификация Spotify</translation>
-    </message>
-    <message>
-      <source>Please open this URL in your browser</source>
-      <translation>Пожалуйста, откройте эту ссылку в вашем браузере</translation>
-    </message>
-    <message>
-      <source>Redirect missing token code or state!</source>
-      <translation>В перенаправлении отсутствует код или состояние токена!</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser.</source>
-      <translation>Получен неверный ответ от веб-браузера.</translation>
-    </message>
-    <message>
       <source>Not authenticated with Spotify.</source>
-      <translation>Не аутентифицировано со Spotify.</translation>
+      <translation>Не выполнена аутентификация в Spotify.</translation>
     </message>
   </context>
   <context>
@@ -6412,6 +6698,10 @@ Are you sure you want to continue?</source>
       <source>Authentication failed</source>
       <translation>Ошибка аутентификации</translation>
     </message>
+    <message>
+      <source>Remove (Remastered), etc from song titles</source>
+      <translation>Удалять (Remastered) и прочее из названий песен</translation>
+    </message>
   </context>
   <context>
     <name>StreamingCollectionView</name>
@@ -6471,7 +6761,7 @@ Are you sure you want to continue?</source>
     <name>StreamingSearchModel</name>
     <message>
       <source>Various artists</source>
-      <translation>Различные артисты</translation>
+      <translation>Разные артисты</translation>
     </message>
   </context>
   <context>
@@ -6748,10 +7038,6 @@ Are you sure you want to continue?</source>
   <context>
     <name>TidalRequest</name>
     <message>
-      <source>Authenticating...</source>
-      <translation>Аутентификация…</translation>
-    </message>
-    <message>
       <source>Receiving artists...</source>
       <translation>Получение артистов…</translation>
     </message>
@@ -6799,32 +7085,8 @@ Are you sure you want to continue?</source>
   <context>
     <name>TidalService</name>
     <message>
-      <source>Reply from Tidal is missing query items.</source>
-      <translation>В ответе от Tidal отсутствуют элементы запроса.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal API token.</source>
-      <translation>Отсутствует токен API Tidal.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal username.</source>
-      <translation>Отсутствует имя пользователя Tidal.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal password.</source>
-      <translation>Отсутствует Tidal пароль.</translation>
-    </message>
-    <message>
-      <source>Not authenticated with Tidal and reached maximum number of login attempts.</source>
-      <translation>Не аутентифицировано с Tidal и достигнуто максимум попыток входа в систему.</translation>
-    </message>
-    <message>
       <source>Not authenticated with Tidal.</source>
-      <translation>Не аутентифицировано с Tidal.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal API token, username or password.</source>
-      <translation>Отсутствуют токен API, имя пользователя или пароль.</translation>
+      <translation>Не выполнена аутентификация в Tidal.</translation>
     </message>
   </context>
   <context>
@@ -6846,24 +7108,8 @@ Are you sure you want to continue?</source>
       <translation>Аутентификация</translation>
     </message>
     <message>
-      <source>Use OAuth</source>
-      <translation>Использовать OAuth</translation>
-    </message>
-    <message>
       <source>Client ID</source>
       <translation>ИД клиента</translation>
-    </message>
-    <message>
-      <source>API Token</source>
-      <translation>Токен API</translation>
-    </message>
-    <message>
-      <source>Username</source>
-      <translation>Имя пользователя</translation>
-    </message>
-    <message>
-      <source>Password</source>
-      <translation>Пароль</translation>
     </message>
     <message>
       <source>Login</source>
@@ -6926,31 +7172,19 @@ Are you sure you want to continue?</source>
       <translation>Отсутствует идентификатор клиента Tidal.</translation>
     </message>
     <message>
-      <source>Missing API token.</source>
-      <translation>Отсутствует токен API.</translation>
-    </message>
-    <message>
-      <source>Missing username.</source>
-      <translation>Отсутствует имя пользователя.</translation>
-    </message>
-    <message>
-      <source>Missing password.</source>
-      <translation>Отсутствует пароль.</translation>
-    </message>
-    <message>
       <source>Authentication failed</source>
       <translation>Ошибка аутентификации</translation>
+    </message>
+    <message>
+      <source>Remove (Remastered), etc from song titles</source>
+      <translation>Удалять (Remastered) и прочее из названий песен</translation>
     </message>
   </context>
   <context>
     <name>TidalStreamURLRequest</name>
     <message>
       <source>Not authenticated with Tidal.</source>
-      <translation>Не аутентифицировано с Tidal.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal API token, username or password.</source>
-      <translation>Отсутствуют токен API, имя пользователя или пароль.</translation>
+      <translation>Не выполнена аутентификация в Tidal.</translation>
     </message>
     <message>
       <source>Cancelled.</source>
@@ -7022,6 +7256,10 @@ Are you sure you want to continue?</source>
     <message>
       <source>Saving tracks</source>
       <translation>Сохранение треков</translation>
+    </message>
+    <message>
+      <source>Album artist</source>
+      <translation>Артист альбома</translation>
     </message>
   </context>
   <context>

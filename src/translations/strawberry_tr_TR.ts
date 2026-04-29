@@ -273,7 +273,7 @@
     </message>
     <message>
       <source>Could not save cover to file %1.</source>
-      <translation type="unfinished">Could not save cover to file %1.</translation>
+      <translation>%1 dosyasına albüm kapağı kaydedilemedi.</translation>
     </message>
   </context>
   <context>
@@ -363,10 +363,6 @@
     <message>
       <source>Use system theme icons</source>
       <translation>Sistem tema simgelerini kullan</translation>
-    </message>
-    <message>
-      <source>Settings require restart.</source>
-      <translation>Ayar yeniden başlatma gerektiriyor.</translation>
     </message>
     <message>
       <source>Tabbar colors</source>
@@ -478,7 +474,7 @@
     </message>
     <message>
       <source>Playlist buttons</source>
-      <translation>Oynatma listesi seçenekleri</translation>
+      <translation>Çalma listesi seçenekleri</translation>
     </message>
     <message>
       <source>Tabbar large mode</source>
@@ -486,7 +482,7 @@
     </message>
     <message>
       <source>Play control buttons</source>
-      <translation>Oynatma kontrolü seçenekleri</translation>
+      <translation>Çalma kontrolü seçenekleri</translation>
     </message>
     <message>
       <source>Configure buttons</source>
@@ -502,7 +498,7 @@
     </message>
     <message>
       <source>Playlist playing song color</source>
-      <translation>Oynatma listesi oynatılan şarkı rengi</translation>
+      <translation>Çalma listesi oynatılan şarkı rengi</translation>
     </message>
     <message>
       <source>System highlight color</source>
@@ -519,6 +515,10 @@
     <message>
       <source>Select background image</source>
       <translation>Arkaplan resmi seçin</translation>
+    </message>
+    <message>
+      <source>You need to restart Strawberry for this setting to take affect.</source>
+      <translation type="unfinished">You need to restart Strawberry for this setting to take affect.</translation>
     </message>
   </context>
   <context>
@@ -695,6 +695,10 @@
       <source>Fade out on pause / fade in on resume</source>
       <translation>Durdururken / devam ederken çapraz geç</translation>
     </message>
+    <message>
+      <source>You need to restart Strawberry for this setting to take affect</source>
+      <translation type="unfinished">You need to restart Strawberry for this setting to take affect</translation>
+    </message>
   </context>
   <context>
     <name>BehaviourSettingsPage</name>
@@ -812,7 +816,7 @@
     </message>
     <message>
       <source>Double clicking a song in the playlist will...</source>
-      <translation>Oynatma listesindeki bir şarkıya çift tıklamak...</translation>
+      <translation>Çalma listesindeki bir şarkıya çift tıklamak...</translation>
     </message>
     <message>
       <source>Change the currently playing song</source>
@@ -836,7 +840,11 @@
     </message>
   </context>
   <context>
-    <name>CddaSongLoader</name>
+    <name>CDDASongLoader</name>
+    <message>
+      <source>Could not create cdiocddasrc</source>
+      <translation type="unfinished">Could not create cdiocddasrc</translation>
+    </message>
     <message>
       <source>Error while setting CDDA device to ready state.</source>
       <translation type="unfinished">Error while setting CDDA device to ready state.</translation>
@@ -912,12 +920,40 @@
       <translation>Kayıtlı gruplamaları yönet</translation>
     </message>
     <message>
-      <source>Show</source>
-      <translation>Göster</translation>
+      <source>Any rating</source>
+      <translation type="unfinished">Any rating</translation>
+    </message>
+    <message>
+      <source>Rating non null</source>
+      <translation type="unfinished">Rating non null</translation>
+    </message>
+    <message>
+      <source>Rating greater than 1 star</source>
+      <translation type="unfinished">Rating greater than 1 star</translation>
+    </message>
+    <message>
+      <source>Rating greater than 2 stars</source>
+      <translation type="unfinished">Rating greater than 2 stars</translation>
+    </message>
+    <message>
+      <source>Rating greater than 3 stars</source>
+      <translation type="unfinished">Rating greater than 3 stars</translation>
+    </message>
+    <message>
+      <source>Rating greater than 4 stars</source>
+      <translation type="unfinished">Rating greater than 4 stars</translation>
     </message>
     <message>
       <source>Group by</source>
       <translation>Grupla</translation>
+    </message>
+    <message>
+      <source>Filter by age</source>
+      <translation type="unfinished">Filter by age</translation>
+    </message>
+    <message>
+      <source>Filter by rating</source>
+      <translation>Derecelendirmeye göre süz</translation>
     </message>
     <message>
       <source>Display options</source>
@@ -995,8 +1031,12 @@
   <context>
     <name>CollectionLibrary</name>
     <message>
+      <source>Support for sort tags artist, album, album artist, title, composer, and performer</source>
+      <translation type="unfinished">Support for sort tags artist, album, album artist, title, composer, and performer</translation>
+    </message>
+    <message>
       <source>Saving playcounts and ratings</source>
-      <translation>Oynatma sayısı ve derecelendirmeler kaydediliyor</translation>
+      <translation>Çalma sayısı ve derecelendirmeler kaydediliyor</translation>
     </message>
   </context>
   <context>
@@ -1071,8 +1111,7 @@
     <message>
       <source>When looking for album art Strawberry will first look for picture files that contain one of these words.
 If there are no matches then it will use the largest image in the directory.</source>
-      <translation type="unfinished">When looking for album art Strawberry will first look for picture files that contain one of these words.
-If there are no matches then it will use the largest image in the directory.</translation>
+      <translation>Albüm kapağı ararken Strawberry ilk olarak o kelimelerden birini içeren görselleri arar. Eğer eşleşme bulunamazsa klasördeki en büyük görseli kullanır.</translation>
     </message>
     <message>
       <source>Display options</source>
@@ -1442,12 +1481,32 @@ If there are no matches then it will use the largest image in the directory.</tr
       <translation>Derecelendirme ekle</translation>
     </message>
     <message>
-      <source>%originalyear%</source>
-      <translation>%originalyear%</translation>
-    </message>
-    <message>
       <source>Add song original year tag</source>
       <translation>Orijinal yıl etiketi ekle</translation>
+    </message>
+    <message>
+      <source>Add song artistsort tag</source>
+      <translation type="unfinished">Add song artistsort tag</translation>
+    </message>
+    <message>
+      <source>Add song albumartistsort tag</source>
+      <translation type="unfinished">Add song albumartistsort tag</translation>
+    </message>
+    <message>
+      <source>Add song titlesort tag</source>
+      <translation type="unfinished">Add song titlesort tag</translation>
+    </message>
+    <message>
+      <source>Add song composersort tag</source>
+      <translation type="unfinished">Add song composersort tag</translation>
+    </message>
+    <message>
+      <source>Add song performersort tag</source>
+      <translation type="unfinished">Add song performersort tag</translation>
+    </message>
+    <message>
+      <source>Add song albumsort tag</source>
+      <translation type="unfinished">Add song albumsort tag</translation>
     </message>
   </context>
   <context>
@@ -1471,14 +1530,6 @@ If there are no matches then it will use the largest image in the directory.</tr
     <message>
       <source>Bitrate</source>
       <translation>Bit oranı</translation>
-    </message>
-    <message>
-      <source>EBU R 128 Integrated Loudness</source>
-      <translation>EBU R 128 Entegre Edilmiş Ses Yüksekliği</translation>
-    </message>
-    <message>
-      <source>EBU R 128 Loudness Range</source>
-      <translation>EBU R 128 Ses Yüksekliği Aralığı</translation>
     </message>
     <message>
       <source>Show album cover</source>
@@ -1836,7 +1887,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>This device will not work properly</source>
-      <translation type="unfinished">This device will not work properly</translation>
+      <translation>Bu cihaz düzgün çalışmaz</translation>
     </message>
     <message>
       <source>This is an MTP device, but you compiled Strawberry without libmtp support.</source>
@@ -1848,11 +1899,11 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>This is an iPod, but you compiled Strawberry without libgpod support.</source>
-      <translation type="unfinished">This is an iPod, but you compiled Strawberry without libgpod support.</translation>
+      <translation>Bu bir iPod, fakat Strawberry libgpod desteği olmadan derlenmiş.</translation>
     </message>
     <message>
       <source>This type of device is not supported: %1</source>
-      <translation type="unfinished">This type of device is not supported: %1</translation>
+      <translation>Cihaz türü desteklenmiyor: %1</translation>
     </message>
   </context>
   <context>
@@ -1895,7 +1946,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Strawberry can automatically convert the music you copy to this device into a format that it can play.</source>
-      <translation type="unfinished">Strawberry can automatically convert the music you copy to this device into a format that it can play.</translation>
+      <translation>Strawberry bu cihaza kopyaladığınız müziği otomatik olarak oynatabileceği bir biçime dönüştürebilir.</translation>
     </message>
     <message>
       <source>Do not convert any music</source>
@@ -1989,6 +2040,13 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
   </context>
   <context>
+    <name>DiscordRichPresence</name>
+    <message>
+      <source>on </source>
+      <translation type="unfinished">on </translation>
+    </message>
+  </context>
+  <context>
     <name>DynamicPlaylistControls</name>
     <message>
       <source>Dynamic mode is on</source>
@@ -2015,7 +2073,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     <name>EditTagDialog</name>
     <message>
       <source>Edit track information</source>
-      <translation type="unfinished">Edit track information</translation>
+      <translation>Parça bilgisini düzenle</translation>
     </message>
     <message>
       <source>Summary</source>
@@ -2298,6 +2356,42 @@ If there are no matches then it will use the largest image in the directory.</tr
       <source>Could not write metadata to %1: %2</source>
       <translation>%1&apos;e üstveri yazılamadı: %2</translation>
     </message>
+    <message>
+      <source>ID3v2 version:</source>
+      <translation type="unfinished">ID3v2 version:</translation>
+    </message>
+    <message>
+      <source>2.3</source>
+      <translation>2.3</translation>
+    </message>
+    <message>
+      <source>2.4</source>
+      <translation>2.4</translation>
+    </message>
+    <message>
+      <source>Performer sort</source>
+      <translation type="unfinished">Performer sort</translation>
+    </message>
+    <message>
+      <source>Title sort</source>
+      <translation>Başlık sıra</translation>
+    </message>
+    <message>
+      <source>Album artist sort</source>
+      <translation>Albüm sanatçısı sıra</translation>
+    </message>
+    <message>
+      <source>Artist sort</source>
+      <translation>Sanatçı sıra</translation>
+    </message>
+    <message>
+      <source>Album sort</source>
+      <translation>Albüm sıra</translation>
+    </message>
+    <message>
+      <source>Composer sort</source>
+      <translation>Besteci sıra</translation>
+    </message>
   </context>
   <context>
     <name>Equalizer</name>
@@ -2425,6 +2519,10 @@ If there are no matches then it will use the largest image in the directory.</tr
       <source>Are you sure you want to delete the &quot;%1&quot; preset?</source>
       <translation>%1 önayarını silmek istediğinize emin misiniz?</translation>
     </message>
+    <message>
+      <source>You need to restart playback for this setting to take affect.</source>
+      <translation>Bu ayarın etki etmesi için şarkının oynatılmasını yeniden başlatmanız gerekir.</translation>
+    </message>
   </context>
   <context>
     <name>EqualizerSlider</name>
@@ -2484,6 +2582,22 @@ If there are no matches then it will use the largest image in the directory.</tr
       <source>Form</source>
       <translation>Biçim</translation>
     </message>
+    <message>
+      <source>Add root directory</source>
+      <translation>Kök klasör ekle</translation>
+    </message>
+    <message>
+      <source>Remove selected root directory</source>
+      <translation>Seçili kök klasörü kaldır</translation>
+    </message>
+    <message>
+      <source>Toggle between list and tree view</source>
+      <translation>Liste/ağaç görünümüne geç</translation>
+    </message>
+    <message>
+      <source>Select folder to add as tree root</source>
+      <translation>Ağaç kökü olarak eklemek için klasör seç</translation>
+    </message>
   </context>
   <context>
     <name>FileViewList</name>
@@ -2522,6 +2636,49 @@ If there are no matches then it will use the largest image in the directory.</tr
     <message>
       <source>Show in file browser...</source>
       <translation>Dosya tarayıcısında göster...</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileViewTree</name>
+    <message>
+      <source>Append to current playlist</source>
+      <translation>Geçerli çalma listesine ekle</translation>
+    </message>
+    <message>
+      <source>Replace current playlist</source>
+      <translation>Geçerli çalma listesinin yerine koy</translation>
+    </message>
+    <message>
+      <source>Open in new playlist</source>
+      <translation>Yeni çalma listesinde aç</translation>
+    </message>
+    <message>
+      <source>Copy to collection...</source>
+      <translation>Koleksiyona kopyala...</translation>
+    </message>
+    <message>
+      <source>Move to collection...</source>
+      <translation>Koleksiyona taşı...</translation>
+    </message>
+    <message>
+      <source>Copy to device...</source>
+      <translation>Cihaza kopyala...</translation>
+    </message>
+    <message>
+      <source>Delete from disk...</source>
+      <translation>Diskten sil...</translation>
+    </message>
+    <message>
+      <source>Edit track information...</source>
+      <translation>Parça bilgisini düzenle...</translation>
+    </message>
+    <message>
+      <source>Show in file browser...</source>
+      <translation>Dosya yöneticisinde göster...</translation>
+    </message>
+    <message>
+      <source>Files</source>
+      <translation>Dosyalar</translation>
     </message>
   </context>
   <context>
@@ -2567,29 +2724,6 @@ If there are no matches then it will use the largest image in the directory.</tr
     <message>
       <source>An error occurred loading the iTunes database</source>
       <translation>iTunes veri tabanı yüklenirken bir hatayla karşılaşıldı</translation>
-    </message>
-  </context>
-  <context>
-    <name>GeniusLyricsProvider</name>
-    <message>
-      <source>Genius Authentication</source>
-      <translation>Genius Doğrulama</translation>
-    </message>
-    <message>
-      <source>Please open this URL in your browser</source>
-      <translation>Lütfen bu bağlantıyı internet tarayıcınızda açın.</translation>
-    </message>
-    <message>
-      <source>Redirect missing token code!</source>
-      <translation type="unfinished">Redirect missing token code!</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser.</source>
-      <translation>Tarayıcıdan geçersiz yanıt alındı.</translation>
-    </message>
-    <message>
-      <source>Redirect from Genius is missing query items code or state.</source>
-      <translation type="unfinished">Redirect from Genius is missing query items code or state.</translation>
     </message>
   </context>
   <context>
@@ -2946,6 +3080,41 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
   </context>
   <context>
+    <name>LastFMScrobbler</name>
+    <message>
+      <source>%1 Scrobbler Authentication</source>
+      <translation type="unfinished">%1 Scrobbler Authentication</translation>
+    </message>
+    <message>
+      <source>Open URL in web browser?</source>
+      <translation type="unfinished">Open URL in web browser?</translation>
+    </message>
+    <message>
+      <source>Press &quot;Save&quot; to copy the URL to clipboard and manually open it in a web browser.</source>
+      <translation type="unfinished">Press &quot;Save&quot; to copy the URL to clipboard and manually open it in a web browser.</translation>
+    </message>
+    <message>
+      <source>Could not open URL. Please open this URL in your browser</source>
+      <translation type="unfinished">Could not open URL. Please open this URL in your browser</translation>
+    </message>
+    <message>
+      <source>Invalid reply from web browser. Missing token.</source>
+      <translation type="unfinished">Invalid reply from web browser. Missing token.</translation>
+    </message>
+    <message>
+      <source>Received invalid reply from web browser. Try another browser.</source>
+      <translation type="unfinished">Received invalid reply from web browser. Try another browser.</translation>
+    </message>
+    <message>
+      <source>Scrobbler %1 is not authenticated!</source>
+      <translation type="unfinished">Scrobbler %1 is not authenticated!</translation>
+    </message>
+    <message>
+      <source>Scrobbler %1 error: %2</source>
+      <translation type="unfinished">Scrobbler %1 error: %2</translation>
+    </message>
+  </context>
+  <context>
     <name>LastPlayedItemDelegate</name>
     <message>
       <source>Never</source>
@@ -2961,22 +3130,6 @@ If there are no matches then it will use the largest image in the directory.</tr
   </context>
   <context>
     <name>ListenBrainzScrobbler</name>
-    <message>
-      <source>ListenBrainz Authentication</source>
-      <translation>ListenBrainz Doğrulama</translation>
-    </message>
-    <message>
-      <source>Please open this URL in your browser</source>
-      <translation>Lütfen bu bağlantıyı internet tarayıcınızda açın.</translation>
-    </message>
-    <message>
-      <source>Redirect missing token code!</source>
-      <translation type="unfinished">Redirect missing token code!</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser.</source>
-      <translation type="unfinished">Received invalid reply from web browser.</translation>
-    </message>
     <message>
       <source>Unable to scrobble %1 - %2 because of error: %3</source>
       <translation type="unfinished">Unable to scrobble %1 - %2 because of error: %3</translation>
@@ -3435,6 +3588,10 @@ If there are no matches then it will use the largest image in the directory.</tr
       <translation>Şarkıları yeniden tara...</translation>
     </message>
     <message>
+      <source>Fetch metadata from service</source>
+      <translation type="unfinished">Fetch metadata from service</translation>
+    </message>
+    <message>
       <source>Copy URL(s)...</source>
       <translation>URLleri kopyala...</translation>
     </message>
@@ -3769,11 +3926,11 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>Show a notification when I pause playback</source>
-      <translation>Oynatmayı durdurduğumda bir bildirim göster</translation>
+      <translation>Çalmayı durdurduğumda bir bildirim göster</translation>
     </message>
     <message>
       <source>Show a notification when I resume playback</source>
-      <translation>Oynatmayı devam ettirdiğimde bir bildirim göster</translation>
+      <translation>Çalmayı devam ettirdiğimde bir bildirim göster</translation>
     </message>
     <message>
       <source>Include album art in the notification</source>
@@ -3938,6 +4095,61 @@ If there are no matches then it will use the largest image in the directory.</tr
     <message>
       <source>Drag to reposition</source>
       <translation type="unfinished">Drag to reposition</translation>
+    </message>
+    <message>
+      <source>Discord</source>
+      <translation type="unfinished">Discord</translation>
+    </message>
+    <message>
+      <source>Enable Rich Presence</source>
+      <translation type="unfinished">Enable Rich Presence</translation>
+    </message>
+    <message>
+      <source>&quot;Listening to...&quot;</source>
+      <translation type="unfinished">&quot;Listening to...&quot;</translation>
+    </message>
+    <message>
+      <source>Strawberry</source>
+      <translation type="unfinished">Strawberry</translation>
+    </message>
+    <message>
+      <source>Artist name</source>
+      <translation type="unfinished">Artist name</translation>
+    </message>
+    <message>
+      <source>Song title</source>
+      <translation type="unfinished">Song title</translation>
+    </message>
+  </context>
+  <context>
+    <name>OAuthenticator</name>
+    <message>
+      <source>Authentication</source>
+      <translation type="unfinished">Authentication</translation>
+    </message>
+    <message>
+      <source>Please open this URL in your browser</source>
+      <translation type="unfinished">Please open this URL in your browser</translation>
+    </message>
+    <message>
+      <source>Received invalid reply from web browser.</source>
+      <translation type="unfinished">Received invalid reply from web browser.</translation>
+    </message>
+    <message>
+      <source>Redirect URL is missing query.</source>
+      <translation type="unfinished">Redirect URL is missing query.</translation>
+    </message>
+    <message>
+      <source>Request URL is missing code!</source>
+      <translation type="unfinished">Request URL is missing code!</translation>
+    </message>
+    <message>
+      <source>Request URL is missing state!</source>
+      <translation type="unfinished">Request URL is missing state!</translation>
+    </message>
+    <message>
+      <source>Request URL has wrong state %1 != %2</source>
+      <translation type="unfinished">Request URL has wrong state %1 != %2</translation>
     </message>
   </context>
   <context>
@@ -4211,6 +4423,14 @@ If there are no matches then it will use the largest image in the directory.</tr
       <source>Don&apos;t know how to handle %1</source>
       <translation type="unfinished">Don&apos;t know how to handle %1</translation>
     </message>
+    <message>
+      <source>File %1 does not exist</source>
+      <translation type="unfinished">File %1 does not exist</translation>
+    </message>
+    <message>
+      <source>Could not read file %1: %2</source>
+      <translation type="unfinished">Could not read file %1: %2</translation>
+    </message>
   </context>
   <context>
     <name>PlayingWidget</name>
@@ -4246,12 +4466,24 @@ If there are no matches then it will use the largest image in the directory.</tr
       <translation>Başlık</translation>
     </message>
     <message>
+      <source>Title Sort</source>
+      <translation type="unfinished">Title Sort</translation>
+    </message>
+    <message>
       <source>Artist</source>
       <translation>Sanatçı</translation>
     </message>
     <message>
+      <source>Artist Sort</source>
+      <translation type="unfinished">Artist Sort</translation>
+    </message>
+    <message>
       <source>Album</source>
       <translation>Albüm</translation>
+    </message>
+    <message>
+      <source>Album Sort</source>
+      <translation type="unfinished">Album Sort</translation>
     </message>
     <message>
       <source>Track</source>
@@ -4282,12 +4514,24 @@ If there are no matches then it will use the largest image in the directory.</tr
       <translation>Albüm Sanatçısı</translation>
     </message>
     <message>
+      <source>Album Artist Sort</source>
+      <translation type="unfinished">Album Artist Sort</translation>
+    </message>
+    <message>
       <source>Composer</source>
       <translation>Besteci</translation>
     </message>
     <message>
+      <source>Composer Sort</source>
+      <translation type="unfinished">Composer Sort</translation>
+    </message>
+    <message>
       <source>Performer</source>
       <translation>Sanatçı</translation>
+    </message>
+    <message>
+      <source>Performer Sort</source>
+      <translation type="unfinished">Performer Sort</translation>
     </message>
     <message>
       <source>Grouping</source>
@@ -4318,8 +4562,8 @@ If there are no matches then it will use the largest image in the directory.</tr
       <translation>Bit oranı</translation>
     </message>
     <message>
-      <source>File Name</source>
-      <translation>Dosya Adı</translation>
+      <source>Initial key</source>
+      <translation type="unfinished">Initial key</translation>
     </message>
     <message>
       <source>File Name (without path)</source>
@@ -4350,12 +4594,24 @@ If there are no matches then it will use the largest image in the directory.</tr
       <translation>Kaynak</translation>
     </message>
     <message>
+      <source>Moodbar</source>
+      <translation type="unfinished">Moodbar</translation>
+    </message>
+    <message>
+      <source>BPM</source>
+      <translation type="unfinished">BPM</translation>
+    </message>
+    <message>
       <source>Mood</source>
       <translation>Ruh Hali</translation>
     </message>
     <message>
       <source>Rating</source>
       <translation>Derecelendirme</translation>
+    </message>
+    <message>
+      <source>URL</source>
+      <translation type="unfinished">URL</translation>
     </message>
     <message>
       <source>CUE</source>
@@ -4394,7 +4650,7 @@ If there are no matches then it will use the largest image in the directory.</tr
     </message>
     <message>
       <source>No matches found.  Clear the search box to show the whole playlist again.</source>
-      <translation type="unfinished">No matches found.  Clear the search box to show the whole playlist again.</translation>
+      <translation>Eşleşme bulunamadı. Çalma listesinin tamamını görüntülemek için arama kutusunu temizleyin.</translation>
     </message>
   </context>
   <context>
@@ -4480,6 +4736,10 @@ If there are no matches then it will use the largest image in the directory.</tr
     <message>
       <source>Playlist</source>
       <translation>Çalma listesi</translation>
+    </message>
+    <message>
+      <source>Copy songs to playlist</source>
+      <translation type="unfinished">Copy songs to playlist</translation>
     </message>
     <message>
       <source>Copy to device</source>
@@ -4955,6 +5215,10 @@ Devam etmek istediğinizden emin misiniz?</translation>
       <translation>Sürüm bilgisini yazdır</translation>
     </message>
     <message>
+      <source>Create fingerprint</source>
+      <translation type="unfinished">Create fingerprint</translation>
+    </message>
+    <message>
       <source>Failed to create directory %1.</source>
       <translation>Klasör oluşturulamadı: %1.</translation>
     </message>
@@ -4981,10 +5245,6 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
       <source>LU</source>
       <translation type="unfinished">LU</translation>
-    </message>
-    <message>
-      <source>File %1 is not recognized as a valid audio file.</source>
-      <translation>%1 dosyası geçerli bir ses dosyası olarak tanınmıyor.</translation>
     </message>
     <message>
       <source>1 day</source>
@@ -5063,8 +5323,8 @@ Devam etmek istediğinizden emin misiniz?</translation>
       <translation type="unfinished">Could not parse file</translation>
     </message>
     <message>
-      <source>Could save file</source>
-      <translation type="unfinished">Could save file</translation>
+      <source>Could not save file</source>
+      <translation type="unfinished">Could not save file</translation>
     </message>
     <message>
       <source>Unknown error</source>
@@ -5304,6 +5564,17 @@ Devam etmek istediğinizden emin misiniz?</translation>
     </message>
   </context>
   <context>
+    <name>QobuzMetadataRequest</name>
+    <message>
+      <source>Not authenticated</source>
+      <translation type="unfinished">Not authenticated</translation>
+    </message>
+    <message>
+      <source>No track ID</source>
+      <translation type="unfinished">No track ID</translation>
+    </message>
+  </context>
+  <context>
     <name>QobuzRequest</name>
     <message>
       <source>Receiving artists...</source>
@@ -5357,24 +5628,44 @@ Devam etmek istediğinizden emin misiniz?</translation>
   <context>
     <name>QobuzService</name>
     <message>
-      <source>Authenticating...</source>
-      <translation>Doğrulanıyor...</translation>
-    </message>
-    <message>
-      <source>Maximum number of login attempts reached.</source>
-      <translation type="unfinished">Maximum number of login attempts reached.</translation>
-    </message>
-    <message>
       <source>Missing Qobuz app ID.</source>
       <translation>Qobuz uygulama kimliği eksik.</translation>
     </message>
     <message>
-      <source>Missing Qobuz username.</source>
-      <translation>Qobuz kullanıcı adı eksik.</translation>
+      <source>Missing app ID. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing app ID. Please fetch credentials first.</translation>
     </message>
     <message>
-      <source>Missing Qobuz password.</source>
-      <translation>Qobuz şifresi eksik.</translation>
+      <source>Missing app secret. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing app secret. Please fetch credentials first.</translation>
+    </message>
+    <message>
+      <source>Missing private key. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing private key. Please fetch credentials first.</translation>
+    </message>
+    <message>
+      <source>Failed to start local server for OAuth redirect: %1</source>
+      <translation type="unfinished">Failed to start local server for OAuth redirect: %1</translation>
+    </message>
+    <message>
+      <source>Failed to open the web browser. Please open this URL manually: %1</source>
+      <translation type="unfinished">Failed to open the web browser. Please open this URL manually: %1</translation>
+    </message>
+    <message>
+      <source>Waiting for browser authentication...</source>
+      <translation type="unfinished">Waiting for browser authentication...</translation>
+    </message>
+    <message>
+      <source>OAuth redirect failed: %1</source>
+      <translation type="unfinished">OAuth redirect failed: %1</translation>
+    </message>
+    <message>
+      <source>OAuth redirect is missing authorization code.</source>
+      <translation type="unfinished">OAuth redirect is missing authorization code.</translation>
+    </message>
+    <message>
+      <source>Exchanging authorization code...</source>
+      <translation type="unfinished">Exchanging authorization code...</translation>
     </message>
     <message>
       <source>Not authenticated with Qobuz.</source>
@@ -5383,6 +5674,10 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
       <source>Missing Qobuz app ID or secret.</source>
       <translation type="unfinished">Missing Qobuz app ID or secret.</translation>
+    </message>
+    <message>
+      <source>Not authenticated. Please login to Qobuz in the settings.</source>
+      <translation type="unfinished">Not authenticated. Please login to Qobuz in the settings.</translation>
     </message>
   </context>
   <context>
@@ -5396,24 +5691,12 @@ Devam etmek istediğinizden emin misiniz?</translation>
       <translation>Etkinleştir</translation>
     </message>
     <message>
-      <source>Qobuz support is not official and requires an API app ID and secret from a registered application to work. We can&apos;t help you getting these.</source>
-      <translation type="unfinished">Qobuz support is not official and requires an API app ID and secret from a registered application to work. We can&apos;t help you getting these.</translation>
-    </message>
-    <message>
       <source>Authentication</source>
       <translation>Doğrulama</translation>
     </message>
     <message>
       <source>App ID</source>
       <translation>Uygulama kimliği</translation>
-    </message>
-    <message>
-      <source>Username</source>
-      <translation>Kullanıcı adı</translation>
-    </message>
-    <message>
-      <source>Password</source>
-      <translation>Parola</translation>
     </message>
     <message>
       <source>App Secret</source>
@@ -5456,28 +5739,56 @@ Devam etmek istediğinizden emin misiniz?</translation>
       <translation>Albüm kapaklarını indir</translation>
     </message>
     <message>
-      <source>Base64 encoded secret</source>
-      <translation type="unfinished">Base64 encoded secret</translation>
-    </message>
-    <message>
       <source>Configuration incomplete</source>
       <translation type="unfinished">Configuration incomplete</translation>
     </message>
     <message>
-      <source>Missing app id.</source>
-      <translation>Uygulama kimliği eksik.</translation>
+      <source>Missing app id. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing app id. Please fetch credentials first.</translation>
     </message>
     <message>
-      <source>Missing username.</source>
-      <translation>Kullanıcı adı eksik.</translation>
+      <source>Missing app secret. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing app secret. Please fetch credentials first.</translation>
     </message>
     <message>
-      <source>Missing password.</source>
-      <translation>Parola eksik.</translation>
+      <source>Missing private key. Please fetch credentials first.</source>
+      <translation type="unfinished">Missing private key. Please fetch credentials first.</translation>
     </message>
     <message>
       <source>Authentication failed</source>
       <translation>Doğrulama başarısız</translation>
+    </message>
+    <message>
+      <source>Fetching...</source>
+      <translation type="unfinished">Fetching...</translation>
+    </message>
+    <message>
+      <source>Credentials fetched</source>
+      <translation type="unfinished">Credentials fetched</translation>
+    </message>
+    <message>
+      <source>Credentials have been successfully fetched. Click Login to authenticate via your browser.</source>
+      <translation type="unfinished">Credentials have been successfully fetched. Click Login to authenticate via your browser.</translation>
+    </message>
+    <message>
+      <source>Credential fetch failed</source>
+      <translation type="unfinished">Credential fetch failed</translation>
+    </message>
+    <message>
+      <source>Fetch Credentials</source>
+      <translation type="unfinished">Fetch Credentials</translation>
+    </message>
+    <message>
+      <source>Remove (Remastered), etc from song titles</source>
+      <translation type="unfinished">Remove (Remastered), etc from song titles</translation>
+    </message>
+    <message>
+      <source>Private key</source>
+      <translation type="unfinished">Private key</translation>
+    </message>
+    <message>
+      <source>Automatically fetch app ID, app secret and private key from Qobuz web player</source>
+      <translation type="unfinished">Automatically fetch app ID, app secret and private key from Qobuz web player</translation>
     </message>
   </context>
   <context>
@@ -5485,6 +5796,10 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
       <source>Missing Qobuz app ID or secret.</source>
       <translation type="unfinished">Missing Qobuz app ID or secret.</translation>
+    </message>
+    <message>
+      <source>Not authenticated. Please log in on the Qobuz settings page.</source>
+      <translation type="unfinished">Not authenticated. Please log in on the Qobuz settings page.</translation>
     </message>
     <message>
       <source>Cancelled.</source>
@@ -5814,10 +6129,6 @@ Devam etmek istediğinizden emin misiniz?</translation>
       <translation>Giriş yap</translation>
     </message>
     <message>
-      <source>Libre.fm</source>
-      <translation>Libre.fm</translation>
-    </message>
-    <message>
       <source>Listenbrainz</source>
       <translation>Listenbrainz</translation>
     </message>
@@ -5844,41 +6155,6 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
       <source>Spotify</source>
       <translation>Spotify</translation>
-    </message>
-  </context>
-  <context>
-    <name>ScrobblingAPI20</name>
-    <message>
-      <source>%1 Scrobbler Authentication</source>
-      <translation>%1 Skroplayıcı Doğrulaması</translation>
-    </message>
-    <message>
-      <source>Open URL in web browser?</source>
-      <translation>Bağlantı tarayıcıda açılsın mı?</translation>
-    </message>
-    <message>
-      <source>Press &quot;Save&quot; to copy the URL to clipboard and manually open it in a web browser.</source>
-      <translation type="unfinished">Press &quot;Save&quot; to copy the URL to clipboard and manually open it in a web browser.</translation>
-    </message>
-    <message>
-      <source>Could not open URL. Please open this URL in your browser</source>
-      <translation>Bağlantı açılamadı. Lütfen bu bağlantıyı tarayıcınızda açın</translation>
-    </message>
-    <message>
-      <source>Invalid reply from web browser. Missing token.</source>
-      <translation>Tarayıcıdan geçersiz yanıt. Jeton eksik.</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser. Try another browser.</source>
-      <translation>Tarayıcıdan geçersiz yanıt alındı. Başka bir tarayıcıyı deneyin.</translation>
-    </message>
-    <message>
-      <source>Scrobbler %1 is not authenticated!</source>
-      <translation/>
-    </message>
-    <message>
-      <source>Scrobbler %1 error: %2</source>
-      <translation>Skroplayıcı %1 hata: %2</translation>
     </message>
   </context>
   <context>
@@ -6161,6 +6437,14 @@ Devam etmek istediğinizden emin misiniz?</translation>
       <source>Edit smart playlist...</source>
       <translation>Akıllı çalma listesini düzenle...</translation>
     </message>
+    <message>
+      <source>Are you sure you want to restore the default smart playlists? This will remove all custom smart playlists</source>
+      <translation type="unfinished">Are you sure you want to restore the default smart playlists? This will remove all custom smart playlists</translation>
+    </message>
+    <message>
+      <source>Restore defaults</source>
+      <translation type="unfinished">Restore defaults</translation>
+    </message>
   </context>
   <context>
     <name>SnapDialog</name>
@@ -6267,6 +6551,21 @@ Devam etmek istediğinizden emin misiniz?</translation>
     </message>
   </context>
   <context>
+    <name>SpotifyMetadataRequest</name>
+    <message>
+      <source>Not authenticated</source>
+      <translation type="unfinished">Not authenticated</translation>
+    </message>
+    <message>
+      <source>No track ID</source>
+      <translation type="unfinished">No track ID</translation>
+    </message>
+    <message>
+      <source>No pending song for track ID</source>
+      <translation type="unfinished">No pending song for track ID</translation>
+    </message>
+  </context>
+  <context>
     <name>SpotifyRequest</name>
     <message>
       <source>Authenticating...</source>
@@ -6323,22 +6622,6 @@ Devam etmek istediğinizden emin misiniz?</translation>
   </context>
   <context>
     <name>SpotifyService</name>
-    <message>
-      <source>Spotify Authentication</source>
-      <translation>Spotify Doğrulama</translation>
-    </message>
-    <message>
-      <source>Please open this URL in your browser</source>
-      <translation type="unfinished">Please open this URL in your browser</translation>
-    </message>
-    <message>
-      <source>Redirect missing token code or state!</source>
-      <translation type="unfinished">Redirect missing token code or state!</translation>
-    </message>
-    <message>
-      <source>Received invalid reply from web browser.</source>
-      <translation>Tarayıcınızdan geçersiz yanıt alındı.</translation>
-    </message>
     <message>
       <source>Not authenticated with Spotify.</source>
       <translation>Spotify ile doğrulanmadı.</translation>
@@ -6401,6 +6684,10 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
       <source>Authentication failed</source>
       <translation>Doğrulama başarısız</translation>
+    </message>
+    <message>
+      <source>Remove (Remastered), etc from song titles</source>
+      <translation type="unfinished">Remove (Remastered), etc from song titles</translation>
     </message>
   </context>
   <context>
@@ -6738,10 +7025,6 @@ Devam etmek istediğinizden emin misiniz?</translation>
   <context>
     <name>TidalRequest</name>
     <message>
-      <source>Authenticating...</source>
-      <translation>Doğrulanıyor...</translation>
-    </message>
-    <message>
       <source>Receiving artists...</source>
       <translation>Sanatçılar alınıyor...</translation>
     </message>
@@ -6789,32 +7072,8 @@ Devam etmek istediğinizden emin misiniz?</translation>
   <context>
     <name>TidalService</name>
     <message>
-      <source>Reply from Tidal is missing query items.</source>
-      <translation type="unfinished">Reply from Tidal is missing query items.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal API token.</source>
-      <translation>Tidal API jetonu eksik.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal username.</source>
-      <translation>Tidal kullanıcı adı eksik.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal password.</source>
-      <translation>Tidal parola eksik.</translation>
-    </message>
-    <message>
-      <source>Not authenticated with Tidal and reached maximum number of login attempts.</source>
-      <translation type="unfinished">Not authenticated with Tidal and reached maximum number of login attempts.</translation>
-    </message>
-    <message>
       <source>Not authenticated with Tidal.</source>
       <translation>Tidal ile doğrulanmadı.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal API token, username or password.</source>
-      <translation>Tidal API jetonu, kullanıcı adı ve şifre eksik.</translation>
     </message>
   </context>
   <context>
@@ -6836,24 +7095,8 @@ Devam etmek istediğinizden emin misiniz?</translation>
       <translation>Doğrulama</translation>
     </message>
     <message>
-      <source>Use OAuth</source>
-      <translation>OAuth Kullan</translation>
-    </message>
-    <message>
       <source>Client ID</source>
       <translation>İstemci Kimliği</translation>
-    </message>
-    <message>
-      <source>API Token</source>
-      <translation>API Jetonu</translation>
-    </message>
-    <message>
-      <source>Username</source>
-      <translation>Kullanıcı adı</translation>
-    </message>
-    <message>
-      <source>Password</source>
-      <translation>Parola</translation>
     </message>
     <message>
       <source>Login</source>
@@ -6916,20 +7159,12 @@ Devam etmek istediğinizden emin misiniz?</translation>
       <translation>Tidal istemci kimliği eksik.</translation>
     </message>
     <message>
-      <source>Missing API token.</source>
-      <translation>API jetonu eksik.</translation>
-    </message>
-    <message>
-      <source>Missing username.</source>
-      <translation>Kullanıcı adı eksik.</translation>
-    </message>
-    <message>
-      <source>Missing password.</source>
-      <translation>Parola eksik.</translation>
-    </message>
-    <message>
       <source>Authentication failed</source>
       <translation>Doğrulama başarısız</translation>
+    </message>
+    <message>
+      <source>Remove (Remastered), etc from song titles</source>
+      <translation type="unfinished">Remove (Remastered), etc from song titles</translation>
     </message>
   </context>
   <context>
@@ -6937,10 +7172,6 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
       <source>Not authenticated with Tidal.</source>
       <translation>Tidal ile doğrulanmadı.</translation>
-    </message>
-    <message>
-      <source>Missing Tidal API token, username or password.</source>
-      <translation>Tidal API jetonu, kullanıcı adı ve şifresi eksik.</translation>
     </message>
     <message>
       <source>Cancelled.</source>
@@ -7012,6 +7243,10 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
       <source>Saving tracks</source>
       <translation>Parçalar kaydediliyor</translation>
+    </message>
+    <message>
+      <source>Album artist</source>
+      <translation type="unfinished">Album artist</translation>
     </message>
   </context>
   <context>
