@@ -1,7 +1,7 @@
 #include "remoteguivalues.h"
-#include "core/logging.h"
 #include "core/player.h"
 #include "constants/timeconstants.h"
+#include "remotecontroller/remotejsoncreator.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -11,13 +11,12 @@ RemoteGuiValues::RemoteGuiValues(const Application* app, QObject *parent)// cons
 
 void RemoteGuiValues::getUpdates(QTcpSocket *client){
   qDebug() << "RemoteGuiValues::getUpdates called";
-  QJsonObject response;
-  response[u"event"_s] = u"gui_updates"_s;
-  response[u"volume"_s] = static_cast<qint32>(app_->player()->GetVolume());
-  response[u"current_time"_s] = app_->player()->engine()->position_nanosec() / kNsecPerMsec;
-  response[u"playing"_s] = (app_->player()->GetState() == EngineBase::State::Playing)? true : false;
-
-  Q_EMIT RemoteGuiValues::sendCurrentStatus(client, response);
+  Q_EMIT RemoteGuiValues::sendCurrentStatus(client, RemoteJsonCreator::createResponse({
+    {u"event"_s, u"gui_updates"_s},
+    {u"volume"_s, QString::number(static_cast<qint32>(app_->player()->GetVolume()))},
+    {u"current_time"_s, QString::number(app_->player()->engine()->position_nanosec() / kNsecPerMsec)},
+    {u"playing"_s, QString::number((app_->player()->GetState() == EngineBase::State::Playing)? true : false)}
+  }));
 }
 
 void RemoteGuiValues::triggerUpdate(QTcpSocket *client)

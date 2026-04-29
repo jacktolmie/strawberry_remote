@@ -32,14 +32,14 @@ void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& com
   // Check if sent command is in basicCommandMap.
   if(basicCmdMap.contains(command)){
     basicCmdMap[command](args);
-    RemoteCommands::getResponse(RemoteJsonCreator::createResponse(u"response"_s, u"Running command: "_s + command));
+    RemoteCommands::getResponse(RemoteJsonCreator::createResponse({ {u"response"_s, u"running_command: "_s}, {u"command"_s, command} }));
   }
   else if (playlistCmdMap.contains(command)){
     RemoteCommands::getResponse(playlistCmdMap[command](args));
   }
   else{
   // If sent command does not match anything, send message back to device.
-    RemoteCommands::getResponse(RemoteJsonCreator::createResponse(u"error"_s, u"The command %1 was not found"_s + command ));
+    RemoteCommands::getResponse(RemoteJsonCreator::createResponse({ {u"error"_s, u"the_command_was_not_found"_s}, {u"command"_s, command} }));
   }
 
   if(values) values->triggerUpdate(clientSocket);

@@ -39,8 +39,8 @@ RemoteBasicCommands::RemoteBasicCommands(Application *app)
 void RemoteBasicCommands::volumeChanged(const uint volume)
 {
   Q_EMIT RemoteBasicCommands::sendResponse(RemoteJsonCreator::createResponse({
-    {u"event"_s, u"Volume Changed new function"_s},
-    { u"value"_s,  QString::number(volume)}
+    {u"event"_s, u"volume_changed"_s},
+    { u"volume"_s,  QString::number(volume)}
   }));
 }
 
