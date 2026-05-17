@@ -400,8 +400,8 @@ void PlaylistManager::SetActivePlaylist(const int id) {
   // Send active playlist id to remote device.
   Q_EMIT PlaylistManager::sendPlaylistResponse(RemoteJsonCreator::createResponse({
     {u"event"_s, u"active_playlist"_s},
-    {u"id"_s, QString::number(id)},
-    {u"row"_s, QString::number(active()->last_played_row())}
+    {u"id"_s, id},
+    {u"row"_s, active()->last_played_row()}
   }));
 
   active()->Playing();

@@ -408,6 +408,8 @@ void Player::NextInternal(const EngineBase::TrackChangeFlags change, const Playl
 
   NextItem(change, autoscroll);
 
+  Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({{u"event"_s, u"next "_s}}));
+
 }
 
 void Player::NextItem(const EngineBase::TrackChangeFlags change, const Playlist::AutoScroll autoscroll) {
@@ -517,7 +519,7 @@ void Player::TrackEnded() {
 
   Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse( {
     {u"event"_s, u"song_changed"_s},
-    {u"id"_s, QString::number(playlist_manager_->active()->next_row())}
+    {u"id"_s, playlist_manager_->active()->next_row()}
   }));
 
 }
@@ -533,8 +535,8 @@ void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll 
 
       Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
         {u"event"_s, u"play"_s},
-        {u"row"_s, QString::number(playlist_manager_->active()->current_row())},
-        {u"time"_s, QString::number(engine()->position_nanosec() / kNsecPerMsec)}
+        {u"row"_s, playlist_manager_->active()->current_row()},
+        {u"time"_s, engine()->position_nanosec() / kNsecPerMsec}
       }));
       break;
 
@@ -549,7 +551,7 @@ void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll 
         engine_->Pause();
         Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
           {u"event"_s, u"pause"_s},
-          {u"time"_s, QString::number(engine()->position_nanosec() / kNsecPerMsec)}
+          {u"time"_s, engine()->position_nanosec() / kNsecPerMsec}
         }));
       }
       break;
@@ -661,6 +663,8 @@ void Player::PreviousItem(const EngineBase::TrackChangeFlags change) {
   }
 
   PlayAt(i, false, 0, change, Playlist::AutoScroll::Always, false);
+
+  Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({{u"event"_s, u"previous"_s}}));
 
 }
 
@@ -831,7 +835,7 @@ void Player::SeekTo(const quint64 seconds) {
 
   Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
     {u"event"_s, u"seek_to"_s},
-    {u"time"_s, QString::number(nanosec / kNsecPerMsec)}
+    {u"time"_s, nanosec / kNsecPerMsec}
   }));
 }
 
@@ -840,7 +844,7 @@ void Player::SeekForward() {
 
   Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
     {u"event"_s, u"seek_forward"_s},
-    {u"time"_s, QString::number(static_cast<quint64>(engine()->position_nanosec() / kNsecPerSec + seek_step_sec_))}
+    {u"time"_s, engine()->position_nanosec() / kNsecPerSec + seek_step_sec_}
   }));
 }
 
@@ -849,7 +853,7 @@ void Player::SeekBackward() {
 
         Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
           {u"event"_s, u"seek_backward"_s},
-          {u"time"_s, QString::number(static_cast<quint64>(engine()->position_nanosec() / kNsecPerSec - seek_step_sec_))}
+          {u"time"_s, engine()->position_nanosec() / kNsecPerSec - seek_step_sec_}
         }));
 }
 
@@ -927,7 +931,7 @@ void Player::Play(const quint64 offset_nanosec) {
 
   Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
     {u"event"_s, u"play"_s},
-    {u"time"_s, QString::number(engine()->position_nanosec() / kNsecPerMsec)}
+    {u"time"_s, engine()->position_nanosec() / kNsecPerMsec}
   }));
 }
 

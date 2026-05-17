@@ -39,7 +39,7 @@ void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& com
   }
   else{
   // If sent command does not match anything, send message back to device.
-    RemoteCommands::getResponse(RemoteJsonCreator::createResponse({ {u"error"_s, u"the_command_was_not_found"_s}, {u"command"_s, command} }));
+    RemoteCommands::getResponse(RemoteJsonCreator::createResponse({ {u"error"_s, u"command_not_found"_s}, {u"command"_s, command} }));
   }
 
   if(values) values->triggerUpdate(clientSocket);
@@ -113,6 +113,6 @@ void RemoteCommands::getResponse(const QJsonObject& response)
 }
 
 void RemoteCommands::getGuiUpdate(QTcpSocket *client, QJsonObject updates){
-
+  // Add updates for time etc to send to the clients.
 }
 

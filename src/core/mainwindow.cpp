@@ -1658,7 +1658,7 @@ void MainWindow::PlayIndex(const QModelIndex &idx, Playlist::AutoScroll autoscro
   app_->player()->PlayAt(row, false, 0, EngineBase::TrackChangeType::Manual, autoscroll, true);
 
   // Delete if not being used.
-  // Q_EMIT app_->playlist_manager()->sendPlaylistResponse( RemoteJsonCreator::createResponse({ {u"event"_s, u"song_changed11"_s}, {u"row"_s, QString::number(row)} }));
+  // Q_EMIT app_->playlist_manager()->sendPlaylistResponse( RemoteJsonCreator::createResponse({ {u"event"_s, u"song_changed11"_s}, {u"row"_s, row} }));
 
 
 }
@@ -1690,7 +1690,7 @@ void MainWindow::PlaylistDoubleClick(const QModelIndex &idx) {
 
   Q_EMIT app_->playlist_manager()->sendPlaylistResponse(RemoteJsonCreator::createResponse({
     {u"event"_s, u"song_changed"_s},
-    {u"id"_s, QString::number(source_idx.row())}
+    {u"id"_s, source_idx.row()}
   }));
 }
 

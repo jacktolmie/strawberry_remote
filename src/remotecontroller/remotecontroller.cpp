@@ -7,6 +7,7 @@
 
 #include <QString>
 #include "core/player.h"
+#include "remotecontroller/remotejsoncreator.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -102,20 +103,28 @@ void RemoteController::onNewConnection()
       // Create a new client for clients_ list.
       ClientInfo* client = new ClientInfo();
       client->socket = socket;
+      clients_.insert(socket, client);
 
       // If no password required, do not check.
       if (!app_->remote_settings()->values.authRequired) {
         client->state = ClientState::Authenticated;
-        socket->write("AUTH_SUCCESS\n");
+        onSendResponse(socket, RemoteJsonCreator::createResponse({ {u"auth"_s, u"AUTH_SUCCESS\n"_s }}));
+        // socket->write("AUTH_SUCCESS\n");
       }
       else {
-        client->nonce = QByteArray::number(QRandomGenerator::global()->generate64());
+        QByteArray nonce(32, Qt::Uninitialized);
+        for(int i{0}; i < nonce.size(); ++i){
+          nonce[i] = static_cast<char>(QRandomGenerator::global()->generate64() & 0xFF);
+        }
+
+        client->nonce = nonce;
+        // client->nonce = QByteArray::number(QRandomGenerator::global()->generate64());
         client->state = ClientState::ChallengeSent;
 
-        socket->write("CHALLENGE " + client->nonce.toHex() + "\n");
+        onSendResponse(socket, { {u"auth"_s, u"CHALLENGE"_s}, {u"nonce"_s, QString::fromLatin1(nonce.toBase64())} });
+        // socket->write("CHALLENGE " + client->nonce.toHex() + "\n");
         qDebug() << "Sent challenge (nonce) to client: " << client->nonce.toHex();
       }
-      clients_.insert(socket, client);
       connect(socket, &QTcpSocket::readyRead, this, &RemoteController::onReadyRead);
       connect(socket, &QTcpSocket::disconnected, this, &RemoteController::onDisconnect);
     }
@@ -134,34 +143,78 @@ void RemoteController::onReadyRead()
   switch (client->state) {
 
     case ClientState::ChallengeSent: {
-      if (!socket->canReadLine()) return;
+      QDataStream socketStream(socket);
+      socketStream.setVersion(QDataStream::Qt_6_8);
 
-      QString line = QString::fromUtf8(socket->readLine().trimmed());
-      if (!line.startsWith(u"PROOF "_s)) {
+      socketStream.startTransaction();
+      QByteArray jsonData;
+      socketStream >> jsonData;
+
+      if (!socketStream.commitTransaction()) return;
+
+      QJsonDocument doc = QJsonDocument::fromJson(jsonData);
+
+      if (doc.isNull() || !doc.isObject()) {
         qDebug() << "Bad protocol from client. Kicking.";
         socket->close();
         return;
       }
 
-      QByteArray receivedProof = QByteArray::fromHex(line.mid(6).toUtf8());
+      QJsonObject obj = doc.object();
+
+      if (!obj.contains(u"proof"_s)) {
+        qDebug() << "No proof field in response. Kicking";
+        socket->close();
+        return;
+      }
+
+      QByteArray receivedProof = QByteArray::fromHex(obj[u"proof"_s].toString().toUtf8());
       QByteArray combined = client->nonce + app_->remote_settings()->values.password.toUtf8();
       QByteArray expectedProof = QCryptographicHash::hash(combined, QCryptographicHash::Sha256);
 
       if (receivedProof == expectedProof) {
-        qDebug() << "Proof matche for " << socket->peerAddress().toString() << ". Client is now authenticated";
-
+        qDebug() << "Proof match for " << socket->peerAddress().toString();
         client->state = ClientState::Authenticated;
         client->nonce.clear();
-        socket->write("AUTH_SUCCESS\n");
-      }
-      else {
-        qDebug() << "Bad proof from " << socket->peerAddress().toString() << ". Kicking";
-        socket->write("AUTH_FAILED\n");
+        onSendResponse(socket, RemoteJsonCreator::createResponse({ {u"auth"_s, u"AUTH_SUCCESS"_s} }));
+      } else {
+        qDebug() << "Bad proof from " << socket->peerAddress().toString() << ". Kicking.";
+        onSendResponse(socket, RemoteJsonCreator::createResponse({ {u"auth"_s, u"AUTH_FAILED"_s} }));
         socket->close();
-        return;
       }
-      break;
-    }
+    break;
+}
+
+
+      // QString line = QString::fromUtf8(socket->readLine().trimmed());
+      // if (!line.startsWith(u"PROOF "_s)) {
+      //   qDebug() << "Bad protocol from client. Kicking.";
+      //   socket->close();
+      //   return;
+      // }
+
+      // QByteArray receivedProof = QByteArray::fromHex(line.mid(6).toUtf8());
+      // QByteArray combined = client->nonce + app_->remote_settings()->values.password.toUtf8();
+      // QByteArray expectedProof = QCryptographicHash::hash(combined, QCryptographicHash::Sha256);
+
+      // if (receivedProof == expectedProof) {
+      //   qDebug() << "Proof match for " << socket->peerAddress().toString() << ". Client is now authenticated";
+
+      //   client->state = ClientState::Authenticated;
+      //   client->nonce.clear();
+
+      //   onSendResponse(socket, RemoteJsonCreator::createResponse({ {u"auth"_s, u"AUTH_SUCCESS\n"_s }}));
+      //   // socket->write("AUTH_SUCCESS\n");
+      // }
+      // else {
+      //   qDebug() << "Bad proof from " << socket->peerAddress().toString() << ". Kicking";
+      //   onSendResponse(socket, RemoteJsonCreator::createResponse({ {u"auth"_s, u"AUTH_FAILED\n"_s }}));
+      //   // socket->write("AUTH_FAILED\n");
+      //   socket->close();
+      //   return;
+      // }
+      // break;
+    // }
     case ClientState::Authenticated: {
 
       QDataStream socketStream(socket);
@@ -212,17 +265,31 @@ void RemoteController::settingsChanged(const Values& data)
 
 void RemoteController::onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response)
 {
-    if (clientSocket &&
+  if (clients_.contains(clientSocket)) {
+      qDebug() << "Client state:" << static_cast<int>(clients_.value(clientSocket)->state);
+  }
+      if (clientSocket &&
         clientSocket->state() == QAbstractSocket::ConnectedState &&
-        clients_.contains(clientSocket) &&
-        clients_.value(clientSocket)->state == ClientState::Authenticated)
-    {
+        clients_.contains(clientSocket)
+      )
+      {
+        QByteArray json = QJsonDocument(response).toJson(QJsonDocument::Compact);
         QDataStream socketStream(clientSocket);
         socketStream.setVersion(QDataStream::Qt_6_8);
+        socketStream << json;
+        // QByteArray json = QJsonDocument(response).toJson(QJsonDocument::Compact);
 
-        socketStream << QJsonDocument(response).toJson(QJsonDocument::Compact);
-    }
-}
+        // json.append('\n');
+        // qInfo() << "Json sent: " << json;
+
+        // clientSocket->write(json);
+
+        // clientSocket->write(QByteArray(QJsonDocument(response).toJson(QJsonDocument::Compact) + "\n"));
+        // QDataStream socketStream(clientSocket);
+        // socketStream.setVersion(QDataStream::Qt_6_8);
+        // socketStream << QJsonDocument(response).toJson(QJsonDocument::Compact);
+      }
+  }
 
 void RemoteController::broadcastToDevices(const QJsonObject& message)
 {

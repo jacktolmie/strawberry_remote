@@ -13,9 +13,9 @@ void RemoteGuiValues::getUpdates(QTcpSocket *client){
   qDebug() << "RemoteGuiValues::getUpdates called";
   Q_EMIT RemoteGuiValues::sendCurrentStatus(client, RemoteJsonCreator::createResponse({
     {u"event"_s, u"gui_updates"_s},
-    {u"volume"_s, QString::number(static_cast<qint32>(app_->player()->GetVolume()))},
-    {u"current_time"_s, QString::number(app_->player()->engine()->position_nanosec() / kNsecPerMsec)},
-    {u"playing"_s, QString::number((app_->player()->GetState() == EngineBase::State::Playing)? true : false)}
+    {u"volume"_s, static_cast<qint32>(app_->player()->GetVolume())},
+    {u"current_time"_s, app_->player()->engine()->position_nanosec() / kNsecPerMsec},
+    {u"playing"_s, (app_->player()->GetState() == EngineBase::State::Playing)? true : false}
   }));
 }
 

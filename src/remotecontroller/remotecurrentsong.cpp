@@ -1,6 +1,7 @@
 #include "remotecurrentsong.h"
 #include "constants/timeconstants.h"
 #include "remotecontroller/remoteguivalues.h"
+#include "remotecontroller/remotejsoncreator.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -17,14 +18,14 @@ RemoteCurrentSong::RemoteCurrentSong(Application *app, QObject *parent)
 
 QJsonObject RemoteCurrentSong::songInfo(Song song){
   // Create JSON object from sent song.
-  QJsonObject songData;
-  songData[u"id"_s] =      song.id();
-  songData[u"artist"_s] =  song.artist();
-  songData[u"album"_s] =   song.album();
-  songData[u"title"_s] =   song.PrettyTitle();
-  songData[u"length"_s] =  song.length_nanosec() / kNsecPerMsec;
-  // coverFinder->findRemoteUrlForSong(song);
-  return songData;
+  return RemoteJsonCreator::createResponse({
+    {u"id"_s, song.id()},
+    {u"artist"_s, song.artist()},
+    {u"album"_s, song.album()},
+    {u"title"_s, song.PrettyTitle()},
+    {u"length"_s, song.length_nanosec() / kNsecPerMsec}
+    // coverFinder->findRemoteUrlForSong(song); // Find way to get Album URL image
+  });
 }
 
 void RemoteCurrentSong::getAlbumThumbnail(const Song &song, const QUrl &thumbnail_uri)//, [[maybe_unused]] const QImage &image){
