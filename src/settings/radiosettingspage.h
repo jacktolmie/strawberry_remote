@@ -1,6 +1,6 @@
 /*
  * Strawberry Music Player
- * Copyright 2019-2025, Jonas Kvinge <jonas@jkvinge.net>
+ * Copyright 2026, Malte Zilinski <malte@zilinski.eu>
  *
  * Strawberry is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,30 +17,35 @@
  *
  */
 
-#ifndef LOLOLYRICSPROVIDER_H
-#define LOLOLYRICSPROVIDER_H
+#ifndef RADIOSETTINGSPAGE_H
+#define RADIOSETTINGSPAGE_H
 
-#include "config.h"
-
-#include <QVariant>
+#include <QObject>
+#include <QList>
+#include <QPair>
 #include <QString>
 
-#include "includes/shared_ptr.h"
-#include "lyricsprovider.h"
-#include "lyricssearchrequest.h"
+#include "settings/settingspage.h"
 
-class QNetworkReply;
-class NetworkAccessManager;
+class QComboBox;
+class SettingsDialog;
+class Ui_RadioSettingsPage;
 
-class LoloLyricsProvider : public LyricsProvider {
+class RadioSettingsPage : public SettingsPage {
   Q_OBJECT
 
  public:
-  explicit LoloLyricsProvider(const SharedPtr<NetworkAccessManager> network, QObject *parent = nullptr);
+  explicit RadioSettingsPage(SettingsDialog *dialog, QWidget *parent = nullptr);
+  ~RadioSettingsPage() override;
 
- private Q_SLOTS:
-  void StartSearch(const int id, const LyricsSearchRequest &request) override;
-  void HandleSearchReply(QNetworkReply *reply, const int id, const LyricsSearchRequest &request);
+  static QList<QPair<QString, QString>> CountryList();
+  static void PopulateCountries(QComboBox *combo);
+
+  void Load() override;
+  void Save() override;
+
+ private:
+  Ui_RadioSettingsPage *ui_;
 };
 
-#endif  // LOLOLYRICSPROVIDER_H
+#endif  // RADIOSETTINGSPAGE_H
