@@ -45,7 +45,6 @@
 #include "includes/shared_ptr.h"
 #include "core/settings.h"
 #include "constants/filenameconstants.h"
-#include "remotecontroller/remotejsoncreator.h"
 #include "utilities/timeutils.h"
 #include "collection/collectionbackend.h"
 #include "covermanager/currentalbumcoverloader.h"
@@ -60,7 +59,12 @@
 #include "playlistparsers/playlistparser.h"
 #include "dialogs/saveplaylistsdialog.h"
 
+#include "remotecontroller/remotejsoncreator.h"
+#include "remotecontroller/remotetypes.h"
+
+
 using namespace Qt::Literals::StringLiterals;
+using namespace RemoteTypes;
 
 class ParserBase;
 
@@ -376,14 +380,8 @@ void PlaylistManager::SetCurrentPlaylist(const int id) {
   }
 
   current_ = id;
-<<<<<<< HEAD
 
-  updateConnects();
-
-  Q_EMIT CurrentChanged(current(), playlists_[id].scroll_position);
-=======
   Q_EMIT CurrentChanged(current(), playlists_.value(id).scroll_position);
->>>>>>> upstream/master
   UpdateSummaryText();
 
 }
@@ -403,9 +401,10 @@ void PlaylistManager::SetActivePlaylist(const int id) {
 
   // Send active playlist id to remote device.
   Q_EMIT PlaylistManager::sendPlaylistResponse(RemoteJsonCreator::createResponse({
-    {u"event"_s, u"active_playlist"_s},
-    {u"id"_s, id},
-    {u"row"_s, active()->last_played_row()}
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),
+    field(Arguments::ID, id),
+    field(Arguments::ROW, active()->last_played_row())
   }));
 
   active()->Playing();

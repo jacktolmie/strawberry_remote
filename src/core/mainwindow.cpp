@@ -21,6 +21,7 @@
 
 #include "config.h"
 #include "remotecontroller/remotejsoncreator.h"
+#include "remotecontroller/remotetypes.h"
 #include "version.h"
 
 #include <cmath>
@@ -1664,11 +1665,6 @@ void MainWindow::PlayIndex(const QModelIndex &idx, Playlist::AutoScroll autoscro
 
   app_->playlist_manager()->SetActiveToCurrent();
   app_->player()->PlayAt(row, false, 0, EngineBase::TrackChangeType::Manual, autoscroll, true);
-
-  // Delete if not being used.
-  // Q_EMIT app_->playlist_manager()->sendPlaylistResponse( RemoteJsonCreator::createResponse({ {u"event"_s, u"song_changed11"_s}, {u"row"_s, row} }));
-
-
 }
 
 void MainWindow::PlaylistDoubleClick(const QModelIndex &idx) {
@@ -1697,8 +1693,8 @@ void MainWindow::PlaylistDoubleClick(const QModelIndex &idx) {
   }
 
   Q_EMIT app_->playlist_manager()->sendPlaylistResponse(RemoteJsonCreator::createResponse({
-    {u"event"_s, u"song_changed"_s},
-    {u"id"_s, source_idx.row()}
+    RemoteTypes::field(RemoteTypes::Event::SONG_CHANGED, RemoteTypes::toString(RemoteTypes::Event::SONG_CHANGED)),
+    RemoteTypes::field(RemoteTypes::Arguments::TRACK_ID, source_idx.row())
   }));
 }
 

@@ -13,6 +13,7 @@
 
 #include "core/application.h"
 #include "ui_mainwindow.h"
+#include "remotecontroller/remoteguivalues.h"
 #include "remotecontroller/remotesettings.h"
 #include "remotecontroller/remotecommands.h"
 #include "playlist/playlist.h"
@@ -32,6 +33,7 @@ struct ClientInfo {
 class RemoteController : public QObject
 {
   Q_OBJECT
+
 public:
   explicit RemoteController(const Application* app, const Ui_MainWindow* mainUi , QObject *parent = nullptr);
   ~RemoteController() = default;
@@ -41,9 +43,16 @@ public:
   void setTimer();
 
 private:
-  QTcpServer    *server;
-  QHostAddress  localIp4;
-  QHostAddress  localIp6;
+  QTcpServer        *server;
+  QHostAddress      localIp4;
+  QHostAddress      localIp6;
+
+
+  const Application   *app_;
+  const Ui_MainWindow *mainUi_;
+  RemoteGuiValues   guiValues;
+
+
 
   QTimer        *timer;
 
@@ -52,14 +61,9 @@ private:
   // List of connected sockets, and if authenticated
   QHash<QTcpSocket*, ClientInfo*> clients_;
 
-  const Application   *app_;
-  const Ui_MainWindow *mainUi_;
-
-
-
 Q_SIGNALS:
   void ExitFinished();
-  void commandReceived(QTcpSocket* clientSocket, const QString& line);
+  void commandReceived(const QString& line);
 
 public Q_SLOTS:
   void activeNetworkConnection();
@@ -74,6 +78,8 @@ private Q_SLOTS:
   void onNewConnection();
   void onReadyRead();
   void onDisconnect();
+
+  void testJson(QTcpSocket*);
 
 };
 

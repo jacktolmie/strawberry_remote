@@ -24,7 +24,7 @@ public:
   explicit RemoteBasicCommands(Application *app);
   ~RemoteBasicCommands() = default;
 
-  BasicCmdMap& sendCommandMap();
+  const BasicCmdMap &sendCommandMap() const;
 
 Q_SIGNALS:
   //Commands to sent to server

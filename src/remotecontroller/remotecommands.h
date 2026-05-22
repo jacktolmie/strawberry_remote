@@ -16,26 +16,28 @@ class RemoteCommands : public QObject
 {
   Q_OBJECT
 
-  Application         *app_;
+  const Application         *app_;
 
-  RemotePlaylist      playlist;
-  RemoteBasicCommands basicCommands;
-  RemoteGuiValues     *values;
+  const RemotePlaylist      playlist;
+  const RemoteBasicCommands basicCommands;
+  const RemoteGuiValues     *values;
 
-  BasicCmdMap         basicCmdMap;
-  PlaylistCmdMap      playlistCmdMap;
+  BasicCmdMap               basicCmdMap;
+  PlaylistCmdMap            playlistCmdMap;
 
 
 public:
   explicit RemoteCommands(Application *app, QObject *parent);
   ~RemoteCommands() = default;
 
-  void processCommand(QTcpSocket *clientSocket, const QString& command, const QStringList& args);
+  void processCommand(const QString& command, const QStringList& args);
 
 public Q_SLOTS:
-  void getGuiUpdate(QTcpSocket *client, QJsonObject updates);
+  // void sendGuiUpdate(const QTcpSocket *client, QJsonObject updates);
+  void sendGuiUpdate();
   void getResponse(const QJsonObject& response);
-  void processLine(QTcpSocket* clientSocket, const QString& line);
+  void processLine(const QString& line);
+  // void processLine(QTcpSocket* clientSocket, const QString& line);
 
 Q_SIGNALS:
   void forwardToPlayer(const QString& command, const QStringList& args);

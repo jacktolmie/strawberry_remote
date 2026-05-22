@@ -2,24 +2,33 @@
 #include "core/player.h"
 #include "constants/timeconstants.h"
 #include "remotecontroller/remotejsoncreator.h"
+#include "remotecontroller/remoteplaylist.h"
+#include "remotecontroller/remotetypes.h"
 
 using namespace Qt::Literals::StringLiterals;
+using namespace RemoteTypes;
 
-RemoteGuiValues::RemoteGuiValues(const Application* app, QObject *parent)// const Ui_MainWindow* ui, QObject *parent)
+RemoteGuiValues::RemoteGuiValues(const Application* app, QObject *parent)
   : QObject{parent},
-    app_{app}{}
+    app_{app},
+    playlist(RemotePlaylist(app_, this))
+{}
 
-void RemoteGuiValues::getUpdates(QTcpSocket *client){
+// void RemoteGuiValues::getUpdates(const QTcpSocket *client) const{
+QJsonObject RemoteGuiValues::getUpdates() const{
   qDebug() << "RemoteGuiValues::getUpdates called";
-  Q_EMIT RemoteGuiValues::sendCurrentStatus(client, RemoteJsonCreator::createResponse({
-    {u"event"_s, u"gui_updates"_s},
-    {u"volume"_s, static_cast<qint32>(app_->player()->GetVolume())},
-    {u"current_time"_s, app_->player()->engine()->position_nanosec() / kNsecPerMsec},
-    {u"playing"_s, (app_->player()->GetState() == EngineBase::State::Playing)? true : false}
-  }));
+
+  return RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::GUI_UPDATES)),
+    field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume())),
+    field(Arguments::CURRENT_TIME, app_->player()->engine()->position_nanosec() / kNsecPerMsec),
+    field(Arguments::PLAYING, (app_->player()->GetState() == EngineBase::State::Playing)? true : false),
+    field(Arguments::PLAYLISTS, playlist.sendAllPlaylists())
+  });
 }
 
-void RemoteGuiValues::triggerUpdate(QTcpSocket *client)
-{
-  RemoteGuiValues::getUpdates(client);
+// void RemoteGuiValues::triggerUpdate(QTcpSocket *client) const
+QJsonObject RemoteGuiValues::triggerUpdate() const {
+  return getUpdates();
 }

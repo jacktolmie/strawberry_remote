@@ -22,15 +22,15 @@ class RemoteCurrentSong : public QObject
 {
   Q_OBJECT
 
-  Application *app_;
-  AlbumCoverFetcher *coverFetcher;
-  RemoteGuiValues *coverFinder;
+  const Application *app_;
+  const AlbumCoverFetcher *coverFetcher;
+  const RemoteGuiValues *coverFinder;
 
   QUrl albumImageUrl;
   QUrl songLyricsUrl;
 
 public:
-  explicit RemoteCurrentSong(Application *app, QObject *parent = nullptr);
+  explicit RemoteCurrentSong(const Application *app, QObject *parent = nullptr);
 
   QJsonObject songInfo(Song song);
 

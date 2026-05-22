@@ -6,10 +6,12 @@
 
 #include "remotecommands.h"
 #include "remotecontroller/remotejsoncreator.h"
+#include "remotecontroller/remotetypes.h"
 #include "playlist/playlistmanager.h"
 #include "core/player.h"
 
 using namespace Qt::Literals::StringLiterals;
+using namespace RemoteTypes;
 
 RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   QObject{parent},
@@ -24,28 +26,37 @@ RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   QObject::connect(&basicCommands, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::getResponse);
   QObject::connect(&*app_->player(), &Player::sendToRemote, this, &RemoteCommands::getResponse);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistResponse, this, &RemoteCommands::getResponse);
-  // connect(values, &RemoteGuiValues::sendCurrentStatus, this, &RemoteCommands::getGuiUpdate);
+  QObject::connect(values, &RemoteGuiValues::sendCurrentStatus, this, &::RemoteCommands::sendGuiUpdate);
 }
 
-void RemoteCommands::processCommand(QTcpSocket* clientSocket, const QString& command, const QStringList &args)
+void RemoteCommands::processCommand(const QString& command, const QStringList &args)
 {
   // Check if sent command is in basicCommandMap.
   if(basicCmdMap.contains(command)){
     basicCmdMap[command](args);
-    RemoteCommands::getResponse(RemoteJsonCreator::createResponse({ {u"response"_s, u"running_command: "_s}, {u"command"_s, command} }));
+    RemoteCommands::getResponse(RemoteJsonCreator::createResponse({
+      field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+      field(Response::RESPONSE, toString(Response::RUNNING_COMMAND)),
+      field(Arguments::COMMAND, command)
+      }));
   }
   else if (playlistCmdMap.contains(command)){
     RemoteCommands::getResponse(playlistCmdMap[command](args));
   }
   else{
   // If sent command does not match anything, send message back to device.
-    RemoteCommands::getResponse(RemoteJsonCreator::createResponse({ {u"error"_s, u"command_not_found"_s}, {u"command"_s, command} }));
+    RemoteCommands::getResponse(RemoteJsonCreator::createResponse({
+      field(MessageType::ERROR, toString(MessageType::ERROR)),
+      field(Error::ERROR, toString(Error::COMMAND_NOT_FOUND)),
+      field(Arguments::COMMAND, command)
+      }));
   }
 
-  if(values) values->triggerUpdate(clientSocket);
+  if(values) values->triggerUpdate();
 }
 
-void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
+// void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
+void RemoteCommands::processLine(const QString& line)
 {
   QJsonParseError parseError;
   QJsonDocument doc{QJsonDocument::fromJson(line.toUtf8(), &parseError)};
@@ -62,7 +73,7 @@ void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
 
   QJsonObject obj{doc.object()};
 
-  QString command{u"event"_s};
+  QString command{u"command"_s};
   if (!obj.contains(command) || !obj[command].isString()) {
     qWarning() << "JSON command is missing a 'command' string field.";
     return;
@@ -77,7 +88,7 @@ void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
     if (obj.contains(value)) {
         args.append(obj[value].toVariant().toString());
     }
-    //    This handles cases like { "event": "rename", "args": ["oldName", "newName"] }
+    //    This handles cases like { "command": "rename", "args": ["oldName", "newName"]
     else if (obj.contains(arg) && obj[arg].isArray()) {
         QJsonArray argArray = obj[arg].toArray();
         for (const QJsonValue& val : std::as_const(argArray)) {
@@ -103,16 +114,18 @@ void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
   qDebug() << "Remote Final arguments for command '" << command << "':" << args;
 
   // Process command with args after breaking down the JSON file.
-  RemoteCommands::processCommand(clientSocket, command, args);
+  RemoteCommands::processCommand(command, args);
 }
 
-void RemoteCommands::getResponse(const QJsonObject& response)
-{
+void RemoteCommands::getResponse(const QJsonObject& response){
 
-  Q_EMIT RemoteCommands::sendReponse(response);
+  Q_EMIT sendReponse(response);
 }
 
-void RemoteCommands::getGuiUpdate(QTcpSocket *client, QJsonObject updates){
+// void RemoteCommands::sendGuiUpdate(const QTcpSocket *client, QJsonObject updates) {
+void RemoteCommands::sendGuiUpdate() {
   // Add updates for time etc to send to the clients.
+  Q_EMIT sendReponse(values->triggerUpdate());
+
 }
 

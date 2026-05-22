@@ -1,0 +1,116 @@
+#ifndef REMOTETYPES_H
+#define REMOTETYPES_H
+
+#include <QString>
+#include <QJsonValue>
+
+using namespace Qt::Literals::StringLiterals;
+
+namespace RemoteTypes{
+
+  enum class Auth{
+    AUTH,
+    AUTH_FAILED,
+    AUTH_SUCCESS,
+    CHALLENGE,
+    ERROR
+  };
+
+  enum class Error{
+    COMMAND_NOT_FOUND,
+    ERROR,
+    NOT_ENOUGH_ARGUMENTS_PASSED_NEEDS,
+    PLAYLIST_NOT_CLOSED,
+    PLAYLIST_NOT_FOUND,
+    WRONG_ARGUMENT_SENT
+  };
+
+  enum class Event{
+    ACTIVE_PLAYLIST,
+    EVENT,
+    FAVOURITE_PLAYLIST,
+    GUI_UPDATES,
+    MAKE_ALL_PLAYLISTS,
+    MAKE_CURRENT_PLAYLIST,
+    NEXT,
+    PAUSE,
+    PLAY,
+    PREVIOUS,
+    RENAME_PLAYLIST,
+    SEEK_BACKWARD,
+    SEEK_FORWARD,
+    SEEK_TO,
+    SONG_CHANGED,
+    STOP,
+    VOLUME_CHANGED
+  };
+
+  enum class MessageType
+  {
+    AUTH,
+    ERROR,
+    EVENT,
+    RESPONSE
+  };
+
+  enum class Response{
+    CLEARED_PLAYLIST,
+    CLOSED_PLAYLIST_WITH_ID,
+    DELETED_PLAYLIST_WITH_ID,
+    IS_PLAYLIST_A_FAVOURITE,
+    PLAYLIST_CLOSED,
+    REMOVED_DUPLICATES_FROM_PLAYLIST,
+    RENAME_PLAYLIST,
+    REMOVED_SONG_FROM_PLAYLIST,
+    RESPONSE,
+    RUNNING_COMMAND,
+    SENT_ACTIVE_PLAYLIST,
+    SET_CURRENT_PLAYLIST_TO,
+    SHUFFLED_PLAYLIST,
+    SHUFFLED_ALL_PLAYLISTS,
+    SONG_INFO
+  };
+
+  enum class Arguments{
+    ARGUMENT,
+    ARGUMENTS,
+    COMMAND,
+    CURRENT_TIME,
+    FAVOURITE,
+    ID,
+    IS_FAVOURITE,
+    NAME,
+    NONCE,
+    REQUIRED,
+    ROW,
+    PLAYLIST,
+    PLAYLISTS,
+    PLAYING,
+    TIME,
+    TRACK_ID,
+    VOLUME
+  };
+
+  QString toString(Auth auth);
+  QString toString(Event event);
+  QString toString(Error error);
+  QString toString(Response response);
+  QString toString(MessageType type);
+  QString toString(Arguments value);
+
+  template<typename T>
+  std::pair<QString, QJsonValue> field(T key, QJsonValue value) {
+      return {toString(key), value};
+  }
+
+  // Specialisation for MessageType
+  template<>
+  inline std::pair<QString, QJsonValue> field(MessageType key, QJsonValue value) {
+      Q_UNUSED(value); // value is derived from the key itself
+      return {u"type"_s, toString(key)};
+  }
+}
+#endif // REMOTETYPES_H
+
+
+

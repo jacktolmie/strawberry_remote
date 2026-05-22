@@ -5,9 +5,9 @@
 #include <QJsonObject>
 #include <QTcpSocket>
 
-// #include "core/song.h"
 #include "core/application.h"
 #include "ui_mainwindow.h"
+#include "remotecontroller/remoteplaylist.h"
 
 class TrackSlider;
 
@@ -15,19 +15,20 @@ class RemoteGuiValues : public QObject
 {
   Q_OBJECT
 
-  const Application* app_;
-  const Ui_MainWindow *ui_;
+  const Application     *app_;
+  const Ui_MainWindow   *ui_;
+  const RemotePlaylist  playlist;
 
-  void getUpdates(QTcpSocket *client);
+  QJsonObject getUpdates() const;
 
 public:
   explicit RemoteGuiValues(const Application* app, QObject *parent);
 
 public Q_SLOTS:
-  void triggerUpdate(QTcpSocket *client);
+  QJsonObject triggerUpdate() const;
 
 Q_SIGNALS:
-  void sendCurrentStatus(QTcpSocket *client, QJsonObject data);
+  void sendCurrentStatus(const QJsonObject& response);
 
 };
 

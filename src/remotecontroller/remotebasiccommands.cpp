@@ -5,8 +5,10 @@
 #include "core/player.h"
 #include "playlist/playlistmanager.h"
 #include "remotecontroller/remotejsoncreator.h"
+#include "remotecontroller/remotetypes.h"
 
 using namespace Qt::Literals::StringLiterals;
+using namespace RemoteTypes;
 
 RemoteBasicCommands::RemoteBasicCommands(Application *app)
     : app_(app)
@@ -30,21 +32,20 @@ RemoteBasicCommands::RemoteBasicCommands(Application *app)
   QObject::connect(this, &RemoteBasicCommands::volume , &*app_->player(), &Player::SetVolume);
   QObject::connect(this, &RemoteBasicCommands::volumeDown , &*app_->player(), &Player::VolumeDown);
   QObject::connect(this, &RemoteBasicCommands::volumeUp , &*app_->player(), &Player::VolumeUp);
-
   QObject::connect(&*app_->player(), &Player::VolumeChanged, this, &RemoteBasicCommands::volumeChanged);
-  // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlayCommand, this, &RemoteBasicCommands::playlistPlay);
 // QObject::connect(this, &RemoteBasicCommands:: , &*app_->player(), &Player::);
 }
 
 void RemoteBasicCommands::volumeChanged(const uint volume)
 {
   Q_EMIT RemoteBasicCommands::sendResponse(RemoteJsonCreator::createResponse({
-    {u"event"_s, u"volume_changed"_s},
-    { u"volume"_s,  static_cast<int>(volume)}
+      field(MessageType::EVENT, toString(MessageType::EVENT)),
+      field(Event::EVENT, toString(Event::VOLUME_CHANGED)),
+      field(Arguments::VOLUME, static_cast<int>(volume)),
   }));
 }
 
-BasicCmdMap& RemoteBasicCommands::sendCommandMap()
+const BasicCmdMap& RemoteBasicCommands::sendCommandMap() const
 {
   return commandMap;
 }

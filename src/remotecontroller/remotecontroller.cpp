@@ -8,13 +8,16 @@
 #include <QString>
 #include "core/player.h"
 #include "remotecontroller/remotejsoncreator.h"
+#include "remotecontroller/remotetypes.h"
 
 using namespace Qt::Literals::StringLiterals;
+using namespace RemoteTypes;
 
 RemoteController::RemoteController(const Application* app, const Ui_MainWindow *mainUi , QObject *parent)
     : QObject{parent},
       app_{app},
-      mainUi_{mainUi}
+      mainUi_{mainUi},
+      guiValues{RemoteGuiValues(app_, this)}
 {
   commands = new RemoteCommands(const_cast<Application*>(app_), this);
   connect(this, &RemoteController::commandReceived, commands, &RemoteCommands::processLine);
@@ -108,8 +111,10 @@ void RemoteController::onNewConnection()
       // If no password required, do not check.
       if (!app_->remote_settings()->values.authRequired) {
         client->state = ClientState::Authenticated;
-        onSendResponse(socket, RemoteJsonCreator::createResponse({ {u"auth"_s, u"AUTH_SUCCESS\n"_s }}));
-        // socket->write("AUTH_SUCCESS\n");
+          onSendResponse(socket, RemoteJsonCreator::createResponse({
+            field(MessageType::AUTH, toString(MessageType::AUTH)),
+            field(Auth::AUTH, toString(Auth::AUTH_SUCCESS))
+          }));
       }
       else {
         QByteArray nonce(32, Qt::Uninitialized);
@@ -118,11 +123,13 @@ void RemoteController::onNewConnection()
         }
 
         client->nonce = nonce;
-        // client->nonce = QByteArray::number(QRandomGenerator::global()->generate64());
         client->state = ClientState::ChallengeSent;
 
-        onSendResponse(socket, { {u"auth"_s, u"CHALLENGE"_s}, {u"nonce"_s, QString::fromLatin1(nonce.toBase64())} });
-        // socket->write("CHALLENGE " + client->nonce.toHex() + "\n");
+        onSendResponse(socket, RemoteJsonCreator::createResponse({
+          field(MessageType::AUTH, toString(MessageType::AUTH)),
+          field(Auth::AUTH, toString(Auth::CHALLENGE)),
+          field(Arguments::NONCE, QString::fromLatin1(nonce.toBase64()))
+        }));
         qDebug() << "Sent challenge (nonce) to client: " << client->nonce.toHex();
       }
       connect(socket, &QTcpSocket::readyRead, this, &RemoteController::onReadyRead);
@@ -176,49 +183,25 @@ void RemoteController::onReadyRead()
         qDebug() << "Proof match for " << socket->peerAddress().toString();
         client->state = ClientState::Authenticated;
         client->nonce.clear();
-        onSendResponse(socket, RemoteJsonCreator::createResponse({ {u"auth"_s, u"AUTH_SUCCESS"_s} }));
+        onSendResponse(socket, RemoteJsonCreator::createResponse({
+          field(MessageType::AUTH, toString(MessageType::AUTH)),
+          field(Auth::AUTH, toString(Auth::AUTH_SUCCESS))
+      }));
       } else {
         qDebug() << "Bad proof from " << socket->peerAddress().toString() << ". Kicking.";
-        onSendResponse(socket, RemoteJsonCreator::createResponse({ {u"auth"_s, u"AUTH_FAILED"_s} }));
+        onSendResponse(socket, RemoteJsonCreator::createResponse({
+          field(MessageType::AUTH, toString(MessageType::AUTH)),
+          field(Auth::AUTH, toString(Auth::AUTH_FAILED))
+      }));
         socket->close();
       }
     break;
 }
-
-
-      // QString line = QString::fromUtf8(socket->readLine().trimmed());
-      // if (!line.startsWith(u"PROOF "_s)) {
-      //   qDebug() << "Bad protocol from client. Kicking.";
-      //   socket->close();
-      //   return;
-      // }
-
-      // QByteArray receivedProof = QByteArray::fromHex(line.mid(6).toUtf8());
-      // QByteArray combined = client->nonce + app_->remote_settings()->values.password.toUtf8();
-      // QByteArray expectedProof = QCryptographicHash::hash(combined, QCryptographicHash::Sha256);
-
-      // if (receivedProof == expectedProof) {
-      //   qDebug() << "Proof match for " << socket->peerAddress().toString() << ". Client is now authenticated";
-
-      //   client->state = ClientState::Authenticated;
-      //   client->nonce.clear();
-
-      //   onSendResponse(socket, RemoteJsonCreator::createResponse({ {u"auth"_s, u"AUTH_SUCCESS\n"_s }}));
-      //   // socket->write("AUTH_SUCCESS\n");
-      // }
-      // else {
-      //   qDebug() << "Bad proof from " << socket->peerAddress().toString() << ". Kicking";
-      //   onSendResponse(socket, RemoteJsonCreator::createResponse({ {u"auth"_s, u"AUTH_FAILED\n"_s }}));
-      //   // socket->write("AUTH_FAILED\n");
-      //   socket->close();
-      //   return;
-      // }
-      // break;
-    // }
     case ClientState::Authenticated: {
 
       QDataStream socketStream(socket);
       socketStream.setVersion(QDataStream::Qt_6_8);
+
 
       while(true){
         socketStream.startTransaction();
@@ -229,7 +212,9 @@ void RemoteController::onReadyRead()
           break;
         }
         qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << QString::fromUtf8(jsonData);
-        Q_EMIT RemoteController::commandReceived(socket, QString::fromUtf8(jsonData));
+        Q_EMIT RemoteController::commandReceived(QString::fromUtf8(jsonData));
+        onSendResponse(socket, guiValues.triggerUpdate());
+
       }
 
       break;
@@ -239,6 +224,7 @@ void RemoteController::onReadyRead()
       break;
     }
   }
+    testJson(socket); // delete after running JSON send tests.
 }
 
 void RemoteController::onDisconnect()
@@ -265,31 +251,17 @@ void RemoteController::settingsChanged(const Values& data)
 
 void RemoteController::onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response)
 {
-  if (clients_.contains(clientSocket)) {
-      qDebug() << "Client state:" << static_cast<int>(clients_.value(clientSocket)->state);
+  if (clientSocket &&
+    clientSocket->state() == QAbstractSocket::ConnectedState &&
+    clients_.contains(clientSocket)
+  )
+  {
+    QByteArray json = QJsonDocument(response).toJson(QJsonDocument::Compact);
+    QDataStream socketStream(clientSocket);
+    socketStream.setVersion(QDataStream::Qt_6_8);
+    socketStream << json;
   }
-      if (clientSocket &&
-        clientSocket->state() == QAbstractSocket::ConnectedState &&
-        clients_.contains(clientSocket)
-      )
-      {
-        QByteArray json = QJsonDocument(response).toJson(QJsonDocument::Compact);
-        QDataStream socketStream(clientSocket);
-        socketStream.setVersion(QDataStream::Qt_6_8);
-        socketStream << json;
-        // QByteArray json = QJsonDocument(response).toJson(QJsonDocument::Compact);
-
-        // json.append('\n');
-        // qInfo() << "Json sent: " << json;
-
-        // clientSocket->write(json);
-
-        // clientSocket->write(QByteArray(QJsonDocument(response).toJson(QJsonDocument::Compact) + "\n"));
-        // QDataStream socketStream(clientSocket);
-        // socketStream.setVersion(QDataStream::Qt_6_8);
-        // socketStream << QJsonDocument(response).toJson(QJsonDocument::Compact);
-      }
-  }
+}
 
 void RemoteController::broadcastToDevices(const QJsonObject& message)
 {
@@ -301,3 +273,213 @@ void RemoteController::broadcastToDevices(const QJsonObject& message)
   }
 }
 
+void RemoteController::testJson(QTcpSocket* socket){
+
+  QVector<QJsonObject> allJsonResponses;
+/*
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::GUI_UPDATES)),
+    field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume())),
+    field(Arguments::CURRENT_TIME, 1000),
+    field(Arguments::PLAYING, (app_->player()->GetState() == EngineBase::State::Playing)? true : false)
+    // field(Arguments::PLAYLISTS, playlist.sendAllPlaylists())
+  }));
+
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::SONG_INFO)),
+    field(Arguments::ID, 1),
+    field(Arguments::TRACK_ID, 1)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::SONG_CHANGED)),
+    field(Arguments::TRACK_ID, 1)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),
+    field(Arguments::ID, 1),
+    field(Arguments::ROW, 1)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::VOLUME_CHANGED)),
+    field(Arguments::VOLUME, static_cast<int>(1))
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::RUNNING_COMMAND)),
+    field(Arguments::COMMAND, u"command"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::COMMAND_NOT_FOUND)),
+    field(Arguments::COMMAND, u"command"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::AUTH, toString(MessageType::AUTH)),
+    field(Auth::AUTH, toString(Auth::AUTH_SUCCESS))
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::AUTH, toString(MessageType::AUTH)),
+    field(Auth::AUTH, toString(Auth::AUTH_FAILED))
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::NOT_ENOUGH_ARGUMENTS_PASSED_NEEDS)),
+    field(Arguments::REQUIRED, 2)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::RENAME_PLAYLIST)),
+    field(Arguments::NAME, u"songName"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::PLAYLIST_NOT_FOUND)),
+    field(Arguments::NAME, u"songName"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::SHUFFLED_ALL_PLAYLISTS))
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::NOT_ENOUGH_ARGUMENTS_PASSED_NEEDS)),
+    field(Arguments::REQUIRED, 1)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::PLAYLIST_NOT_FOUND)),
+    field(Arguments::NAME, u"name"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::NOT_ENOUGH_ARGUMENTS_PASSED_NEEDS)),
+    field(Arguments::REQUIRED, 2)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::IS_PLAYLIST_A_FAVOURITE)),
+    field(Arguments::IS_FAVOURITE, true)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::PLAYLIST_NOT_FOUND))
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::SET_CURRENT_PLAYLIST_TO)),
+    field(Arguments::NAME, u"name"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::WRONG_ARGUMENT_SENT)),
+    field(Arguments::ARGUMENT, u"argument"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::PLAYLIST_CLOSED))
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::PLAYLIST_NOT_CLOSED))
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::WRONG_ARGUMENT_SENT)),
+    field(Arguments::ARGUMENT, u"argument"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::DELETED_PLAYLIST_WITH_ID)),
+    field(Arguments::ID, 1)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::CLOSED_PLAYLIST_WITH_ID)),
+    field(Arguments::ID, 1)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::FAVOURITE_PLAYLIST)),
+    field(Arguments::ID, 1),
+    field(Arguments::FAVOURITE, true)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::RENAME_PLAYLIST)),
+    field(Arguments::ID, 1),
+    field(Arguments::NAME, u"name"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),
+    field(Arguments::ID, 1)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::SENT_ACTIVE_PLAYLIST)),
+    field(Arguments::ID, 1)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::CLEARED_PLAYLIST)),
+    field(Arguments::NAME, u"name"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::REMOVED_SONG_FROM_PLAYLIST)),
+    field(Arguments::NAME, u"songName"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::REMOVED_DUPLICATES_FROM_PLAYLIST))
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::SHUFFLED_PLAYLIST))
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::GUI_UPDATES)),
+    field(Arguments::VOLUME, 1),
+    field(Arguments::TIME, 1),
+    field(Arguments::NONCE, (app_->player()->GetState() == EngineBase::State::Playing) ? true : false)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::NOT_ENOUGH_ARGUMENTS_PASSED_NEEDS)),
+    field(Arguments::REQUIRED, 2)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::RENAME_PLAYLIST)),
+    field(Arguments::NAME, u"name"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::PLAYLIST_NOT_FOUND)),
+    field(Arguments::NAME, u"name"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::ERROR, toString(MessageType::ERROR)),
+    field(Error::ERROR, toString(Error::PLAYLIST_NOT_FOUND)),
+    field(Arguments::NAME, u"name"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::SET_CURRENT_PLAYLIST_TO)),
+    field(Arguments::NAME, u"name"_s)
+  }));
+  allJsonResponses.push_back(RemoteJsonCreator::createResponse({
+    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    field(Response::RESPONSE, toString(Response::REMOVED_SONG_FROM_PLAYLIST)),
+    field(Arguments::NAME, u"songName"_s)
+  }));
+*/
+  for(const auto& ele: allJsonResponses) onSendResponse(socket, ele);
+
+}

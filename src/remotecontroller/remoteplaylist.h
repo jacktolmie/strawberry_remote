@@ -12,7 +12,7 @@ class RemotePlaylist : public QObject
 {
   Q_OBJECT
 
-  Application *app_;
+  const Application *app_;
 
   PlaylistCmdMap commandMap;
   void createCommandMap();
@@ -37,9 +37,9 @@ class RemotePlaylist : public QObject
   QJsonObject sendRemoteActive(const QStringList& args);
 
   // Make playlists to send back to device.
-  QJsonObject makeAllPlaylists();
-  QJsonObject makeCurrentPlaylist();
-  QJsonObject makePlaylistData(const int id);
+  QJsonObject makeAllPlaylists() const;
+  QJsonObject makeCurrentPlaylist() const;
+  QJsonObject makePlaylistData(const int id) const;
 
 Q_SIGNALS:
   void sendResponse(const QJsonObject& response);
@@ -67,10 +67,11 @@ private Q_SLOTS:
   void activeChanged(const int id);
 
 public:
-  explicit RemotePlaylist(Application *app, QObject *parent = nullptr);
+  explicit RemotePlaylist(const Application *app, QObject *parent = nullptr);
   ~RemotePlaylist() = default;
 
-  PlaylistCmdMap& sendCommandMap();
+  const PlaylistCmdMap& sendCommandMap() const;
+  QJsonObject sendAllPlaylists() const;
 };
 
 #endif // REMOTEPLAYLIST_H
