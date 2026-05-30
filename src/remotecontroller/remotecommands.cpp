@@ -32,10 +32,8 @@ RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
 void RemoteCommands::processCommand(const QString& command, const QStringList &args)
 {
 
-  qInfo() <<"Command sent: " << command;
   // Check if sent command is in basicCommandMap.
   if(basicCmdMap.contains(command)){
-    qInfo()<< "Basic command was sent: " << args;
     basicCmdMap[command](args);
     RemoteCommands::getResponse(RemoteJsonCreator::createResponse({
       field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
@@ -104,10 +102,11 @@ void RemoteCommands::processLine(const QString& line)
         QMap<int, QString> orderedArgs; // Use QMap to store args in order by their integer key
         QStringList namedArgs;
 
+        // Create list of words to be skipped from incoming messages.
         const QStringList reservedKeys = { u"command"_s };
 
         for (const QString& key : keys) {
-            if (reservedKeys.contains(key)) continue; // skip "command"
+            if (reservedKeys.contains(key)) continue; // skip words like "command"
             bool isNumber;
             int index = key.toInt(&isNumber); // Try to convert key to an integer
             // Make sure it's a non-negative number and the value is a string
@@ -125,9 +124,6 @@ void RemoteCommands::processLine(const QString& line)
         args.append(namedArgs);
     }
 
-  qDebug() << "Remote Final arguments for command '" << command << "':";
-  for(auto a: args) qInfo() << "Args: "<< a.front();
-
   // Process command with args after breaking down the JSON file.
   RemoteCommands::processCommand(command, args);
 }
@@ -138,7 +134,6 @@ void RemoteCommands::getResponse(const QJsonObject& response){
 }
 
 void RemoteCommands::sendGuiUpdate() {
-  // Add updates for time etc to send to the clients.
   Q_EMIT sendReponse(values->triggerUpdate());
 
 }
