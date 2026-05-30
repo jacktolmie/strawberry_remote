@@ -41,6 +41,8 @@ class RemotePlaylist : public QObject
   QJsonObject makeCurrentPlaylist() const;
   QJsonObject makePlaylistData(const int id) const;
 
+  void testUrl() const; // Delete after testing URL.
+
 Q_SIGNALS:
   void sendResponse(const QJsonObject& response);
   void clearPlaylist();

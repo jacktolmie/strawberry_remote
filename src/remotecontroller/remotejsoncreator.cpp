@@ -8,7 +8,6 @@ namespace RemoteJsonCreator{
       if (fields.size() == 0) return QJsonObject({{u"error"_s, u"empty_fields"_s}});
       QJsonObject response;
       for (const auto& [key, value] : fields) {
-          qInfo() << "Key: " << key << " and Value: " << value;
           response.insert(key, value);
       }
       return response;

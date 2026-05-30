@@ -871,8 +871,9 @@ void Player::SeekBackward() {
   SeekTo(static_cast<quint64>(engine()->position_nanosec() / kNsecPerSec - seek_step_sec_));
 
         Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
-          {u"event"_s, u"seek_backward"_s},
-          {u"time"_s, engine()->position_nanosec() / kNsecPerSec - seek_step_sec_}
+          field(MessageType::EVENT, toString(MessageType::EVENT)),
+          field(Event::EVENT, toString(Event::SEEK_BACKWARD)),
+          field(Arguments::TIME, engine()->position_nanosec() / kNsecPerSec - seek_step_sec_)
         }));
 }
 

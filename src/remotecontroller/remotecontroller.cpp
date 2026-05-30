@@ -213,7 +213,7 @@ void RemoteController::onReadyRead()
         }
         qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << QString::fromUtf8(jsonData);
         Q_EMIT RemoteController::commandReceived(QString::fromUtf8(jsonData));
-        onSendResponse(socket, guiValues.triggerUpdate());
+        // onSendResponse(socket, guiValues.triggerUpdate());
 
       }
 
@@ -224,7 +224,8 @@ void RemoteController::onReadyRead()
       break;
     }
   }
-    testJson(socket); // delete after running JSON send tests.
+    //testJson(socket); // delete after running JSON send tests.
+    onSendResponse(socket, guiValues.triggerUpdate());
 }
 
 void RemoteController::onDisconnect()

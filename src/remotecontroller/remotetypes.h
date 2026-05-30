@@ -40,6 +40,7 @@ namespace RemoteTypes{
     SEEK_BACKWARD,
     SEEK_FORWARD,
     SEEK_TO,
+    SENT_ACTIVE_PLAYLIST,
     SONG_CHANGED,
     STOP,
     VOLUME_CHANGED
@@ -64,7 +65,6 @@ namespace RemoteTypes{
     REMOVED_SONG_FROM_PLAYLIST,
     RESPONSE,
     RUNNING_COMMAND,
-    SENT_ACTIVE_PLAYLIST,
     SET_CURRENT_PLAYLIST_TO,
     SHUFFLED_PLAYLIST,
     SHUFFLED_ALL_PLAYLISTS,
@@ -72,21 +72,31 @@ namespace RemoteTypes{
   };
 
   enum class Arguments{
+    ACTIVE_PLAYLIST,
+    ALBUM,
     ARGUMENT,
     ARGUMENTS,
+    ARTIST,
     COMMAND,
-    CURRENT_TIME,
+    CURRENT_PLAYLIST,
+    CURRENT_SONG,
+    // CURRENT_TIME,
     FAVOURITE,
     ID,
     IS_FAVOURITE,
+    LENGTH,
     NAME,
     NONCE,
     REQUIRED,
     ROW,
+    PAUSED,
     PLAYLIST,
     PLAYLISTS,
     PLAYING,
+    SONGS,
+    STOPPED,
     TIME,
+    TITLE,
     TRACK_ID,
     VOLUME
   };

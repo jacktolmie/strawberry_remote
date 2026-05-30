@@ -31,8 +31,11 @@ RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
 
 void RemoteCommands::processCommand(const QString& command, const QStringList &args)
 {
+
+  qInfo() <<"Command sent: " << command;
   // Check if sent command is in basicCommandMap.
   if(basicCmdMap.contains(command)){
+    qInfo()<< "Basic command was sent: " << args;
     basicCmdMap[command](args);
     RemoteCommands::getResponse(RemoteJsonCreator::createResponse({
       field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
@@ -58,6 +61,7 @@ void RemoteCommands::processCommand(const QString& command, const QStringList &a
 // void RemoteCommands::processLine(QTcpSocket *clientSocket, const QString& line)
 void RemoteCommands::processLine(const QString& line)
 {
+  qInfo() << "Command processline: " << line;
   QJsonParseError parseError;
   QJsonDocument doc{QJsonDocument::fromJson(line.toUtf8(), &parseError)};
 
@@ -98,20 +102,31 @@ void RemoteCommands::processLine(const QString& line)
     else {
         const QStringList keys = obj.keys();
         QMap<int, QString> orderedArgs; // Use QMap to store args in order by their integer key
+        QStringList namedArgs;
+
+        const QStringList reservedKeys = { u"command"_s };
+
         for (const QString& key : keys) {
+            if (reservedKeys.contains(key)) continue; // skip "command"
             bool isNumber;
             int index = key.toInt(&isNumber); // Try to convert key to an integer
             // Make sure it's a non-negative number and the value is a string
             if (isNumber && index >= 0 && obj[key].isString()) {
                 orderedArgs.insert(index, obj[key].toString());
             }
+            else{
+              namedArgs.append(obj[key].toVariant().toString());
+            }
         }
         // Add all collected and ordered arguments to the args list
         for (const QString& argVal : orderedArgs) {
             args.append(argVal);
         }
+        args.append(namedArgs);
     }
-  qDebug() << "Remote Final arguments for command '" << command << "':" << args;
+
+  qDebug() << "Remote Final arguments for command '" << command << "':";
+  for(auto a: args) qInfo() << "Args: "<< a.front();
 
   // Process command with args after breaking down the JSON file.
   RemoteCommands::processCommand(command, args);
@@ -122,7 +137,6 @@ void RemoteCommands::getResponse(const QJsonObject& response){
   Q_EMIT sendReponse(response);
 }
 
-// void RemoteCommands::sendGuiUpdate(const QTcpSocket *client, QJsonObject updates) {
 void RemoteCommands::sendGuiUpdate() {
   // Add updates for time etc to send to the clients.
   Q_EMIT sendReponse(values->triggerUpdate());
