@@ -77,7 +77,6 @@ void PlaylistListModel::RowsChanged(const QModelIndex &begin, const QModelIndex 
 }
 
 void PlaylistListModel::RowsInserted(const QModelIndex &parent, const int start, const int end) {
-
   // RowsChanged will take care of these when dropping.
   if (!dropping_rows_) {
     AddRowMappings(index(start, 0, parent), index(end, 0, parent));

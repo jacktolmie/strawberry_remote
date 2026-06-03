@@ -34,11 +34,11 @@ class RemotePlaylist : public QObject
   QJsonObject setCurrentPlaylist(const QStringList& args);
 
   // Send active playlist on remote to server.
-  QJsonObject sendRemoteActive(const QStringList& args);
+  QJsonObject receiveRemoteActive(const QStringList& args);
 
   // Make playlists to send back to device.
   QJsonObject makeAllPlaylists() const;
-  QJsonObject makeCurrentPlaylist() const;
+  QJsonObject makeCurrentPlaylist();
   QJsonObject makePlaylistData(const int id) const;
 
   void testUrl() const; // Delete after testing URL.
@@ -66,7 +66,7 @@ private Q_SLOTS:
   void favouriteServerPlaylist(const int id, bool favourite);
   void playlistChanged();
   void serverRenamePlaylist(const int id, const QString& name);
-  void activeChanged(const int id);
+  void activeChanged(const int id); // Sends new active playlist id.
 
 public:
   explicit RemotePlaylist(const Application *app, QObject *parent = nullptr);

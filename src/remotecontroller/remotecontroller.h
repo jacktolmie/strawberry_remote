@@ -35,7 +35,7 @@ class RemoteController : public QObject
   Q_OBJECT
 
 public:
-  explicit RemoteController(const Application* app, const Ui_MainWindow* mainUi , QObject *parent = nullptr);
+  explicit RemoteController(const Application* app, QObject *parent = nullptr);
   ~RemoteController() = default;
 
   void Exit();
@@ -49,7 +49,7 @@ private:
 
 
   const Application   *app_;
-  const Ui_MainWindow *mainUi_;
+  // const Ui_MainWindow *mainUi_;
   RemoteGuiValues   guiValues;
 
 

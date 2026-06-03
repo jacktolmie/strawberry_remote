@@ -124,8 +124,8 @@ void PlaylistManager::Init(PlaylistSequence *sequence, PlaylistContainer *playli
   if (playlists_.isEmpty()) New(tr("Playlist"));
 
   Q_EMIT PlaylistManagerInitialized();
-
   Q_EMIT PlaylistManager::sendPlayCommand();
+
   updateConnects();
  }
 
@@ -407,6 +407,15 @@ void PlaylistManager::SetActivePlaylist(const int id) {
     field(Arguments::ROW, active()->last_played_row())
   }));
 
+  // Send Play command to remote device
+  Q_EMIT sendPlayCommand();
+  // Q_EMIT PlaylistManager::sendPlaylistResponse(RemoteJsonCreator::createResponse({
+  //   field(MessageType::EVENT, toString(MessageType::EVENT)),
+  //   field(Event::EVENT, toString(Event::PLAY)),
+  //   field(Arguments::TIME, 0),
+  //   field(Arguments::ROW, active()->last_played_row())
+  // }));
+
   active()->Playing();
 }
 
@@ -532,6 +541,12 @@ void PlaylistManager::InsertSongs(const int id, const SongList &songs, const int
   Q_ASSERT(playlists_.contains(id));
 
   playlists_.constFind(id)->p->InsertSongs(songs, pos, play_now, enqueue);
+
+  //This is just testing the insert song. Delete and provide proper playlist update data.
+  Q_EMIT PlaylistManager::sendPlaylistResponse(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::MAKE_CURRENT_PLAYLIST))
+  }));
 
 }
 

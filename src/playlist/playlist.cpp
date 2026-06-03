@@ -66,6 +66,7 @@
 #include "core/songmimedata.h"
 #include "constants/timeconstants.h"
 #include "constants/playlistsettings.h"
+#include "remotecontroller/remotejsoncreator.h"
 #include "tagreader/tagreaderclient.h"
 #include "collection/collectionlibrary.h"
 #include "collection/collectionbackend.h"
@@ -99,9 +100,12 @@
 #include "radios/radiomimedata.h"
 #include "radios/radiostreamplaylistitem.h"
 
+#include "remotecontroller/remotetypes.h"
+
 using std::make_shared;
 using namespace std::chrono_literals;
 using namespace Qt::Literals::StringLiterals;
+using namespace RemoteTypes;
 
 const char *Playlist::kCddaMimeType = "x-content/audio-cdda";
 const char *Playlist::kRowsMimetype = "application/x-strawberry-playlist-rows";
@@ -1167,6 +1171,11 @@ void Playlist::InsertItems(const PlaylistItemPtrList &itemsIn, const int pos, co
   }
 
   if (play_now) Q_EMIT PlayRequested(index(start, 0), AutoScroll::Maybe);
+
+  Q_EMIT Playlist::sendResponse(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Response::REMOVED_SONG_FROM_PLAYLIST, pos)
+  }));
 
 }
 

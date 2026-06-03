@@ -343,7 +343,7 @@ MainWindow::MainWindow(Application *app,
         QObject::connect(add_stream_dialog, &AddStreamDialog::accepted, this, &MainWindow::AddStreamAccepted);
         return add_stream_dialog;
       }),
-      remote_controller_(new RemoteController(app_, ui_, this)),
+      remote_controller_(new RemoteController(app_, this)),
 
 
 #ifdef HAVE_SUBSONIC
@@ -1692,9 +1692,11 @@ void MainWindow::PlaylistDoubleClick(const QModelIndex &idx) {
       break;
   }
 
+  using namespace RemoteTypes;
   Q_EMIT app_->playlist_manager()->sendPlaylistResponse(RemoteJsonCreator::createResponse({
-    RemoteTypes::field(RemoteTypes::Event::SONG_CHANGED, RemoteTypes::toString(RemoteTypes::Event::SONG_CHANGED)),
-    RemoteTypes::field(RemoteTypes::Arguments::TRACK_ID, source_idx.row())
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::SONG_CHANGED)),
+    field(Arguments::TRACK_ID, source_idx.row())
   }));
 }
 

@@ -182,13 +182,15 @@ QJsonObject RemotePlaylist::makeAllPlaylists() const{
   });
 }
 
-QJsonObject RemotePlaylist::makeCurrentPlaylist() const{
-  testUrl();
-  return RemoteJsonCreator::createResponse({
+QJsonObject RemotePlaylist::makeCurrentPlaylist(){
+
+  QJsonObject response{RemoteJsonCreator::createResponse({
     field(MessageType::EVENT, toString(MessageType::EVENT)),
     field(Event::EVENT, toString(Event::MAKE_CURRENT_PLAYLIST)),
     field(Arguments::PLAYLIST, RemotePlaylist::makePlaylistData(app_->playlist_manager()->current_id()))
-  });
+  })};
+Q_EMIT sendResponse(response); //No need to emit here. Emit in playlistchanged below. Find out where that is being sent.
+  return response;
 }
 
 const PlaylistCmdMap &RemotePlaylist::sendCommandMap() const{
@@ -223,7 +225,7 @@ QJsonObject RemotePlaylist::closeCurrentPlaylist(const QStringList& args){
 }
 
 void RemotePlaylist::playlistChanged(){
-  Q_EMIT RemotePlaylist::sendResponse(RemotePlaylist::makeCurrentPlaylist());
+  Q_EMIT sendResponse(makeCurrentPlaylist());
 }
 
 void RemotePlaylist::deleteServerPlaylist(const int id){
@@ -268,7 +270,7 @@ void RemotePlaylist::activeChanged(const int id){
   }));
 }
 
-QJsonObject RemotePlaylist::sendRemoteActive(const QStringList& args){
+QJsonObject RemotePlaylist::receiveRemoteActive(const QStringList& args){
   if(args.empty()) return RemoteJsonCreator::createResponse({
     field(MessageType::ERROR, toString(MessageType::ERROR)),
     field(Error::ERROR, toString(Error::NOT_ENOUGH_ARGUMENTS_PASSED_NEEDS)),
@@ -335,7 +337,7 @@ void RemotePlaylist::createCommandMap(){
     });
   };
   commandMap[u"shuffle-all-playlists"_s] = [this](const auto&){ return RemotePlaylist::shuffleAllPlaylists(); };
-  commandMap[u"send-active-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::sendRemoteActive(args); };
+  commandMap[u"send-active-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::receiveRemoteActive(args); };
   commandMap[u"send-playlist"_s] = [this](const auto&){ return RemotePlaylist::makeCurrentPlaylist(); };
   commandMap[u"send-all-playlists"_s] = [this](const auto&){ return RemotePlaylist::makeAllPlaylists(); };
 }

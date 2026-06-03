@@ -18,7 +18,7 @@ class RemoteCommands : public QObject
 
   const Application         *app_;
 
-  const RemotePlaylist      playlist;
+  const RemotePlaylist      remotePlaylist;
   const RemoteBasicCommands basicCommands;
   const RemoteGuiValues     *values;
 

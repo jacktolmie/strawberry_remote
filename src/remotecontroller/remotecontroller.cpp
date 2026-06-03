@@ -13,10 +13,10 @@
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;
 
-RemoteController::RemoteController(const Application* app, const Ui_MainWindow *mainUi , QObject *parent)
+RemoteController::RemoteController(const Application* app, QObject *parent)
     : QObject{parent},
       app_{app},
-      mainUi_{mainUi},
+      // mainUi_{mainUi},
       guiValues{RemoteGuiValues(app_, this)}
 {
   commands = new RemoteCommands(const_cast<Application*>(app_), this);

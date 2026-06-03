@@ -184,6 +184,7 @@ Q_SIGNALS:
   void playlistChanged();
   void renamePlaylist(const int id, const QString& name);
   void sendActivePlaylist(const int id);
+  void sendCurrentPlaylist(const int id);
   void sendPlaylistResponse(const QJsonObject& response);
   void sendPlayCommand();
 
