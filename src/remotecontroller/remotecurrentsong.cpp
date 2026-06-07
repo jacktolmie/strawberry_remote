@@ -13,9 +13,6 @@ RemoteCurrentSong::RemoteCurrentSong(const Application *app, QObject *parent)
 
 QJsonObject RemoteCurrentSong::songInfo(const Song& song) const {
 
-    // if(song.art_automatic().isEmpty()) qInfo() << "Current URL: " <<song.art_automatic();
-    // qInfo()<< "Is art embeded? " << song.art_embedded();
-
   // Create JSON object from sent song.
   return RemoteJsonCreator::createResponse({
     field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),

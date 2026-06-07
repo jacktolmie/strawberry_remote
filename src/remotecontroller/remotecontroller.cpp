@@ -7,6 +7,7 @@
 
 #include <QString>
 #include "core/player.h"
+#include "playlist/playlistmanager.h"
 #include "remotecontroller/remotejsoncreator.h"
 #include "remotecontroller/remotetypes.h"
 
@@ -15,15 +16,15 @@ using namespace RemoteTypes;
 
 RemoteController::RemoteController(const Application* app, QObject *parent)
     : QObject{parent},
+      commands{new RemoteCommands(const_cast<Application*>(app), this)},
       app_{app},
-      // mainUi_{mainUi},
-      guiValues{RemoteGuiValues(app_, this)}
+      guiValues{RemoteGuiValues(*commands, app_, this)}
 {
-  commands = new RemoteCommands(const_cast<Application*>(app_), this);
   connect(this, &RemoteController::commandReceived, commands, &RemoteCommands::processLine);
   connect(commands, &RemoteCommands::sendReponse, this, &RemoteController::broadcastToDevices);
+  // connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistResponse ,this, &RemoteController::broadcastToDevices);
   // connect(commands, &RemoteCommands::sendReponse, this, &RemoteController::onSendResponse);
-
+  connect(&*app_->player(), &Player::sendToRemote, this, &RemoteController::broadcastToDevices);
 
   server = new QTcpServer(this);
 
@@ -94,6 +95,10 @@ void RemoteController::Exit(){
 }
 
 void RemoteController::ExitReceived(){}
+
+void RemoteController::getResponse(const QJsonObject& response){
+  // onSendResponse(socket, response);
+}
 
 void RemoteController::onNewConnection()
 {
@@ -213,7 +218,7 @@ void RemoteController::onReadyRead()
         }
         qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << QString::fromUtf8(jsonData);
         Q_EMIT RemoteController::commandReceived(QString::fromUtf8(jsonData));
-        // onSendResponse(socket, guiValues.triggerUpdate());
+        onSendResponse(socket, guiValues.triggerUpdate());
 
       }
 

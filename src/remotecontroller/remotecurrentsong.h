@@ -7,7 +7,6 @@
 #include "core/application.h"
 #include "core/song.h"
 #include "covermanager/albumcoverfetcher.h"
-#include "remotecontroller/remoteguivalues.h"
 
 class AlbumCoverFetcher; // Needed?
 class CurrentAlbumCoverLoader;
@@ -18,7 +17,6 @@ class RemoteCurrentSong : public QObject
 
   const Application *app_;
   const AlbumCoverFetcher *coverFetcher;
-  const RemoteGuiValues *coverFinder;
 
   QUrl albumImageUrl;
 

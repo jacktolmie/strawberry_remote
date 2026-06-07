@@ -181,17 +181,9 @@ class PlaylistManager : public PlaylistManagerInterface {
   int playlists_loading_;
 
 Q_SIGNALS:
-  void playlistChanged();
   void renamePlaylist(const int id, const QString& name);
-  void sendActivePlaylist(const int id);
-  void sendCurrentPlaylist(const int id);
-  void sendPlaylistResponse(const QJsonObject& response);
-  void sendPlayCommand();
-
-private:
-  void updateConnects();
-  QMetaObject::Connection current_playlist_connection;
-  QMetaObject::Connection active_playlist_connection;
+  void sendActivePlaylistId(const int id);
+  void sendPlaylistToCreate(const int id);
 };
 
 #endif  // PLAYLISTMANAGER_H

@@ -20,8 +20,6 @@
  */
 
 #include "config.h"
-#include "remotecontroller/remotejsoncreator.h"
-#include "remotecontroller/remotetypes.h"
 #include "version.h"
 
 #include <cmath>
@@ -1691,13 +1689,6 @@ void MainWindow::PlaylistDoubleClick(const QModelIndex &idx) {
       }
       break;
   }
-
-  using namespace RemoteTypes;
-  Q_EMIT app_->playlist_manager()->sendPlaylistResponse(RemoteJsonCreator::createResponse({
-    field(MessageType::EVENT, toString(MessageType::EVENT)),
-    field(Event::EVENT, toString(Event::SONG_CHANGED)),
-    field(Arguments::TRACK_ID, source_idx.row())
-  }));
 }
 
 void MainWindow::VolumeWheelEvent(const int delta) {

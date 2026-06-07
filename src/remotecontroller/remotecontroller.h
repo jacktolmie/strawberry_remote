@@ -43,20 +43,17 @@ public:
   void setTimer();
 
 private:
-  QTcpServer        *server;
-  QHostAddress      localIp4;
-  QHostAddress      localIp6;
+  QTcpServer            *server;
+  QHostAddress          localIp4;
+  QHostAddress          localIp6;
 
+  const RemoteCommands  *commands;
+  const Application     *app_;
+  const RemoteGuiValues guiValues;
 
-  const Application   *app_;
-  // const Ui_MainWindow *mainUi_;
-  RemoteGuiValues   guiValues;
+  QTimer                *timer;
 
-
-
-  QTimer        *timer;
-
-  RemoteCommands *commands;
+  void onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response);
 
   // List of connected sockets, and if authenticated
   QHash<QTcpSocket*, ClientInfo*> clients_;
@@ -67,7 +64,8 @@ Q_SIGNALS:
 
 public Q_SLOTS:
   void activeNetworkConnection();
-  void onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response);
+  // void onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response);
+  void getResponse(const QJsonObject& response);
   void settingsChanged(const Values& data);
 
 private Q_SLOTS:
@@ -79,8 +77,8 @@ private Q_SLOTS:
   void onReadyRead();
   void onDisconnect();
 
+  // Delete when done testing JSON responses.
   void testJson(QTcpSocket*);
-
 };
 
 #endif // REMOTECONTROLLER_H

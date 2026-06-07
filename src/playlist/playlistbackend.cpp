@@ -402,6 +402,8 @@ void PlaylistBackend::SavePlaylist(int playlist, const PlaylistItemPtrList &item
 
   transaction.Commit();
 
+  // Send id of the changed playlist to update the remote devices.
+  Q_EMIT sendPlaylistChanged(playlist);
 }
 
 int PlaylistBackend::CreatePlaylist(const QString &name, const QString &special_type) {

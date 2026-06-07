@@ -341,9 +341,6 @@ class Playlist : public QAbstractListModel {
 
   void Rename(const int id, const QString &name);
 
-  // Send data to the remote devices.
-  void sendResponse(const QJsonObject& response);
-
  private:
   void SetCurrentIsPaused(const bool paused);
   int NextVirtualIndex(int i, const bool ignore_repeat_track) const;

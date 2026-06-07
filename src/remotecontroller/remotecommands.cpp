@@ -19,17 +19,15 @@ RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   app_(app),
   remotePlaylist(RemotePlaylist(app, this)),
   basicCommands(RemoteBasicCommands(app)),
-  values{new RemoteGuiValues(app, this)},
   basicCmdMap{basicCommands.sendCommandMap()},
   playlistCmdMap{remotePlaylist.sendCommandMap()}
 {
   QObject::connect(&remotePlaylist, &RemotePlaylist::sendResponse, this, &RemoteCommands::getResponse);
   QObject::connect(&basicCommands, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::getResponse);
-  QObject::connect(&*app_->player(), &Player::sendToRemote, this, &RemoteCommands::getResponse);
-  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistResponse, this, &RemoteCommands::getResponse);
-  QObject::connect(values, &RemoteGuiValues::sendCurrentStatus, this, &::RemoteCommands::sendGuiUpdate);
-  // QObject::connect(&*app->playlist_manager(), &PlaylistManager::sendPlaylistResponse, this, &RemoteCommands::sendReponse);
-}
+  // QObject::connect(&*app_->player(), &Player::sendToRemote, this, &RemoteCommands::getResponse);
+  // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistResponse, this, &RemoteCommands::getResponse);
+  QObject::connect(this, &RemoteCommands::getResponse, this, &RemoteCommands::sendReponse);
+ }
 
 void RemoteCommands::processCommand(const QString& command, const QStringList &args)
 {
@@ -54,8 +52,6 @@ void RemoteCommands::processCommand(const QString& command, const QStringList &a
       field(Arguments::COMMAND, command)
       }));
   }
-
-  // if(values) values->triggerUpdate(); Overkill sending GUI updates constantly. Delete if not needed.
 }
 
 void RemoteCommands::processLine(const QString& line)
@@ -130,12 +126,8 @@ void RemoteCommands::processLine(const QString& line)
 }
 
 void RemoteCommands::getResponse(const QJsonObject& response){
-
+  qInfo()<<"Remotecommands::getresponse called";
   Q_EMIT sendReponse(response);
 }
 
-void RemoteCommands::sendGuiUpdate() {
-  Q_EMIT sendReponse(values->triggerUpdate());
-
-}
 

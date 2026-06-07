@@ -413,7 +413,7 @@ void Player::NextInternal(const EngineBase::TrackChangeFlags change, const Playl
   Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
     field(MessageType::EVENT, toString(MessageType::EVENT)),
     field(Event::EVENT, toString(Event::NEXT))
-    }));
+  }));
 
 }
 
@@ -678,9 +678,9 @@ void Player::PreviousItem(const EngineBase::TrackChangeFlags change) {
   PlayAt(i, false, 0, change, Playlist::AutoScroll::Always, false);
 
   Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
-      field(MessageType::EVENT, toString(MessageType::EVENT)),
-      field(Event::EVENT, toString(Event::PREVIOUS))
-    }));
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::PREVIOUS))
+  }));
 
 }
 
@@ -819,6 +819,15 @@ void Player::PlayAt(const int index, const bool pause, const quint64 offset_nano
     engine_->Play(current_item_->OriginalUrl(), url, pause, change, current_item_->EffectiveMetadata().has_cue(), static_cast<quint64>(current_item_->effective_beginning_nanosec()), current_item_->effective_end_nanosec(), offset_nanosec, current_item_->EffectiveMetadata().ebur128_integrated_loudness_lufs());
   }
 
+  // Send current playlist to remote clients.
+  Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
+      field(MessageType::EVENT, toString(MessageType::EVENT)),
+      field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),
+      field(Arguments::ID, playlist_manager_->active_id()),
+      field(Arguments::CURRENT_SONG, index),
+      field(Arguments::TIME, static_cast<qint64>(offset_nanosec / kNsecPerMsec))
+    }));
+
 }
 
 void Player::CurrentMetadataChanged(const Song &metadata) {
@@ -869,11 +878,11 @@ field(Arguments::TIME, engine()->position_nanosec() / kNsecPerSec + seek_step_se
 void Player::SeekBackward() {
   SeekTo(static_cast<quint64>(engine()->position_nanosec() / kNsecPerSec - seek_step_sec_));
 
-        Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
-          field(MessageType::EVENT, toString(MessageType::EVENT)),
-          field(Event::EVENT, toString(Event::SEEK_BACKWARD)),
-          field(Arguments::TIME, engine()->position_nanosec() / kNsecPerSec - seek_step_sec_)
-        }));
+  Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
+    field(MessageType::EVENT, toString(MessageType::EVENT)),
+    field(Event::EVENT, toString(Event::SEEK_BACKWARD)),
+    field(Arguments::TIME, engine()->position_nanosec() / kNsecPerSec - seek_step_sec_)
+  }));
 }
 
 void Player::EngineMetadataReceived(const EngineMetadata &engine_metadata) {

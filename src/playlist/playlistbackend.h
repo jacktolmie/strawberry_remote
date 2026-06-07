@@ -92,6 +92,9 @@ class PlaylistBackend : public QObject {
  Q_SIGNALS:
   void ExitFinished();
 
+  // Send remote devices any changed playlists.
+  void sendPlaylistChanged(const int playlist);
+
  private:
   struct NewSongFromQueryState {
     QHash<QString, SongList> cached_cues_;

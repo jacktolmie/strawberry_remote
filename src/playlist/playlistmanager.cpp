@@ -59,12 +59,7 @@
 #include "playlistparsers/playlistparser.h"
 #include "dialogs/saveplaylistsdialog.h"
 
-#include "remotecontroller/remotejsoncreator.h"
-#include "remotecontroller/remotetypes.h"
-
-
 using namespace Qt::Literals::StringLiterals;
-using namespace RemoteTypes;
 
 class ParserBase;
 
@@ -90,6 +85,7 @@ PlaylistManager::PlaylistManager(const SharedPtr<TaskManager> task_manager,
       playlists_loading_(0) {
 
   setObjectName(QLatin1String(QObject::metaObject()->className()));
+
 
 }
 
@@ -124,9 +120,7 @@ void PlaylistManager::Init(PlaylistSequence *sequence, PlaylistContainer *playli
   if (playlists_.isEmpty()) New(tr("Playlist"));
 
   Q_EMIT PlaylistManagerInitialized();
-  Q_EMIT PlaylistManager::sendPlayCommand();
-
-  updateConnects();
+  // Q_EMIT PlaylistManager::sendPlayCommand();
  }
 
 void PlaylistManager::PlaylistLoaded() {
@@ -187,6 +181,10 @@ Playlist *PlaylistManager::AddPlaylist(const int id, const QString &name, const 
   }
   if (active_ == -1) {
     SetActivePlaylist(id);
+
+    // Send active playlist ID to remote devices.
+    qInfo()<< "PlaylistManager addplaylist called";
+    Q_EMIT sendActivePlaylistId(id);
   }
 
   return ret;
@@ -245,7 +243,6 @@ void PlaylistManager::Save(const int id, const QString &playlist_name, const QSt
     });
     watcher->setFuture(future);
   }
-
 }
 
 void PlaylistManager::ItemsLoadedForSavePlaylist(const QString &playlist_name, const SongList &songs, const QString &filename, const PlaylistSettings::PathType path_type) {
@@ -396,28 +393,10 @@ void PlaylistManager::SetActivePlaylist(const int id) {
 
   active_ = id;
 
-  updateConnects();
-
   Q_EMIT ActiveChanged(active());
 
-  // Send active playlist id to remote device.
-  Q_EMIT PlaylistManager::sendPlaylistResponse(RemoteJsonCreator::createResponse({
-    field(MessageType::EVENT, toString(MessageType::EVENT)),
-    field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),
-    field(Arguments::ID, id),
-    field(Arguments::ROW, active()->last_played_row())
-  }));
-
-  // Send Play command to remote device
-  Q_EMIT sendPlayCommand();
-  // Q_EMIT PlaylistManager::sendPlaylistResponse(RemoteJsonCreator::createResponse({
-  //   field(MessageType::EVENT, toString(MessageType::EVENT)),
-  //   field(Event::EVENT, toString(Event::PLAY)),
-  //   field(Arguments::TIME, 0),
-  //   field(Arguments::ROW, active()->last_played_row())
-  // }));
-
-  active()->Playing();
+  // Send active playlist ID to remote devices.
+  Q_EMIT sendActivePlaylistId(active_);
 }
 
 void PlaylistManager::SetActiveToCurrent() {
@@ -427,6 +406,9 @@ void PlaylistManager::SetActiveToCurrent() {
   // This signal causes the network remote module to send all playlists to the clients, even if no change happen.
   if (current_id() != active_id()) {
     SetActivePlaylist(current_id());
+
+    // Send active playlist ID to remote devices.
+    // Q_EMIT sendActivePlaylistId(current_); // Not needed?
   }
 
 }
@@ -544,11 +526,8 @@ void PlaylistManager::InsertSongs(const int id, const SongList &songs, const int
   playlists_.constFind(id)->p->InsertSongs(songs, pos, play_now, enqueue);
 
   //This is just testing the insert song. Delete and provide proper playlist update data.
-  Q_EMIT PlaylistManager::sendPlaylistResponse(RemoteJsonCreator::createResponse({
-    field(MessageType::EVENT, toString(MessageType::EVENT)),
-    field(Event::EVENT, toString(Event::MAKE_CURRENT_PLAYLIST))
-  }));
-
+qInfo()<< "PlaylistManager insertsongs called";
+  Q_EMIT PlaylistManager::sendPlaylistToCreate(id);
 }
 
 void PlaylistManager::RemoveItemsWithoutUndo(const int id, const QList<int> &indices) {
@@ -556,11 +535,12 @@ void PlaylistManager::RemoveItemsWithoutUndo(const int id, const QList<int> &ind
   Q_ASSERT(playlists_.contains(id));
 
   playlists_.constFind(id)->p->RemoveItemsWithoutUndo(indices);
-
+qInfo()<< "PlaylistManager removeitemswithoutundo called";
 }
 
 void PlaylistManager::RemoveCurrentSong() const {
   active()->removeRows(active()->current_index().row(), 1);
+qInfo()<< "PlaylistManager removecurrentsong called";
 }
 
 void PlaylistManager::RemoveDeletedSongs() {
@@ -650,13 +630,4 @@ void PlaylistManager::SaveAllPlaylists() {
     Save(it.key(), data.name, filepath, path_type);
   }
 
-}
-
-void PlaylistManager::updateConnects()
-{
-  QObject::disconnect(current_playlist_connection);
-  QObject::disconnect(active_playlist_connection);
-
-  if (current_ >= 0 && playlists_.contains(current_)) current_playlist_connection =   QObject::connect(playlists_[current_].p, &Playlist::PlaylistChanged, this, &PlaylistManager::playlistChanged);
-  if(active_ >= 0 && playlists_.contains(active_) && current_ != active_) active_playlist_connection = QObject::connect(playlists_[active_].p, &Playlist::PlaylistChanged, this, &PlaylistManager::playlistChanged);
 }
