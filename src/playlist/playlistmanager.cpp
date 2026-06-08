@@ -194,7 +194,7 @@ Playlist *PlaylistManager::AddPlaylist(const int id, const QString &name, const 
 }
 
 void PlaylistManager::New(const QString &name, const SongList &songs, const QString &special_type) {
-qInfo()<< "PlaylistManager::New called";
+
   if (name.isNull()) return;
 
   int id = playlist_backend_->CreatePlaylist(name, special_type);
@@ -359,7 +359,7 @@ bool PlaylistManager::Close(const int id) {
 }
 
 void PlaylistManager::Delete(const int id) {
-qInfo()<< "PlaylistManager::Deleted called";
+
   if (!Close(id)) {
     return;
   }
@@ -414,9 +414,6 @@ void PlaylistManager::SetActiveToCurrent() {
   // This signal causes the network remote module to send all playlists to the clients, even if no change happen.
   if (current_id() != active_id()) {
     SetActivePlaylist(current_id());
-
-    // Send active playlist ID to remote devices.
-    // Q_EMIT sendActivePlaylistId(current_); // Not needed?
   }
 
 }
@@ -532,10 +529,6 @@ void PlaylistManager::InsertSongs(const int id, const SongList &songs, const int
   Q_ASSERT(playlists_.contains(id));
 
   playlists_.constFind(id)->p->InsertSongs(songs, pos, play_now, enqueue);
-
-  //This is just testing the insert song. Delete and provide proper playlist update data.
-qInfo()<< "PlaylistManager insertsongs called";
-  Q_EMIT PlaylistManager::sendPlaylistToCreate(id);
 }
 
 void PlaylistManager::RemoveItemsWithoutUndo(const int id, const QList<int> &indices) {
@@ -543,12 +536,10 @@ void PlaylistManager::RemoveItemsWithoutUndo(const int id, const QList<int> &ind
   Q_ASSERT(playlists_.contains(id));
 
   playlists_.constFind(id)->p->RemoveItemsWithoutUndo(indices);
-qInfo()<< "PlaylistManager removeitemswithoutundo called";
 }
 
 void PlaylistManager::RemoveCurrentSong() const {
   active()->removeRows(active()->current_index().row(), 1);
-qInfo()<< "PlaylistManager removecurrentsong called";
 }
 
 void PlaylistManager::RemoveDeletedSongs() {
