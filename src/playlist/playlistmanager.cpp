@@ -120,7 +120,6 @@ void PlaylistManager::Init(PlaylistSequence *sequence, PlaylistContainer *playli
   if (playlists_.isEmpty()) New(tr("Playlist"));
 
   Q_EMIT PlaylistManagerInitialized();
-  // Q_EMIT PlaylistManager::sendPlayCommand();
  }
 
 void PlaylistManager::PlaylistLoaded() {
@@ -172,6 +171,9 @@ Playlist *PlaylistManager::AddPlaylist(const int id, const QString &name, const 
   QObject::connect(playlist_container_->view(), &PlaylistView::ColumnAlignmentChanged, ret, &Playlist::SetColumnAlignment);
   QObject::connect(&*current_albumcover_loader_, &CurrentAlbumCoverLoader::AlbumCoverLoaded, ret, &Playlist::AlbumCoverLoaded);
 
+  // Connection from playlist to playlistmanager, to be used to send playlist data to remote devices
+  QObject::connect(ret, &Playlist::sendChangedPlaylist, this, &PlaylistManager::sendPlaylistToCreate);
+
   playlists_[id] = Data(ret, name);
 
   Q_EMIT PlaylistAdded(id, name, favorite);
@@ -192,7 +194,7 @@ Playlist *PlaylistManager::AddPlaylist(const int id, const QString &name, const 
 }
 
 void PlaylistManager::New(const QString &name, const SongList &songs, const QString &special_type) {
-
+qInfo()<< "PlaylistManager::New called";
   if (name.isNull()) return;
 
   int id = playlist_backend_->CreatePlaylist(name, special_type);
@@ -208,6 +210,9 @@ void PlaylistManager::New(const QString &name, const SongList &songs, const QStr
   if (name == tr("Playlist")) {
     Rename(id, QStringLiteral("%1 %2").arg(name).arg(id));
   }
+
+  // Send new playlist ID to remote clients.
+  Q_EMIT sendPlaylistToCreate(id);
 
 }
 
@@ -354,13 +359,16 @@ bool PlaylistManager::Close(const int id) {
 }
 
 void PlaylistManager::Delete(const int id) {
-
+qInfo()<< "PlaylistManager::Deleted called";
   if (!Close(id)) {
     return;
   }
 
   playlist_backend_->RemovePlaylist(id);
   Q_EMIT PlaylistDeleted(id);
+
+  // Send deleted playlist ID to remote clients.
+  Q_EMIT deletePlaylistId(id);
 
 }
 

@@ -1168,6 +1168,8 @@ void Playlist::InsertItems(const PlaylistItemPtrList &itemsIn, const int pos, co
   }
 
   if (play_now) Q_EMIT PlayRequested(index(start, 0), AutoScroll::Maybe);
+
+  Q_EMIT sendChangedPlaylist(id_);
 }
 
 void Playlist::InsertItemsWithoutUndo(const PlaylistItemPtrList &items, const int pos, const bool enqueue, const bool enqueue_next) {
@@ -1604,18 +1606,15 @@ void Playlist::ReOrderWithoutUndo(const PlaylistItemPtrList &new_items) {
 
 }
 
-void Playlist::Playing() {SetCurrentIsPaused(false);}
+void Playlist::Playing() { SetCurrentIsPaused(false); }
 
-void Playlist::Paused() {SetCurrentIsPaused(true);}
+void Playlist::Paused() { SetCurrentIsPaused(true); }
 
-void Playlist::Stopped() {SetCurrentIsPaused(false);}
+void Playlist::Stopped() { SetCurrentIsPaused(false); }
 
 void Playlist::SetCurrentIsPaused(const bool paused) {
 
-  if (paused == current_is_paused_) {
-
-    return;
-  }
+  if (paused == current_is_paused_) return;
 
   current_is_paused_ = paused;
 
@@ -1784,6 +1783,8 @@ bool Playlist::removeRows(const int row, const int count, const QModelIndex &par
     undo_stack_->push(new PlaylistUndoCommandRemoveItems(this, row, count));
   }
 
+  Q_EMIT sendChangedPlaylist(id_);
+
   return true;
 
 }
@@ -1812,6 +1813,8 @@ bool Playlist::removeRows(QList<int> &rows) {
 
     part.clear();
   }
+
+  Q_EMIT sendChangedPlaylist(id_);
 
   return true;
 
@@ -1960,6 +1963,8 @@ void Playlist::Clear() {
 
   ScheduleSave();
 
+  Q_EMIT sendChangedPlaylist(id_);
+
 }
 
 void Playlist::RepopulateDynamicPlaylist() {
@@ -2007,6 +2012,7 @@ void Playlist::RemoveItemsNotInQueue() {
     start++;
   }
 
+  Q_EMIT sendChangedPlaylist(id_);
 }
 
 void Playlist::ReloadItems(const QList<int> &rows) {
@@ -2048,6 +2054,7 @@ void Playlist::Shuffle() {
 
   undo_stack_->push(new PlaylistUndoCommandShuffleItems(this, new_items));
 
+  Q_EMIT sendChangedPlaylist(id_);
 }
 
 namespace {
@@ -2177,6 +2184,8 @@ void Playlist::ReshuffleIndices() {
   else {
     current_virtual_index_ = -1;
   }
+
+  Q_EMIT sendChangedPlaylist(id_);
 
 }
 

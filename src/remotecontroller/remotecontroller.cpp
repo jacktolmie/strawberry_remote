@@ -96,9 +96,9 @@ void RemoteController::Exit(){
 
 void RemoteController::ExitReceived(){}
 
-void RemoteController::getResponse(const QJsonObject& response){
-  // onSendResponse(socket, response);
-}
+// void RemoteController::getResponse(const QJsonObject& response){
+//   // onSendResponse(socket, response);
+// }
 
 void RemoteController::onNewConnection()
 {

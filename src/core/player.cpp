@@ -532,8 +532,6 @@ void Player::TrackEnded() {
 
 void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll autoscroll) {
 
-  QJsonObject response;
-
   switch (engine_->state()) {
     case EngineBase::State::Paused:
       UnPause();
@@ -542,6 +540,7 @@ void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll 
       Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::PLAY)),
+        field(Arguments::ACTIVE_PLAYLIST, playlist_manager_->active()->id()),
         field(Arguments::ROW, playlist_manager_->active()->current_row()),
         field(Arguments::TIME, engine()->position_nanosec() / kNsecPerMsec)
       }));
@@ -582,7 +581,6 @@ void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll 
       break;
     }
   }
-
 }
 
 void Player::UnPause() {
@@ -824,6 +822,7 @@ void Player::PlayAt(const int index, const bool pause, const quint64 offset_nano
       field(MessageType::EVENT, toString(MessageType::EVENT)),
       field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),
       field(Arguments::ID, playlist_manager_->active_id()),
+      field(Arguments::ROW, playlist_manager_->active()->current_row()),
       field(Arguments::CURRENT_SONG, index),
       field(Arguments::TIME, static_cast<qint64>(offset_nanosec / kNsecPerMsec))
     }));
@@ -960,6 +959,8 @@ void Player::Play(const quint64 offset_nanosec) {
   Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
     field(MessageType::EVENT, toString(MessageType::EVENT)),
     field(Event::EVENT, toString(Event::PLAY)),
+    field(Arguments::ACTIVE_PLAYLIST, playlist_manager_->active_id()),
+    field(Arguments::ROW, playlist_manager_->active()->current_row()),
     field(Arguments::TIME, engine()->position_nanosec() / kNsecPerMsec)
   }));
 }

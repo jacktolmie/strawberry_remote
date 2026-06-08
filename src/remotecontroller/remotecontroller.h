@@ -65,7 +65,7 @@ Q_SIGNALS:
 public Q_SLOTS:
   void activeNetworkConnection();
   // void onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response);
-  void getResponse(const QJsonObject& response);
+  // void getResponse(const QJsonObject& response);
   void settingsChanged(const Values& data);
 
 private Q_SLOTS:

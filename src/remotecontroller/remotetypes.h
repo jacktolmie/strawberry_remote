@@ -27,12 +27,14 @@ namespace RemoteTypes{
 
   enum class Event{
     ACTIVE_PLAYLIST,
+    DELETE_PLAYLIST,
     EVENT,
     FAVOURITE_PLAYLIST,
     GUI_UPDATES,
     MAKE_ALL_PLAYLISTS,
     MAKE_CURRENT_PLAYLIST,
     NEXT,
+    NEW_PLAYLIST,
     PAUSE,
     PLAY,
     PREVIOUS,

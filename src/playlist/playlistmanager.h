@@ -184,6 +184,7 @@ Q_SIGNALS:
   void renamePlaylist(const int id, const QString& name);
   void sendActivePlaylistId(const int id);
   void sendPlaylistToCreate(const int id);
+  void deletePlaylistId(const int id);
 };
 
 #endif  // PLAYLISTMANAGER_H

@@ -4,6 +4,7 @@
 #include "remoteplaylist.h"
 #include "playlist/playlistmanager.h"
 #include "playlist/playlistbackend.h"
+#include "playlist/playlist.h"
 #include "core/player.h"
 #include "remotecontroller/remoteconstants.h"
 #include "remotecontroller/remotecurrentsong.h"
@@ -29,8 +30,8 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(this, &RemotePlaylist::remoteRenamePlaylist , &*app_->playlist_manager(), &PlaylistManager::Rename);
   QObject::connect(this, &RemotePlaylist::setCurrentPlaylistSignal , &*app_->playlist_manager(), &PlaylistManager::SetCurrentPlaylist);
   QObject::connect(this, &RemotePlaylist::shufflePlaylist , &*app_->playlist_manager(), &PlaylistManager::ShuffleCurrent);
-  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistDeleted, this, &RemotePlaylist::deletePlaylist);
   QObject::connect(this, &RemotePlaylist::deletePlaylist, this, &RemotePlaylist::deleteServerPlaylist);
+  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::deletePlaylistId, this, &RemotePlaylist::deleteServerPlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistClosed, this, &RemotePlaylist::closePlaylist);
   QObject::connect(this, &RemotePlaylist::closePlaylist, this, &RemotePlaylist::closeServerPlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistFavorited, this, &RemotePlaylist::serverFavouritePlaylist);
@@ -38,9 +39,9 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::renamePlaylist, this, &RemotePlaylist::serverRenamePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendActivePlaylistId, this, &RemotePlaylist::activeChanged);
   QObject::connect(this, &RemotePlaylist::setActivePlaylist, &*app_->playlist_manager(), &PlaylistManager::SetActivePlaylist);
-  QObject::connect(&*app_->playlist_backend(), &PlaylistBackend::sendPlaylistChanged, this, &RemotePlaylist::makeSinglePlaylist);
-  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::makeSinglePlaylist);
-}
+  QObject::connect(&*app_->playlist_backend(), &PlaylistBackend::sendPlaylistChanged, this, &RemotePlaylist::sendPlaylistData);
+  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::sendPlaylistData);
+ }
 
 QJsonObject RemotePlaylist::renameCurrentPlaylist(const QStringList& args){
   if(args.size() < 2) return RemoteJsonCreator::createResponse({
@@ -203,7 +204,7 @@ QJsonObject RemotePlaylist::makeSinglePlaylist(const int id){
   return response;
 }
 
-const PlaylistCmdMap &RemotePlaylist::sendCommandMap() const{
+const PlaylistCmdMap& RemotePlaylist::sendCommandMap() const{
   return commandMap;
 }
 
@@ -297,7 +298,7 @@ void RemotePlaylist::activeChanged(const int id){
     field(MessageType::EVENT, toString(MessageType::EVENT)),
     field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),
     field(Arguments::ID, id),
-    field(Arguments::ROW, 123456)
+    field(Arguments::ROW, app_->playlist_manager()->active()->current_row())
   }));
 }
 

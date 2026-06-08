@@ -64,11 +64,13 @@ QString toString(Event value) {
     switch (value) {
         case Event::EVENT:                  return u"event"_s;
         case Event::ACTIVE_PLAYLIST:        return u"active_playlist"_s;
+        case Event::DELETE_PLAYLIST:        return u"delete_playlist"_s;
         case Event::FAVOURITE_PLAYLIST:     return u"favourite_playlist"_s;
         case Event::GUI_UPDATES:            return u"gui_updates"_s;
         case Event::MAKE_ALL_PLAYLISTS:     return u"make_all_playlists"_s;
         case Event::MAKE_CURRENT_PLAYLIST:  return u"make_current_playlist"_s;
         case Event::NEXT:                   return u"next"_s;
+        case Event::NEW_PLAYLIST:           return u"new_playlist"_s;
         case Event::PAUSE:                  return u"pause"_s;
         case Event::PLAY:                   return u"play"_s;
         case Event::PREVIOUS:               return u"previous"_s;
