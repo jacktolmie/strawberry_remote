@@ -728,7 +728,6 @@ set(SOURCES
   src/dialogs/deleteconfirmationdialog.cpp
   src/dialogs/lastfmimportdialog.cpp
   src/dialogs/messagedialog.cpp
-  src/dialogs/snapdialog.cpp
   src/dialogs/saveplaylistsdialog.cpp
 
   src/widgets/autoexpandingtreeview.cpp
@@ -1039,7 +1038,6 @@ set(HEADERS
   src/dialogs/deleteconfirmationdialog.h
   src/dialogs/lastfmimportdialog.h
   src/dialogs/messagedialog.h
-  src/dialogs/snapdialog.h
   src/dialogs/saveplaylistsdialog.h
 
   src/widgets/autoexpandingtreeview.h
