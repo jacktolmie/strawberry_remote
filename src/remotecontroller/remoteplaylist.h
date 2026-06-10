@@ -41,7 +41,7 @@ class RemotePlaylist : public QObject
 
   // Make playlists to send back to device.
   QJsonObject makeAllPlaylists() const;
-  QJsonObject makeSinglePlaylist(const int id);
+  // QJsonObject makeSinglePlaylist(const int id);
   QJsonObject makePlaylistData(const int id) const;
 
   void testUrl() const; // Delete after testing URL.

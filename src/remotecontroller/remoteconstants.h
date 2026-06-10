@@ -18,7 +18,7 @@ namespace remoteconstants
   inline constexpr auto parseStringArg = [](const QStringList& args, bool& ok)-> QString {
     if (args.isEmpty()){
       ok = false;
-      return QChar();
+      return QString();
     }
     return QString(args.first());
   };

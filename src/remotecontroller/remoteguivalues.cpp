@@ -9,15 +9,14 @@
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;
 
-RemoteGuiValues::RemoteGuiValues(const RemoteCommands &remotecommands, const Application* app, QObject *parent)
+// RemoteGuiValues::RemoteGuiValues(const RemotePlaylist *remotePlaylist, const Application* app, QObject *parent)
+RemoteGuiValues::RemoteGuiValues(const RemotePlaylist *remotePlaylist, const Application* app, QObject *parent)
   : QObject{parent},
     app_{app},
-    remoteCommands{remotecommands}
+    remotePlaylist_{remotePlaylist}
 {}
 
 QJsonObject RemoteGuiValues::getUpdates() const{
-
-  qDebug() << "RemoteGuiValues::getUpdates called";
 
   RemoteTypes::Arguments currentPlayState;
 
@@ -44,9 +43,10 @@ QJsonObject RemoteGuiValues::getUpdates() const{
     field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume())),
     field(Arguments::TIME, app_->player()->engine()->position_nanosec() / kNsecPerMsec),
     field(Arguments::PLAYING, toString(currentPlayState)),
-    field(Arguments::PLAYLISTS, remoteCommands.getRemotePlaylist().sendAllPlaylists()),
+    field(Arguments::PLAYLISTS, remotePlaylist_->sendAllPlaylists()),
     field(Arguments::CURRENT_PLAYLIST, app_->playlist_manager()->current_id()),
-    field(Arguments::CURRENT_SONG, app_->playlist_manager()->active()->current_index().row()), // Find current playing song. Not sure where.
+    field(Arguments::CURRENT_SONG, app_->playlist_manager()->active()
+        ? app_->playlist_manager()->active()->current_index().row(): -1),
     field(Arguments::ACTIVE_PLAYLIST, app_->playlist_manager()->active_id())
   });
 }

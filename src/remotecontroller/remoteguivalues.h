@@ -7,8 +7,8 @@
 
 #include "core/application.h"
 #include "ui_mainwindow.h"
-// #include "remotecontroller/remoteplaylist.h"
-#include "remotecontroller/remotecommands.h"
+#include "remotecontroller/remoteplaylist.h"
+// #include "remotecontroller/remotecommands.h"
 
 class TrackSlider;
 
@@ -18,12 +18,12 @@ class RemoteGuiValues : public QObject
 
   const Application     *app_;
   const Ui_MainWindow   *ui_;
-  const RemoteCommands  &remoteCommands;
+  const RemotePlaylist  *remotePlaylist_;
 
   QJsonObject getUpdates() const;
 
 public:
-  explicit RemoteGuiValues(const RemoteCommands& remoteCommands, const Application* app, QObject *parent);
+  explicit RemoteGuiValues(const RemotePlaylist* remotePlaylist, const Application* app, QObject *parent);
 
 public Q_SLOTS:
   QJsonObject triggerUpdate() const;

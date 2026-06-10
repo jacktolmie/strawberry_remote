@@ -49,7 +49,7 @@ private:
 
   const RemoteCommands  *commands;
   const Application     *app_;
-  const RemoteGuiValues guiValues;
+  const RemoteGuiValues *guiValues;
 
   QTimer                *timer;
 

@@ -16,7 +16,7 @@ class RemoteCurrentSong : public QObject
   Q_OBJECT
 
   const Application *app_;
-  const AlbumCoverFetcher *coverFetcher;
+  // const AlbumCoverFetcher *coverFetcher;
 
   QUrl albumImageUrl;
 
@@ -24,6 +24,7 @@ public:
   explicit RemoteCurrentSong(const Application *app, QObject *parent = nullptr);
 
   QJsonObject songInfo(const Song& song) const;
+  QJsonObject songData(const Song& song) const;
 
 public Q_SLOTS:
 

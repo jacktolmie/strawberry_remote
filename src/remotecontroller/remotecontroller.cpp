@@ -6,8 +6,8 @@
 #include <QCoreApplication>
 
 #include <QString>
+#include <execinfo.h>
 #include "core/player.h"
-#include "playlist/playlistmanager.h"
 #include "remotecontroller/remotejsoncreator.h"
 #include "remotecontroller/remotetypes.h"
 
@@ -18,12 +18,10 @@ RemoteController::RemoteController(const Application* app, QObject *parent)
     : QObject{parent},
       commands{new RemoteCommands(const_cast<Application*>(app), this)},
       app_{app},
-      guiValues{RemoteGuiValues(*commands, app_, this)}
+      guiValues{new RemoteGuiValues(commands->getRemotePlaylist(), app_, this)}
 {
   connect(this, &RemoteController::commandReceived, commands, &RemoteCommands::processLine);
-  connect(commands, &RemoteCommands::sendReponse, this, &RemoteController::broadcastToDevices);
-  // connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistResponse ,this, &RemoteController::broadcastToDevices);
-  // connect(commands, &RemoteCommands::sendReponse, this, &RemoteController::onSendResponse);
+  connect(commands, &RemoteCommands::sendResponse, this, &RemoteController::broadcastToDevices);
   connect(&*app_->player(), &Player::sendToRemote, this, &RemoteController::broadcastToDevices);
 
   server = new QTcpServer(this);
@@ -96,10 +94,6 @@ void RemoteController::Exit(){
 
 void RemoteController::ExitReceived(){}
 
-// void RemoteController::getResponse(const QJsonObject& response){
-//   // onSendResponse(socket, response);
-// }
-
 void RemoteController::onNewConnection()
 {
   // Check for any incoming connections.
@@ -120,6 +114,7 @@ void RemoteController::onNewConnection()
             field(MessageType::AUTH, toString(MessageType::AUTH)),
             field(Auth::AUTH, toString(Auth::AUTH_SUCCESS))
           }));
+        onSendResponse(socket, guiValues->triggerUpdate());
       }
       else {
         QByteArray nonce(32, Qt::Uninitialized);
@@ -192,6 +187,8 @@ void RemoteController::onReadyRead()
           field(MessageType::AUTH, toString(MessageType::AUTH)),
           field(Auth::AUTH, toString(Auth::AUTH_SUCCESS))
       }));
+        onSendResponse(socket, guiValues->triggerUpdate());
+
       } else {
         qDebug() << "Bad proof from " << socket->peerAddress().toString() << ". Kicking.";
         onSendResponse(socket, RemoteJsonCreator::createResponse({
@@ -218,8 +215,6 @@ void RemoteController::onReadyRead()
         }
         qDebug() << "Authenticated client" << socket->peerAddress().toString() << "sent command:" << QString::fromUtf8(jsonData);
         Q_EMIT RemoteController::commandReceived(QString::fromUtf8(jsonData));
-        onSendResponse(socket, guiValues.triggerUpdate());
-
       }
 
       break;
@@ -229,8 +224,6 @@ void RemoteController::onReadyRead()
       break;
     }
   }
-    //testJson(socket); // delete after running JSON send tests.
-    onSendResponse(socket, guiValues.triggerUpdate());
 }
 
 void RemoteController::onDisconnect()
@@ -271,6 +264,7 @@ void RemoteController::onSendResponse(QTcpSocket* clientSocket, const QJsonObjec
 
 void RemoteController::broadcastToDevices(const QJsonObject& message)
 {
+  qInfo()<<"BroadcastToDevices in remotecontroller called with message";
   // Send each authenticated client the broadcast from the server.
   for(auto clientSocket: std::as_const(clients_)){
     if(clientSocket->state == ClientState::Authenticated){

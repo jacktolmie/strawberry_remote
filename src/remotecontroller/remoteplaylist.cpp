@@ -39,7 +39,6 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::renamePlaylist, this, &RemotePlaylist::serverRenamePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendActivePlaylistId, this, &RemotePlaylist::activeChanged);
   QObject::connect(this, &RemotePlaylist::setActivePlaylist, &*app_->playlist_manager(), &PlaylistManager::SetActivePlaylist);
-  QObject::connect(&*app_->playlist_backend(), &PlaylistBackend::sendPlaylistChanged, this, &RemotePlaylist::sendPlaylistData);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::sendPlaylistData);
  }
 
@@ -109,11 +108,10 @@ QJsonObject RemotePlaylist::deleteCurrentDevicePlaylist(const QStringList& args)
 }
 
 void RemotePlaylist::sendPlaylistData(const int id){
-  qInfo()<< "Remoteplaylist::sendPlaylistData called";
   Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
     field(MessageType::EVENT, toString(MessageType::EVENT)),
     field(Event::EVENT, toString(Event::MAKE_CURRENT_PLAYLIST)),
-    field(Arguments::CURRENT_PLAYLIST, makeSinglePlaylist(id))
+    field(Arguments::CURRENT_PLAYLIST, makePlaylistData(id))
   }));
 }
 
@@ -174,7 +172,7 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id) const{
   auto songs{app_->playlist_manager()->playlist(id)->GetAllSongs()};
   RemoteCurrentSong songInfo = RemoteCurrentSong(app_);
   for (const auto& song: songs){
-    songsArray.append(songInfo.songInfo(song));
+    songsArray.append(songInfo.songData(song));
   }
   playlistObject[toString(RemoteTypes::Arguments::SONGS)] = songsArray;
   return playlistObject;
@@ -191,17 +189,6 @@ QJsonObject RemotePlaylist::makeAllPlaylists() const{
     field(Event::EVENT, toString(Event::MAKE_ALL_PLAYLISTS)),
     field(Arguments::PLAYLISTS, playlistArray)
   });
-}
-
-QJsonObject RemotePlaylist::makeSinglePlaylist(const int id){
-
-  QJsonObject response{RemoteJsonCreator::createResponse({
-    field(MessageType::EVENT, toString(MessageType::EVENT)),
-    field(Event::EVENT, toString(Event::MAKE_CURRENT_PLAYLIST)),
-    field(Arguments::PLAYLIST, RemotePlaylist::makePlaylistData(id))
-  })};
-
-  return response;
 }
 
 const PlaylistCmdMap& RemotePlaylist::sendCommandMap() const{
@@ -282,7 +269,7 @@ QJsonObject RemotePlaylist::sendRequestedPLaylist(const QStringList& args){
     return RemoteJsonCreator::createResponse({
       field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
       field(Response::RESPONSE, toString(Response::SEND_REQUESTED_PLAYLIST)),
-      field(Arguments::PLAYLIST, makeSinglePlaylist(static_cast<int>(id)))
+      field(Arguments::PLAYLIST, makePlaylistData(id))
     });
   }
   return RemoteJsonCreator::createResponse({
@@ -293,7 +280,6 @@ QJsonObject RemotePlaylist::sendRequestedPLaylist(const QStringList& args){
 }
 
 void RemotePlaylist::activeChanged(const int id){
-  qInfo()<<"Remoteplaylist activechanged called";
   Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
     field(MessageType::EVENT, toString(MessageType::EVENT)),
     field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),

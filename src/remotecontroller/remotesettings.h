@@ -19,6 +19,7 @@ struct Values
 class RemoteSettings: public QObject
 {
   Q_OBJECT
+
 public:
     RemoteSettings(QObject *parent = nullptr);
     ~RemoteSettings() = default;

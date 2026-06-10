@@ -7,9 +7,6 @@
 #include "remotecommands.h"
 #include "remotecontroller/remotejsoncreator.h"
 #include "remotecontroller/remotetypes.h"
-#include "playlist/playlistmanager.h"
-#include "core/player.h"
-
 
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;
@@ -17,36 +14,33 @@ using namespace RemoteTypes;
 RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
   QObject{parent},
   app_(app),
-  remotePlaylist(RemotePlaylist(app, this)),
-  basicCommands(RemoteBasicCommands(app)),
-  basicCmdMap{basicCommands.sendCommandMap()},
-  playlistCmdMap{remotePlaylist.sendCommandMap()}
+  remotePlaylist(new RemotePlaylist(app, this)),
+  basicCommands(new RemoteBasicCommands(app)),
+  basicCmdMap{basicCommands->sendCommandMap()},
+  playlistCmdMap{remotePlaylist->sendCommandMap()}
 {
-  QObject::connect(&remotePlaylist, &RemotePlaylist::sendResponse, this, &RemoteCommands::getResponse);
-  QObject::connect(&basicCommands, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::getResponse);
-  // QObject::connect(&*app_->player(), &Player::sendToRemote, this, &RemoteCommands::getResponse);
-  // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistResponse, this, &RemoteCommands::getResponse);
-  QObject::connect(this, &RemoteCommands::getResponse, this, &RemoteCommands::sendReponse);
- }
+  QObject::connect(remotePlaylist, &RemotePlaylist::sendResponse, this, &RemoteCommands::sendResponse);
+  QObject::connect(basicCommands, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::sendResponse);
+}
 
 void RemoteCommands::processCommand(const QString& command, const QStringList &args)
 {
   // Check if sent command is in basicCommandMap.
   if(basicCmdMap.contains(command)){
     basicCmdMap[command](args);
-    getResponse(RemoteJsonCreator::createResponse({
+    Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
       field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
       field(Response::RESPONSE, toString(Response::RUNNING_COMMAND)),
       field(Arguments::COMMAND, command)
       }));
   }
   else if (playlistCmdMap.contains(command)){
-    getResponse(playlistCmdMap[command](args));
+    Q_EMIT sendResponse(playlistCmdMap[command](args));
 
   }
   else{
   // If sent command does not match anything, send message back to device.
-    getResponse(RemoteJsonCreator::createResponse({
+    Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
       field(MessageType::ERROR, toString(MessageType::ERROR)),
       field(Error::ERROR, toString(Error::COMMAND_NOT_FOUND)),
       field(Arguments::COMMAND, command)
@@ -124,10 +118,3 @@ void RemoteCommands::processLine(const QString& line)
   // Process command with args after breaking down the JSON file.
   RemoteCommands::processCommand(command, args);
 }
-
-void RemoteCommands::getResponse(const QJsonObject& response){
-  qInfo()<<"Remotecommands::getresponse called";
-  Q_EMIT sendReponse(response);
-}
-
-

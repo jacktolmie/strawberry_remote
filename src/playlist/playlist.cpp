@@ -1070,6 +1070,9 @@ void Playlist::MoveItemsWithoutUndo(const QList<int> &source_rows, int pos) {
   Q_EMIT layoutChanged();
   Q_EMIT PlaylistChanged();
 
+  // Send updated playlist to remote devices.
+  Q_EMIT sendChangedPlaylist(id_);
+
   ScheduleSave();
 
 }
@@ -1169,7 +1172,7 @@ void Playlist::InsertItems(const PlaylistItemPtrList &itemsIn, const int pos, co
 
   if (play_now) Q_EMIT PlayRequested(index(start, 0), AutoScroll::Maybe);
 
-  Q_EMIT sendChangedPlaylist(id_);
+  // Q_EMIT sendChangedPlaylist(id_);
 }
 
 void Playlist::InsertItemsWithoutUndo(const PlaylistItemPtrList &items, const int pos, const bool enqueue, const bool enqueue_next) {
@@ -1601,6 +1604,9 @@ void Playlist::ReOrderWithoutUndo(const PlaylistItemPtrList &new_items) {
   Q_EMIT layoutChanged();
 
   Q_EMIT PlaylistChanged();
+
+  // Send updated playlist to remote devices.
+  Q_EMIT sendChangedPlaylist(id_);
 
   ScheduleSave();
 
@@ -2053,8 +2059,6 @@ void Playlist::Shuffle() {
   }
 
   undo_stack_->push(new PlaylistUndoCommandShuffleItems(this, new_items));
-
-  Q_EMIT sendChangedPlaylist(id_);
 }
 
 namespace {

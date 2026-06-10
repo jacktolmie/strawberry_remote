@@ -185,7 +185,6 @@ Playlist *PlaylistManager::AddPlaylist(const int id, const QString &name, const 
     SetActivePlaylist(id);
 
     // Send active playlist ID to remote devices.
-    qInfo()<< "PlaylistManager addplaylist called";
     Q_EMIT sendActivePlaylistId(id);
   }
 
