@@ -47,8 +47,8 @@ private:
   QHostAddress          localIp4;
   QHostAddress          localIp6;
 
-  const RemoteCommands  *commands;
   const Application     *app_;
+  const RemoteCommands  *commands;  
   const RemoteGuiValues *guiValues;
 
   QTimer                *timer;
@@ -56,7 +56,7 @@ private:
   void onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response);
 
   // List of connected sockets, and if authenticated
-  QHash<QTcpSocket*, ClientInfo*> clients_;
+  QHash<QTcpSocket*, ClientInfo> clients_;
 
 Q_SIGNALS:
   void ExitFinished();
@@ -64,8 +64,6 @@ Q_SIGNALS:
 
 public Q_SLOTS:
   void activeNetworkConnection();
-  // void onSendResponse(QTcpSocket* clientSocket, const QJsonObject& response);
-  // void getResponse(const QJsonObject& response);
   void settingsChanged(const Values& data);
 
 private Q_SLOTS:

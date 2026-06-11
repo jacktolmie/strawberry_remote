@@ -17,11 +17,11 @@ class RemoteBasicCommands: public QObject
 
   void createCommandMap();
 
-  Application *app_;
+  const Application *app_;
   BasicCmdMap commandMap;
 
 public:
-  explicit RemoteBasicCommands(Application *app);
+  explicit RemoteBasicCommands(const Application *app);
   ~RemoteBasicCommands() = default;
 
   const BasicCmdMap &sendCommandMap() const;

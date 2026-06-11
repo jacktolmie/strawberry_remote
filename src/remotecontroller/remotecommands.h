@@ -23,7 +23,7 @@ class RemoteCommands : public QObject
   PlaylistCmdMap      playlistCmdMap;
 
 public:
-  explicit RemoteCommands(Application *app, QObject *parent);
+  explicit RemoteCommands(const Application *app, QObject *parent);
   ~RemoteCommands() = default;
 
   void processCommand(const QString& command, const QStringList& args);

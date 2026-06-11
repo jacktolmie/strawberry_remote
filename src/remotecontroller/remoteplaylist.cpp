@@ -21,6 +21,7 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
 {
   RemotePlaylist::createCommandMap();
 
+  // Might have double connections for favourite/closing/deleting playlists. Test with both remote and server tests.
   QObject::connect(this, &RemotePlaylist::clearPlaylist , &*app_->playlist_manager(), &PlaylistManager::ClearCurrent);
   QObject::connect(this, &RemotePlaylist::closePlaylist , &*app_->playlist_manager(), &PlaylistManager::Close);
   QObject::connect(this, &RemotePlaylist::deletePlaylist , &*app_->playlist_manager(), &PlaylistManager::Delete);
@@ -284,7 +285,8 @@ void RemotePlaylist::activeChanged(const int id){
     field(MessageType::EVENT, toString(MessageType::EVENT)),
     field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),
     field(Arguments::ID, id),
-    field(Arguments::ROW, app_->playlist_manager()->active()->current_row())
+    field(Arguments::ROW, app_->playlist_manager()->active()
+        ? app_->playlist_manager()->active()->current_row() : -1)
   }));
 }
 

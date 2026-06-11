@@ -26,23 +26,23 @@ void RemoteSettings::getValues()
   s.endGroup();
 }
 
-void RemoteSettings::getUpdates(Values& sentValues)
-{
-  values.activeNetwork =  sentValues.activeNetwork;
-  values.authRequired =   sentValues.authRequired;
-  values.hashedPassword = sentValues.hashedPassword;
-  values.password =       sentValues.password;
-  values.portNumber =     sentValues.portNumber;
-  values.remoteEnabled =  sentValues.remoteEnabled;
+// void RemoteSettings::getUpdates(Values& sentValues)
+// {
+//   values.activeNetwork =  sentValues.activeNetwork;
+//   values.authRequired =   sentValues.authRequired;
+//   values.hashedPassword = sentValues.hashedPassword;
+//   values.password =       sentValues.password;
+//   values.portNumber =     sentValues.portNumber;
+//   values.remoteEnabled =  sentValues.remoteEnabled;
 
-  RemoteSettings::saveValues();
+//   RemoteSettings::saveValues();
 
-}
+// }
 
-void RemoteSettings::sendUpdates()
-{
-  Q_EMIT RemoteSettings::sendValues(values);
-}
+// void RemoteSettings::sendUpdates()
+// {
+//   Q_EMIT RemoteSettings::sendValues(values);
+// }
 
 void RemoteSettings::saveValues()
 {

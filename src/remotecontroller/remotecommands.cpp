@@ -11,7 +11,7 @@
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;
 
-RemoteCommands::RemoteCommands(Application* app, QObject* parent = nullptr):
+RemoteCommands::RemoteCommands(const Application* app, QObject* parent = nullptr):
   QObject{parent},
   app_(app),
   remotePlaylist(new RemotePlaylist(app, this)),

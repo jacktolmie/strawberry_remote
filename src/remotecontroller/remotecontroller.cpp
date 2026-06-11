@@ -16,8 +16,8 @@ using namespace RemoteTypes;
 
 RemoteController::RemoteController(const Application* app, QObject *parent)
     : QObject{parent},
-      commands{new RemoteCommands(const_cast<Application*>(app), this)},
       app_{app},
+      commands{new RemoteCommands(app, this)},
       guiValues{new RemoteGuiValues(commands->getRemotePlaylist(), app_, this)}
 {
   connect(this, &RemoteController::commandReceived, commands, &RemoteCommands::processLine);
@@ -103,13 +103,13 @@ void RemoteController::onNewConnection()
     if (socket) {
       qDebug() << "Remote New client connecting from" << socket->peerAddress().toString();
       // Create a new client for clients_ list.
-      ClientInfo* client = new ClientInfo();
-      client->socket = socket;
-      clients_.insert(socket, client);
+      clients_.insert(socket, ClientInfo());
+      ClientInfo& client = clients_[socket];
+      client.socket = socket;
 
       // If no password required, do not check.
       if (!app_->remote_settings()->values.authRequired) {
-        client->state = ClientState::Authenticated;
+        client.state = ClientState::Authenticated;
           onSendResponse(socket, RemoteJsonCreator::createResponse({
             field(MessageType::AUTH, toString(MessageType::AUTH)),
             field(Auth::AUTH, toString(Auth::AUTH_SUCCESS))
@@ -122,16 +122,17 @@ void RemoteController::onNewConnection()
           nonce[i] = static_cast<char>(QRandomGenerator::global()->generate64() & 0xFF);
         }
 
-        client->nonce = nonce;
-        client->state = ClientState::ChallengeSent;
+        client.nonce = nonce;
+        client.state = ClientState::ChallengeSent;
 
         onSendResponse(socket, RemoteJsonCreator::createResponse({
           field(MessageType::AUTH, toString(MessageType::AUTH)),
           field(Auth::AUTH, toString(Auth::CHALLENGE)),
           field(Arguments::NONCE, QString::fromLatin1(nonce.toBase64()))
         }));
-        qDebug() << "Sent challenge (nonce) to client: " << client->nonce.toHex();
+        qDebug() << "Sent challenge (nonce) to client: " << client.nonce.toHex();
       }
+
       connect(socket, &QTcpSocket::readyRead, this, &RemoteController::onReadyRead);
       connect(socket, &QTcpSocket::disconnected, this, &RemoteController::onDisconnect);
     }
@@ -145,9 +146,10 @@ void RemoteController::onReadyRead()
   // If socket is nullprt, or the client is not in the list of clients_, return
   if (!socket || !clients_.contains(socket)) return;
 
-  ClientInfo* client = clients_.value(socket);
+  // ClientInfo* client = clients_.value(socket);
+  ClientInfo client = clients_.value(socket);
 
-  switch (client->state) {
+  switch (client.state) {
 
     case ClientState::ChallengeSent: {
       QDataStream socketStream(socket);
@@ -176,13 +178,13 @@ void RemoteController::onReadyRead()
       }
 
       QByteArray receivedProof = QByteArray::fromHex(obj[u"proof"_s].toString().toUtf8());
-      QByteArray combined = client->nonce + app_->remote_settings()->values.password.toUtf8();
+      QByteArray combined = client.nonce + app_->remote_settings()->values.password.toUtf8();
       QByteArray expectedProof = QCryptographicHash::hash(combined, QCryptographicHash::Sha256);
 
       if (receivedProof == expectedProof) {
         qDebug() << "Proof match for " << socket->peerAddress().toString();
-        client->state = ClientState::Authenticated;
-        client->nonce.clear();
+        client.state = ClientState::Authenticated;
+        client.nonce.clear();
         onSendResponse(socket, RemoteJsonCreator::createResponse({
           field(MessageType::AUTH, toString(MessageType::AUTH)),
           field(Auth::AUTH, toString(Auth::AUTH_SUCCESS))
@@ -197,6 +199,9 @@ void RemoteController::onReadyRead()
       }));
         socket->close();
       }
+
+    clients_[socket] = client;
+
     break;
 }
     case ClientState::Authenticated: {
@@ -234,9 +239,9 @@ void RemoteController::onDisconnect()
 
   qLog(Info) << "Client disconnected, cleaning up session for" << socket->peerAddress().toString();
   if (clients_.contains(socket)){
-    ClientInfo* client = clients_.value(socket);
+    ClientInfo client = clients_.value(socket);
     clients_.remove(socket);
-    delete client;
+    // delete client;
   }
 
   socket->deleteLater();
@@ -264,11 +269,10 @@ void RemoteController::onSendResponse(QTcpSocket* clientSocket, const QJsonObjec
 
 void RemoteController::broadcastToDevices(const QJsonObject& message)
 {
-  qInfo()<<"BroadcastToDevices in remotecontroller called with message";
   // Send each authenticated client the broadcast from the server.
-  for(auto clientSocket: std::as_const(clients_)){
-    if(clientSocket->state == ClientState::Authenticated){
-      onSendResponse(clientSocket->socket, message);
+  for(auto &clientSocket: std::as_const(clients_)){ // IS thie right?????
+    if(clientSocket.state == ClientState::Authenticated){
+      onSendResponse(clientSocket.socket, message);
     }
   }
 }

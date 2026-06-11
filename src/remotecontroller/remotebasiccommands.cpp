@@ -10,7 +10,7 @@
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;
 
-RemoteBasicCommands::RemoteBasicCommands(Application *app)
+RemoteBasicCommands::RemoteBasicCommands(const Application *app)
     : app_(app)
 {
   // Fill the commandMap.
