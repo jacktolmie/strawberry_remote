@@ -63,14 +63,13 @@ class RadioServices;
 class MoodbarController;
 class MoodbarLoader;
 #endif
-<<<<<<< HEAD
+
 class RemoteSettings;
-=======
+
 #ifdef HAVE_WAVEFORM
 class WaveformController;
 class WaveformLoader;
 #endif
->>>>>>> upstream/master
 
 class Application : public QObject {
   Q_OBJECT

@@ -530,12 +530,8 @@ void PlaylistManager::InsertSongs(const int id, const SongList &songs, const int
 
   Q_ASSERT(playlists_.contains(id));
 
-<<<<<<< HEAD
-  playlists_.constFind(id)->p->InsertSongs(songs, pos, play_now, enqueue);
-=======
   playlists_.constFind(id)->p->InsertSongs(songs, pos, play_now, enqueue, /*enqueue_next=*/false, signal);
 
->>>>>>> upstream/master
 }
 
 void PlaylistManager::RemoveItemsWithoutUndo(const int id, const QList<int> &indices) {
