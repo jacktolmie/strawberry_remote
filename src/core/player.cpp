@@ -525,7 +525,7 @@ void Player::TrackEnded() {
   Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse( {
     field(MessageType::EVENT, toString(MessageType::EVENT)),
     field(Event::EVENT, toString(Event::SONG_CHANGED)),
-    field(Arguments::TRACK_ID, playlist_manager_->active()->next_row())
+    field(Arguments::ROW, playlist_manager_->active()->next_row())
   }));
 
 }
@@ -542,7 +542,8 @@ void Player::PlayPause(const quint64 offset_nanosec, const Playlist::AutoScroll 
         field(Event::EVENT, toString(Event::PLAY)),
         field(Arguments::ACTIVE_PLAYLIST, playlist_manager_->active()->id()),
         field(Arguments::ROW, playlist_manager_->active()->current_row()),
-        field(Arguments::TIME, engine()->position_nanosec() / kNsecPerMsec)
+        field(Arguments::TIME, engine()->position_nanosec() / kNsecPerMsec),
+        field(Arguments::LENGTH, static_cast<qint64>(current_item_->EffectiveMetadata().length_nanosec() / kNsecPerMsec))
       }));
       break;
 
@@ -820,11 +821,11 @@ void Player::PlayAt(const int index, const bool pause, const quint64 offset_nano
   // Send current playlist to remote clients.
   Q_EMIT Player::sendToRemote(RemoteJsonCreator::createResponse({
       field(MessageType::EVENT, toString(MessageType::EVENT)),
-      field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),
-      field(Arguments::ID, playlist_manager_->active_id()),
+      field(Event::EVENT, toString(Event::PLAY)),
+      field(Arguments::ACTIVE_PLAYLIST, playlist_manager_->active_id()),
       field(Arguments::ROW, playlist_manager_->active()->current_row()),
-      field(Arguments::CURRENT_SONG, index),
-      field(Arguments::TIME, static_cast<qint64>(offset_nanosec / kNsecPerMsec))
+      field(Arguments::TIME, static_cast<qint64>(offset_nanosec / kNsecPerMsec)),
+      field(Arguments::LENGTH, static_cast<qint64>(current_item_->EffectiveMetadata().length_nanosec() / kNsecPerMsec))
     }));
 
 }

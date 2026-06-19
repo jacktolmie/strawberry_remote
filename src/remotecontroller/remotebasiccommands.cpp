@@ -1,9 +1,7 @@
 #include <QJsonObject>
 #include "remotebasiccommands.h"
-#include "constants/timeconstants.h"
 #include "remotecontroller/remoteconstants.h"
 #include "core/player.h"
-#include "playlist/playlistmanager.h"
 #include "remotecontroller/remotejsoncreator.h"
 #include "remotecontroller/remotetypes.h"
 
@@ -74,10 +72,7 @@ void RemoteBasicCommands::createCommandMap()
   };
   commandMap[u"volume-up"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeUp();};
   commandMap[u"volume-down"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeDown();};
-  // Delete when done testing song timer position
-  commandMap[u"current"_s] = [this](const auto&){qDebug() << "Remote Current time: "<< app_->player()->engine()->position_nanosec() / kNsecPerMsec;};
-
-  commandMap[u"mute"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::mute();};
+   commandMap[u"mute"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::mute();};
 
   // Basic seek commands.
   commandMap[u"seek-to"_s] = [this, parseUintArg](const QStringList& args){

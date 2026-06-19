@@ -1238,6 +1238,7 @@ void Playlist::InsertItemsWithoutUndo(const PlaylistItemPtrList &items, const in
     ScheduleSave();
   }
 
+  Q_EMIT sendChangedPlaylist(id_);
 }
 
 void Playlist::InsertCollectionItems(const SongList &songs, const int pos, const bool play_now, const bool enqueue, const bool enqueue_next) {
@@ -2188,8 +2189,6 @@ void Playlist::ReshuffleIndices() {
   else {
     current_virtual_index_ = -1;
   }
-
-  Q_EMIT sendChangedPlaylist(id_);
 
 }
 

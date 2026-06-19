@@ -27,6 +27,10 @@ public:
   QJsonObject songData(const Song& song) const;
 
 public Q_SLOTS:
+  void getCurrentSongRequest(const Song& song);
+
+Q_SIGNALS:
+  void sendCurrentSongData(const QJsonObject& song);
 
 
 };

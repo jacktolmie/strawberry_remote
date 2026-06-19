@@ -74,9 +74,6 @@ private Q_SLOTS:
   void onNewConnection();
   void onReadyRead();
   void onDisconnect();
-
-  // Delete when done testing JSON responses.
-  void testJson(QTcpSocket*);
 };
 
 #endif // REMOTECONTROLLER_H

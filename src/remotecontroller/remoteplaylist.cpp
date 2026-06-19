@@ -7,7 +7,6 @@
 #include "playlist/playlist.h"
 #include "core/player.h"
 #include "remotecontroller/remoteconstants.h"
-#include "remotecontroller/remotecurrentsong.h"
 #include "remotecontroller/remotejsoncreator.h"
 #include "remotecontroller/remotetypes.h"
 
@@ -17,7 +16,8 @@ using namespace RemoteTypes;
 
 RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
     : QObject{parent},
-      app_(app)
+      app_(app),
+      currentSong_(new RemoteCurrentSong(app_))
 {
   RemotePlaylist::createCommandMap();
 
@@ -41,6 +41,8 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendActivePlaylistId, this, &RemotePlaylist::activeChanged);
   QObject::connect(this, &RemotePlaylist::setActivePlaylist, &*app_->playlist_manager(), &PlaylistManager::SetActivePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::sendPlaylistData);
+  QObject::connect(currentSong_, &RemoteCurrentSong::sendCurrentSongData, this, &RemotePlaylist::sendResponse);
+
  }
 
 QJsonObject RemotePlaylist::renameCurrentPlaylist(const QStringList& args){

@@ -5,6 +5,7 @@
 #include <QDebug>
 
 #include "core/application.h"
+#include "remotecontroller/remotecurrentsong.h"
 
 using PlaylistCmdMap = QMap<QString, std::function<QJsonObject(const QStringList&)>>;
 
@@ -13,6 +14,7 @@ class RemotePlaylist : public QObject
   Q_OBJECT
 
   const Application *app_;
+  RemoteCurrentSong *currentSong_;
 
   PlaylistCmdMap commandMap;
   void createCommandMap();
