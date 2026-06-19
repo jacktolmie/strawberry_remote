@@ -1,7 +1,6 @@
 /*
  * Strawberry Music Player
- * This file was part of Clementine.
- * Copyright 2012, David Sansome <me@davidsansome.com>
+ * Copyright 2026, Jonas Kvinge <jonas@jkvinge.net>
  *
  * Strawberry is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,28 +17,21 @@
  *
  */
 
-#ifndef QTFSLISTENER_H
-#define QTFSLISTENER_H
+#ifndef SEEKBARSETTINGS_H
+#define SEEKBARSETTINGS_H
 
-#include "config.h"
+namespace SeekbarSettings {
 
-#include <QString>
+constexpr char kSettingsGroup[] = "Seekbar";
 
-#include "filesystemwatcherinterface.h"
-
-class QFileSystemWatcher;
-
-class QtFSListener : public FileSystemWatcherInterface {
-  Q_OBJECT
-
- public:
-  explicit QtFSListener(QObject *parent);
-  void AddPath(const QString &path) override;
-  void RemovePath(const QString &path) override;
-  void Clear() override;
-
- private:
-  QFileSystemWatcher *watcher_;
+enum class Mode {
+  Normal = 0,
+  Moodbar = 1,
+  Waveform = 2
 };
 
-#endif  // QTFSLISTENER_H
+constexpr char kMode[] = "mode";
+
+}  // namespace SeekbarSettings
+
+#endif  // SEEKBARSETTINGS_H

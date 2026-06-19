@@ -76,6 +76,9 @@
 #ifdef HAVE_MOODBAR
 #  include "moodbarsettingspage.h"
 #endif
+#ifdef HAVE_WAVEFORM
+#  include "waveformsettingspage.h"
+#endif
 #ifdef HAVE_SUBSONIC
 #  include "subsonic/subsonicservice.h"
 #  include "subsonicsettingspage.h"
@@ -148,6 +151,9 @@ SettingsDialog::SettingsDialog(const SharedPtr<Player> player,
 
 #ifdef HAVE_MOODBAR
   AddPage(Page::Moodbar, new MoodbarSettingsPage(this, this), iface);
+#endif
+#ifdef HAVE_WAVEFORM
+  AddPage(Page::Waveform, new WaveformSettingsPage(this, this), iface);
 #endif
 
   QTreeWidgetItem *streaming = AddCategory(tr("Streaming"));
