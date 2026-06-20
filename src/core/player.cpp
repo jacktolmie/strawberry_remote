@@ -936,7 +936,12 @@ void Player::Mute() {
 
 }
 
-void Player::Pause() { engine_->Pause(); }
+void Player::Pause() {
+  engine_->Pause();
+  Q_EMIT sendToRemote(RemoteJsonCreator::createResponse({
+
+  }));
+}
 
 void Player::Play(const quint64 offset_nanosec) {
 

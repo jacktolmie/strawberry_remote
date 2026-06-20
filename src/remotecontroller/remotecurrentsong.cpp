@@ -17,6 +17,8 @@ RemoteCurrentSong::RemoteCurrentSong(const Application *app, QObject *parent)
 
 QJsonObject RemoteCurrentSong::songData(const Song& song) const {
     return RemoteJsonCreator::createResponse({
+        field(MessageType::EVENT, toString(MessageType::EVENT)),
+        field(Event::EVENT, toString(Event::SONG_INFO)),
         field(Arguments::ID, song.id()),
         field(Arguments::ARTIST, song.artist()),
         field(Arguments::ALBUM, song.album()),
@@ -27,8 +29,9 @@ QJsonObject RemoteCurrentSong::songData(const Song& song) const {
 
 QJsonObject RemoteCurrentSong::songInfo(const Song& song) const {
     auto obj = songData(song);
-    obj.insert(u"type"_s, toString(MessageType::RESPONSE));
-    obj.insert(u"response"_s, toString(Response::SONG_INFO));
+
+    // obj.insert(field(MessageType::EVENT, toString(MessageType::EVENT)));
+    // obj.insert(field(Event::EVENT, toString(Event::SONG_INFO)));
     return obj;
 }
 

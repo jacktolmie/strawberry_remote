@@ -44,6 +44,7 @@ namespace RemoteTypes{
     SEEK_TO,
     SENT_ACTIVE_PLAYLIST,
     SONG_CHANGED,
+    SONG_INFO,
     STOP,
     VOLUME_CHANGED
   };
@@ -70,8 +71,7 @@ namespace RemoteTypes{
     SEND_REQUESTED_PLAYLIST,
     SET_CURRENT_PLAYLIST_TO,
     SHUFFLED_PLAYLIST,
-    SHUFFLED_ALL_PLAYLISTS,
-    SONG_INFO
+    SHUFFLED_ALL_PLAYLISTS
   };
 
   enum class Arguments{

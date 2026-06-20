@@ -31,7 +31,8 @@ Q_SIGNALS:
   void mute();
   void next();
   void pause();
-  void play(const quint64 playAt);
+  // void play(const quint64 playAt);
+  void play();
   void playPause();
   void previous();
   void restartOrPrevious();

@@ -17,9 +17,9 @@ RemoteBasicCommands::RemoteBasicCommands(const Application *app)
   // Make connects for sending to server.
   QObject::connect(this, &RemoteBasicCommands::mute, &*app_->player(), &Player::Mute);
   QObject::connect(this, &RemoteBasicCommands::next , &*app_->player(), &Player::Next);
-  QObject::connect(this, &RemoteBasicCommands::play , &*app_->player(), &Player::Play);
+  QObject::connect(this, &RemoteBasicCommands::play , &*app_->player(), &Player::PlayPauseHelper);
   QObject::connect(this, &RemoteBasicCommands::playPause , &*app_->player(), &Player::PlayPauseHelper);
-  QObject::connect(this, &RemoteBasicCommands::pause, &*app_->player(), &Player::Pause);
+  QObject::connect(this, &RemoteBasicCommands::pause, &*app_->player(), &Player::PlayPauseHelper);
   QObject::connect(this, &RemoteBasicCommands::previous , &*app_->player(), &Player::Previous);
   QObject::connect(this, &RemoteBasicCommands::restartOrPrevious , &*app_->player(), &Player::RestartOrPrevious);
   QObject::connect(this, &RemoteBasicCommands::seekTo , &*app_->player(), &Player::SeekTo);
@@ -31,7 +31,6 @@ RemoteBasicCommands::RemoteBasicCommands(const Application *app)
   QObject::connect(this, &RemoteBasicCommands::volumeDown , &*app_->player(), &Player::VolumeDown);
   QObject::connect(this, &RemoteBasicCommands::volumeUp , &*app_->player(), &Player::VolumeUp);
   QObject::connect(&*app_->player(), &Player::VolumeChanged, this, &RemoteBasicCommands::volumeChanged);
-// QObject::connect(this, &RemoteBasicCommands:: , &*app_->player(), &Player::);
 }
 
 void RemoteBasicCommands::volumeChanged(const uint volume)
@@ -54,7 +53,7 @@ void RemoteBasicCommands::createCommandMap()
   auto parseUintArg{remoteconstants::parseUintArg};
 
   // Basic audio playback funtions.
-  commandMap[u"play"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::play(app_->player()->engine()->position_nanosec());};
+  commandMap[u"play"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::play();};
   commandMap[u"play-pause"_s] = [this](const auto&) {Q_EMIT RemoteBasicCommands::playPause();};
   commandMap[u"pause"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::pause();};
   commandMap[u"stop"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::stop(false);};
@@ -83,6 +82,4 @@ void RemoteBasicCommands::createCommandMap()
 
   commandMap[u"seek-backward"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekBackward();};
   commandMap[u"seek-forward"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekForward();};
-
-  // commandMap[u"play"_s)] = [this](const auto&){ app_->;};
 }

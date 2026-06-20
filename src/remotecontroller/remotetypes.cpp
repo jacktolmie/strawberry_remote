@@ -80,6 +80,7 @@ QString toString(Event value) {
         case Event::SEEK_TO:                return u"seek_to"_s;
         case Event::SENT_ACTIVE_PLAYLIST:   return u"sent_active_playlist"_s;
         case Event::SONG_CHANGED:           return u"song_changed"_s;
+        case Event::SONG_INFO:              return u"song_info"_s;
         case Event::STOP:                   return u"stop"_s;
         case Event::VOLUME_CHANGED:         return u"volume_changed"_s;
     }
@@ -112,7 +113,6 @@ QString toString(Response value) {
         case Response::SET_CURRENT_PLAYLIST_TO:         return u"set_current_playlist_to"_s;
         case Response::SHUFFLED_PLAYLIST:               return u"shuffled_playlist"_s;
         case Response::SHUFFLED_ALL_PLAYLISTS:          return u"shuffled_all_playlists"_s;
-        case Response::SONG_INFO:                       return u"song_info"_s;
     }
     Q_UNREACHABLE();
 }
