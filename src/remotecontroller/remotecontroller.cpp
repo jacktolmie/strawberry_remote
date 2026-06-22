@@ -16,18 +16,17 @@ using namespace RemoteTypes;
 
 RemoteController::RemoteController(const Application* app, QObject *parent)
     : QObject{parent},
+      server{new QTcpServer(this)},
       app_{app},
       commands{new RemoteCommands(app, this)},
-      guiValues{new RemoteGuiValues(commands->getRemotePlaylist(), app_, this)}
+      guiValues{new RemoteGuiValues(commands->getRemotePlaylist(), app_, this)},
+      timer{new QTimer(this)}
 {
   connect(this, &RemoteController::commandReceived, commands, &RemoteCommands::processLine);
   connect(commands, &RemoteCommands::sendResponse, this, &RemoteController::broadcastToDevices);
   connect(&*app_->player(), &Player::sendToRemote, this, &RemoteController::broadcastToDevices);
 
-  server = new QTcpServer(this);
-
   // Create a timer to check network connection.
-  timer = new QTimer(this);
   timer->setInterval(30000);
   connect(timer, &QTimer::timeout, this, &RemoteController::activeNetworkConnection);
   connect(server, &QTcpServer::newConnection, this, &RemoteController::onNewConnection);

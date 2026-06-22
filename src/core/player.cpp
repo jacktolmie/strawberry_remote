@@ -87,6 +87,7 @@ Player::Player(const SharedPtr<TaskManager> task_manager, const SharedPtr<UrlHan
       analyzer_(nullptr),
       equalizer_(nullptr),
       timer_save_volume_(new QTimer(this)),
+      songPositionTimer_(new QTimer(this)),
       playlists_loaded_(false),
       play_requested_(false),
       pause_(false),
@@ -112,6 +113,9 @@ Player::Player(const SharedPtr<TaskManager> task_manager, const SharedPtr<UrlHan
 
   QObject::connect(&*url_handlers, &UrlHandlers::Registered, this, &Player::UrlHandlerRegistered);
 
+  // Timer for emitting song position to remote devices.
+  songPositionTimer_->setInterval(5000);
+  QObject::connect(songPositionTimer_, &QTimer::timeout, this, &Player::sendCurrentTime);
 }
 
 void Player::Init() {
@@ -147,6 +151,8 @@ void Player::Init() {
 
   LoadVolume();
 
+  songPositionTimer_->start();
+  QTimer::singleShot(0, this, &Player::sendCurrentTime);
 }
 
 void Player::ReloadSettings() {
@@ -1082,4 +1088,14 @@ void Player::InvalidSongRequested(const QUrl &url) {
 
 void Player::HandleAuthentication() {
   Q_EMIT Authenticated();
+}
+
+void Player::sendCurrentTime(){
+  if(GetState() == EngineBase::State::Playing){
+    sendToRemote(RemoteJsonCreator::createResponse({
+      field(MessageType::EVENT, toString(MessageType::EVENT)),
+      field(Event::EVENT, toString(Arguments::TIME)),
+      field(Arguments::TIME, engine()->position_nanosec() / kNsecPerMsec)
+    }));
+  }
 }

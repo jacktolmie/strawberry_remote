@@ -106,6 +106,9 @@ class Player : public PlayerInterface {
 
   void HandleAuthentication();
 
+  // Emit current song time to remote devices.
+  void sendCurrentTime();
+
  private Q_SLOTS:
   void UrlHandlerRegistered(UrlHandler *url_handler) const;
 
@@ -146,6 +149,7 @@ Q_SIGNALS:
   AnalyzerContainer *analyzer_;
   SharedPtr<Equalizer> equalizer_;
   QTimer *timer_save_volume_;
+  QTimer *songPositionTimer_;
 
   bool playlists_loaded_;
   bool play_requested_;
