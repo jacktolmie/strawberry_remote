@@ -27,15 +27,6 @@ QJsonObject RemoteCurrentSong::songData(const Song& song) const {
     });
 }
 
-QJsonObject RemoteCurrentSong::songInfo(const Song& song) const {
-    auto obj = songData(song);
-
-    // obj.insert(field(MessageType::EVENT, toString(MessageType::EVENT)));
-    // obj.insert(field(Event::EVENT, toString(Event::SONG_INFO)));
-    return obj;
-}
-
 void RemoteCurrentSong::getCurrentSongRequest(const Song& song){
-  qInfo()<<"remotecurrentsong getcurrentsongrequest called with: " << song.PrettyTitleWithArtist();
-  Q_EMIT sendCurrentSongData(songInfo(song));
+  Q_EMIT sendCurrentSongData(songData(song));
 }
