@@ -53,6 +53,7 @@ QString toString(Error value) {
         case Error::COMMAND_NOT_FOUND:                  return u"command_not_found"_s;
         case Error::ERROR:                              return u"error"_s;
         case Error::NOT_ENOUGH_ARGUMENTS_PASSED_NEEDS:  return u"not_enough_arguments_passed_needs"_s;
+        case Error::PLAYLIST_NOT_CLEARED:               return u"playlist_not_cleared"_s;
         case Error::PLAYLIST_NOT_CLOSED:                return u"playlist_not_closed"_s;
         case Error::PLAYLIST_NOT_FOUND:                 return u"playlist_not_found"_s;
         case Error::WRONG_ARGUMENT_SENT:                return u"wrong_argument_sent"_s;
@@ -102,6 +103,7 @@ QString toString(Response value) {
         case Response::CLEARED_PLAYLIST:                return u"cleared_playlist"_s;
         case Response::CLOSED_PLAYLIST_WITH_ID:         return u"closed_playlist_with_id"_s;
         case Response::DELETED_PLAYLIST_WITH_ID:        return u"deleted_playlist_with_id"_s;
+        case Response::DELETED_SONGS:                   return u"deleted_songs"_s;
         case Response::IS_PLAYLIST_A_FAVOURITE:         return u"is_playlist_a_favourite"_s;
         case Response::PLAYLIST_CLOSED:                 return u"playlist_closed"_s;
         case Response::REMOVED_DUPLICATES_FROM_PLAYLIST: return u"removed_duplicates_from_playlist"_s;

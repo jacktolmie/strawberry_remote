@@ -13,18 +13,36 @@ class RemotePlaylist : public QObject
 {
   Q_OBJECT
 
+public:
+    explicit RemotePlaylist(const Application *app, QObject *parent = nullptr);
+    ~RemotePlaylist() = default;
+
+    const PlaylistCmdMap& sendCommandMap() const;
+    QJsonObject sendAllPlaylists() const;
+
+private:
   const Application *app_;
   RemoteCurrentSong *currentSong_;
 
   PlaylistCmdMap commandMap;
   void createCommandMap();
 
+  QJsonObject clearRemoteCurrentPlaylist(const QStringList& args);
+
   QJsonObject closeCurrentPlaylist(const QStringList& args);
+
+  QJsonObject removeCurrentSongPlaylist();
+
+  QJsonObject removeDuplicatesPlaylist();
+
   // Rename current playlist. Send command rename-playlist <new name>.
   QJsonObject renameCurrentPlaylist(const QStringList& args);
 
   // Shuffle all playlists.
   QJsonObject shuffleAllPlaylists();
+
+  // Shuffle single playlist.
+  QJsonObject shuffleSinglePlaylist(const QStringList& args);
 
   // Delete current playlist.
   QJsonObject deleteCurrentDevicePlaylist(const QStringList& args);
@@ -57,11 +75,11 @@ Q_SIGNALS:
   void serverFavouritePlaylist(const int id, bool isFavourite);
   void removeCurrentSong();
   void removeDuplicates();
+  void removeItemsWithoutUndo(const int id, const QList<int> &indices);
   void remoteRenamePlaylist(const int id, const QString& name);
   void setActivePlaylist(const int id);
   void setCurrentPlaylistSignal(const int id);
   void shufflePlaylist();
-
 
 private Q_SLOTS:
   // If playlist is changed on server, send updated playlist.
@@ -71,13 +89,6 @@ private Q_SLOTS:
   void serverRenamePlaylist(const int id, const QString& name);
   void activeChanged(const int id); // Sends new active playlist id.
   void sendPlaylistData(const int id);
-
-public:
-  explicit RemotePlaylist(const Application *app, QObject *parent = nullptr);
-  ~RemotePlaylist() = default;
-
-  const PlaylistCmdMap& sendCommandMap() const;
-  QJsonObject sendAllPlaylists() const;
 };
 
 #endif // REMOTEPLAYLIST_H

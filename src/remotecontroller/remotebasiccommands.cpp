@@ -66,7 +66,6 @@ void RemoteBasicCommands::createCommandMap()
   commandMap[u"volume"_s] = [this, parseUintArg](const QStringList& args){
     bool ok;
     quint32 vol = parseUintArg(args, ok);
-    qDebug() << "Remote volume with value: "<< vol;
     if (ok) Q_EMIT RemoteBasicCommands::volume(qBound(0u, vol, 100u));
   };
   commandMap[u"volume-up"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeUp();};

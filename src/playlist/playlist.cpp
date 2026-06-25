@@ -1810,6 +1810,7 @@ bool Playlist::removeRows(const int row, const int count, const QModelIndex &par
     undo_stack_->push(new PlaylistUndoCommandRemoveItems(this, row, count));
   }
 
+  // Send changed playlist to remote devices.
   Q_EMIT sendChangedPlaylist(id_);
 
   return true;
@@ -1841,6 +1842,7 @@ bool Playlist::removeRows(QList<int> &rows) {
     part.clear();
   }
 
+  // Send changed playlist to remote devices.
   Q_EMIT sendChangedPlaylist(id_);
 
   return true;
@@ -1907,6 +1909,9 @@ PlaylistItemPtrList Playlist::RemoveItemsWithoutUndo(const int row, const int co
   }
 
   ScheduleSave();
+
+  // Send changed playlist to remote devices.
+  Q_EMIT sendChangedPlaylist(id_);
 
   return items;
 
