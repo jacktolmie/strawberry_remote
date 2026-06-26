@@ -25,58 +25,54 @@ RemoteCommands::RemoteCommands(const Application* app, QObject* parent = nullptr
 
 void RemoteCommands::processCommand(const QString& command, const QStringList &args)
 {
-  // Check if sent command is in basicCommandMap.
-  if(basicCmdMap.contains(command)){
-    basicCmdMap[command](args);
-    Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
-      field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
-      field(Response::RESPONSE, toString(Response::RUNNING_COMMAND)),
-      field(Arguments::COMMAND, command)
-      }));
-  }
-  else if (playlistCmdMap.contains(command)){
-    Q_EMIT sendResponse(playlistCmdMap[command](args));
-
-  }
-  else{
-  // If sent command does not match anything, send message back to device.
-    Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
-      field(MessageType::ERROR, toString(MessageType::ERROR)),
-      field(Error::ERROR, toString(Error::COMMAND_NOT_FOUND)),
-      field(Arguments::COMMAND, command)
-      }));
-  }
+    // Check if sent command is in basicCommandMap.
+    if(basicCmdMap.contains(command)){
+        basicCmdMap[command](args);
+        return;
+    }
+    else if (playlistCmdMap.contains(command)){
+        playlistCmdMap[command](args);
+        return;
+    }
+    else{
+    // If sent command does not match anything, send message back to device.
+        Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
+          field(MessageType::ERROR, toString(MessageType::ERROR)),
+          field(Error::ERROR, toString(Error::COMMAND_NOT_FOUND)),
+          field(Arguments::COMMAND, command)
+          }));
+      }
 }
 
 void RemoteCommands::processLine(const QString& line)
 {
-  qInfo() << "Command processline: " << line;
-  QJsonParseError parseError;
-  QJsonDocument doc{QJsonDocument::fromJson(line.toUtf8(), &parseError)};
+    qInfo() << "Command processline: " << line;
+    QJsonParseError parseError;
+    QJsonDocument doc{QJsonDocument::fromJson(line.toUtf8(), &parseError)};
 
-  if (parseError.error != QJsonParseError::NoError) {
-    qWarning() << "Failed to parse JSON command: "<< parseError.errorString();
-    return;
-  }
+    if (parseError.error != QJsonParseError::NoError) {
+        qWarning() << "Failed to parse JSON command: "<< parseError.errorString();
+        return;
+    }
 
-  if (!doc.isObject()) {
-    qWarning() << "Received JSON is not an object.";
-    return;
-  }
+    if (!doc.isObject()) {
+        qWarning() << "Received JSON is not an object.";
+        return;
+    }
 
-  QJsonObject obj{doc.object()};
+    QJsonObject obj{doc.object()};
 
-  QString command{u"command"_s};
-  if (!obj.contains(command) || !obj[command].isString()) {
-    qWarning() << "JSON command is missing a 'command' string field.";
-    return;
-  }
+    QString command{u"command"_s};
+    if (!obj.contains(command) || !obj[command].isString()) {
+        qWarning() << "JSON command is missing a 'command' string field.";
+        return;
+    }
 
-  command = obj[command].toString().toLower();
+    command = obj[command].toString().toLower();
 
-  QStringList args;
-  QString value{u"value"_s};
-  QString arg{u"args"_s};
+    QStringList args;
+    QString value{u"value"_s};
+    QString arg{u"args"_s};
 
     if (obj.contains(value)) {
         args.append(obj[value].toVariant().toString());
@@ -115,6 +111,6 @@ void RemoteCommands::processLine(const QString& line)
         args.append(namedArgs);
     }
 
-  // Process command with args after breaking down the JSON file.
-  RemoteCommands::processCommand(command, args);
+    // Process command with args after breaking down the JSON file.
+    RemoteCommands::processCommand(command, args);
 }

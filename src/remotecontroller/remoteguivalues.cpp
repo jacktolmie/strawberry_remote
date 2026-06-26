@@ -45,13 +45,11 @@ QJsonObject RemoteGuiValues::getUpdates() const{
     field(Arguments::PLAYING, toString(currentPlayState)),
     field(Arguments::PLAYLISTS, remotePlaylist_->sendAllPlaylists()),
     field(Arguments::CURRENT_PLAYLIST, app_->playlist_manager()->current_id()),
-    field(Arguments::CURRENT_SONG, app_->playlist_manager()->active()
-        ? app_->playlist_manager()->active()->current_index().row(): -1),
+    field(Arguments::CURRENT_SONG, app_->playlist_manager()->active() ? app_->playlist_manager()->active()->current_index().row(): -1),
     field(Arguments::ACTIVE_PLAYLIST, app_->playlist_manager()->active_id())
   });
 }
 
-// void RemoteGuiValues::triggerUpdate(QTcpSocket *client) const
 QJsonObject RemoteGuiValues::triggerUpdate() const {
   return getUpdates();
 }

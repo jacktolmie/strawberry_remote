@@ -31,7 +31,7 @@ private:
 
   QJsonObject closeCurrentPlaylist(const QStringList& args);
 
-  QJsonObject removeCurrentSongPlaylist();
+  QJsonObject removeCurrentSongsPlaylist(const QStringList& songs);
 
   QJsonObject removeDuplicatesPlaylist();
 
@@ -63,6 +63,9 @@ private:
   QJsonObject makeAllPlaylists() const;
   // QJsonObject makeSinglePlaylist(const int id);
   QJsonObject makePlaylistData(const int id) const;
+
+  // Send number of arguments needed back to remote.
+  QJsonObject wrongNumArgs(const int num);
 
   void testUrl() const; // Delete after testing URL.
 

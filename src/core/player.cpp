@@ -738,6 +738,12 @@ void Player::SetVolumeFromSlider(const int value) {
     engine_->SetVolume(volume);
     Q_EMIT VolumeChanged(volume);
     timer_save_volume_->start();
+
+    sendToRemote(RemoteJsonCreator::createResponse({
+        field(MessageType::EVENT, toString(MessageType::EVENT)),
+        field(Event::EVENT, toString(Event::VOLUME_CHANGED)),
+        field(Arguments::VOLUME, static_cast<int>(volume))
+    }));
   }
 
 }

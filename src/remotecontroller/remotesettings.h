@@ -29,8 +29,6 @@ public:
 private:
   void getValues();
   void saveValues();
-  // void getUpdates(Values& sentValues);
-  // void sendUpdates();
 
 Q_SIGNALS:
   void sendValues(const Values& values);

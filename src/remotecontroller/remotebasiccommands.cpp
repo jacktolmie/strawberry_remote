@@ -30,16 +30,34 @@ RemoteBasicCommands::RemoteBasicCommands(const Application *app)
   QObject::connect(this, &RemoteBasicCommands::volume , &*app_->player(), &Player::SetVolume);
   QObject::connect(this, &RemoteBasicCommands::volumeDown , &*app_->player(), &Player::VolumeDown);
   QObject::connect(this, &RemoteBasicCommands::volumeUp , &*app_->player(), &Player::VolumeUp);
-  QObject::connect(&*app_->player(), &Player::VolumeChanged, this, &RemoteBasicCommands::volumeChanged);
 }
 
-void RemoteBasicCommands::volumeChanged(const uint volume)
-{
-  Q_EMIT RemoteBasicCommands::sendResponse(RemoteJsonCreator::createResponse({
-      field(MessageType::EVENT, toString(MessageType::EVENT)),
-      field(Event::EVENT, toString(Event::VOLUME_CHANGED)),
-      field(Arguments::VOLUME, static_cast<int>(volume)),
-  }));
+void RemoteBasicCommands::commandResponse(const QString& command){
+    Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
+        field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+        field(Response::RESPONSE, toString(Response::RUNNING_COMMAND)),
+        field(Arguments::COMMAND, command)
+    }));
+}
+
+void RemoteBasicCommands::remoteVolume(const QStringList& args){
+    if(args.size() != 1) wrongNumArgs(1);
+
+    bool ok;
+    quint32 vol = remoteconstants::parseUintArg(args, ok);
+    if (ok && vol <= 100){
+        Q_EMIT volume(qBound(0u, vol, 100u));
+    }
+}
+
+void RemoteBasicCommands::remoteSeekTo(const QStringList& args){
+    if(args.size() != 1) wrongNumArgs(1);
+
+    bool ok;
+    quint32 seconds = remoteconstants::parseUintArg(args, ok);
+    if (ok) {
+        Q_EMIT RemoteBasicCommands::seekTo(seconds);
+    }
 }
 
 const BasicCmdMap& RemoteBasicCommands::sendCommandMap() const
@@ -47,38 +65,41 @@ const BasicCmdMap& RemoteBasicCommands::sendCommandMap() const
   return commandMap;
 }
 
+void RemoteBasicCommands::volumeChanged(const uint volume)
+{
+    Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
+        field(MessageType::EVENT, toString(MessageType::EVENT)),
+        field(Event::EVENT, toString(Event::VOLUME_CHANGED)),
+        field(Arguments::VOLUME, static_cast<int>(volume)),
+    }));
+}
+
+void RemoteBasicCommands::wrongNumArgs(const int num){
+    Q_EMIT sendResponse(
+        RemoteJsonCreator::createResponse({
+            field(MessageType::ERROR, toString(MessageType::ERROR)),
+            field(Error::ERROR, toString(Error::WRONG_NUMBER_ARGUMENTS_PASSED)),
+            field(Arguments::REQUIRED, num)
+        })
+    );
+}
+
 void RemoteBasicCommands::createCommandMap()
 {
-  // Lambda to check if args contains an int. Inside remoteconstants header.
-  auto parseUintArg{remoteconstants::parseUintArg};
-
-  // Basic audio playback funtions.
-  commandMap[u"play"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::play();};
-  commandMap[u"play-pause"_s] = [this](const auto&) {Q_EMIT RemoteBasicCommands::playPause();};
-  commandMap[u"pause"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::pause();};
-  commandMap[u"stop"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::stop(false);};
-  commandMap[u"next"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::next();};
-  commandMap[u"previous"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::previous();};
-  commandMap[u"stop-after-current"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::stopAfterCurrent();};
-  commandMap[u"restart-or-previous"_s] = [this](const auto&){Q_EMIT RemoteBasicCommands::restartOrPrevious();};
-
-  // Basic volume changes.
-  commandMap[u"volume"_s] = [this, parseUintArg](const QStringList& args){
-    bool ok;
-    quint32 vol = parseUintArg(args, ok);
-    if (ok) Q_EMIT RemoteBasicCommands::volume(qBound(0u, vol, 100u));
-  };
-  commandMap[u"volume-up"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeUp();};
-  commandMap[u"volume-down"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::volumeDown();};
-   commandMap[u"mute"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::mute();};
-
-  // Basic seek commands.
-  commandMap[u"seek-to"_s] = [this, parseUintArg](const QStringList& args){
-    bool ok;
-    quint32 seconds = parseUintArg(args, ok);
-    if (ok) Q_EMIT RemoteBasicCommands::seekTo(seconds);
-  };
-
-  commandMap[u"seek-backward"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekBackward();};
-  commandMap[u"seek-forward"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekForward();};
+    // Basic audio playback funtions.
+    commandMap[u"play"_s] = [this](const auto&){Q_EMIT play(); commandResponse(toString(Event::PLAY));};
+    commandMap[u"play-pause"_s] = [this](const auto&) {Q_EMIT playPause(); commandResponse(toString(Event::PLAY));};
+    commandMap[u"pause"_s] = [this](const auto&){Q_EMIT pause(); commandResponse(toString(Event::PAUSE));};
+    commandMap[u"stop"_s] = [this](const auto&){Q_EMIT stop(false); commandResponse(toString(Event::STOP));};
+    commandMap[u"next"_s] = [this](const auto&){Q_EMIT next(); commandResponse(toString(Event::NEXT));};
+    commandMap[u"previous"_s] = [this](const auto&){Q_EMIT previous(); commandResponse(toString(Event::PREVIOUS));};
+    commandMap[u"stop-after-current"_s] = [this](const auto&){Q_EMIT stopAfterCurrent(); commandResponse(toString(Event::STOP));};
+    commandMap[u"restart-or-previous"_s] = [this](const auto&){Q_EMIT restartOrPrevious(); commandResponse(toString(Event::PREVIOUS));};
+    commandMap[u"volume"_s] = [this](const QStringList& args){ remoteVolume(args);};
+    commandMap[u"volume-up"_s] = [this](const auto&){ Q_EMIT volumeUp(); commandResponse(toString(Event::VOLUME_CHANGED));};
+    commandMap[u"volume-down"_s] = [this](const auto&){ Q_EMIT volumeDown(); commandResponse(toString(Event::VOLUME_CHANGED));};
+    commandMap[u"mute"_s] = [this](const auto&){ Q_EMIT mute(); commandResponse(toString(Event::VOLUME_CHANGED));};
+    commandMap[u"seek-to"_s] = [this](const QStringList& args){remoteSeekTo(args);};
+    commandMap[u"seek-backward"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekBackward(); commandResponse(toString(Event::SEEK_BACKWARD));};
+    commandMap[u"seek-forward"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekForward(); commandResponse(toString(Event::SEEK_FORWARD));};
 }
