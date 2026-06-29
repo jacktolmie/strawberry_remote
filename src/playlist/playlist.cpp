@@ -409,7 +409,7 @@ QVariant Playlist::data(const QModelIndex &idx, const int role) const {
       return QVariant(column_alignments_.value(idx.column(), (Qt::AlignLeft | Qt::AlignVCenter)));
 
     case Qt::ForegroundRole:
-      if (data(idx, Role_IsCurrent).toBool()) {
+      if (current_item_index_.isValid() && idx.row() == current_item_index_.row()) {
         // Ignore any custom colours for the currently playing item - they might clash with the glowing current track indicator.
         return QVariant();
       }
@@ -424,7 +424,7 @@ QVariant Playlist::data(const QModelIndex &idx, const int role) const {
       return QVariant();
 
     case Qt::BackgroundRole:
-      if (data(idx, Role_IsCurrent).toBool()) {
+      if (current_item_index_.isValid() && idx.row() == current_item_index_.row()) {
         // Ignore any custom colours for the currently playing item - they might clash with the glowing current track indicator.
         return QVariant();
       }
@@ -1796,6 +1796,10 @@ bool Playlist::removeRows(const int row, const int count, const QModelIndex &par
 
   Q_UNUSED(parent);
 
+  if (count <= 0) {
+    return true;
+  }
+
   if (row < 0 || row >= items_.size() || row + count > items_.size()) {
     return false;
   }
@@ -1847,7 +1851,7 @@ bool Playlist::removeRows(QList<int> &rows) {
 
 PlaylistItemPtrList Playlist::RemoveItemsWithoutUndo(const int row, const int count) {
 
-  if (row < 0 || row >= items_.size() || row + count > items_.size()) {
+  if (count <= 0 || row < 0 || row >= items_.size() || row + count > items_.size()) {
     return PlaylistItemPtrList();
   }
 

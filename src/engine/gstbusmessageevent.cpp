@@ -1,6 +1,6 @@
 /*
  * Strawberry Music Player
- * Copyright 2013, 2017-2021, Jonas Kvinge <jonas@jkvinge.net>
+ * Copyright 2026, Jonas Kvinge <jonas@jkvinge.net>
  *
  * Strawberry is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,22 +17,22 @@
  *
  */
 
-#ifndef ICONLOADER_H
-#define ICONLOADER_H
+#include "config.h"
 
-#include <QString>
-#include <QIcon>
+#include <gst/gst.h>
 
-class IconLoader {
- public:
-  static void Init();
-  static QIcon Load(const QString &name, const bool system_icon = true, const int fixed_size = 0, const int min_size = 0, const int max_size = 0);
+#include <QEvent>
 
- private:
-  explicit IconLoader() {}
-  static bool system_icons_;
-  static bool custom_icons_;
-  static bool svg_supported_;
-};
+#include "gstbusmessageevent.h"
 
-#endif  // ICONLOADER_H
+QEvent::Type GstBusMessageEvent::EventType() {
+
+  // C++ guarantees this is initialised once, so the event type is registered a single time and shared across all instances.
+  static const QEvent::Type type = static_cast<QEvent::Type>(QEvent::registerEventType());
+  return type;
+
+}
+
+GstBusMessageEvent::GstBusMessageEvent(GstMessage *message, const quint64 generation) : QEvent(EventType()), message_(gst_message_ref(message)), generation_(generation) {}
+
+GstBusMessageEvent::~GstBusMessageEvent() { gst_message_unref(message_); }
