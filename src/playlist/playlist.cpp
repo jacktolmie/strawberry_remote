@@ -1174,7 +1174,6 @@ void Playlist::InsertItems(const PlaylistItemPtrList &itemsIn, const int pos, co
 
   if (play_now) Q_EMIT PlayRequested(index(start, 0), AutoScroll::Maybe);
 
-  // Q_EMIT sendChangedPlaylist(id_);
 }
 
 void Playlist::InsertItemsWithoutUndo(const PlaylistItemPtrList &items, const int pos, const bool enqueue, const bool enqueue_next) {
@@ -1810,9 +1809,6 @@ bool Playlist::removeRows(const int row, const int count, const QModelIndex &par
     undo_stack_->push(new PlaylistUndoCommandRemoveItems(this, row, count));
   }
 
-  // Send changed playlist to remote devices.
-  Q_EMIT sendChangedPlaylist(id_);
-
   return true;
 
 }
@@ -2035,8 +2031,6 @@ void Playlist::Clear() {
   TurnOffDynamicPlaylist();
 
   ScheduleSave();
-
-  Q_EMIT sendChangedPlaylist(id_);
 
 }
 

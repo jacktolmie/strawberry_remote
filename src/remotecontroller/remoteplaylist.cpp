@@ -256,8 +256,9 @@ const PlaylistCmdMap& RemotePlaylist::sendCommandMap() const{
 void RemotePlaylist::sendPlaylistData(const int id){
     Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
-        field(Event::EVENT, toString(Event::MAKE_CURRENT_PLAYLIST)),
-        field(Arguments::CURRENT_PLAYLIST, makePlaylistData(id))
+        field(Event::EVENT, toString(Event::MAKE_PLAYLIST)),
+        field(Arguments::ID, id),
+        field(Arguments::PLAYLIST, makePlaylistData(id))
     }));
 }
 
