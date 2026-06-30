@@ -28,6 +28,7 @@ namespace RemoteTypes{
 
   enum class Event{
     ACTIVE_PLAYLIST,
+    CLOSED_PLAYLIST_WITH_ID,
     DELETE_PLAYLIST,
     EVENT,
     FAVOURITE_PLAYLIST,
@@ -60,7 +61,6 @@ namespace RemoteTypes{
 
   enum class Response{
     CLEARED_PLAYLIST,
-    CLOSED_PLAYLIST_WITH_ID,
     DELETED_PLAYLIST_WITH_ID,
     IS_PLAYLIST_A_FAVOURITE,
     PLAYLIST_CLOSED,
@@ -101,6 +101,7 @@ namespace RemoteTypes{
     TIME,
     TITLE,
     TRACK_ID,
+    SONG_URL,
     VOLUME
   };
 

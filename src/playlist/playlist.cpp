@@ -1625,7 +1625,7 @@ void Playlist::ReOrderWithoutUndo(const PlaylistItemPtrList &new_items) {
   Q_EMIT PlaylistChanged();
 
   // Send updated playlist to remote devices.
-  Q_EMIT sendChangedPlaylist(id_);
+  // Q_EMIT sendChangedPlaylist(id_);
 
   ScheduleSave();
 
@@ -2083,7 +2083,7 @@ void Playlist::RemoveItemsNotInQueue() {
     start++;
   }
 
-  Q_EMIT sendChangedPlaylist(id_);
+  // Q_EMIT sendChangedPlaylist(id_);
 }
 
 void Playlist::ReloadItems(const QList<int> &rows) {

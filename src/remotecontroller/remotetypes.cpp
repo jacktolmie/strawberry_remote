@@ -32,6 +32,7 @@ QString toString(Arguments value) {
         case Arguments::TIME:               return u"time"_s;
         case Arguments::TITLE:              return u"title"_s;
         case Arguments::TRACK_ID:           return u"track_id"_s;
+        case Arguments::SONG_URL:           return u"song_url"_s;
         case Arguments::VOLUME:             return u"volume"_s;
     }
     Q_UNREACHABLE();
@@ -65,6 +66,7 @@ QString toString(Event value) {
     switch (value) {
         case Event::EVENT:                  return u"event"_s;
         case Event::ACTIVE_PLAYLIST:        return u"active_playlist"_s;
+        case Event::CLOSED_PLAYLIST_WITH_ID:         return u"closed_playlist_with_id"_s;
         case Event::DELETE_PLAYLIST:        return u"delete_playlist"_s;
         case Event::FAVOURITE_PLAYLIST:     return u"favourite_playlist"_s;
         case Event::GUI_UPDATES:            return u"gui_updates"_s;
@@ -101,7 +103,6 @@ QString toString(MessageType value) {
 QString toString(Response value) {
     switch (value) {
         case Response::CLEARED_PLAYLIST:                return u"cleared_playlist"_s;
-        case Response::CLOSED_PLAYLIST_WITH_ID:         return u"closed_playlist_with_id"_s;
         case Response::DELETED_PLAYLIST_WITH_ID:        return u"deleted_playlist_with_id"_s;
         case Response::IS_PLAYLIST_A_FAVOURITE:         return u"is_playlist_a_favourite"_s;
         case Response::PLAYLIST_CLOSED:                 return u"playlist_closed"_s;

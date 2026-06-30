@@ -2,6 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QList>
+#include <qtpreprocessorsupport.h>
 #include "remoteplaylist.h"
 #include "playlist/playlistmanager.h"
 #include "playlist/playlistbackend.h"
@@ -44,8 +45,7 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(this, &RemotePlaylist::setActivePlaylist, &*app_->playlist_manager(), &PlaylistManager::SetActivePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::sendPlaylistData);
   QObject::connect(currentSong_, &RemoteCurrentSong::sendCurrentSongData, this, &RemotePlaylist::sendResponse);
-
- }
+}
 
 void RemotePlaylist::activeChanged(const int id){
     Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
@@ -104,8 +104,8 @@ QJsonObject RemotePlaylist::closeCurrentPlaylist(const QStringList& args){
 
 void RemotePlaylist::closeServerPlaylist(const int id){
     Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
-        field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
-        field(Response::RESPONSE, toString(Response::CLOSED_PLAYLIST_WITH_ID)),
+        field(MessageType::EVENT, toString(MessageType::EVENT)),
+        field(Event::EVENT, toString(Event::CLOSED_PLAYLIST_WITH_ID)),
         field(Arguments::ID, id)
     }));
 }

@@ -24,6 +24,7 @@ public:
   explicit RemoteCurrentSong(const Application *app, QObject *parent = nullptr);
 
   QJsonObject songData(const Song& song) const;
+  QJsonObject songInfoData(const Song& song) const;
 
 public Q_SLOTS:
   void getCurrentSongRequest(const Song& song);
