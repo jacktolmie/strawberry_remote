@@ -32,7 +32,7 @@ public:
   const BasicCmdMap &sendCommandMap() const;
 
 Q_SIGNALS:
-  //Commands to send to server
+  //Commands recieved from remote devices.
   void mute();
   void next();
   void pause();

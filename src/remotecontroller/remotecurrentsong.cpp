@@ -46,3 +46,21 @@ QJsonObject RemoteCurrentSong::songInfoData(const Song& song) const {
 void RemoteCurrentSong::getCurrentSongRequest(const Song& song){
   Q_EMIT sendCurrentSongData(songInfoData(song));
 }
+
+void RemoteCurrentSong::makeAlbumArt(const Song& song){
+    QFile file(song.art_manual().toLocalFile());
+
+    if(file.open(QIODevice::ReadOnly)){
+        QByteArray imageData{file.readAll()};
+        file.close();
+        QString base64Image{QString::fromLatin1(imageData.toBase64())};
+
+        Q_EMIT sendAlbumArt(
+            RemoteJsonCreator::createResponse({
+            field(MessageType::EVENT, toString(MessageType::EVENT)),
+            field(Event::EVENT, toString(Event::COVER)),
+            field(Arguments::COVER, base64Image)
+            })
+        );
+    }
+}

@@ -13,26 +13,25 @@ class CurrentAlbumCoverLoader;
 
 class RemoteCurrentSong : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
-  const Application *app_;
-  // const AlbumCoverFetcher *coverFetcher;
-
-  QUrl albumImageUrl;
+    const Application *app_;
 
 public:
-  explicit RemoteCurrentSong(const Application *app, QObject *parent = nullptr);
+    explicit RemoteCurrentSong(const Application *app, QObject *parent = nullptr);
 
-  QJsonObject songData(const Song& song) const;
-  QJsonObject songInfoData(const Song& song) const;
+    // QJsonObject sendAlbumArt(const Song& song);
+    QJsonObject songData(const Song& song) const;
+    QJsonObject songInfoData(const Song& song) const;
+
+    void makeAlbumArt(const Song& song);
 
 public Q_SLOTS:
-  void getCurrentSongRequest(const Song& song);
+    void getCurrentSongRequest(const Song& song);
 
 Q_SIGNALS:
-  void sendCurrentSongData(const QJsonObject& song);
-
-
+    void sendCurrentSongData(const QJsonObject& song);
+    void sendAlbumArt(const QJsonObject& albumArt);
 };
 
 #endif // REMOTECURRENTSONG_H

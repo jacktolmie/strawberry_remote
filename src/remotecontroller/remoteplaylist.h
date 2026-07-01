@@ -22,7 +22,6 @@ public:
     QJsonObject sendAllPlaylists() const;
 
 private:
-    void sendCoverImage();
     void sendPendingPlaylist();
 
     const Application *app_;
@@ -43,6 +42,8 @@ private:
     QJsonObject shuffleSinglePlaylist(const QStringList& args);
     // Delete current playlist.
     QJsonObject deleteCurrentDevicePlaylist(const QStringList& args);
+    // Send current album cover.
+    QJsonObject sendCoverImage();
     // Make playlist a favourite or not.
     QJsonObject setFavouritePlaylist(const QStringList& args);
     // Set the playlist as current. Send set-current-playlist <playlist ID>.
@@ -57,10 +58,6 @@ private:
     QJsonObject makePlaylistData(const int id) const;
     // Send number of arguments needed back to remote.
     QJsonObject wrongNumArgs(const int num);
-
-    void testUrl() const; // Delete after testing URL.
-
-
 
 Q_SIGNALS:
     void sendResponse(const QJsonObject& response);

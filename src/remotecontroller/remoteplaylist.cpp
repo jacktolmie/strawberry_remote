@@ -45,6 +45,7 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(this, &RemotePlaylist::setActivePlaylist, &*app_->playlist_manager(), &PlaylistManager::SetActivePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::sendPlaylistData);
   QObject::connect(currentSong_, &RemoteCurrentSong::sendCurrentSongData, this, &RemotePlaylist::sendResponse);
+  QObject::connect(currentSong_, &RemoteCurrentSong::sendAlbumArt, this, &RemotePlaylist::sendResponse);
 }
 
 void RemotePlaylist::activeChanged(const int id){
@@ -253,11 +254,12 @@ const PlaylistCmdMap& RemotePlaylist::sendCommandMap() const{
     return commandMap;
 }
 
-void RemotePlaylist::sendCoverImage(){
-    Q_EMIT RemoteJsonCreator::createResponse({
-        field(MessageType::EVENT, toString(MessageType::EVENT)),
-        field(Event::EVENT, toString(Event::COVER)),
-        field(Arguments::COVER, toString(Arguments::COVER))
+QJsonObject RemotePlaylist::sendCoverImage(){
+    currentSong_->makeAlbumArt(app_->playlist_manager()->current()->current_item_metadata());
+
+    return RemoteJsonCreator::createResponse({
+        field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+        field(Response::RESPONSE, toString(Response::SENT_ALBUM_COVER))
     });
 }
 
@@ -384,24 +386,18 @@ QJsonObject RemotePlaylist::wrongNumArgs(const int num){
 }
 
 void RemotePlaylist::createCommandMap(){
-    commandMap[u"clear-playlist"_s] = [this](const QStringList& args){ return clearRemoteCurrentPlaylist(args);};
-    commandMap[u"close-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::closeCurrentPlaylist(args); };
-    commandMap[u"delete-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::deleteCurrentDevicePlaylist(args); };
-    commandMap[u"favourite-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::setFavouritePlaylist(args); };
+    commandMap[u"clear-playlist"_s] = [this](const QStringList& args){ return clearRemoteCurrentPlaylist(args); };
+    commandMap[u"close-playlist"_s] = [this](const QStringList& args){ return closeCurrentPlaylist(args); };
+    commandMap[u"delete-playlist"_s] = [this](const QStringList& args){ return deleteCurrentDevicePlaylist(args); };
+    commandMap[u"favourite-playlist"_s] = [this](const QStringList& args){ return setFavouritePlaylist(args); };
     commandMap[u"remove-duplicates-playlist"_s] = [this](const auto&){ return removeDuplicatesPlaylist(); };
     commandMap[u"remove-songs-playlist"_s] = [this](const QStringList& args){ return removeCurrentSongsPlaylist(args); };
-    commandMap[u"rename-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::renameCurrentPlaylist(args); };
-    commandMap[u"send-active-playlist-songs"_s] = [this](const QStringList& args){ return RemotePlaylist::receiveRemoteActive(args); };
-    commandMap[u"send-all-playlists"_s] = [this](const auto&){ return RemotePlaylist::makeAllPlaylists(); };
-    commandMap[u"send-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::sendRequestedPLaylist(args); };
-    commandMap[u"set-current-playlist"_s] = [this](const QStringList& args){ return RemotePlaylist::setCurrentPlaylist(args); };
-    commandMap[u"shuffle-all-playlists"_s] = [this](const auto&){ return RemotePlaylist::shuffleAllPlaylists(); };
+    commandMap[u"rename-playlist"_s] = [this](const QStringList& args){ return renameCurrentPlaylist(args); };
+    commandMap[u"send-active-playlist-songs"_s] = [this](const QStringList& args){ return receiveRemoteActive(args); };
+    commandMap[u"send-all-playlists"_s] = [this](const auto&){ return makeAllPlaylists(); };
+    commandMap[u"send-playlist"_s] = [this](const QStringList& args){ return sendRequestedPLaylist(args); };
+    commandMap[u"send-cover"_s] = [this](const auto&){ return sendCoverImage(); };
+    commandMap[u"set-current-playlist"_s] = [this](const QStringList& args){ return setCurrentPlaylist(args); };
+    commandMap[u"shuffle-all-playlists"_s] = [this](const auto&){ return shuffleAllPlaylists(); };
     commandMap[u"shuffle-current-playlist"_s] = [this](const QStringList& args){ return shuffleSinglePlaylist(args); };
-}
-
-void RemotePlaylist::testUrl() const{
-  qInfo() <<"URL test";
-  // How to get current URL. This is crashing the program...
-    // qInfo()<< "Is valid? " <<app_->playlist_manager()->current()->current_item()->OriginalUrl().isValid();
-  // (app_->player()->GetCurrentItem()->OriginalUrl().isEmpty())? qInfo() << "Empty URL" : qInfo() << app_->player()->GetCurrentItem()->OriginalUrl();
 }

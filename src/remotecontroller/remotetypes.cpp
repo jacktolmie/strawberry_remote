@@ -53,6 +53,7 @@ QString toString(Auth value) {
 QString toString(Error value) {
     switch (value) {
         case Error::COMMAND_NOT_FOUND:                  return u"command_not_found"_s;
+        case Error::COVER_NOT_FOUND:                    return u"cover_not_found"_s;
         case Error::ERROR:                              return u"error"_s;
         case Error::WRONG_NUMBER_ARGUMENTS_PASSED:      return u"wrong_number_arguments_passed"_s;
         case Error::PLAYLIST_NOT_CLEARED:               return u"playlist_not_cleared"_s;
@@ -113,6 +114,7 @@ QString toString(Response value) {
         case Response::REMOVED_SONG_FROM_PLAYLIST:      return u"removed_song_from_playlist"_s;
         case Response::RESPONSE:                        return u"response"_s;
         case Response::RUNNING_COMMAND:                 return u"running_command"_s;
+        case Response::SENT_ALBUM_COVER:                return u"send_album_cover"_s;
         case Response::SEND_REQUESTED_PLAYLIST:         return u"send_requested_playlist"_s;
         case Response::SET_CURRENT_PLAYLIST_TO:         return u"set_current_playlist_to"_s;
         case Response::SHUFFLED_PLAYLIST:               return u"shuffled_playlist"_s;
