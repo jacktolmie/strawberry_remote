@@ -22,6 +22,7 @@ public:
     QJsonObject sendAllPlaylists() const;
 
 private:
+    void sendCoverImage();
     void sendPendingPlaylist();
 
     const Application *app_;

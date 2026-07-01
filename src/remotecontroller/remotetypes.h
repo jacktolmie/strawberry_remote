@@ -29,6 +29,7 @@ namespace RemoteTypes{
   enum class Event{
     ACTIVE_PLAYLIST,
     CLOSED_PLAYLIST_WITH_ID,
+    COVER,
     DELETE_PLAYLIST,
     EVENT,
     FAVOURITE_PLAYLIST,
@@ -82,6 +83,7 @@ namespace RemoteTypes{
     ARGUMENTS,
     ARTIST,
     COMMAND,
+    COVER,
     CURRENT_PLAYLIST,
     CURRENT_SONG,
     FAVOURITE,

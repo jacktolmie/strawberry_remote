@@ -16,14 +16,15 @@ RemoteCurrentSong::RemoteCurrentSong(const Application *app, QObject *parent)
 }
 
 QJsonObject RemoteCurrentSong::songData(const Song& song) const {
-    qInfo()<<"songid: " << song.id();
     QJsonObject songInfo;
-    songInfo[toString(Arguments::ID)] = song.id();
-    songInfo[toString(Arguments::SONG_URL)] = song.url().toString();
-    songInfo[toString(Arguments::ARTIST)] = song.artist();
-    songInfo[toString(Arguments::ALBUM)] = song.album();
-    songInfo[toString(Arguments::TITLE)] = song.PrettyTitle();
-    songInfo[toString(Arguments::LENGTH)] = song.length_nanosec() / kNsecPerMsec;
+    songInfo[toString(Arguments::ARTIST)] =     song.artist();
+    songInfo[toString(Arguments::ALBUM)] =      song.album();
+    songInfo[toString(Arguments::COVER)] =      QFileInfo(song.art_manual().toLocalFile()).fileName();
+    songInfo[toString(Arguments::ID)] =         song.id();
+    songInfo[toString(Arguments::LENGTH)] =     song.length_nanosec() / kNsecPerMsec;
+    songInfo[toString(Arguments::SONG_URL)] =   song.url().toString();
+    songInfo[toString(Arguments::TITLE)] =      song.PrettyTitle();
+
     return songInfo;
 }
 
@@ -35,11 +36,13 @@ QJsonObject RemoteCurrentSong::songInfoData(const Song& song) const {
         field(Arguments::ID, song.id()),
         field(Arguments::ARTIST, song.artist()),
         field(Arguments::ALBUM, song.album()),
+        field(Arguments::COVER, QFileInfo(song.art_manual().toLocalFile()).fileName()),
+        field(Arguments::SONG_URL, song.url().toString()),
         field(Arguments::TITLE, song.PrettyTitle()),
         field(Arguments::LENGTH, song.length_nanosec() / kNsecPerMsec)
     });
 }
 
 void RemoteCurrentSong::getCurrentSongRequest(const Song& song){
-  Q_EMIT sendCurrentSongData(songData(song));
+  Q_EMIT sendCurrentSongData(songInfoData(song));
 }

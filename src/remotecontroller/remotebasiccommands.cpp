@@ -14,7 +14,7 @@ RemoteBasicCommands::RemoteBasicCommands(const Application *app)
   // Fill the commandMap.
   RemoteBasicCommands::createCommandMap();
 
-  // Make connects for sending to server.
+  // Make connects for requests from remote devices.
   QObject::connect(this, &RemoteBasicCommands::mute, &*app_->player(), &Player::Mute);
   QObject::connect(this, &RemoteBasicCommands::next , &*app_->player(), &Player::Next);
   QObject::connect(this, &RemoteBasicCommands::play , &*app_->player(), &Player::PlayPauseHelper);

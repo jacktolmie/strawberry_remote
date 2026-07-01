@@ -253,6 +253,14 @@ const PlaylistCmdMap& RemotePlaylist::sendCommandMap() const{
     return commandMap;
 }
 
+void RemotePlaylist::sendCoverImage(){
+    Q_EMIT RemoteJsonCreator::createResponse({
+        field(MessageType::EVENT, toString(MessageType::EVENT)),
+        field(Event::EVENT, toString(Event::COVER)),
+        field(Arguments::COVER, toString(Arguments::COVER))
+    });
+}
+
 void RemotePlaylist::sendPlaylistData(const int id){
     Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),

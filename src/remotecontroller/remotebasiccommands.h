@@ -20,18 +20,16 @@ class RemoteBasicCommands: public QObject
   const Application *app_;
   BasicCmdMap commandMap;
 
-  void  remoteSeekTo(const QStringList& args);
-  void  commandResponse(const QString& command);
-  void  remoteVolume(const QStringList& args);
-  void  wrongNumArgs(const int num);
+  void remoteSeekTo(const QStringList& args);
+  void commandResponse(const QString& command);
+  void remoteVolume(const QStringList& args);
+  void wrongNumArgs(const int num);
 
 public:
   explicit RemoteBasicCommands(const Application *app);
   ~RemoteBasicCommands() = default;
 
   const BasicCmdMap &sendCommandMap() const;
-
-
 
 Q_SIGNALS:
   //Commands to send to server

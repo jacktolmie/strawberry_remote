@@ -13,6 +13,7 @@ QString toString(Arguments value) {
         case Arguments::ARGUMENTS:          return u"arguments"_s;
         case Arguments::ARTIST:             return u"artist"_s;
         case Arguments::COMMAND:            return u"command"_s;
+        case Arguments::COVER:              return u"cover_image"_s;
         case Arguments::CURRENT_PLAYLIST:   return u"current_playlist"_s;
         case Arguments::CURRENT_SONG:       return u"current_song"_s;
         case Arguments::FAVOURITE:          return u"favourite"_s;
@@ -64,28 +65,29 @@ QString toString(Error value) {
 
 QString toString(Event value) {
     switch (value) {
-        case Event::EVENT:                  return u"event"_s;
-        case Event::ACTIVE_PLAYLIST:        return u"active_playlist"_s;
-        case Event::CLOSED_PLAYLIST_WITH_ID:         return u"closed_playlist_with_id"_s;
-        case Event::DELETE_PLAYLIST:        return u"delete_playlist"_s;
-        case Event::FAVOURITE_PLAYLIST:     return u"favourite_playlist"_s;
-        case Event::GUI_UPDATES:            return u"gui_updates"_s;
-        case Event::MAKE_ALL_PLAYLISTS:     return u"make_all_playlists"_s;
-        case Event::MAKE_PLAYLIST:          return u"make_playlist"_s;
-        case Event::NEXT:                   return u"next"_s;
-        case Event::NEW_PLAYLIST:           return u"new_playlist"_s;
-        case Event::PAUSE:                  return u"pause"_s;
-        case Event::PLAY:                   return u"play"_s;
-        case Event::PREVIOUS:               return u"previous"_s;
-        case Event::RENAME_PLAYLIST:        return u"rename_playlist"_s;
-        case Event::SEEK_BACKWARD:          return u"seek_backward"_s;
-        case Event::SEEK_FORWARD:           return u"seek_forward"_s;
-        case Event::SEEK_TO:                return u"seek_to"_s;
-        case Event::SENT_ACTIVE_PLAYLIST:   return u"sent_active_playlist"_s;
-        case Event::SONG_CHANGED:           return u"song_changed"_s;
-        case Event::SONG_INFO:              return u"song_info"_s;
-        case Event::STOP:                   return u"stop"_s;
-        case Event::VOLUME_CHANGED:         return u"volume_changed"_s;
+        case Event::EVENT:                      return u"event"_s;
+        case Event::ACTIVE_PLAYLIST:            return u"active_playlist"_s;
+        case Event::CLOSED_PLAYLIST_WITH_ID:    return u"closed_playlist_with_id"_s;
+        case Event::COVER:                      return u"cover"_s;
+        case Event::DELETE_PLAYLIST:            return u"delete_playlist"_s;
+        case Event::FAVOURITE_PLAYLIST:         return u"favourite_playlist"_s;
+        case Event::GUI_UPDATES:                return u"gui_updates"_s;
+        case Event::MAKE_ALL_PLAYLISTS:         return u"make_all_playlists"_s;
+        case Event::MAKE_PLAYLIST:              return u"make_playlist"_s;
+        case Event::NEXT:                       return u"next"_s;
+        case Event::NEW_PLAYLIST:               return u"new_playlist"_s;
+        case Event::PAUSE:                      return u"pause"_s;
+        case Event::PLAY:                       return u"play"_s;
+        case Event::PREVIOUS:                   return u"previous"_s;
+        case Event::RENAME_PLAYLIST:            return u"rename_playlist"_s;
+        case Event::SEEK_BACKWARD:              return u"seek_backward"_s;
+        case Event::SEEK_FORWARD:               return u"seek_forward"_s;
+        case Event::SEEK_TO:                    return u"seek_to"_s;
+        case Event::SENT_ACTIVE_PLAYLIST:       return u"sent_active_playlist"_s;
+        case Event::SONG_CHANGED:               return u"song_changed"_s;
+        case Event::SONG_INFO:                  return u"song_info"_s;
+        case Event::STOP:                       return u"stop"_s;
+        case Event::VOLUME_CHANGED:             return u"volume_changed"_s;
     }
     Q_UNREACHABLE();
 }
