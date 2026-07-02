@@ -13,7 +13,7 @@ QString toString(Arguments value) {
         case Arguments::ARGUMENTS:          return u"arguments"_s;
         case Arguments::ARTIST:             return u"artist"_s;
         case Arguments::COMMAND:            return u"command"_s;
-        case Arguments::COVER:              return u"cover_image"_s;
+        case Arguments::COVER_IMAGE:        return u"cover_image"_s;
         case Arguments::CURRENT_PLAYLIST:   return u"current_playlist"_s;
         case Arguments::CURRENT_SONG:       return u"current_song"_s;
         case Arguments::FAVOURITE:          return u"favourite"_s;
@@ -69,7 +69,7 @@ QString toString(Event value) {
         case Event::EVENT:                      return u"event"_s;
         case Event::ACTIVE_PLAYLIST:            return u"active_playlist"_s;
         case Event::CLOSED_PLAYLIST_WITH_ID:    return u"closed_playlist_with_id"_s;
-        case Event::COVER:                      return u"cover"_s;
+        case Event::COVER_IMAGE:                return u"cover_image"_s;
         case Event::DELETE_PLAYLIST:            return u"delete_playlist"_s;
         case Event::FAVOURITE_PLAYLIST:         return u"favourite_playlist"_s;
         case Event::GUI_UPDATES:                return u"gui_updates"_s;

@@ -396,7 +396,7 @@ void RemotePlaylist::createCommandMap(){
     commandMap[u"send-active-playlist-songs"_s] = [this](const QStringList& args){ return receiveRemoteActive(args); };
     commandMap[u"send-all-playlists"_s] = [this](const auto&){ return makeAllPlaylists(); };
     commandMap[u"send-playlist"_s] = [this](const QStringList& args){ return sendRequestedPLaylist(args); };
-    commandMap[u"send-cover"_s] = [this](const auto&){ return sendCoverImage(); };
+    commandMap[u"request_cover"_s] = [this](const auto&){ return sendCoverImage(); };
     commandMap[u"set-current-playlist"_s] = [this](const QStringList& args){ return setCurrentPlaylist(args); };
     commandMap[u"shuffle-all-playlists"_s] = [this](const auto&){ return shuffleAllPlaylists(); };
     commandMap[u"shuffle-current-playlist"_s] = [this](const QStringList& args){ return shuffleSinglePlaylist(args); };

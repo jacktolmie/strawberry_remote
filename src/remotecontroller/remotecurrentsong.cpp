@@ -17,13 +17,13 @@ RemoteCurrentSong::RemoteCurrentSong(const Application *app, QObject *parent)
 
 QJsonObject RemoteCurrentSong::songData(const Song& song) const {
     QJsonObject songInfo;
-    songInfo[toString(Arguments::ARTIST)] =     song.artist();
-    songInfo[toString(Arguments::ALBUM)] =      song.album();
-    songInfo[toString(Arguments::COVER)] =      QFileInfo(song.art_manual().toLocalFile()).fileName();
-    songInfo[toString(Arguments::ID)] =         song.id();
-    songInfo[toString(Arguments::LENGTH)] =     song.length_nanosec() / kNsecPerMsec;
-    songInfo[toString(Arguments::SONG_URL)] =   song.url().toString();
-    songInfo[toString(Arguments::TITLE)] =      song.PrettyTitle();
+    songInfo[toString(Arguments::ARTIST)] =         song.artist();
+    songInfo[toString(Arguments::ALBUM)] =          song.album();
+    songInfo[toString(Arguments::COVER_IMAGE)] =    QFileInfo(song.art_manual().toLocalFile()).fileName();
+    songInfo[toString(Arguments::ID)] =             song.id();
+    songInfo[toString(Arguments::LENGTH)] =         song.length_nanosec() / kNsecPerMsec;
+    songInfo[toString(Arguments::SONG_URL)] =       song.url().toString();
+    songInfo[toString(Arguments::TITLE)] =          song.PrettyTitle();
 
     return songInfo;
 }
@@ -36,7 +36,7 @@ QJsonObject RemoteCurrentSong::songInfoData(const Song& song) const {
         field(Arguments::ID, song.id()),
         field(Arguments::ARTIST, song.artist()),
         field(Arguments::ALBUM, song.album()),
-        field(Arguments::COVER, QFileInfo(song.art_manual().toLocalFile()).fileName()),
+        field(Arguments::COVER_IMAGE, QFileInfo(song.art_manual().toLocalFile()).fileName()),
         field(Arguments::SONG_URL, song.url().toString()),
         field(Arguments::TITLE, song.PrettyTitle()),
         field(Arguments::LENGTH, song.length_nanosec() / kNsecPerMsec)
@@ -58,8 +58,9 @@ void RemoteCurrentSong::makeAlbumArt(const Song& song){
         Q_EMIT sendAlbumArt(
             RemoteJsonCreator::createResponse({
             field(MessageType::EVENT, toString(MessageType::EVENT)),
-            field(Event::EVENT, toString(Event::COVER)),
-            field(Arguments::COVER, base64Image)
+            field(Event::EVENT, toString(Event::COVER_IMAGE)),
+            field(Arguments::NAME, QFileInfo(song.art_manual().toLocalFile()).fileName()),
+            field(Arguments::COVER_IMAGE, base64Image)
             })
         );
     }
