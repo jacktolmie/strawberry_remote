@@ -217,8 +217,18 @@ QJsonObject RemotePlaylist::removeCurrentSongsPlaylist(const QStringList& args){
     });
 }
 
-QJsonObject RemotePlaylist::removeDuplicatesPlaylist(){
-    Q_EMIT RemotePlaylist::removeDuplicates();
+QJsonObject RemotePlaylist::removeDuplicatesPlaylist(const QStringList& args){
+    if(args.size() != 1) return wrongNumArgs(1);
+
+    bool ok;
+    quint32 id{remoteconstants::parseUintArg(args, ok)};
+    if(ok){
+        int current{app_->playlist_manager()->current_id()};
+        app_->playlist_manager()->SetCurrentPlaylist(id);
+        Q_EMIT RemotePlaylist::removeDuplicates();
+        app_->playlist_manager()->SetCurrentPlaylist(current);
+    }
+
     return RemoteJsonCreator::createResponse({
         field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
         field(Response::REMOVED_DUPLICATES_FROM_PLAYLIST, toString(Response::REMOVED_DUPLICATES_FROM_PLAYLIST))
@@ -390,7 +400,7 @@ void RemotePlaylist::createCommandMap(){
     commandMap[u"close-playlist"_s] = [this](const QStringList& args){ return closeCurrentPlaylist(args); };
     commandMap[u"delete-playlist"_s] = [this](const QStringList& args){ return deleteCurrentDevicePlaylist(args); };
     commandMap[u"favourite-playlist"_s] = [this](const QStringList& args){ return setFavouritePlaylist(args); };
-    commandMap[u"remove-duplicates-playlist"_s] = [this](const auto&){ return removeDuplicatesPlaylist(); };
+    commandMap[u"remove-duplicates-playlist"_s] = [this](const QStringList& args){ return removeDuplicatesPlaylist(args); };
     commandMap[u"remove-songs-playlist"_s] = [this](const QStringList& args){ return removeCurrentSongsPlaylist(args); };
     commandMap[u"rename-playlist"_s] = [this](const QStringList& args){ return renameCurrentPlaylist(args); };
     commandMap[u"send-active-playlist-songs"_s] = [this](const QStringList& args){ return receiveRemoteActive(args); };

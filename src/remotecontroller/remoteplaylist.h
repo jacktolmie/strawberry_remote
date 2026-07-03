@@ -33,7 +33,7 @@ private:
     QJsonObject clearRemoteCurrentPlaylist(const QStringList& args);
     QJsonObject closeCurrentPlaylist(const QStringList& args);
     QJsonObject removeCurrentSongsPlaylist(const QStringList& songs);
-    QJsonObject removeDuplicatesPlaylist();
+    QJsonObject removeDuplicatesPlaylist(const QStringList& args);
     // Rename current playlist. Send command rename-playlist <new name>.
     QJsonObject renameCurrentPlaylist(const QStringList& args);
     // Shuffle all playlists.
