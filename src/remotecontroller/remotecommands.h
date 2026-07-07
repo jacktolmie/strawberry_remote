@@ -26,7 +26,7 @@ public:
   explicit RemoteCommands(const Application *app, QObject *parent);
   ~RemoteCommands() = default;
 
-  void processCommand(const QString& command, const QStringList& args);
+  void processCommand(const QString& command, const QJsonObject& args);
   const RemotePlaylist* getRemotePlaylist() const { return remotePlaylist; }
 
 public Q_SLOTS:

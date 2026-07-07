@@ -332,10 +332,11 @@ QJsonObject RemotePlaylist::setCurrentPlaylist(const QStringList& args){
 
 QJsonObject RemotePlaylist::setFavouritePlaylist(const QStringList& args){
     if(args.size() != 2) return wrongNumArgs(2);
-
+    qInfo() << "Remoteplaylist favourite called with: " << args;
     bool ok;
     quint32 id{remoteconstants::parseUintArg(args, ok)};
     if(ok){
+        qInfo() << "Remoteplaylist favourite worked: " << args;
         bool isFavourite{static_cast<bool>(args[1].toUInt())};
         Q_EMIT RemotePlaylist::remoteFavouritePlaylist(id, isFavourite);
         return RemoteJsonCreator::createResponse({
