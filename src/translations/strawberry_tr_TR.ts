@@ -2,6 +2,17 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="tr_TR" sourcelanguage="en-US">
   <context>
+    <name>ASXParser</name>
+    <message>
+      <source>ASX playlist is too large</source>
+      <translation type="unfinished">ASX playlist is too large</translation>
+    </message>
+    <message>
+      <source>Failed to write ASX playlist</source>
+      <translation type="unfinished">Failed to write ASX playlist</translation>
+    </message>
+  </context>
+  <context>
     <name>About</name>
     <message>
       <source>About</source>
@@ -513,12 +524,88 @@
       <translation>Çalma listesi oynatılan şarkı rengi seçin:</translation>
     </message>
     <message>
+      <source>Window</source>
+      <translation type="unfinished">Window</translation>
+    </message>
+    <message>
+      <source>Window text</source>
+      <translation type="unfinished">Window text</translation>
+    </message>
+    <message>
+      <source>Base</source>
+      <translation type="unfinished">Base</translation>
+    </message>
+    <message>
+      <source>Alternate base</source>
+      <translation type="unfinished">Alternate base</translation>
+    </message>
+    <message>
+      <source>Tooltip base</source>
+      <translation type="unfinished">Tooltip base</translation>
+    </message>
+    <message>
+      <source>Tooltip text</source>
+      <translation type="unfinished">Tooltip text</translation>
+    </message>
+    <message>
+      <source>Placeholder text</source>
+      <translation type="unfinished">Placeholder text</translation>
+    </message>
+    <message>
+      <source>Text</source>
+      <translation type="unfinished">Text</translation>
+    </message>
+    <message>
+      <source>Button</source>
+      <translation type="unfinished">Button</translation>
+    </message>
+    <message>
+      <source>Button text</source>
+      <translation type="unfinished">Button text</translation>
+    </message>
+    <message>
+      <source>Bright text</source>
+      <translation type="unfinished">Bright text</translation>
+    </message>
+    <message>
+      <source>Select color</source>
+      <translation type="unfinished">Select color</translation>
+    </message>
+    <message>
       <source>Select background image</source>
       <translation>Arkaplan resmi seçin</translation>
     </message>
     <message>
       <source>You need to restart Strawberry for this setting to take affect.</source>
       <translation type="unfinished">You need to restart Strawberry for this setting to take affect.</translation>
+    </message>
+    <message>
+      <source>Colors</source>
+      <translation type="unfinished">Colors</translation>
+    </message>
+    <message>
+      <source>&amp;Use the system default color set</source>
+      <translation type="unfinished">&amp;Use the system default color set</translation>
+    </message>
+    <message>
+      <source>Use a custom color set</source>
+      <translation type="unfinished">Use a custom color set</translation>
+    </message>
+    <message>
+      <source>Set a custom color set suitable for a dark theme</source>
+      <translation type="unfinished">Set a custom color set suitable for a dark theme</translation>
+    </message>
+    <message>
+      <source>Dark mode</source>
+      <translation type="unfinished">Dark mode</translation>
+    </message>
+    <message>
+      <source>Reset the custom color set to the system default colors</source>
+      <translation type="unfinished">Reset the custom color set to the system default colors</translation>
+    </message>
+    <message>
+      <source>Reset to default</source>
+      <translation type="unfinished">Reset to default</translation>
     </message>
   </context>
   <context>
@@ -698,6 +785,22 @@
     <message>
       <source>You need to restart Strawberry for this setting to take affect</source>
       <translation type="unfinished">You need to restart Strawberry for this setting to take affect</translation>
+    </message>
+    <message>
+      <source>Map the volume slider to a decibel scale so that perceived loudness changes evenly. Each 1% step equals 0.5 dB, 100% is 0 dB and 0% is silence.</source>
+      <translation type="unfinished">Map the volume slider to a decibel scale so that perceived loudness changes evenly. Each 1% step equals 0.5 dB, 100% is 0 dB and 0% is silence.</translation>
+    </message>
+    <message>
+      <source>Exponential volume scaling</source>
+      <translation type="unfinished">Exponential volume scaling</translation>
+    </message>
+    <message>
+      <source>Device warm-up</source>
+      <translation type="unfinished">Device warm-up</translation>
+    </message>
+    <message>
+      <source>Delay between opening the audio device and starting playback, to avoid the start of the track being cut off while the device (DAC) is still becoming ready.  Set to 0 to disable.</source>
+      <translation type="unfinished">Delay between opening the audio device and starting playback, to avoid the start of the track being cut off while the device (DAC) is still becoming ready.  Set to 0 to disable.</translation>
     </message>
   </context>
   <context>
@@ -1506,7 +1609,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Add song performersort tag</source>
-      <translation type="unfinished">Add song performersort tag</translation>
+      <translation>Yapımcı sıralama etiketi ekle</translation>
     </message>
     <message>
       <source>Add song albumsort tag</source>
@@ -2226,7 +2329,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Performer</source>
-      <translation>Sanatçı</translation>
+      <translation>Yapımcı</translation>
     </message>
     <message>
       <source>Compilation</source>
@@ -2374,7 +2477,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Performer sort</source>
-      <translation type="unfinished">Performer sort</translation>
+      <translation>Yapımcı sıralama</translation>
     </message>
     <message>
       <source>Title sort</source>
@@ -2971,7 +3074,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Performer</source>
-      <translation>Sanatçı</translation>
+      <translation>Yapımcı</translation>
     </message>
     <message>
       <source>Grouping</source>
@@ -3015,76 +3118,6 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>Buffering</source>
       <translation>Yükleniyor</translation>
-    </message>
-  </context>
-  <context>
-    <name>LastFMImport</name>
-    <message>
-      <source>Missing username, please login to last.fm first!</source>
-      <translation>Kullanıcı adı eksik, lütfen last.fm'e giriş yapın!</translation>
-    </message>
-  </context>
-  <context>
-    <name>LastFMImportDialog</name>
-    <message>
-      <source>Import data from last.fm</source>
-      <translation>Last.fm'den veri içe aktar</translation>
-    </message>
-    <message>
-      <source>Choose data to import from last.fm</source>
-      <translation>Last.fm'den içe aktarmak için veri seçin</translation>
-    </message>
-    <message>
-      <source>Last played</source>
-      <translation>Son çalınma</translation>
-    </message>
-    <message>
-      <source>Play counts</source>
-      <translation>Çalma sayısı</translation>
-    </message>
-    <message>
-      <source>Warning: Play counts and last played from last.fm will completely replace the same data for the matched songs. Play counts will replace the data based on artist and song title for the same albums! Please backup your database before you start.</source>
-      <translation>Uyarı: Last.fm'den aktarılan çalma sayısı ve son oynatılan bilgileri o şarkılar için şu anki verilerin yerine geçecektir. Çalma sayısı o aynı albümler için aynı sanatçı ve şarkı adının yerine geçecektir! Lütfen başlamadan önce veri tabanınızı yedekleyin.</translation>
-    </message>
-    <message>
-      <source>Go!</source>
-      <translation>Haydi!</translation>
-    </message>
-    <message>
-      <source>Close</source>
-      <translation>Kapat</translation>
-    </message>
-    <message>
-      <source>Cancel</source>
-      <translation>İptal</translation>
-    </message>
-    <message>
-      <source>Receiving initial data from last.fm...</source>
-      <translation>Last.fm'den ilk veriler alınıyor...</translation>
-    </message>
-    <message>
-      <source>Receiving playcount for %1 songs and last played for %2 songs.</source>
-      <translation type="unfinished">Receiving playcount for %1 songs and last played for %2 songs.</translation>
-    </message>
-    <message>
-      <source>Receiving last played for %1 songs.</source>
-      <translation type="unfinished">Receiving last played for %1 songs.</translation>
-    </message>
-    <message>
-      <source>Receiving playcounts for %1 songs.</source>
-      <translation type="unfinished">Receiving playcounts for %1 songs.</translation>
-    </message>
-    <message>
-      <source>Playcounts for %1 songs and last played for %2 songs received.</source>
-      <translation type="unfinished">Playcounts for %1 songs and last played for %2 songs received.</translation>
-    </message>
-    <message>
-      <source>Last played for %1 songs received.</source>
-      <translation type="unfinished">Last played for %1 songs received.</translation>
-    </message>
-    <message>
-      <source>Playcounts for %1 songs received.</source>
-      <translation type="unfinished">Playcounts for %1 songs received.</translation>
     </message>
   </context>
   <context>
@@ -3506,10 +3539,6 @@ If there are no matches then it will use the largest image in the directory.</so
     <message>
       <source>Show sidebar</source>
       <translation>Kenar çubuğunu göster</translation>
-    </message>
-    <message>
-      <source>Import data from last.fm...</source>
-      <translation>Last.fm'den veri içe aktar...</translation>
     </message>
     <message>
       <source>Context</source>
@@ -4019,7 +4048,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Add song performer tag</source>
-      <translation>Sanatçı etiketi ekle</translation>
+      <translation>Yapımcı etiketi ekle</translation>
     </message>
     <message>
       <source>Add song grouping tag</source>
@@ -4339,7 +4368,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Performer</source>
-      <translation>Sanatçı</translation>
+      <translation>Yapımcı</translation>
     </message>
     <message>
       <source>Grouping</source>
@@ -4460,7 +4489,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Title Sort</source>
-      <translation type="unfinished">Title Sort</translation>
+      <translation>Başlık Sıralama</translation>
     </message>
     <message>
       <source>Artist</source>
@@ -4468,7 +4497,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Artist Sort</source>
-      <translation type="unfinished">Artist Sort</translation>
+      <translation>Sanatçı Sıralama</translation>
     </message>
     <message>
       <source>Album</source>
@@ -4476,7 +4505,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Album Sort</source>
-      <translation type="unfinished">Album Sort</translation>
+      <translation>Albüm Sıralama</translation>
     </message>
     <message>
       <source>Track</source>
@@ -4508,7 +4537,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Album Artist Sort</source>
-      <translation type="unfinished">Album Artist Sort</translation>
+      <translation>Albüm Sanatçısı Sıralama</translation>
     </message>
     <message>
       <source>Composer</source>
@@ -4516,15 +4545,15 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Composer Sort</source>
-      <translation type="unfinished">Composer Sort</translation>
+      <translation>Besteci Sıralama</translation>
     </message>
     <message>
       <source>Performer</source>
-      <translation>Sanatçı</translation>
+      <translation>Yapımcı</translation>
     </message>
     <message>
       <source>Performer Sort</source>
-      <translation type="unfinished">Performer Sort</translation>
+      <translation>Yapımcı Sıralama</translation>
     </message>
     <message>
       <source>Grouping</source>
@@ -4588,11 +4617,11 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Moodbar</source>
-      <translation type="unfinished">Moodbar</translation>
+      <translation>Moodbar</translation>
     </message>
     <message>
       <source>BPM</source>
-      <translation type="unfinished">BPM</translation>
+      <translation>BPM</translation>
     </message>
     <message>
       <source>Mood</source>
@@ -4604,11 +4633,11 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <source>CUE</source>
-      <translation type="unfinished">CUE</translation>
+      <translation>CUE</translation>
     </message>
     <message>
       <source>Integrated Loudness</source>
@@ -4732,7 +4761,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Copy songs to playlist</source>
-      <translation type="unfinished">Copy songs to playlist</translation>
+      <translation>Şarkıları çalma listesine kopyala</translation>
     </message>
     <message>
       <source>Copy to device</source>
@@ -4836,7 +4865,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>This can be changed later through the preferences</source>
-      <translation type="unfinished">This can be changed later through the preferences</translation>
+      <translation>Bu sonradan tercihler sekmesinden değiştirilebilir</translation>
     </message>
     <message>
       <source>Remember my choice</source>
@@ -4954,7 +4983,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>Enable playlist clear button</source>
-      <translation type="unfinished">Enable playlist clear button</translation>
+      <translation>Çalma listesini temizleme seçeneğini etkinleştir</translation>
     </message>
     <message>
       <source>Enable delete files in the right click context menu</source>
@@ -4966,7 +4995,7 @@ If there are no matches then it will use the largest image in the directory.</so
     </message>
     <message>
       <source>When saving a playlist, file paths should be</source>
-      <translation type="unfinished">When saving a playlist, file paths should be</translation>
+      <translation>Bir çalma listesini kaydedirken, dosya yolu şöyle olmalı</translation>
     </message>
     <message>
       <source>A&amp;utomatic</source>
@@ -6152,7 +6181,7 @@ Devam etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
       <source>Performer</source>
-      <translation>Sanatçı</translation>
+      <translation>Yapımcı</translation>
     </message>
     <message>
       <source>Grouping</source>
@@ -7933,6 +7962,13 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <message>
       <source>Save the .waveform files directly in the songs folders</source>
       <translation type="unfinished">Save the .waveform files directly in the songs folders</translation>
+    </message>
+  </context>
+  <context>
+    <name>XSPFParser</name>
+    <message>
+      <source>Failed to write XSPF playlist</source>
+      <translation type="unfinished">Failed to write XSPF playlist</translation>
     </message>
   </context>
 </TS>

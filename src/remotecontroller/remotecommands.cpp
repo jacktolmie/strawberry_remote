@@ -10,6 +10,7 @@
 
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;
+using CommandHandler = std::function<QJsonObject(const QJsonObject&)>;
 
 RemoteCommands::RemoteCommands(const Application* app, QObject* parent = nullptr):
   QObject{parent},
@@ -23,7 +24,7 @@ RemoteCommands::RemoteCommands(const Application* app, QObject* parent = nullptr
   QObject::connect(basicCommands, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::sendResponse);
 }
 
-void RemoteCommands::processCommand(const QString& command, const QStringList &args)
+void RemoteCommands::processCommand(const QString& command, const QJsonObject& args)
 {
     // Check if sent command is in basicCommandMap.
     if(basicCmdMap.contains(command)){
@@ -44,6 +45,30 @@ void RemoteCommands::processCommand(const QString& command, const QStringList &a
       }
 }
 
+void RemoteCommands::processLine(const QString& line)
+{
+    qInfo() << "Command processline: " << line;
+    QJsonParseError parseError;
+    QJsonDocument doc{QJsonDocument::fromJson(line.toUtf8(), &parseError)};
+    if (parseError.error != QJsonParseError::NoError) {
+        qWarning() << "Failed to parse JSON command: "<< parseError.errorString();
+        return;
+    }
+    if (!doc.isObject()) {
+        qWarning() << "Received JSON is not an object.";
+        return;
+    }
+    QJsonObject obj{doc.object()};
+    QString command{u"command"_s};
+    if (!obj.contains(command) || !obj[command].isString()) {
+        qWarning() << "JSON command is missing a 'command' string field.";
+        return;
+    }
+    command = obj[command].toString().toLower();
+    RemoteCommands::processCommand(command, obj);
+}
+
+/*
 void RemoteCommands::processLine(const QString& line)
 {
     qInfo() << "Command processline: " << line;
@@ -114,3 +139,4 @@ void RemoteCommands::processLine(const QString& line)
     // Process command with args after breaking down the JSON file.
     RemoteCommands::processCommand(command, args);
 }
+*/

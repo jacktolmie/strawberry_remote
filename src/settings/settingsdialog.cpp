@@ -49,6 +49,7 @@
 
 #include "core/settings.h"
 #include "core/player.h"
+#include "core/appearance.h"
 #include "utilities/screenutils.h"
 #include "widgets/groupediconview.h"
 #include "collection/collectionlibrary.h"
@@ -104,6 +105,7 @@ using namespace Qt::Literals::StringLiterals;
 
 namespace {
 constexpr char kSettingsGroup[] = "SettingsDialog";
+constexpr char kGeometry[] = "geometry";
 }
 
 SettingsDialog::SettingsDialog(const SharedPtr<Player> player,
@@ -114,6 +116,7 @@ SettingsDialog::SettingsDialog(const SharedPtr<Player> player,
                                const SharedPtr<AudioScrobbler> scrobbler,
                                const SharedPtr<StreamingServices> streaming_services,
                                const SharedPtr<RemoteSettings> remote_settings,
+                               const SharedPtr<Appearance> appearance,
 #ifdef HAVE_GLOBALSHORTCUTS
                                GlobalShortcutsManager *global_shortcuts_manager,
 #endif
@@ -141,7 +144,7 @@ SettingsDialog::SettingsDialog(const SharedPtr<Player> player,
   AddPage(Page::RemoteController, new RemoteControllerSettingsPage(this, remote_settings, this), general);
 
   QTreeWidgetItem *iface = AddCategory(tr("User interface"));
-  AddPage(Page::Appearance, new AppearanceSettingsPage(this, this), iface);
+  AddPage(Page::Appearance, new AppearanceSettingsPage(this, appearance, this), iface);
   AddPage(Page::Context, new ContextSettingsPage(this, this), iface);
   AddPage(Page::Notifications, new NotificationsSettingsPage(this, osd, this), iface);
 
@@ -247,8 +250,8 @@ void SettingsDialog::LoadGeometry() {
 
   Settings s;
   s.beginGroup(QLatin1String(kSettingsGroup));
-  if (s.contains("geometry")) {
-    restoreGeometry(s.value("geometry").toByteArray());
+  if (s.contains(kGeometry)) {
+    restoreGeometry(s.value(kGeometry).toByteArray());
   }
   s.endGroup();
 
@@ -261,7 +264,7 @@ void SettingsDialog::SaveGeometry() {
 
   Settings s;
   s.beginGroup(QLatin1String(kSettingsGroup));
-  s.setValue("geometry", saveGeometry());
+  s.setValue(kGeometry, saveGeometry());
   s.endGroup();
 
 }

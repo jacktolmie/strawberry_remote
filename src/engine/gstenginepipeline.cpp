@@ -138,6 +138,9 @@ GstEnginePipeline::GstEnginePipeline(QObject *parent)
       buffer_duration_nanosec_(BackendSettings::kDefaultBufferDuration * kNsecPerMsec),
       buffer_low_watermark_(BackendSettings::kDefaultBufferLowWatermark),
       buffer_high_watermark_(BackendSettings::kDefaultBufferHighWatermark),
+      device_warmup_duration_ms_(BackendSettings::kDefaultDeviceWarmupDuration),
+      device_warmup_pending_(false),
+      device_warmup_generation_(0),
       proxy_authentication_(false),
       channels_enabled_(false),
       channels_(0),
@@ -198,10 +201,7 @@ GstEnginePipeline::GstEnginePipeline(QObject *parent)
       finish_requested_(false),
       finished_(false),
       bus_message_generation_(0),
-      set_state_in_progress_(0),
-      set_state_async_in_progress_(0),
-      last_set_state_in_progress_(GST_STATE_VOID_PENDING),
-      last_set_state_async_in_progress_(GST_STATE_VOID_PENDING) {
+      set_state_async_in_progress_(0) {
 
   guint version_major = 0, version_minor = 0;
   gst_plugins_base_version(&version_major, &version_minor, nullptr, nullptr);
@@ -222,7 +222,7 @@ GstEnginePipeline::GstEnginePipeline(QObject *parent)
 
 GstEnginePipeline::~GstEnginePipeline() {
 
-  Disconnect();
+  DisconnectCallbacks();
 
   if (pipeline_) {
 
@@ -328,6 +328,10 @@ void GstEnginePipeline::set_buffer_high_watermark(const double value) {
   buffer_high_watermark_ = value;
 }
 
+void GstEnginePipeline::set_device_warmup_duration_ms(const int duration_ms) {
+  device_warmup_duration_ms_ = duration_ms;
+}
+
 void GstEnginePipeline::set_proxy_settings(const QString &address, const bool authentication, const QString &user, const QString &pass) {
 
   QMutexLocker l(&mutex_proxy_);
@@ -397,7 +401,7 @@ GstElement *GstEnginePipeline::CreateElement(const QString &factory_name, const 
 
 }
 
-void GstEnginePipeline::Disconnect() {
+void GstEnginePipeline::DisconnectCallbacks() {
 
   if (pipeline_) {
 
@@ -488,30 +492,16 @@ bool GstEnginePipeline::Finish() {
 
   finish_requested_ = true;
 
-  Disconnect();
+  DisconnectCallbacks();
 
-  // Snapshot the state-progress group consistently so the branches below all act on the same view.
-  int async_in_progress = 0;
-  int sync_in_progress = 0;
-  GstState last_async = GST_STATE_VOID_PENDING;
-  GstState last_sync = GST_STATE_VOID_PENDING;
-  {
-    QMutexLocker locker(&mutex_state_progress_);
-    async_in_progress = set_state_async_in_progress_.load();
-    sync_in_progress = set_state_in_progress_.load();
-    last_async = last_set_state_async_in_progress_.load();
-    last_sync = last_set_state_in_progress_.load();
-  }
-
-  const bool is_null = IsStateNull();
-  if (is_null && async_in_progress == 0 && sync_in_progress == 0) {
+  if (IsStateNull() && !StateChangeInProgress()) {
+    // Already stopped and nothing in flight, so we are done immediately.
     finished_ = true;
   }
-  else if (async_in_progress > 0 && last_async != GST_STATE_NULL) {
+  else {
+    // Drive the pipeline to NULL without blocking; SetStateFinishedSlot() emits Finished() once it settles.
+    // Routing through the async queue orders this NULL request after any state change already queued, and SetStateAsyncSlot() drops those queued non-NULL requests now that finishing has been requested.
     SetStateAsync(GST_STATE_NULL);
-  }
-  else if ((!is_null || sync_in_progress > 0) && last_sync != GST_STATE_NULL) {
-    SetState(GST_STATE_NULL);
   }
 
   return finished_.load();
@@ -1546,7 +1536,7 @@ void GstEnginePipeline::AboutToFinishCallback(GstPlayBin *playbin, gpointer self
 // Watch callback and the single dispatch point for all message-driven state mutation in this class.
 // IMPORTANT: this only runs on the main thread when Qt drives the GLib default main context (i.e. the QEventDispatcherGlib build on Linux/Unix).
 // On Windows and macOS Qt uses a non-GLib event dispatcher, so Application starts a dedicated GLib thread (see Application::GLibMainLoopThreadFunc) that drives the default context instead, and this callback - and every handler it calls below - then runs on THAT thread, concurrently with the main thread.
-// Consequently every member touched here must stay safe against concurrent main-thread access (the state is mostly atomics/mutex-guarded), and the pipeline teardown in Disconnect() can race an in-flight dispatch on that thread.
+// Consequently every member touched here must stay safe against concurrent main-thread access (the state is mostly atomics/mutex-guarded), and the pipeline teardown in DisconnectCallbacks() can race an in-flight dispatch on that thread.
 gboolean GstEnginePipeline::BusWatchCallback(GstBus *bus, GstMessage *msg, gpointer self) {
 
   Q_UNUSED(bus)
@@ -1900,6 +1890,13 @@ void GstEnginePipeline::StateChangedMessageReceived(GstMessage *msg) {
     SetVolume(volume_percent_.load());
   }
 
+  // Warm-up delay for a fresh start without an offset: the pipeline has prerolled (the audio device is now open), so wait before starting playback to let the device (DAC) become ready, then go to PLAYING.
+  // (The offset/seek start applies the same delay from Seek() once the seek completes.)
+  if (new_state == GST_STATE_PAUSED && device_warmup_pending_.exchange(false)) {
+    StartPlaybackAfterWarmup();
+    return;
+  }
+
   if (next_uri_set_.load() && next_uri_need_reset_.load() && new_state == GST_STATE_READY && pending_seek_nanosec_.load() != -1) {
     qLog(Debug) << "Reverting next uri and going to pause state.";
     next_uri_set_ = false;
@@ -2028,13 +2025,23 @@ bool GstEnginePipeline::IsStateNull() const {
 
 }
 
+bool GstEnginePipeline::StateChangeInProgress() {
+
+  // A request queued via SetStateAsync() but not yet running still counts as in progress.
+  if (set_state_async_in_progress_.load() > 0) return true;
+
+  QMutexLocker locker(&mutex_pending_state_changes_);
+  for (const QFuture<GstStateChangeReturn> &future : std::as_const(pending_state_changes_)) {
+    if (!future.isFinished()) return true;
+  }
+  return false;
+
+}
+
 void GstEnginePipeline::SetStateAsync(const GstState state) {
 
-  {
-    QMutexLocker locker(&mutex_state_progress_);
-    last_set_state_async_in_progress_ = state;
-    ++set_state_async_in_progress_;
-  }
+  // Count the request as in progress before it is queued (this may run on a GStreamer streaming thread) so it stays visible until SetStateAsyncSlot() hands it off to a pending future.
+  ++set_state_async_in_progress_;
 
   QMetaObject::invokeMethod(this, "SetStateAsyncSlot", Qt::QueuedConnection, Q_ARG(GstState, state));
 
@@ -2042,10 +2049,13 @@ void GstEnginePipeline::SetStateAsync(const GstState state) {
 
 void GstEnginePipeline::SetStateAsyncSlot(const GstState state) {
 
-  {
-    QMutexLocker locker(&mutex_state_progress_);
-    last_set_state_async_in_progress_ = GST_STATE_VOID_PENDING;
-    --set_state_async_in_progress_;
+  --set_state_async_in_progress_;
+
+  // Once finishing has been requested, drop any queued request that would move the pipeline away from NULL (e.g. a PLAYING queued from about-to-finish just before shutdown), otherwise it could be resurrected after Finish() asked it to stop.
+  if (finish_requested_.load() && state != GST_STATE_NULL) {
+    // Dropping this request may have removed the last thing keeping the pipeline non-quiescent (the NULL transition may already have completed earlier), so release any Finish() waiters here as well.
+    EmitFinishedIfQuiescent();
+    return;
   }
 
   SetState(state);
@@ -2056,13 +2066,10 @@ QFuture<GstStateChangeReturn> GstEnginePipeline::SetState(const GstState state) 
 
   qLog(Debug) << "Setting pipeline" << id() << "state to" << GstStateText(state);
 
-  {
-    QMutexLocker locker(&mutex_state_progress_);
-    last_set_state_in_progress_ = state;
-    ++set_state_in_progress_;
-  }
+  // Every explicit transition invalidates any warm-up timer waiting to resume playback, so a stale timer cannot override a newer pause/stop/start.
+  ++device_warmup_generation_;
 
-  QFutureWatcher<GstStateChangeReturn> *watcher = new QFutureWatcher<GstStateChangeReturn>();
+  QFutureWatcher<GstStateChangeReturn> *watcher = new QFutureWatcher<GstStateChangeReturn>(this);
   QObject::connect(watcher, &QFutureWatcher<GstStateChangeReturn>::finished, this, [this, watcher, state]() {
     const GstStateChangeReturn state_change_return = watcher->result();
     watcher->deleteLater();
@@ -2071,7 +2078,7 @@ QFuture<GstStateChangeReturn> GstEnginePipeline::SetState(const GstState state) 
   QFuture<GstStateChangeReturn> future = QtConcurrent::run(shared_state_threadpool(), &gst_element_set_state, pipeline_, state);
   watcher->setFuture(future);
 
-  // Track this future so destructor can wait for it
+  // Track this future so the destructor can wait for it and so it counts as a state change in progress.
   {
     QMutexLocker locker(&mutex_pending_state_changes_);
     pending_state_changes_.append(future);
@@ -2083,16 +2090,8 @@ QFuture<GstStateChangeReturn> GstEnginePipeline::SetState(const GstState state) 
 
 void GstEnginePipeline::SetStateFinishedSlot(const GstState state, const GstStateChangeReturn state_change_return) {
 
-  bool quiescent = false;
   {
-    QMutexLocker locker(&mutex_state_progress_);
-    last_set_state_in_progress_ = GST_STATE_VOID_PENDING;
-    --set_state_in_progress_;
-    quiescent = (set_state_async_in_progress_.load() == 0 && set_state_in_progress_.load() == 0);
-  }
-
-  // Remove finished futures from tracking list to prevent unbounded growth
-  {
+    // Drop finished futures (including this one) to keep the list bounded.
     QMutexLocker locker(&mutex_pending_state_changes_);
     pending_state_changes_.erase(std::remove_if(pending_state_changes_.begin(), pending_state_changes_.end(), [](const QFuture<GstStateChangeReturn> &f) { return f.isFinished(); }), pending_state_changes_.end());
   }
@@ -2103,16 +2102,32 @@ void GstEnginePipeline::SetStateFinishedSlot(const GstState state, const GstStat
     case GST_STATE_CHANGE_NO_PREROLL:
       qLog(Debug) << "Pipeline" << id() << "state successfully set to" << GstStateText(state);
       Q_EMIT SetStateFinished(state_change_return);
-      if (quiescent && finish_requested_.load()) {
-        bool expected = false;
-        if (finished_.compare_exchange_strong(expected, true)) {
-          Q_EMIT Finished();
-        }
-      }
       break;
     case GST_STATE_CHANGE_FAILURE:
       qLog(Error) << "Failed to set pipeline to state" << GstStateText(state);
       break;
+  }
+
+  // Release Finish() waiters once nothing is left in flight, whether the transition succeeded or failed, otherwise the pipeline would never be reclaimed during shutdown.
+  EmitFinishedIfQuiescent();
+
+}
+
+void GstEnginePipeline::EmitFinishedIfQuiescent() {
+
+  // Emit Finished() exactly once, when finishing has been requested and there is nothing left in flight (no queued async requests and no running state changes), so Finish() waiters are always released regardless of whether the final step was a completed NULL transition or a dropped resurrecting request.
+  if (!finish_requested_.load()) return;
+
+  bool quiescent = false;
+  {
+    QMutexLocker locker(&mutex_pending_state_changes_);
+    quiescent = pending_state_changes_.isEmpty() && set_state_async_in_progress_.load() == 0;
+  }
+  if (!quiescent) return;
+
+  bool expected = false;
+  if (finished_.compare_exchange_strong(expected, true)) {
+    Q_EMIT Finished();
   }
 
 }
@@ -2120,14 +2135,53 @@ void GstEnginePipeline::SetStateFinishedSlot(const GstState state, const GstStat
 QFuture<GstStateChangeReturn> GstEnginePipeline::Play(const bool pause, const quint64 offset_nanosec) {
 
   if (offset_nanosec != 0) {
+    // Preroll paused so we can seek to the offset while the pipeline is prerolling, then transition to the requested state once the seek completes (pending_state_ carries it).
     pending_seek_nanosec_ = static_cast<qint64>(offset_nanosec);
+    if (!pause) {
+      pending_state_ = GST_STATE_PLAYING;
+    }
+    return SetState(GST_STATE_PAUSED);
   }
 
-  if (!pause) {
-    pending_state_ = GST_STATE_PLAYING;
+  if (!pause && device_warmup_duration_ms_ > 0) {
+    // Preroll to PAUSED first, then wait device_warmup_duration_ms_ before going to PLAYING (handled in StateChangedMessageReceived once PAUSED is reached).
+    // This gives the audio device (DAC) time to become ready after it is opened during preroll, so the start of the track is not cut off while the hardware is still warming up.
+    device_warmup_pending_ = true;
+    return SetState(GST_STATE_PAUSED);
   }
 
-  return SetState(GST_STATE_PAUSED);
+  // No offset and no warm-up: go straight to the requested state.
+  // playbin prerolls (opens the audio device and fills buffers) during READY->PAUSED regardless of whether PAUSED or PLAYING is requested, so an explicit PAUSED->PLAYING hop on its own changes nothing.
+  return SetState(pause ? GST_STATE_PAUSED : GST_STATE_PLAYING);
+
+}
+
+void GstEnginePipeline::StartPlaybackAfterWarmup() {
+
+  // Nothing to do if the pipeline is already playing.
+  if (state() == GST_STATE_PLAYING) return;
+
+  // The pipeline has prerolled and the audio device is open; wait for the configured warm-up delay (if any) so the device (DAC) has time to become ready before playback starts, then transition to PLAYING.
+  if (device_warmup_duration_ms_ > 0) {
+    qLog(Debug) << "Waiting" << device_warmup_duration_ms_ << "ms for the audio device to warm up before playing";
+    const quint64 device_warmup_generation = device_warmup_generation_.load();
+    QTimer::singleShot(device_warmup_duration_ms_, this, [this, device_warmup_generation]() {
+      // Only resume if no newer transition happened while we were waiting (e.g. the user paused/stopped or a newer start superseded this one)...
+      if (device_warmup_generation != device_warmup_generation_.load()) {
+        qLog(Debug) << "Warm-up delay elapsed but a newer state change superseded it, not starting playback";
+        return;
+      }
+      // ...and the pipeline is still paused (it was not stopped and did not otherwise leave the prerolled state).
+      if (state() != GST_STATE_PAUSED) {
+        qLog(Debug) << "Warm-up delay elapsed but pipeline is" << GstStateText(state()) << "not paused, not starting playback";
+        return;
+      }
+      SetStateAsync(GST_STATE_PLAYING);
+    });
+  }
+  else {
+    SetStateAsync(GST_STATE_PLAYING);
+  }
 
 }
 
@@ -2164,10 +2218,14 @@ bool GstEnginePipeline::Seek(const qint64 nanosec) {
 
   if (success) {
     qLog(Debug) << "Seek succeeded";
-    if (pending_state_.load() != GST_STATE_NULL) {
-      qLog(Debug) << "Setting state from pending state" << GstStateText(pending_state_.load());
-      SetState(pending_state_.load());
-      pending_state_ = GST_STATE_NULL;
+    const GstState state = pending_state_.exchange(GST_STATE_NULL);
+    if (state == GST_STATE_PLAYING) {
+      // Starting playback from an offset (saved position or CUE-sheet start): the device was opened during preroll, so honour the warm-up delay here too before going to PLAYING.
+      StartPlaybackAfterWarmup();
+    }
+    else if (state != GST_STATE_NULL) {
+      qLog(Debug) << "Setting state from pending state" << GstStateText(state);
+      SetState(state);
     }
   }
 
