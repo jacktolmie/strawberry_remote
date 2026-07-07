@@ -9,7 +9,7 @@
 
 class QTcpSocket;
 
-using BasicCmdMap = QMap<QString, std::function<void(const QStringList&)>>;
+using BasicCmdMap = QMap<QString, std::function<void(const QJsonObject&)>>;
 
 class RemoteBasicCommands: public QObject
 {
@@ -20,10 +20,10 @@ class RemoteBasicCommands: public QObject
   const Application *app_;
   BasicCmdMap commandMap;
 
-  void remoteSeekTo(const QStringList& args);
+  void remoteSeekTo(const QJsonObject& args);
   void commandResponse(const QString& command);
-  void remoteVolume(const QStringList& args);
-  void wrongNumArgs(const int num);
+  void remoteVolume(const QJsonObject& args);
+  void wrongArgsSent(const QString& error);
 
 public:
   explicit RemoteBasicCommands(const Application *app);

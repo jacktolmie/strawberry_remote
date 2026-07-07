@@ -370,7 +370,7 @@ void PlaylistManager::Delete(const int id) {
   Q_EMIT PlaylistDeleted(id);
 
   // Send deleted playlist ID to remote clients.
-  Q_EMIT deletePlaylistId(id);
+  // Q_EMIT deletePlaylistId(id);
 
 }
 

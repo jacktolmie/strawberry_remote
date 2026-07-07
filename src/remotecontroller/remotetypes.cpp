@@ -111,7 +111,7 @@ QString toString(Response value) {
         case Response::PLAYLIST_CLOSED:                 return u"playlist_closed"_s;
         case Response::REMOVED_DUPLICATES_FROM_PLAYLIST: return u"removed_duplicates_from_playlist"_s;
         case Response::RENAME_PLAYLIST:                 return u"rename_playlist"_s;
-        case Response::REMOVED_SONG_FROM_PLAYLIST:      return u"removed_song_from_playlist"_s;
+        case Response::REMOVED_SONGS_FROM_PLAYLIST:     return u"removed_songs_from_playlist"_s;
         case Response::RESPONSE:                        return u"response"_s;
         case Response::RUNNING_COMMAND:                 return u"running_command"_s;
         case Response::SENT_ALBUM_COVER:                return u"send_album_cover"_s;

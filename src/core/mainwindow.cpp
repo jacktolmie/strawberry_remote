@@ -3056,11 +3056,8 @@ SettingsDialog *MainWindow::CreateSettingsDialog() {
                                                        app_->lyrics_providers(),
                                                        app_->scrobbler(),
                                                        app_->streaming_services(),
-
                                                        app_->remote_settings(),
-
                                                        appearance_,
-
 #ifdef HAVE_GLOBALSHORTCUTS
                                                        globalshortcuts_manager_,
 #endif

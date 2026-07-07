@@ -8,7 +8,7 @@
 #include "core/application.h"
 #include "remotecontroller/remotecurrentsong.h"
 
-using PlaylistCmdMap = QMap<QString, std::function<QJsonObject(const QStringList&)>>;
+using PlaylistCmdMap = QMap<QString, std::function<QJsonObject(const QJsonObject&)>>;
 
 class RemotePlaylist : public QObject
 {
@@ -30,39 +30,39 @@ private:
     PlaylistCmdMap commandMap;
 
     void createCommandMap();
-    QJsonObject clearRemoteCurrentPlaylist(const QStringList& args);
-    QJsonObject closeCurrentPlaylist(const QStringList& args);
-    QJsonObject removeCurrentSongsPlaylist(const QStringList& songs);
-    QJsonObject removeDuplicatesPlaylist(const QStringList& args);
+    QJsonObject clearRemoteCurrentPlaylist(const QJsonObject& args);
+    QJsonObject closeRemoteCurrentPlaylist(const QJsonObject& args);
+    QJsonObject removeCurrentSongsPlaylist(const QJsonObject& songs);
+    QJsonObject removeDuplicatesPlaylist(const QJsonObject& args);
     // Rename current playlist. Send command rename-playlist <new name>.
-    QJsonObject renameCurrentPlaylist(const QStringList& args);
+    QJsonObject renameCurrentPlaylist(const QJsonObject& args);
     // Shuffle all playlists.
     QJsonObject shuffleAllPlaylists();
     // Shuffle single playlist.
-    QJsonObject shuffleSinglePlaylist(const QStringList& args);
+    QJsonObject shuffleSinglePlaylist(const QJsonObject& args);
     // Delete current playlist.
-    QJsonObject deleteCurrentDevicePlaylist(const QStringList& args);
+    QJsonObject deleteCurrentRemotePlaylist(const QJsonObject& args);
     // Send current album cover.
     QJsonObject sendCoverImage();
     // Make playlist a favourite or not.
-    QJsonObject setFavouritePlaylist(const QStringList& args);
+    QJsonObject setFavouritePlaylist(const QJsonObject& args);
     // Set the playlist as current. Send set-current-playlist <playlist ID>.
-    QJsonObject setCurrentPlaylist(const QStringList& args);
+    QJsonObject setCurrentPlaylist(const QJsonObject& args);
     // Send active playlist on remote to server.
-    QJsonObject receiveRemoteActive(const QStringList& args);
+    QJsonObject receiveRemoteActive(const QJsonObject& args);
     // Send requested playlist to remote.
-    QJsonObject sendRequestedPLaylist(const QStringList& args);
+    QJsonObject sendRequestedPLaylist(const QJsonObject& args);
     // Make playlists to send back to device.
     QJsonObject makeAllPlaylists() const;
     // QJsonObject makeSinglePlaylist(const int id);
     QJsonObject makePlaylistData(const int id) const;
     // Send number of arguments needed back to remote.
-    QJsonObject wrongNumArgs(const int num);
+    QJsonObject wrongArgsSent(const QString& error);  //(const int num);
 
 Q_SIGNALS:
     void sendResponse(const QJsonObject& response);
     void clearPlaylist();
-    void closePlaylist(const int id);
+    void remoteClosedPlaylist(const int id);
     void deletePlaylist(const int id);
     void remoteFavouritePlaylist(const int id, bool isFavourite);
     void serverFavouritePlaylist(const int id, bool isFavourite);
@@ -73,8 +73,6 @@ Q_SIGNALS:
     void setActivePlaylist(const int id);
     void setCurrentPlaylistSignal(const int id);
     void shufflePlaylist();
-
-
 
 private Q_SLOTS:
     // If playlist is changed on server, send updated playlist.
