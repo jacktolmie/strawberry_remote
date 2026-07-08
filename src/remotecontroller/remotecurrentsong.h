@@ -6,7 +6,6 @@
 
 #include "core/application.h"
 #include "core/song.h"
-#include "covermanager/albumcoverfetcher.h"
 
 class AlbumCoverFetcher; // Needed?
 class CurrentAlbumCoverLoader;
@@ -20,7 +19,6 @@ class RemoteCurrentSong : public QObject
 public:
     explicit RemoteCurrentSong(const Application *app, QObject *parent = nullptr);
 
-    // QJsonObject sendAlbumArt(const Song& song);
     QJsonObject songData(const Song& song) const;
     QJsonObject songInfoData(const Song& song) const;
 

@@ -1,15 +1,14 @@
 #include <QJsonDocument>
 #include <QHostInfo>
 #include <QRandomGenerator>
-#include "remotecontroller.h"
-#include "core/logging.h"
 #include <QCoreApplication>
-
 #include <QString>
-#include <execinfo.h>
+
+#include "core/logging.h"
 #include "core/player.h"
-#include "remotecontroller/remotejsoncreator.h"
-#include "remotecontroller/remotetypes.h"
+#include "remotecontroller.h"
+#include "remotejsoncreator.h"
+#include "remotetypes.h"
 
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;

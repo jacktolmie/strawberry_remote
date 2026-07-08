@@ -5,8 +5,8 @@
 #include <QJsonDocument>
 
 #include "remotecommands.h"
-#include "remotecontroller/remotejsoncreator.h"
-#include "remotecontroller/remotetypes.h"
+#include "remotejsoncreator.h"
+#include "remotetypes.h"
 
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;

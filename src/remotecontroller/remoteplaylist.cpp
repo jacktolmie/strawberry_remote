@@ -3,14 +3,14 @@
 #include <QJsonObject>
 #include <QList>
 #include <qtpreprocessorsupport.h>
-#include "remoteplaylist.h"
+
 #include "playlist/playlistmanager.h"
-#include "playlist/playlistbackend.h"
 #include "playlist/playlist.h"
 #include "core/player.h"
-#include "remotecontroller/remoteconstants.h"
-#include "remotecontroller/remotejsoncreator.h"
-#include "remotecontroller/remotetypes.h"
+
+#include "remoteplaylist.h"
+#include "remotejsoncreator.h"
+#include "remotetypes.h"
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -23,7 +23,6 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
 {
   RemotePlaylist::createCommandMap();
 
-  // Might have double connections for favourite/closing/deleting playlists. Test with both remote and server tests.
   QObject::connect(this, &RemotePlaylist::clearPlaylist , &*app_->playlist_manager(), &PlaylistManager::ClearCurrent);
   QObject::connect(this, &RemotePlaylist::remoteClosedPlaylist , &*app_->playlist_manager(), &PlaylistManager::Close);
   QObject::connect(this, &RemotePlaylist::deletePlaylist , &*app_->playlist_manager(), &PlaylistManager::Delete);
@@ -40,7 +39,6 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(currentSong_, &RemoteCurrentSong::sendAlbumArt, this, &RemotePlaylist::sendResponse);
 
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistClosed, this, &RemotePlaylist::closeServerPlaylist);
-
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistFavorited, this, &RemotePlaylist::serverFavouritePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::renamePlaylist, this, &RemotePlaylist::serverRenamePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendActivePlaylistId, this, &RemotePlaylist::activeChanged);

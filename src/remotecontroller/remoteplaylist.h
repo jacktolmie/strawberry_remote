@@ -6,7 +6,7 @@
 #include <QTimer>
 
 #include "core/application.h"
-#include "remotecontroller/remotecurrentsong.h"
+#include "remotecurrentsong.h"
 
 using PlaylistCmdMap = QMap<QString, std::function<QJsonObject(const QJsonObject&)>>;
 

@@ -1,9 +1,9 @@
 #include "playlist/playlistmanager.h"
-#include "remotecurrentsong.h"
 #include "constants/timeconstants.h"
-#include "remotecontroller/remotetypes.h"
-#include "remotecontroller/remotejsoncreator.h"
-#include <QTimer>
+#include "remotecurrentsong.h"
+#include "remotetypes.h"
+#include "remotejsoncreator.h"
+
 
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;
@@ -28,7 +28,6 @@ QJsonObject RemoteCurrentSong::songData(const Song& song) const {
     return songInfo;
 }
 
-// Full event envelope - use this for standalone song_info events
 QJsonObject RemoteCurrentSong::songInfoData(const Song& song) const {
     return RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),

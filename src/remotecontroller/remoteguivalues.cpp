@@ -2,9 +2,9 @@
 #include "core/player.h"
 #include "constants/timeconstants.h"
 #include "playlist/playlistmanager.h"
-#include "remotecontroller/remotejsoncreator.h"
-#include "remotecontroller/remoteplaylist.h"
-#include "remotecontroller/remotetypes.h"
+#include "remotejsoncreator.h"
+#include "remoteplaylist.h"
+#include "remotetypes.h"
 
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;

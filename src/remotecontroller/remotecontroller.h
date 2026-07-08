@@ -12,11 +12,10 @@
 #include <QSettings>
 
 #include "core/application.h"
-#include "ui_mainwindow.h"
-#include "remotecontroller/remoteguivalues.h"
-#include "remotecontroller/remotesettings.h"
-#include "remotecontroller/remotecommands.h"
 #include "playlist/playlist.h"
+#include "remoteguivalues.h"
+#include "remotesettings.h"
+#include "remotecommands.h"
 
 enum class ClientState {
   Authenticated,

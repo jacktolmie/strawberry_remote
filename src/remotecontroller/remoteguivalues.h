@@ -6,9 +6,7 @@
 #include <QTcpSocket>
 
 #include "core/application.h"
-#include "ui_mainwindow.h"
-#include "remotecontroller/remoteplaylist.h"
-// #include "remotecontroller/remotecommands.h"
+#include "remoteplaylist.h"
 
 class TrackSlider;
 
@@ -17,7 +15,6 @@ class RemoteGuiValues : public QObject
   Q_OBJECT
 
   const Application     *app_;
-  const Ui_MainWindow   *ui_;
   const RemotePlaylist  *remotePlaylist_;
 
   QJsonObject getUpdates() const;

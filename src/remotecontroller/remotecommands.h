@@ -4,8 +4,8 @@
 #include <QObject>
 
 #include "core/application.h"
-#include "remotecontroller/remoteplaylist.h"
-#include "remotecontroller/remotebasiccommands.h"
+#include "remoteplaylist.h"
+#include "remotebasiccommands.h"
 
 class QTcpSocket;
 

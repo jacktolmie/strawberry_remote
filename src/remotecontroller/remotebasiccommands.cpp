@@ -1,9 +1,8 @@
 #include <QJsonObject>
-#include "remotebasiccommands.h"
-#include "remotecontroller/remoteconstants.h"
 #include "core/player.h"
-#include "remotecontroller/remotejsoncreator.h"
-#include "remotecontroller/remotetypes.h"
+#include "remotebasiccommands.h"
+#include "remotejsoncreator.h"
+#include "remotetypes.h"
 
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;
@@ -54,7 +53,7 @@ void RemoteBasicCommands::remoteSeekTo(const QJsonObject& args){
     qint64 sentSeconds{ args[u"seek-to"_s].toInteger(-1)};
 
     if (sentSeconds == -1) {
-        wrongArgsSent(u"seconds"_s);
+        wrongArgsSent(u"seek-to"_s);
         return;
     }
     Q_EMIT RemoteBasicCommands::seekTo(sentSeconds);
