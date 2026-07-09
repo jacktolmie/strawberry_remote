@@ -29,6 +29,8 @@ namespace RemoteTypes{
         PAUSED,
         PLAYLIST,
         PLAYLISTS,
+        PLAYLIST_LENGTH,
+        PLAYLIST_SIZE,
         PLAYING,
         SONGS,
         STOPPED,
