@@ -1155,7 +1155,6 @@ set(HEADERS
 
   src/remotecontroller/remotebasiccommands.h
   src/remotecontroller/remotecommands.h
-  src/remotecontroller/remoteconstants.h
   src/remotecontroller/remotecontroller.h
   src/remotecontroller/remotecurrentsong.h
   src/remotecontroller/remoteguivalues.h

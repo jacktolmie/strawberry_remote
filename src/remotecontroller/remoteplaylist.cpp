@@ -149,8 +149,8 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id) const{
     playlistObject[toString(Arguments::NAME)] = app_->playlist_manager()->playlist_name(id);
     playlistObject[toString(Arguments::ID)] = id;
     playlistObject[toString(Arguments::FAVOURITE)] = app_->playlist_manager()->IsPlaylistFavorite(id);
-    playlistObject[toString(Arguments::PLAYLIST_LENGTH)] = static_cast<qint64>(app_->playlist_manager()->current()->GetTotalLength() /kNsecPerMsec);
-    playlistObject[toString(Arguments::PLAYLIST_SIZE)] = app_->playlist_manager()->current()->GetAllSongs().length();
+    playlistObject[toString(Arguments::PLAYLIST_LENGTH)] = static_cast<qint64>(app_->playlist_manager()->playlist(id)->GetTotalLength() /kNsecPerMsec);
+    playlistObject[toString(Arguments::PLAYLIST_SIZE)] = app_->playlist_manager()->playlist(id)->GetAllSongs().length();
 
     QJsonArray songsArray;
     auto songs{app_->playlist_manager()->playlist(id)->GetAllSongs()};
@@ -302,6 +302,7 @@ QJsonObject RemotePlaylist::setCurrentPlaylist(const QJsonObject& args){
 }
 
 QJsonObject RemotePlaylist::setFavouritePlaylist(const QJsonObject& args){
+    qInfo() << "setfavourites: " << args;
 
     if (!args.contains(u"favourite"_s)) return wrongArgsSent(u"favourite"_s);
     bool favourite{ args[u"favourite"_s].toBool()};
