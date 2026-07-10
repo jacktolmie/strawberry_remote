@@ -505,6 +505,7 @@ set(SOURCES
   src/utilities/coverutils.cpp
   src/utilities/screenutils.cpp
   src/utilities/textencodingutils.cpp
+  src/utilities/styleutils.cpp
   src/utilities/coveroptions.cpp
   src/utilities/musixmatchprovider.cpp
 
@@ -1655,6 +1656,7 @@ if(APPLE)
     "-framework DiskArbitration"
     "-framework IOKit"
     "-framework ScriptingBridge"
+    "-framework UserNotifications"
   )
   if(HAVE_SPARKLE)
     target_include_directories(strawberry_lib SYSTEM PRIVATE ${SPARKLE}/Headers)

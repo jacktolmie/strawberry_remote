@@ -120,6 +120,7 @@ class MainWindow : public QMainWindow, public PlatformInterface {
                       DiscordRichPresence *discord_rich_presence,
 #endif
                       const CommandlineOptions &options,
+                      const QString &default_style,
                       QWidget *parent = nullptr);
   ~MainWindow() override;
 
@@ -159,7 +160,7 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   void ForceShowOSD(const Song &song, const bool toggle);
 
   void PlaylistMenuHidden();
-  void PlaylistRightClick(const QPoint global_pos, const QModelIndex &index);
+  void ShowPlaylistContextMenu(const QPoint global_pos, const QModelIndex &index);
   void PlaylistCurrentChanged(const QModelIndex &current);
   void PlaylistViewSelectionModelChanged();
   void PlaylistPlay();

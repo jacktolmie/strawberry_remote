@@ -299,6 +299,7 @@ MainWindow::MainWindow(Application *app,
                        DiscordRichPresence *discord_rich_presence,
 #endif
                        const CommandlineOptions &options,
+                       const QString &default_style,
                        QWidget *parent)
     : QMainWindow(parent),
       ui_(new Ui_MainWindow),
@@ -713,7 +714,7 @@ MainWindow::MainWindow(Application *app,
   QObject::connect(ui_->playlist->view(), &PlaylistView::doubleClicked, this, &MainWindow::PlaylistDoubleClick);
   QObject::connect(ui_->playlist->view(), &PlaylistView::PlayItem, this, &MainWindow::PlayIndex);
   QObject::connect(ui_->playlist->view(), &PlaylistView::PlayPause, &*app_->player(), &Player::PlayPause);
-  QObject::connect(ui_->playlist->view(), &PlaylistView::RightClicked, this, &MainWindow::PlaylistRightClick);
+  QObject::connect(ui_->playlist->view(), &PlaylistView::ShowPlaylistContextMenu, this, &MainWindow::ShowPlaylistContextMenu);
   QObject::connect(ui_->playlist->view(), &PlaylistView::SeekForward, &*app_->player(), &Player::SeekForward);
   QObject::connect(ui_->playlist->view(), &PlaylistView::SeekBackward, &*app_->player(), &Player::SeekBackward);
   QObject::connect(ui_->playlist->view(), &PlaylistView::BackgroundPropertyChanged, this, &MainWindow::RefreshStyleSheet);
@@ -1001,8 +1002,9 @@ MainWindow::MainWindow(Application *app,
 
   // Load theme
   // We need to save the default/system palette now, before loading user preferred theme (which will override it), to be able to restore it later
+  appearance_->set_default_style(default_style);
   appearance_->set_system_palette(QApplication::palette());
-  appearance_->LoadUserTheme();
+  appearance_->LoadCustomPaletteColors();
   StyleSheetLoader *css_loader = new StyleSheetLoader(this);
   css_loader->SetStyleSheet(this, u":/style/strawberry.css"_s);
 
@@ -2018,7 +2020,7 @@ void MainWindow::PlaylistMenuHidden() {
 
 }
 
-void MainWindow::PlaylistRightClick(const QPoint global_pos, const QModelIndex &index) {
+void MainWindow::ShowPlaylistContextMenu(const QPoint global_pos, const QModelIndex &index) {
 
   QModelIndex source_index = index;
   if (index.model() == app_->playlist_manager()->current()->filter()) {

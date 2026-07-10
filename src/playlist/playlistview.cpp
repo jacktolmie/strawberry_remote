@@ -101,8 +101,8 @@ PlaylistView::PlaylistView(QWidget *parent)
       background_image_stretch_(false),
       background_image_do_not_cut_(true),
       background_image_keep_aspect_ratio_(true),
-      blur_radius_(AppearanceSettings::kDefaultBlurRadius),
-      opacity_level_(AppearanceSettings::kDefaultOpacityLevel),
+      blur_radius_(AppearanceSettings::kDefaultBackgroundImageBlurRadius),
+      opacity_level_(AppearanceSettings::kDefaultBackgroundImageOpacityLevel),
       background_initialized_(false),
       set_initial_header_layout_(false),
       header_state_loaded_(false),
@@ -735,8 +735,22 @@ void PlaylistView::keyPressEvent(QKeyEvent *event) {
 }
 
 void PlaylistView::contextMenuEvent(QContextMenuEvent *e) {
-  Q_EMIT RightClicked(e->globalPos(), indexAt(e->pos()));
+
+  QModelIndex index;
+  QPoint global_pos = e->globalPos();
+  if (e->reason() == QContextMenuEvent::Keyboard) {
+    index = currentIndex();
+    if (index.isValid()) {
+      global_pos = viewport()->mapToGlobal(visualRect(index).center());
+    }
+  }
+  else {
+    index = indexAt(e->pos());
+  }
+
+  Q_EMIT ShowPlaylistContextMenu(global_pos, index);
   e->accept();
+
 }
 
 void PlaylistView::RemoveSelected() {
@@ -1233,8 +1247,8 @@ void PlaylistView::ReloadSettings() {
   bool background_image_stretch = s.value(AppearanceSettings::kBackgroundImageStretch, AppearanceSettings::kDefaultBackgroundImageStretch).toBool();
   bool background_image_do_not_cut = s.value(AppearanceSettings::kBackgroundImageDoNotCut, AppearanceSettings::kDefaultBackgroundImageDoNotCut).toBool();
   bool background_image_keep_aspect_ratio = s.value(AppearanceSettings::kBackgroundImageKeepAspectRatio, AppearanceSettings::kDefaultBackgroundImageKeepAspectRatio).toBool();
-  int blur_radius = s.value(AppearanceSettings::kBlurRadius, AppearanceSettings::kDefaultBlurRadius).toInt();
-  int opacity_level = s.value(AppearanceSettings::kOpacityLevel, AppearanceSettings::kDefaultOpacityLevel).toInt();
+  int blur_radius = s.value(AppearanceSettings::kBackgroundImageBlurRadius, AppearanceSettings::kDefaultBackgroundImageBlurRadius).toInt();
+  int opacity_level = s.value(AppearanceSettings::kBackgroundImageOpacityLevel, AppearanceSettings::kDefaultBackgroundImageOpacityLevel).toInt();
   QColor playlist_playing_song_color = s.value(AppearanceSettings::kPlaylistPlayingSongColor).value<QColor>();
   if (playlist_playing_song_color != playlist_playing_song_color_) {
     row_height_ = -1;
