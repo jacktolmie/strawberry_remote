@@ -27,6 +27,11 @@ private:
     const Application *app_;
     RemoteCurrentSong *currentSong_;
 
+    QTimer *metadataTimer_;
+    int pendingPlaylistId_;
+    // void onPlaylistMetadataChanged(const int id);
+    // void onPlaylistMetadataChanged(const int id, const QUuid track_id = QUuid());
+
     PlaylistCmdMap commandMap;
 
     void createCommandMap();
@@ -82,6 +87,8 @@ private Q_SLOTS:
     void serverRenamePlaylist(const int id, const QString& name);
     void activeChanged(const int id); // Sends new active playlist id.
     void sendPlaylistData(const int id);
+    void onPlaylistMetadataChanged(const int id);
+    void onPlaylistMetadataChangedWithQUuid(const int id, const QUuid track_id);
 };
 
 #endif // REMOTEPLAYLIST_H
