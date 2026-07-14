@@ -46,7 +46,8 @@ QJsonObject RemoteGuiValues::getUpdates() const{
     field(Arguments::PLAYLISTS, remotePlaylist_->sendAllPlaylists()),
     field(Arguments::CURRENT_PLAYLIST, app_->playlist_manager()->current_id()),
     field(Arguments::CURRENT_SONG, app_->playlist_manager()->active() ? app_->playlist_manager()->active()->current_index().row(): -1),
-    field(Arguments::ACTIVE_PLAYLIST, app_->playlist_manager()->active_id())
+    field(Arguments::ACTIVE_PLAYLIST, app_->playlist_manager()->active_id()),
+    field(Arguments::COVER_IMAGE, QFileInfo(app_->playlist_manager()->current()->current_item_metadata().art_manual().toLocalFile()).fileName())
   });
 }
 

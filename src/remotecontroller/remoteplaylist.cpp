@@ -43,19 +43,28 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistFavorited, this, &RemotePlaylist::serverFavouritePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::renamePlaylist, this, &RemotePlaylist::serverRenamePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendActivePlaylistId, this, &RemotePlaylist::activeChanged);
-  // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::sendPlaylistData);
-
-  // QObject::connect(this, &RemotePlaylist::deletePlaylist, this, &RemotePlaylist::deleteServerPlaylist);
-  // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::deletePlaylistId, this, &RemotePlaylist::deleteServerPlaylist);
-  // QObject::connect(this, &RemotePlaylist::remoteClosedPlaylist, this, &RemotePlaylist::closeServerPlaylist);
 
   metadataTimer_ = new QTimer(this);
   metadataTimer_->setSingleShot(true);
-  metadataTimer_->setInterval(500);
+  metadataTimer_->setInterval(5000);
   connect(metadataTimer_, &QTimer::timeout, this, &RemotePlaylist::sendPendingPlaylist);
-  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistItemMetadataChanged, this, &RemotePlaylist::onPlaylistMetadataChangedWithQUuid);
+  // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistItemMetadataChanged, this, &RemotePlaylist::onPlaylistMetadataChangedWithQUuid);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::onPlaylistMetadataChanged);
 
+  // Unused??
+  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistItemsAdded, this, &RemotePlaylist::PlaylistItemsAdded);
+
+
+  // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::sendPlaylistData);
+  // QObject::connect(this, &RemotePlaylist::deletePlaylist, this, &RemotePlaylist::deleteServerPlaylist);
+  // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::deletePlaylistId, this, &RemotePlaylist::deleteServerPlaylist);
+  // QObject::connect(this, &RemotePlaylist::remoteClosedPlaylist, this, &RemotePlaylist::closeServerPlaylist);
+}
+
+// Unused???
+void RemotePlaylist::PlaylistItemsAdded(const int playlist_id, const QList<QUuid> &track_ids, const QUuid after_track_id){
+    qInfo()<<"Playlist item added: " << playlist_id;
+    for(auto& id: track_ids) qInfo() << "Track ID: " << id;
 }
 
 void RemotePlaylist::onPlaylistMetadataChangedWithQUuid(const int id, const QUuid track_id = QUuid()) {
@@ -173,7 +182,8 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id) const{
     playlistObject[toString(Arguments::ID)] =               id;
     playlistObject[toString(Arguments::FAVOURITE)] =        app_->playlist_manager()->IsPlaylistFavorite(id);
     playlistObject[toString(Arguments::PLAYLIST_LENGTH)] =  static_cast<qint64>(app_->playlist_manager()->playlist(id)->GetTotalLength() /kNsecPerMsec);
-    playlistObject[toString(Arguments::PLAYLIST_SIZE)] =    app_->playlist_manager()->playlist(id)->GetAllSongs().length();
+    playlistObject[toString(Arguments::PLAYLIST_SIZE)] =    12;//app_->playlist_manager()->playlist(id)->rowCount();
+        // app_->playlist_manager()->playlist(id)->GetAllSongs().length();
 
     QJsonArray songsArray;
     auto songs{app_->playlist_manager()->playlist(id)->GetAllSongs()};

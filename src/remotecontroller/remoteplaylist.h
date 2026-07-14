@@ -89,6 +89,7 @@ private Q_SLOTS:
     void sendPlaylistData(const int id);
     void onPlaylistMetadataChanged(const int id);
     void onPlaylistMetadataChangedWithQUuid(const int id, const QUuid track_id);
+    void PlaylistItemsAdded(const int playlist_id, const QList<QUuid> &track_ids, const QUuid after_track_id);
 };
 
 #endif // REMOTEPLAYLIST_H

@@ -2275,6 +2275,7 @@ SongList Playlist::GetAllSongs() const {
     const PlaylistItemPtr item = items_.at(i);
     songs << item->EffectiveMetadata();
   }
+
   return songs;
 
 }

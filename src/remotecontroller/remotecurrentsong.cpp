@@ -16,6 +16,7 @@ RemoteCurrentSong::RemoteCurrentSong(const Application *app, QObject *parent)
 }
 
 QJsonObject RemoteCurrentSong::songData(const Song& song) const {
+    qInfo() << "songdata called";
     QJsonObject songInfo;
     songInfo[toString(Arguments::ARTIST)] =         song.artist();
     songInfo[toString(Arguments::ALBUM)] =          song.album();
@@ -40,6 +41,7 @@ QJsonObject RemoteCurrentSong::songInfoData(const Song& song) const {
         field(Arguments::TITLE, song.PrettyTitle()),
         field(Arguments::LENGTH, song.length_nanosec() / kNsecPerMsec)
     });
+    // song.song_id();
 }
 
 void RemoteCurrentSong::getCurrentSongRequest(const Song& song){
