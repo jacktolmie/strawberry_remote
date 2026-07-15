@@ -84,7 +84,7 @@ class OrganizeDialog;
 class PlaylistListContainer;
 class QueueView;
 class SystemTrayIcon;
-#ifdef HAVE_MUSICBRAINZ
+#ifdef HAVE_TAGFETCHER
 class TagFetcher;
 #endif
 class TrackSelectionDialog;
@@ -348,7 +348,7 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   Lazy<TranscodeDialog> transcode_dialog_;
   Lazy<AddStreamDialog> add_stream_dialog_;
 
-#ifdef HAVE_MUSICBRAINZ
+#ifdef HAVE_TAGFETCHER
   ScopedPtr<TagFetcher> tag_fetcher_;
 #endif
   ScopedPtr<TrackSelectionDialog> track_selection_dialog_;
