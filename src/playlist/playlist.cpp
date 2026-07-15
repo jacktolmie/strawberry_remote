@@ -2124,6 +2124,8 @@ void Playlist::Shuffle() {
   }
 
   undo_stack_->push(new PlaylistUndoCommandShuffleItems(this, new_items));
+
+  Q_EMIT sendChangedPlaylist(id_);
 }
 
 namespace {

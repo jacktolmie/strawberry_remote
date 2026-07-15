@@ -182,8 +182,7 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id) const{
     playlistObject[toString(Arguments::ID)] =               id;
     playlistObject[toString(Arguments::FAVOURITE)] =        app_->playlist_manager()->IsPlaylistFavorite(id);
     playlistObject[toString(Arguments::PLAYLIST_LENGTH)] =  static_cast<qint64>(app_->playlist_manager()->playlist(id)->GetTotalLength() /kNsecPerMsec);
-    playlistObject[toString(Arguments::PLAYLIST_SIZE)] =    12;//app_->playlist_manager()->playlist(id)->rowCount();
-        // app_->playlist_manager()->playlist(id)->GetAllSongs().length();
+    playlistObject[toString(Arguments::PLAYLIST_SIZE)] =    app_->playlist_manager()->playlist(id)->rowCount();
 
     QJsonArray songsArray;
     auto songs{app_->playlist_manager()->playlist(id)->GetAllSongs()};
