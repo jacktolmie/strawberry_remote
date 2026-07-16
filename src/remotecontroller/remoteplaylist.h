@@ -26,9 +26,10 @@ public:
 
 private:
     void sendPendingPlaylist();
+    void setRepeatMode(QString mode);
 
-    const Application *app_;
-    RemoteCurrentSong *currentSong_;
+    const Application   *app_;
+    RemoteCurrentSong   *currentSong_;
 
     QTimer *metadataTimer_;
     int pendingPlaylistId_;
@@ -78,20 +79,22 @@ Q_SIGNALS:
     void remoteRenamePlaylist(const int id, const QString& name);
     void setActivePlaylist(const int id);
     void setCurrentPlaylistSignal(const int id);
+    void setRepeatModeSignal(const PlaylistSequence::RepeatMode mode);
     void shufflePlaylist();
 
 private Q_SLOTS:
     // If playlist is changed on server, send updated playlist.
+    void activeChanged(const int id); // Sends new active playlist id.
     void closeServerPlaylist(const int id);
     void deleteServerPlaylist(const int id);
     void favouriteServerPlaylist(const int id, bool favourite);
-    void serverRenamePlaylist(const int id, const QString& name);
-    void activeChanged(const int id); // Sends new active playlist id.
-    void sendPlaylistData(const int id);
     void onPlaylistMetadataChanged(const int id);
     void onPlaylistMetadataChangedWithQUuid(const int id, const QUuid track_id);
     void playlistItemsAdded(const int playlist_id, const QList<QUuid> &track_ids, const QUuid after_track_id);
+    void playlistManagerLoaded();
     void repeatModeChanged(const PlaylistSequence::RepeatMode mode);
+    void sendPlaylistData(const int id);
+    void serverRenamePlaylist(const int id, const QString& name);
 };
 
 #endif // REMOTEPLAYLIST_H

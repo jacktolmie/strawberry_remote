@@ -8,6 +8,7 @@
 #include "core/player.h"
 #include "playlist/playlistmanager.h"
 #include "playlist/playlist.h"
+#include "playlist/playlistsequence.h"
 
 #include "remoteplaylist.h"
 #include "remotejsoncreator.h"
@@ -41,9 +42,18 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
 
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistClosed, this, &RemotePlaylist::closeServerPlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistFavorited, this, &RemotePlaylist::serverFavouritePlaylist);
+  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistManagerInitialized, this, &RemotePlaylist::playlistManagerLoaded);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::renamePlaylist, this, &RemotePlaylist::serverRenamePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendActivePlaylistId, this, &RemotePlaylist::activeChanged);
 
+//   auto conn2 = QObject::connect(this, &RemotePlaylist::setRepeatModeSignal, sequence_, &PlaylistSequence::SetRepeatMode);
+//   // QObject::connect(&*app_->playlist_manager()->sequence(), &PlaylistSequence::RepeatModeChanged, this, &RemotePlaylist::repeatModeChanged);
+//   auto conn = QObject::connect(sequence_,
+//                                &PlaylistSequence::RepeatModeChanged,
+//                                this, &RemotePlaylist::repeatModeChanged);
+//   qInfo() << "sequence conn result:" << (bool)conn << " and conn2: " << conn2;
+
+// qInfo() << "sequence at connect time:" << app_->playlist_manager()->sequence();
   metadataTimer_ = new QTimer(this);
   metadataTimer_->setSingleShot(true);
   metadataTimer_->setInterval(5000);
@@ -195,6 +205,11 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id) const{
     return playlistObject;
 }
 
+void RemotePlaylist::playlistManagerLoaded(){
+    QObject::connect(this, &RemotePlaylist::setRepeatModeSignal, app_->playlist_manager()->sequence(), &PlaylistSequence::SetRepeatMode);
+    QObject::connect(app_->playlist_manager()->sequence(), &PlaylistSequence::RepeatModeChanged, this, &RemotePlaylist::repeatModeChanged);
+}
+
 QJsonObject RemotePlaylist::receiveRemoteActive(const QJsonObject& args){
 
     qint32 id{ args[u"id"_s].toInt(-1)};
@@ -276,11 +291,9 @@ QJsonObject RemotePlaylist::renameCurrentPlaylist(const QJsonObject& args){
 
 QString RemotePlaylist::repeatMode() const{
 
-    auto sequence{PlaylistSequence()};
-
     QString mode;
 
-    switch (sequence.repeat_mode()) {
+    switch (app_->playlist_manager()->sequence()->repeat_mode()) {
     case PlaylistSequence::RepeatMode::Album: {
         mode = u"album"_s;
         break;
@@ -304,11 +317,14 @@ QString RemotePlaylist::repeatMode() const{
 }
 
 void RemotePlaylist::repeatModeChanged([[ maybe_unused ]] const PlaylistSequence::RepeatMode mode){
-    Q_EMIT sendResponse({
+    qInfo() << "emitting from sequence:" << this;
+    qInfo()<< "remoteplaylist repeatmodechanged called";
+    Q_EMIT sendResponse( RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::REPEAT_MODE)),
+        field(Arguments::ID, app_->playlist_manager()->active_id()),
         field(Arguments::REPEAT_MODE, repeatMode())
-    });
+    }));
 }
 
 QJsonObject RemotePlaylist::sendAllPlaylists() const {
@@ -386,6 +402,17 @@ QJsonObject RemotePlaylist::setFavouritePlaylist(const QJsonObject& args){
         field(Response::RESPONSE, toString(Response::IS_PLAYLIST_A_FAVOURITE)),
         field(Arguments::IS_FAVOURITE, app_->playlist_manager()->playlist(id)->is_favorite())
     });
+}
+
+void RemotePlaylist::setRepeatMode(QString mode){
+
+    PlaylistSequence::RepeatMode sendMode{};
+    if(mode == u"album"_s) sendMode = PlaylistSequence::RepeatMode::Album;
+    else if(mode == u"off"_s) sendMode = PlaylistSequence::RepeatMode::Off;
+    else if(mode == u"playlist"_s) sendMode = PlaylistSequence::RepeatMode::Playlist;
+    else if(mode == u"track"_s) sendMode = PlaylistSequence::RepeatMode::Track;
+
+    Q_EMIT setRepeatModeSignal(sendMode);
 }
 
 QJsonObject RemotePlaylist::shuffleAllPlaylists(){
