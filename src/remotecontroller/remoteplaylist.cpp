@@ -52,17 +52,18 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::onPlaylistMetadataChanged);
 
   // Unused??
-  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistItemsAdded, this, &RemotePlaylist::PlaylistItemsAdded);
+  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistItemsAdded, this, &RemotePlaylist::playlistItemsAdded);
 
 
   // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::sendPlaylistData);
   // QObject::connect(this, &RemotePlaylist::deletePlaylist, this, &RemotePlaylist::deleteServerPlaylist);
   // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::deletePlaylistId, this, &RemotePlaylist::deleteServerPlaylist);
   // QObject::connect(this, &RemotePlaylist::remoteClosedPlaylist, this, &RemotePlaylist::closeServerPlaylist);
+
 }
 
 // Unused???
-void RemotePlaylist::PlaylistItemsAdded(const int playlist_id, const QList<QUuid> &track_ids, const QUuid after_track_id){
+void RemotePlaylist::playlistItemsAdded(const int playlist_id, const QList<QUuid> &track_ids, const QUuid after_track_id){
     qInfo()<<"Playlist item added: " << playlist_id;
     for(auto& id: track_ids) qInfo() << "Track ID: " << id;
 }
@@ -124,7 +125,7 @@ QJsonObject RemotePlaylist::closeRemoteCurrentPlaylist(const QJsonObject& args){
 }
 
 void RemotePlaylist::closeServerPlaylist(const int id){
-    Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
+    Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::CLOSED_PLAYLIST_WITH_ID)),
         field(Arguments::ID, id)
@@ -146,7 +147,7 @@ QJsonObject RemotePlaylist::deleteCurrentRemotePlaylist(const QJsonObject& args)
 }
 
 void RemotePlaylist::deleteServerPlaylist(const int id){
-    Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
+    Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
         field(Response::RESPONSE, toString(Response::DELETED_PLAYLIST_WITH_ID)),
         field(Arguments::ID, id)
@@ -270,6 +271,43 @@ QJsonObject RemotePlaylist::renameCurrentPlaylist(const QJsonObject& args){
         field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
         field(Response::RESPONSE, toString(Response::RENAME_PLAYLIST)),
         field(Arguments::NAME, app_->playlist_manager()->GetPlaylistName(id))
+    });
+}
+
+QString RemotePlaylist::repeatMode() const{
+
+    auto sequence{PlaylistSequence()};
+
+    QString mode;
+
+    switch (sequence.repeat_mode()) {
+    case PlaylistSequence::RepeatMode::Album: {
+        mode = u"album"_s;
+        break;
+    }
+    case PlaylistSequence::RepeatMode::Off: {
+        mode = u"off"_s;
+        break;
+    }
+    case PlaylistSequence::RepeatMode::Playlist: {
+        mode = u"playlist"_s;
+        break;
+    }
+    case PlaylistSequence::RepeatMode::Track: {
+        mode = u"track"_s;
+        break;
+    }
+    default:
+        break;
+    }
+    return mode;
+}
+
+void RemotePlaylist::repeatModeChanged([[ maybe_unused ]] const PlaylistSequence::RepeatMode mode){
+    Q_EMIT sendResponse({
+        field(MessageType::EVENT, toString(MessageType::EVENT)),
+        field(Event::EVENT, toString(Event::REPEAT_MODE)),
+        field(Arguments::REPEAT_MODE, repeatMode())
     });
 }
 

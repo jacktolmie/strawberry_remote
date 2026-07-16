@@ -6,6 +6,7 @@
 #include <QTimer>
 
 #include "core/application.h"
+#include "playlist/playlistsequence.h"
 #include "remotecurrentsong.h"
 
 using PlaylistCmdMap = QMap<QString, std::function<QJsonObject(const QJsonObject&)>>;
@@ -19,6 +20,8 @@ public:
     ~RemotePlaylist() = default;
 
     const PlaylistCmdMap& sendCommandMap() const;
+    // Return current repeat mode
+    QString     repeatMode() const;
     QJsonObject sendAllPlaylists() const;
 
 private:
@@ -29,8 +32,6 @@ private:
 
     QTimer *metadataTimer_;
     int pendingPlaylistId_;
-    // void onPlaylistMetadataChanged(const int id);
-    // void onPlaylistMetadataChanged(const int id, const QUuid track_id = QUuid());
 
     PlaylistCmdMap commandMap;
 
@@ -89,7 +90,8 @@ private Q_SLOTS:
     void sendPlaylistData(const int id);
     void onPlaylistMetadataChanged(const int id);
     void onPlaylistMetadataChangedWithQUuid(const int id, const QUuid track_id);
-    void PlaylistItemsAdded(const int playlist_id, const QList<QUuid> &track_ids, const QUuid after_track_id);
+    void playlistItemsAdded(const int playlist_id, const QList<QUuid> &track_ids, const QUuid after_track_id);
+    void repeatModeChanged(const PlaylistSequence::RepeatMode mode);
 };
 
 #endif // REMOTEPLAYLIST_H

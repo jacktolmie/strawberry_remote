@@ -22,6 +22,7 @@ QString toString(Arguments value) {
         case Arguments::LENGTH:             return u"length"_s;
         case Arguments::NAME:               return u"name"_s;
         case Arguments::NONCE:              return u"nonce"_s;
+        case Arguments::REPEAT_MODE:        return u"repeat_mode"_s;
         case Arguments::REQUIRED:           return u"required"_s;
         case Arguments::ROW:                return u"row"_s;
         case Arguments::PAUSED:             return u"paused"_s;
@@ -82,6 +83,7 @@ QString toString(Event value) {
         case Event::PAUSE:                      return u"pause"_s;
         case Event::PLAY:                       return u"play"_s;
         case Event::PREVIOUS:                   return u"previous"_s;
+        case Event::REPEAT_MODE:                return u"repeat_mode"_s;
         case Event::RENAME_PLAYLIST:            return u"rename_playlist"_s;
         case Event::SEEK_BACKWARD:              return u"seek_backward"_s;
         case Event::SEEK_FORWARD:               return u"seek_forward"_s;

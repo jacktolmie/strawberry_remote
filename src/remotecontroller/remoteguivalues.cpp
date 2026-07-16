@@ -40,14 +40,15 @@ QJsonObject RemoteGuiValues::getUpdates() const{
   return RemoteJsonCreator::createResponse({
     field(MessageType::EVENT, toString(MessageType::EVENT)),
     field(Event::EVENT, toString(Event::GUI_UPDATES)),
-    field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume())),
-    field(Arguments::TIME, app_->player()->engine()->position_nanosec() / kNsecPerMsec),
-    field(Arguments::PLAYING, toString(currentPlayState)),
-    field(Arguments::PLAYLISTS, remotePlaylist_->sendAllPlaylists()),
+    field(Arguments::ACTIVE_PLAYLIST, app_->playlist_manager()->active_id()),
+    field(Arguments::COVER_IMAGE, QFileInfo(app_->playlist_manager()->current()->current_item_metadata().art_manual().toLocalFile()).fileName()),
     field(Arguments::CURRENT_PLAYLIST, app_->playlist_manager()->current_id()),
     field(Arguments::CURRENT_SONG, app_->playlist_manager()->active() ? app_->playlist_manager()->active()->current_index().row(): -1),
-    field(Arguments::ACTIVE_PLAYLIST, app_->playlist_manager()->active_id()),
-    field(Arguments::COVER_IMAGE, QFileInfo(app_->playlist_manager()->current()->current_item_metadata().art_manual().toLocalFile()).fileName())
+    field(Arguments::PLAYING, toString(currentPlayState)),
+    field(Arguments::PLAYLISTS, remotePlaylist_->sendAllPlaylists()),
+    field(Arguments::REPEAT_MODE, remotePlaylist_->repeatMode()),
+    field(Arguments::TIME, app_->player()->engine()->position_nanosec() / kNsecPerMsec),
+    field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume()))
   });
 }
 
