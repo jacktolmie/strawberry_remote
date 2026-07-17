@@ -735,7 +735,7 @@ set(SOURCES
   src/settings/transcodersettingspage.cpp
   src/settings/remotecontrollersettingspage.cpp
 
-  src/dialogs/about.cpp
+  src/dialogs/aboutdialog.cpp
   src/dialogs/console.cpp
   src/dialogs/errordialog.cpp
   src/dialogs/edittagdialog.cpp
@@ -1044,7 +1044,7 @@ set(HEADERS
   src/settings/transcodersettingspage.h
   src/settings/remotecontrollersettingspage.h
 
-  src/dialogs/about.h
+  src/dialogs/aboutdialog.h
   src/dialogs/errordialog.h
   src/dialogs/console.h
   src/dialogs/edittagdialog.h
@@ -1212,7 +1212,7 @@ set(UI
   src/equalizer/equalizer.ui
   src/equalizer/equalizerslider.ui
 
-  src/dialogs/about.ui
+  src/dialogs/aboutdialog.ui
   src/dialogs/errordialog.ui
   src/dialogs/console.ui
   src/dialogs/edittagdialog.ui

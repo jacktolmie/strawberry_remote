@@ -61,9 +61,10 @@
 #include "covermanager/albumcoverloaderresult.h"
 #include "covermanager/albumcoverimageresult.h"
 
+
 #include "remotecontroller/remotecontroller.h"
 
-class About;
+class AboutDialog;
 class Appearance;
 class Console;
 class AlbumCoverManager;
@@ -327,7 +328,7 @@ class MainWindow : public QMainWindow, public PlatformInterface {
   DiscordRichPresence *discord_rich_presence_;
 #endif
   Lazy<ErrorDialog> error_dialog_;
-  Lazy<About> about_dialog_;
+  Lazy<AboutDialog> about_dialog_;
   Lazy<Console> console_;
   Lazy<EditTagDialog> edit_tag_dialog_;
   AlbumCoverChoiceController *album_cover_choice_controller_;
