@@ -46,17 +46,9 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::renamePlaylist, this, &RemotePlaylist::serverRenamePlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendActivePlaylistId, this, &RemotePlaylist::activeChanged);
 
-//   auto conn2 = QObject::connect(this, &RemotePlaylist::setRepeatModeSignal, sequence_, &PlaylistSequence::SetRepeatMode);
-//   // QObject::connect(&*app_->playlist_manager()->sequence(), &PlaylistSequence::RepeatModeChanged, this, &RemotePlaylist::repeatModeChanged);
-//   auto conn = QObject::connect(sequence_,
-//                                &PlaylistSequence::RepeatModeChanged,
-//                                this, &RemotePlaylist::repeatModeChanged);
-//   qInfo() << "sequence conn result:" << (bool)conn << " and conn2: " << conn2;
-
-// qInfo() << "sequence at connect time:" << app_->playlist_manager()->sequence();
   metadataTimer_ = new QTimer(this);
   metadataTimer_->setSingleShot(true);
-  metadataTimer_->setInterval(5000);
+  metadataTimer_->setInterval(3000);
   connect(metadataTimer_, &QTimer::timeout, this, &RemotePlaylist::sendPendingPlaylist);
   // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistItemMetadataChanged, this, &RemotePlaylist::onPlaylistMetadataChangedWithQUuid);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::onPlaylistMetadataChanged);
@@ -317,8 +309,6 @@ QString RemotePlaylist::repeatMode() const{
 }
 
 void RemotePlaylist::repeatModeChanged([[ maybe_unused ]] const PlaylistSequence::RepeatMode mode){
-    qInfo() << "emitting from sequence:" << this;
-    qInfo()<< "remoteplaylist repeatmodechanged called";
     Q_EMIT sendResponse( RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::REPEAT_MODE)),
@@ -388,7 +378,6 @@ QJsonObject RemotePlaylist::setCurrentPlaylist(const QJsonObject& args){
 }
 
 QJsonObject RemotePlaylist::setFavouritePlaylist(const QJsonObject& args){
-    qInfo() << "setfavourites: " << args;
 
     if (!args.contains(u"favourite"_s)) return wrongArgsSent(u"favourite"_s);
     bool favourite{ args[u"favourite"_s].toBool()};
@@ -404,15 +393,24 @@ QJsonObject RemotePlaylist::setFavouritePlaylist(const QJsonObject& args){
     });
 }
 
-void RemotePlaylist::setRepeatMode(QString mode){
+QJsonObject RemotePlaylist::setRepeatMode(const QJsonObject& args){
 
+    if (!args.contains(u"repeat_mode"_s)) return wrongArgsSent(u"repeat_mode"_s);
+
+    QString mode{ args[u"repeat_mode"_s].toString()};
     PlaylistSequence::RepeatMode sendMode{};
+
     if(mode == u"album"_s) sendMode = PlaylistSequence::RepeatMode::Album;
     else if(mode == u"off"_s) sendMode = PlaylistSequence::RepeatMode::Off;
     else if(mode == u"playlist"_s) sendMode = PlaylistSequence::RepeatMode::Playlist;
     else if(mode == u"track"_s) sendMode = PlaylistSequence::RepeatMode::Track;
 
     Q_EMIT setRepeatModeSignal(sendMode);
+    return RemoteJsonCreator::createResponse({
+        field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+        field(Response::RESPONSE, toString(Response::REPEAT_MODE)),
+        field(Arguments::REPEAT_MODE, repeatMode())
+    });
 }
 
 QJsonObject RemotePlaylist::shuffleAllPlaylists(){
@@ -461,6 +459,7 @@ void RemotePlaylist::createCommandMap(){
     commandMap[u"remove-duplicates-playlist"_s] = [this](const QJsonObject& args){ return removeDuplicatesPlaylist(args); };
     commandMap[u"remove-songs-playlist"_s] = [this](const QJsonObject& args){ return removeCurrentSongsPlaylist(args); };
     commandMap[u"rename-playlist"_s] = [this](const QJsonObject& args){ return renameCurrentPlaylist(args); };
+    commandMap[u"repeat_mode"_s] = [this](const QJsonObject& args){ return setRepeatMode(args);};
     commandMap[u"send-playlist-song"_s] = [this](const QJsonObject& args){ return receiveRemoteActive(args); };
     commandMap[u"send-all-playlists"_s] = [this](const auto&){ return makeAllPlaylists(); };
     commandMap[u"send-playlist"_s] = [this](const QJsonObject& args){ return sendRequestedPLaylist(args); };

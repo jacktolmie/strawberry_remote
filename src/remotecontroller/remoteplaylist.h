@@ -26,7 +26,6 @@ public:
 
 private:
     void sendPendingPlaylist();
-    void setRepeatMode(QString mode);
 
     const Application   *app_;
     RemoteCurrentSong   *currentSong_;
@@ -57,6 +56,8 @@ private:
     QJsonObject setFavouritePlaylist(const QJsonObject& args);
     // Set the playlist as current. Send set-current-playlist <playlist ID>.
     QJsonObject setCurrentPlaylist(const QJsonObject& args);
+    // Set the repeat mode from the remote device
+    QJsonObject setRepeatMode(const QJsonObject& args);
     // Send requested playlist to remote.
     QJsonObject sendRequestedPLaylist(const QJsonObject& args);
     // Make playlists to send back to device.
