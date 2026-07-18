@@ -397,7 +397,7 @@ QJsonObject RemotePlaylist::setRepeatMode(const QJsonObject& args){
 
     if (!args.contains(u"repeat_mode"_s)) return wrongArgsSent(u"repeat_mode"_s);
 
-    QString mode{ args[u"repeat_mode"_s].toString()};
+    QString mode{ args[u"repeat_mode"_s].toString().toLower()};
     PlaylistSequence::RepeatMode sendMode{};
 
     if(mode == u"album"_s) sendMode = PlaylistSequence::RepeatMode::Album;

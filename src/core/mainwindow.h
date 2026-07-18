@@ -61,7 +61,6 @@
 #include "covermanager/albumcoverloaderresult.h"
 #include "covermanager/albumcoverimageresult.h"
 
-
 #include "remotecontroller/remotecontroller.h"
 
 class AboutDialog;

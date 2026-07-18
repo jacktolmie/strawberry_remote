@@ -17,7 +17,7 @@ RemoteGuiValues::RemoteGuiValues(const RemotePlaylist *remotePlaylist, const App
 {}
 
 QJsonObject RemoteGuiValues::getUpdates() const{
-
+    qInfo() << "Remotegui get updates called";
   RemoteTypes::Arguments currentPlayState;
 
   switch(app_->player()->GetState()){
@@ -53,5 +53,6 @@ QJsonObject RemoteGuiValues::getUpdates() const{
 }
 
 QJsonObject RemoteGuiValues::triggerUpdate() const {
+    qInfo()<< "Remotegui trigger update called";
   return getUpdates();
 }
