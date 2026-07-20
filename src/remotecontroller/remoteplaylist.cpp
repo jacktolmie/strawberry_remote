@@ -38,7 +38,8 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
   QObject::connect(this, &RemotePlaylist::serverFavouritePlaylist, this, &RemotePlaylist::favouriteServerPlaylist);
   QObject::connect(this, &RemotePlaylist::setActivePlaylist, &*app_->playlist_manager(), &PlaylistManager::SetActivePlaylist);
   QObject::connect(currentSong_, &RemoteCurrentSong::sendCurrentSongData, this, &RemotePlaylist::sendResponse);
-  QObject::connect(currentSong_, &RemoteCurrentSong::sendAlbumArt, this, &RemotePlaylist::sendResponse);
+  // QObject::connect(currentSong_, &RemoteCurrentSong::sendAlbumArt, this, &RemotePlaylist::sendResponse);
+  QObject::connect(this, &RemotePlaylist::requestAlbumArt, currentSong_, &RemoteCurrentSong::requestAlbumArt);
 
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistClosed, this, &RemotePlaylist::closeServerPlaylist);
   QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistFavorited, this, &RemotePlaylist::serverFavouritePlaylist);
@@ -325,13 +326,34 @@ const PlaylistCmdMap& RemotePlaylist::sendCommandMap() const{
     return commandMap;
 }
 
-QJsonObject RemotePlaylist::sendCoverImage(){
-    currentSong_->makeAlbumArt(app_->playlist_manager()->current()->current_item_metadata());
+QJsonObject RemotePlaylist::sendCoverImage(const QJsonObject& args){
 
-    return RemoteJsonCreator::createResponse({
-        field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
-        field(Response::RESPONSE, toString(Response::SENT_ALBUM_COVER))
-    });
+    qint32 id{ args[u"playlist-id"].toInt(-1)};
+    if (id == -1) return wrongArgsSent(u"playlist_id"_s);
+
+    qint32 row{ args[u"row"_s].toInt(-1)};
+    if (row == -1) return wrongArgsSent(u"row"_s);
+
+    // Song song;
+    if(app_->playlist_manager()->IsPlaylistOpen(id)){
+        auto currentId {app_->playlist_manager()->current_id()};
+
+        app_->playlist_manager()->SetCurrentPlaylist(id);
+        Song song = app_->playlist_manager()->current()->item_at(row)->EffectiveMetadata();
+
+        app_->playlist_manager()->SetCurrentPlaylist(currentId);
+
+        QJsonObject albumCover{currentSong_->requestAlbumArt(song)};
+
+        if (!albumCover.isEmpty()){
+            return RemoteJsonCreator::createResponse({
+                field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+                field(Response::RESPONSE, toString(Response::SENT_ALBUM_COVER)),
+                field(Arguments::COVER_IMAGE, albumCover)
+            });
+        }
+    }
+    return wrongArgsSent(u"playlist_id"_s);
 }
 
 void RemotePlaylist::sendPlaylistData(const int id){
@@ -395,9 +417,9 @@ QJsonObject RemotePlaylist::setFavouritePlaylist(const QJsonObject& args){
 
 QJsonObject RemotePlaylist::setRepeatMode(const QJsonObject& args){
 
-    if (!args.contains(u"repeat_mode"_s)) return wrongArgsSent(u"repeat_mode"_s);
+    if (!args.contains(u"repeat-mode"_s)) return wrongArgsSent(u"repeat-mode"_s);
 
-    QString mode{ args[u"repeat_mode"_s].toString().toLower()};
+    QString mode{ args[u"repeat-mode"_s].toString().toLower()};
     PlaylistSequence::RepeatMode sendMode{};
 
     if(mode == u"album"_s) sendMode = PlaylistSequence::RepeatMode::Album;
@@ -463,7 +485,7 @@ void RemotePlaylist::createCommandMap(){
     commandMap[u"send-playlist-song"_s] = [this](const QJsonObject& args){ return receiveRemoteActive(args); };
     commandMap[u"send-all-playlists"_s] = [this](const auto&){ return makeAllPlaylists(); };
     commandMap[u"send-playlist"_s] = [this](const QJsonObject& args){ return sendRequestedPLaylist(args); };
-    commandMap[u"request-cover"_s] = [this](const auto&){ return sendCoverImage(); };
+    commandMap[u"request-cover"_s] = [this](const QJsonObject& args){ return sendCoverImage(args); };
     commandMap[u"set-current-playlist"_s] = [this](const QJsonObject& args){ return setCurrentPlaylist(args); };
     commandMap[u"shuffle-all-playlists"_s] = [this](const auto&){ return shuffleAllPlaylists(); };
     commandMap[u"shuffle-current-playlist"_s] = [this](const QJsonObject& args){ return shuffleSinglePlaylist(args); };

@@ -10,13 +10,15 @@ using namespace RemoteTypes;
 
 RemoteCurrentSong::RemoteCurrentSong(const Application *app, QObject *parent)
   : QObject{parent},
-    app_(app)
+    app_(app),
+    albumArt(RemoteAlbumArt(this))
 {
-  QObject::connect(&*app_->playlist_manager(), &PlaylistManager::CurrentSongChanged, this, &RemoteCurrentSong::getCurrentSongRequest);
+    QObject::connect(&*app_->playlist_manager(), &PlaylistManager::CurrentSongChanged, this, &RemoteCurrentSong::getCurrentSongRequest);
+    QObject::connect(this, &RemoteCurrentSong::requestAlbumArt, &albumArt, &RemoteAlbumArt::requestAlbumArt);
 }
 
+// This is used by remoteplaylist to create songs for playlists
 QJsonObject RemoteCurrentSong::songData(const Song& song) const {
-    qInfo() << "songdata called";
     QJsonObject songInfo;
     songInfo[toString(Arguments::ARTIST)] =         song.artist();
     songInfo[toString(Arguments::ALBUM)] =          song.album();
@@ -29,6 +31,7 @@ QJsonObject RemoteCurrentSong::songData(const Song& song) const {
     return songInfo;
 }
 
+// This is used to send single song information when song is changed.
 QJsonObject RemoteCurrentSong::songInfoData(const Song& song) const {
     return RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
@@ -41,28 +44,12 @@ QJsonObject RemoteCurrentSong::songInfoData(const Song& song) const {
         field(Arguments::TITLE, song.PrettyTitle()),
         field(Arguments::LENGTH, song.length_nanosec() / kNsecPerMsec)
     });
-    // song.song_id();
 }
 
 void RemoteCurrentSong::getCurrentSongRequest(const Song& song){
   Q_EMIT sendCurrentSongData(songInfoData(song));
 }
 
-void RemoteCurrentSong::makeAlbumArt(const Song& song){
-    QFile file(song.art_manual().toLocalFile());
-
-    if(file.open(QIODevice::ReadOnly)){
-        QByteArray imageData{file.readAll()};
-        file.close();
-        QString base64Image{QString::fromLatin1(imageData.toBase64())};
-
-        Q_EMIT sendAlbumArt(
-            RemoteJsonCreator::createResponse({
-            field(MessageType::EVENT, toString(MessageType::EVENT)),
-            field(Event::EVENT, toString(Event::COVER_IMAGE)),
-            field(Arguments::NAME, QFileInfo(song.art_manual().toLocalFile()).fileName()),
-            field(Arguments::COVER_IMAGE, base64Image)
-            })
-        );
-    }
+QJsonObject RemoteCurrentSong::requestAlbumArt(const Song& song) const{
+    return albumArt.makeAlbumArt(song);
 }

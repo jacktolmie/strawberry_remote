@@ -51,7 +51,7 @@ private:
     // Send active playlist on remote to server.
     QJsonObject receiveRemoteActive(const QJsonObject& args);
     // Send current album cover.
-    QJsonObject sendCoverImage();
+    QJsonObject sendCoverImage(const QJsonObject& args);
     // Make playlist a favourite or not.
     QJsonObject setFavouritePlaylist(const QJsonObject& args);
     // Set the playlist as current. Send set-current-playlist <playlist ID>.
@@ -78,6 +78,7 @@ Q_SIGNALS:
     void removeDuplicates();
     void removeItemsWithoutUndo(const int id, const QList<int> &indices);
     void remoteRenamePlaylist(const int id, const QString& name);
+    void requestAlbumArt(const Song& song);
     void setActivePlaylist(const int id);
     void setCurrentPlaylistSignal(const int id);
     void setRepeatModeSignal(const PlaylistSequence::RepeatMode mode);

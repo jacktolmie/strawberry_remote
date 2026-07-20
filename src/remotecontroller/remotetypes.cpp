@@ -119,7 +119,7 @@ QString toString(Response value) {
         case Response::REPEAT_MODE:                     return u"repeat_mode"_s;
         case Response::RESPONSE:                        return u"response"_s;
         case Response::RUNNING_COMMAND:                 return u"running_command"_s;
-        case Response::SENT_ALBUM_COVER:                return u"send_album_cover"_s;
+        case Response::SENT_ALBUM_COVER:                return u"sent_album_cover"_s;
         case Response::SEND_REQUESTED_PLAYLIST:         return u"send_requested_playlist"_s;
         case Response::SET_CURRENT_PLAYLIST_TO:         return u"set_current_playlist_to"_s;
         case Response::SHUFFLED_PLAYLIST:               return u"shuffled_playlist"_s;

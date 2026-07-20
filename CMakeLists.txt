@@ -853,6 +853,7 @@ set(SOURCES
   src/device/deviceviewcontainer.cpp
   src/device/deviceview.cpp
 
+  src/remotecontroller/remotealbumart.cpp
   src/remotecontroller/remotebasiccommands.cpp
   src/remotecontroller/remotecommands.cpp
   src/remotecontroller/remotecontroller.cpp
@@ -1152,6 +1153,7 @@ set(HEADERS
   src/device/deviceviewcontainer.h
   src/device/deviceview.h
 
+  src/remotecontroller/remotealbumart.h
   src/remotecontroller/remotebasiccommands.h
   src/remotecontroller/remotecommands.h
   src/remotecontroller/remotecontroller.h
