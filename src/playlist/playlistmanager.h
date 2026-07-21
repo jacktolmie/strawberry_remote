@@ -180,6 +180,7 @@ class PlaylistManager : public PlaylistManagerInterface {
   int active_;
   int playlists_loading_;
 
+
 Q_SIGNALS:
   void renamePlaylist(const int id, const QString& name);
   void sendActivePlaylistId(const int id);

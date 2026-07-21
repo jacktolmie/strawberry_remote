@@ -29,9 +29,9 @@ QJsonObject RemoteAlbumArt::makeAlbumArt(const Song& song) const{
 
 }
 
-void RemoteAlbumArt::requestAlbumArt(const Song& song){
+// void RemoteAlbumArt::requestAlbumArt(const Song& song){
 
-}
+// }
 
 // Q_EMIT sendAlbumArt(RemoteJsonCreator::createResponse({
 //         field(MessageType::EVENT, toString(MessageType::EVENT)),

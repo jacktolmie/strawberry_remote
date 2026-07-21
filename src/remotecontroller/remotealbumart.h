@@ -13,7 +13,7 @@ public:
     QJsonObject makeAlbumArt(const Song& song) const;
 
 public Q_SLOTS:
-    void requestAlbumArt(const Song& song);
+    // void requestAlbumArt(const Song& song);
 
 Q_SIGNALS:
     void sendAlbumArt(const QJsonObject& albumArt);

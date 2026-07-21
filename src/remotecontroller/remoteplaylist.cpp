@@ -343,17 +343,20 @@ QJsonObject RemotePlaylist::sendCoverImage(const QJsonObject& args){
 
         app_->playlist_manager()->SetCurrentPlaylist(currentId);
 
-        QJsonObject albumCover{currentSong_->requestAlbumArt(song)};
-
-        if (!albumCover.isEmpty()){
-            return RemoteJsonCreator::createResponse({
-                field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
-                field(Response::RESPONSE, toString(Response::SENT_ALBUM_COVER)),
-                field(Arguments::COVER_IMAGE, albumCover)
-            });
-        }
+        return currentSong_->requestAlbumArt(song);
     }
-    return wrongArgsSent(u"playlist_id"_s);
+    else return QJsonObject();
+        // QJsonObject albumCover{currentSong_->requestAlbumArt(song)};
+
+    //     if (!albumCover.isEmpty()){
+    //         return RemoteJsonCreator::createResponse({
+    //             field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+    //             field(Response::RESPONSE, toString(Response::SENT_ALBUM_COVER)),
+    //             field(Arguments::COVER_IMAGE, albumCover)
+    //         });
+    //     }
+    // }
+    // return wrongArgsSent(u"playlist_id"_s);
 }
 
 void RemotePlaylist::sendPlaylistData(const int id){

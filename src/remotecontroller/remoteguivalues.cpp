@@ -9,7 +9,6 @@
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;
 
-// RemoteGuiValues::RemoteGuiValues(const RemotePlaylist *remotePlaylist, const Application* app, QObject *parent)
 RemoteGuiValues::RemoteGuiValues(const RemotePlaylist *remotePlaylist, const Application* app, QObject *parent)
   : QObject{parent},
     app_{app},
@@ -17,7 +16,6 @@ RemoteGuiValues::RemoteGuiValues(const RemotePlaylist *remotePlaylist, const App
 {}
 
 QJsonObject RemoteGuiValues::getUpdates() const{
-    qInfo() << "Remotegui get updates called";
   RemoteTypes::Arguments currentPlayState;
 
   switch(app_->player()->GetState()){
@@ -53,6 +51,5 @@ QJsonObject RemoteGuiValues::getUpdates() const{
 }
 
 QJsonObject RemoteGuiValues::triggerUpdate() const {
-    qInfo()<< "Remotegui trigger update called";
   return getUpdates();
 }

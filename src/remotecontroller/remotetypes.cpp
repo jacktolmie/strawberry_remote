@@ -27,10 +27,12 @@ QString toString(Arguments value) {
         case Arguments::ROW:                return u"row"_s;
         case Arguments::PAUSED:             return u"paused"_s;
         case Arguments::PLAYLIST:           return u"playlist"_s;
+        case Arguments::PLAYLIST_ID:        return u"playlist_id"_s;
         case Arguments::PLAYLISTS:          return u"playlists"_s;
         case Arguments::PLAYLIST_LENGTH:    return u"playlist_length"_s;
         case Arguments::PLAYLIST_SIZE:      return u"playlist_size"_s;
         case Arguments::PLAYING:            return u"playing"_s;
+        case Arguments::POSITION:           return u"position"_s;
         case Arguments::SONGS:              return u"songs"_s;
         case Arguments::STOPPED:            return u"stopped"_s;
         case Arguments::TIME:               return u"time"_s;
