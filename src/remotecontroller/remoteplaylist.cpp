@@ -180,7 +180,7 @@ QJsonObject RemotePlaylist::makeAllPlaylists() const{
 }
 
 QJsonObject RemotePlaylist::makePlaylistData(const int id) const{
-
+    qInfo()<<"makeplaylistdat called with id: " << id;
     QJsonObject playlistObject;
     playlistObject[toString(Arguments::NAME)] =             app_->playlist_manager()->playlist_name(id);
     playlistObject[toString(Arguments::ID)] =               id;
@@ -191,10 +191,12 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id) const{
     QJsonArray songsArray;
     auto songs{app_->playlist_manager()->playlist(id)->GetAllSongs()};
     RemoteCurrentSong songInfo = RemoteCurrentSong(app_);
-    for (const auto& song: songs){
-        songsArray.append(songInfo.songData(song));
+    for(int index{0}; index < songs.size(); ++index){
+        songsArray.append(songInfo.songData(songs[index], id, index));
     }
+
     playlistObject[toString(RemoteTypes::Arguments::SONGS)] = songsArray;
+    qInfo()<<"Song array: " << playlistObject;
     return playlistObject;
 }
 
@@ -343,20 +345,13 @@ QJsonObject RemotePlaylist::sendCoverImage(const QJsonObject& args){
 
         app_->playlist_manager()->SetCurrentPlaylist(currentId);
 
-        return currentSong_->requestAlbumArt(song);
+        Q_EMIT sendResponse(currentSong_->requestAlbumArt(song));
+        return RemoteJsonCreator::createResponse({
+            field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+            field(Response::RESPONSE, toString(Response::SENT_ALBUM_COVER))
+        });
     }
     else return QJsonObject();
-        // QJsonObject albumCover{currentSong_->requestAlbumArt(song)};
-
-    //     if (!albumCover.isEmpty()){
-    //         return RemoteJsonCreator::createResponse({
-    //             field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
-    //             field(Response::RESPONSE, toString(Response::SENT_ALBUM_COVER)),
-    //             field(Arguments::COVER_IMAGE, albumCover)
-    //         });
-    //     }
-    // }
-    // return wrongArgsSent(u"playlist_id"_s);
 }
 
 void RemotePlaylist::sendPlaylistData(const int id){

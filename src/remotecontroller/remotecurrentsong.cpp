@@ -14,19 +14,18 @@ RemoteCurrentSong::RemoteCurrentSong(const Application *app, QObject *parent)
     albumArt(RemoteAlbumArt(this))
 {
     QObject::connect(&*app_->playlist_manager(), &PlaylistManager::CurrentSongChanged, this, &RemoteCurrentSong::getCurrentSongRequest);
-    // QObject::connect(this, &RemoteCurrentSong::requestAlbumArt, &albumArt, &RemoteAlbumArt::requestAlbumArt);
 }
 
 // This is used by remoteplaylist to create songs for playlists
-QJsonObject RemoteCurrentSong::songData(const Song& song) const {
+QJsonObject RemoteCurrentSong::songData(const Song& song, const int playlistId, const int index) const {
     QJsonObject songInfo;
     songInfo[toString(Arguments::ARTIST)] =         song.artist();
     songInfo[toString(Arguments::ALBUM)] =          song.album();
     songInfo[toString(Arguments::COVER_IMAGE)] =    QFileInfo(song.art_manual().toLocalFile()).fileName();
     songInfo[toString(Arguments::ID)] =             song.id();
     songInfo[toString(Arguments::LENGTH)] =         song.length_nanosec() / kNsecPerMsec;
-    songInfo[toString(Arguments::PLAYLIST_ID)] =    app_->playlist_manager()->current()->id(),
-    songInfo[toString(Arguments::POSITION)] =       app_->playlist_manager()->current()->current_row(),
+    songInfo[toString(Arguments::PLAYLIST_ID)] =    playlistId,
+    songInfo[toString(Arguments::POSITION)] =       index,
     songInfo[toString(Arguments::SONG_URL)] =       song.url().toString();
     songInfo[toString(Arguments::TITLE)] =          song.PrettyTitle();
 
