@@ -330,28 +330,14 @@ const PlaylistCmdMap& RemotePlaylist::sendCommandMap() const{
 
 QJsonObject RemotePlaylist::sendCoverImage(const QJsonObject& args){
 
-    qint32 id{ args[u"playlist-id"].toInt(-1)};
-    if (id == -1) return wrongArgsSent(u"playlist_id"_s);
+    if (!args.contains(u"cover_art"_s)) return wrongArgsSent(u"name"_s);
 
-    qint32 row{ args[u"row"_s].toInt(-1)};
-    if (row == -1) return wrongArgsSent(u"row"_s);
+    Q_EMIT sendResponse(currentSong_->requestAlbumArt(args[u"cover_art"_s].toString()));
 
-    // Song song;
-    if(app_->playlist_manager()->IsPlaylistOpen(id)){
-        auto currentId {app_->playlist_manager()->current_id()};
-
-        app_->playlist_manager()->SetCurrentPlaylist(id);
-        Song song = app_->playlist_manager()->current()->item_at(row)->EffectiveMetadata();
-
-        app_->playlist_manager()->SetCurrentPlaylist(currentId);
-
-        Q_EMIT sendResponse(currentSong_->requestAlbumArt(song));
-        return RemoteJsonCreator::createResponse({
-            field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
-            field(Response::RESPONSE, toString(Response::SENT_ALBUM_COVER))
-        });
-    }
-    else return QJsonObject();
+    return RemoteJsonCreator::createResponse({
+        field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+        field(Response::RESPONSE, toString(Response::SENT_ALBUM_COVER))
+    });
 }
 
 void RemotePlaylist::sendPlaylistData(const int id){

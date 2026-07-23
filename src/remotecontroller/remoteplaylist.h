@@ -78,7 +78,7 @@ Q_SIGNALS:
     void removeDuplicates();
     void removeItemsWithoutUndo(const int id, const QList<int> &indices);
     void remoteRenamePlaylist(const int id, const QString& name);
-    void requestAlbumArt(const Song& song);
+    void requestAlbumArt(const QString& coverArt); //(const Song& song);
     void setActivePlaylist(const int id);
     void setCurrentPlaylistSignal(const int id);
     void setRepeatModeSignal(const PlaylistSequence::RepeatMode mode);

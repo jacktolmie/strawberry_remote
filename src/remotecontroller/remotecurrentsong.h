@@ -20,7 +20,7 @@ public:
 
     QJsonObject songData(const Song& song, const int playlistId, const int index) const;
     QJsonObject songInfoData(const Song& song) const;
-    QJsonObject requestAlbumArt(const Song& song) const;
+    QJsonObject requestAlbumArt(const QString& coverArt); //(const Song& song) const;
 
 public Q_SLOTS:
     void getCurrentSongRequest(const Song& song);

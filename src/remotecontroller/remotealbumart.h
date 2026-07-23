@@ -10,7 +10,8 @@ class RemoteAlbumArt : public QObject
 public:
     explicit RemoteAlbumArt(QObject *parent = nullptr);
 
-    QJsonObject makeAlbumArt(const Song& song) const;
+    QJsonObject makeAlbumArtBySong(const Song& song) const;
+    QJsonObject makeAlbumArtByName(const QString& coverArt) const;
 
 public Q_SLOTS:
     // void requestAlbumArt(const Song& song);

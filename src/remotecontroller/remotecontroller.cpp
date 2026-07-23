@@ -267,7 +267,9 @@ void RemoteController::onSendResponse(QTcpSocket* clientSocket, const QJsonObjec
 
 void RemoteController::broadcastToDevices(const QJsonObject& message)
 {
+    if(!message.contains(u"cover_image"_s))
     qInfo()<< "broadcasttodevices called with message: "<< message;
+
   // Send each authenticated client the broadcast from the server.
   for(auto &clientSocket: std::as_const(clients_)){
     if(clientSocket.state == ClientState::Authenticated){
