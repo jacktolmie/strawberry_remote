@@ -9,7 +9,7 @@ RemoteAlbumArt::RemoteAlbumArt(QObject *parent)
 {}
 
 QJsonObject RemoteAlbumArt::makeAlbumArtBySong(const Song& song) const{
-    qInfo()<<"RemoteAlbumArg by song called";
+
     QFile file(song.art_manual().toLocalFile());
 
     if (!file.exists() || !file.open(QIODevice::ReadOnly)) {
@@ -32,7 +32,7 @@ QJsonObject RemoteAlbumArt::makeAlbumArtBySong(const Song& song) const{
 }
 
 QJsonObject RemoteAlbumArt::makeAlbumArtByName(const QString& coverArt) const {
-    qInfo()<<"RemoteAlbumArg by name called";
+
     QFile file{coverArt};
     QFileInfo fileInfo{coverArt};
 
