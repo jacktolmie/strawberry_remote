@@ -116,6 +116,7 @@ QString toString(Response value) {
         case Response::IS_PLAYLIST_A_FAVOURITE:         return u"is_playlist_a_favourite"_s;
         case Response::PLAYLIST_CLOSED:                 return u"playlist_closed"_s;
         case Response::REMOVED_DUPLICATES_FROM_PLAYLIST: return u"removed_duplicates_from_playlist"_s;
+        case Response::REMOVED_UNAVAILABLE_SONGS:       return u"removed_unavailable_songs"_s;
         case Response::RENAME_PLAYLIST:                 return u"rename_playlist"_s;
         case Response::REMOVED_SONGS_FROM_PLAYLIST:     return u"removed_songs_from_playlist"_s;
         case Response::REPEAT_MODE:                     return u"repeat_mode"_s;

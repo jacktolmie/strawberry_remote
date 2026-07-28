@@ -6,6 +6,7 @@
 #include <QTimer>
 
 #include "core/application.h"
+#include "playlist/playlist.h"
 #include "playlist/playlistsequence.h"
 #include "remotecurrentsong.h"
 
@@ -40,6 +41,7 @@ private:
     QJsonObject closeRemoteCurrentPlaylist(const QJsonObject& args);
     QJsonObject removeCurrentSongsPlaylist(const QJsonObject& songs);
     QJsonObject removeDuplicatesPlaylist(const QJsonObject& args);
+    QJsonObject removeUnavailableSongs(const QJsonObject& args);
     // Rename current playlist. Send command rename-playlist <new name>.
     QJsonObject renameCurrentPlaylist(const QJsonObject& args);
     // Shuffle all playlists.
@@ -68,17 +70,20 @@ private:
     QJsonObject wrongArgsSent(const QString& error);  //(const int num);
 
 Q_SIGNALS:
-    void sendResponse(const QJsonObject& response);
+
     void clearPlaylist();
-    void remoteClosedPlaylist(const int id);
     void deletePlaylist(const int id);
+    void remoteClosedPlaylist(const int id);
     void remoteFavouritePlaylist(const int id, bool isFavourite);
-    void serverFavouritePlaylist(const int id, bool isFavourite);
+    void remoteSongSelected(const QModelIndex idx, Playlist::AutoScroll); // Delete if remote selected song not playing
     void removeCurrentSong();
     void removeDuplicates();
+    void removeUnavailable();
     void removeItemsWithoutUndo(const int id, const QList<int> &indices);
     void remoteRenamePlaylist(const int id, const QString& name);
-    void requestAlbumArt(const QString& coverArt); //(const Song& song);
+    void requestAlbumArt(const QString& coverArt);
+    void sendResponse(const QJsonObject& response);
+    void serverFavouritePlaylist(const int id, bool isFavourite);
     void setActivePlaylist(const int id);
     void setCurrentPlaylistSignal(const int id);
     void setRepeatModeSignal(const PlaylistSequence::RepeatMode mode);
