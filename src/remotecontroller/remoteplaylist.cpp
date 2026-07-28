@@ -226,7 +226,8 @@ QJsonObject RemotePlaylist::receiveRemoteActive(const QJsonObject& args){
     // Set remotes active playlist and song index on server.
     Q_EMIT RemotePlaylist::setActivePlaylist(id);
     app_->playlist_manager()->SetActivePlaylist(id);
-    app_->playlist_manager()->current()->set_current_row(songIndex);
+    app_->playlist_manager()->active()->set_current_row(songIndex);
+    // app_->playlist_manager()->current()->set_current_row(songIndex);
     Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(id);
 
     auto currentIndex{app_->playlist_manager()->current()->current_index()};
