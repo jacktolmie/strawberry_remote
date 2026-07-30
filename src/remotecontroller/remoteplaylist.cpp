@@ -227,7 +227,6 @@ QJsonObject RemotePlaylist::receiveRemoteActive(const QJsonObject& args){
     Q_EMIT RemotePlaylist::setActivePlaylist(id);
     app_->playlist_manager()->SetActivePlaylist(id);
     app_->playlist_manager()->active()->set_current_row(songIndex);
-    // app_->playlist_manager()->current()->set_current_row(songIndex);
     Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(id);
 
     auto currentIndex{app_->playlist_manager()->current()->current_index()};
@@ -453,11 +452,14 @@ QJsonObject RemotePlaylist::setRepeatMode(const QJsonObject& args){
 
 QJsonObject RemotePlaylist::shuffleAllPlaylists(){
   int currentId{app_->playlist_manager()->current_id()};
+
   QList<int> playlistIds{app_->playlist_manager()->playlist_ids()};
+
   for(auto& list: playlistIds){
     Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(list);
     Q_EMIT RemotePlaylist::shufflePlaylist();
   }
+
   Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(currentId);
   return RemoteJsonCreator::createResponse({
     field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
