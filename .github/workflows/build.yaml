@@ -1014,7 +1014,6 @@ jobs:
           -DUSE_BUNDLE=ON
           -DICU_ROOT="${{env.prefix_path}}"
           -DAPPLE_DEVELOPER_ID=$(test '${{github.repository}}' = 'strawberrymusicplayer/strawberry' && test '${{github.event.pull_request.base.repo.full_name}}' = '${{github.event.pull_request.head.repo.full_name}}' && echo "383J84DVB6" || echo "")
-          -DARCH="${{env.arch}}"
           -DENABLE_SPOTIFY=$(test -f "${{env.prefix_path}}/lib/gstreamer-1.0/libgstspotify.dylib" && echo "ON" || echo "OFF")
           -DENABLE_SPARKLE=ON
           -DENABLE_QTSPARKLE=OFF
@@ -1155,7 +1154,6 @@ jobs:
           -DUSE_BUNDLE=ON
           -DICU_ROOT="${{env.prefix_path}}"
           -DAPPLE_DEVELOPER_ID="383J84DVB6"
-          -DARCH="${{env.arch}}"
           -DENABLE_SPOTIFY=$(test -f "${{env.prefix_path}}/lib/gstreamer-1.0/libgstspotify.dylib" && echo "ON" || echo "OFF")
           -DENABLE_SPARKLE=ON
           -DENABLE_QTSPARKLE=OFF
@@ -1239,8 +1237,8 @@ jobs:
       - name: Create Build Environment
         run: cmake -E make_directory build
 
-      - name: Link MXE directory
-        run: ln -s /strawberry-mxe ~/mxe-shared
+      - name: Add MXE directory to PATH
+        run: echo "/strawberry-mxe/usr/bin" >> $GITHUB_PATH
 
       - name: Run CMake
         env:
@@ -1249,11 +1247,17 @@ jobs:
           cmake
           -S .
           -B build
-          -DCMAKE_TOOLCHAIN_FILE="../cmake/Toolchain-${{matrix.arch}}-w64-mingw32-shared.cmake"
+          -DCMAKE_SYSTEM_NAME="Windows"
           -DCMAKE_BUILD_TYPE="${{env.cmake_buildtype}}"
+          -DCMAKE_FIND_ROOT_PATH=/strawberry-mxe/usr/${{matrix.arch}}-w64-mingw32.shared
+          -DCMAKE_C_COMPILER="${{matrix.arch}}-w64-mingw32.shared-gcc"
+          -DCMAKE_CXX_COMPILER="${{matrix.arch}}-w64-mingw32.shared-g++"
+          -DCMAKE_RC_COMPILER="${{matrix.arch}}-w64-mingw32.shared-windres"
+          -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY
+          -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY
+          -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER
           -DCMAKE_PREFIX_PATH="/strawberry-mxe/usr/${{matrix.arch}}-w64-mingw32.shared/qt6"
           -DBUILD_WERROR=ON
-          -DARCH="${{matrix.arch}}"
           -DENABLE_WIN32_CONSOLE=$(test "${{matrix.buildtype}}" = "debug" && echo "ON" || echo "OFF")
           -DENABLE_GIO=OFF
           -DENABLE_AUDIOCD=OFF
@@ -1576,7 +1580,6 @@ jobs:
           -G "Ninja"
           -DCMAKE_BUILD_TYPE="${{env.cmake_buildtype}}"
           -DCMAKE_PREFIX_PATH="${{env.prefix_path_forwardslash}}/lib/cmake"
-          -DARCH="${{matrix.arch}}"
           -DENABLE_WIN32_CONSOLE=${{env.enable_win32_console}}
           -DPKG_CONFIG_EXECUTABLE="${{env.prefix_path_forwardslash}}/bin/pkg-config.exe"
           -DICU_ROOT="${{env.prefix_path_forwardslash}}"
