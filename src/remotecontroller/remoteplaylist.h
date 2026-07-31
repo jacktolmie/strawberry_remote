@@ -50,7 +50,7 @@ private:
     QJsonObject shuffleSinglePlaylist(const QJsonObject& args);
     // Delete current playlist.
     QJsonObject deleteCurrentRemotePlaylist(const QJsonObject& args);
-    // Send active playlist on remote to server.
+    // Send active playlist and selected song on remote to server.
     QJsonObject receiveRemoteActive(const QJsonObject& args);
     // Send current album cover.
     QJsonObject sendCoverImage(const QJsonObject& args);

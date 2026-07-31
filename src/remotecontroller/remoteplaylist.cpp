@@ -217,7 +217,7 @@ void RemotePlaylist::playlistManagerLoaded(){
 }
 
 QJsonObject RemotePlaylist::receiveRemoteActive(const QJsonObject& args){
-    qInfo() <<"remoteplaylist receiveremoteactive called";
+
     qint32 id{ args[u"id"_s].toInt(-1)};
     if (id == -1) return wrongArgsSent(u"id"_s);
     qint32 songIndex{ args[u"song_index"].toInt(-1) };
@@ -231,7 +231,6 @@ QJsonObject RemotePlaylist::receiveRemoteActive(const QJsonObject& args){
 
     auto currentIndex{app_->playlist_manager()->current()->current_index()};
     Q_EMIT remoteSongSelected(currentIndex, Playlist::AutoScroll::Maybe);
-    qInfo() <<"remoteplaylist receiveremoteactive called and song emitted";
 
     return RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
@@ -250,9 +249,11 @@ QJsonObject RemotePlaylist::removeCurrentSongsPlaylist(const QJsonObject& args){
         return wrongArgsSent(u"songs_list"_s);
     }
 
-    QJsonArray songsArray{ args[u"songs_list"_s].toArray()};
+    QJsonArray songsArray = args[u"songs_list"_s].toArray(); // Needs =, not {} or creates wrong array!!!
 
     QList<int> songList;
+    songList.reserve(songsArray.size());
+
     for(auto& song: std::as_const(songsArray)){
         songList.emplaceBack(song.toInt());
     }
