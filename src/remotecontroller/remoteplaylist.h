@@ -39,6 +39,7 @@ private:
     void createCommandMap();
     QJsonObject clearRemoteCurrentPlaylist(const QJsonObject& args);
     QJsonObject closeRemoteCurrentPlaylist(const QJsonObject& args);
+    QJsonObject remoteChangedPlaylist(const QJsonObject& args);
     QJsonObject removeCurrentSongsPlaylist(const QJsonObject& songs);
     QJsonObject removeDuplicatesPlaylist(const QJsonObject& args);
     QJsonObject removeUnavailableSongs(const QJsonObject& args);
@@ -61,7 +62,7 @@ private:
     // Set the repeat mode from the remote device
     QJsonObject setRepeatMode(const QJsonObject& args);
     // Send requested playlist to remote.
-    QJsonObject sendRequestedPLaylist(const QJsonObject& args);
+    QJsonObject sendRequestedPlaylist(const QJsonObject& args);
     // Make playlists to send back to device.
     QJsonObject makeAllPlaylists() const;
     // QJsonObject makeSinglePlaylist(const int id);

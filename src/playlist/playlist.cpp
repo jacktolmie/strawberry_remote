@@ -2845,3 +2845,8 @@ void Playlist::RateSongs(const QModelIndexList &index_list, const float rating) 
   collection_backend_->UpdateSongsRatingAsync(id_list, rating);
 
 }
+
+void Playlist::receiveChangedPlaylist(const PlaylistItemPtrList &new_items){
+    Q_EMIT ReOrderWithoutUndo(new_items);
+    Q_EMIT sendChangedPlaylist(id_);
+}

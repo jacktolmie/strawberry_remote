@@ -328,6 +328,9 @@ class Playlist : public QAbstractListModel {
 
   void AlbumCoverLoaded(const Song &song, const AlbumCoverLoaderResult &result);
 
+  // Get changed playlist from remote clients.
+  void receiveChangedPlaylist(const PlaylistItemPtrList &new_items);
+
  Q_SIGNALS:
   void RestoreFinished();
   void PlaylistLoaded();
