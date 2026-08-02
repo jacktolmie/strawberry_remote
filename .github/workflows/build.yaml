@@ -10,8 +10,8 @@ jobs:
 
   build-opensuse:
     name: Build openSUSE
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -128,8 +128,8 @@ jobs:
 
   build-fedora:
     name: Build Fedora
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -329,8 +329,8 @@ jobs:
 
   build-mageia:
     name: Build Mageia
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -433,8 +433,8 @@ jobs:
 
   build-debian:
     name: Build Debian
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -527,8 +527,8 @@ jobs:
 
   build-ubuntu:
     name: Build Ubuntu
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -721,8 +721,8 @@ jobs:
 
   build-appimage:
     name: Build AppImage
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     container:
@@ -867,8 +867,8 @@ jobs:
 
   build-freebsd:
     name: Build FreeBSD
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master')
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -899,8 +899,8 @@ jobs:
 
   build-openbsd:
     name: Build OpenBSD
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master')
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -1026,17 +1026,8 @@ jobs:
         run: make install
 
       - name: Deploy
-        env:
-          GIO_EXTRA_MODULES: ${{env.prefix_path}}/lib/gio/modules
-          GST_PLUGIN_SCANNER: ${{env.prefix_path}}/libexec/gstreamer-1.0/gst-plugin-scanner
-          GST_PLUGIN_PATH: ${{env.prefix_path}}/lib/gstreamer-1.0
-          LIBSOUP_LIBRARY_PATH: ${{env.prefix_path}}/lib/libsoup-3.0.0.dylib
         working-directory: build
         run: make deploy
-
-      - name: Deploy check
-        working-directory: build
-        run: make deploycheck
 
       - name: Verify code-signing
         if: github.repository == 'strawberrymusicplayer/strawberry' && github.event.pull_request.head.repo.fork == false
@@ -1156,21 +1147,8 @@ jobs:
         run: make install
 
       - name: Deploy
-        env:
-          GIO_EXTRA_MODULES: ${{env.prefix_path}}/lib/gio/modules
-          GST_PLUGIN_SCANNER: ${{env.prefix_path}}/libexec/gstreamer-1.0/gst-plugin-scanner
-          GST_PLUGIN_PATH: ${{env.prefix_path}}/lib/gstreamer-1.0
-          LIBSOUP_LIBRARY_PATH: ${{env.prefix_path}}/lib/libsoup-3.0.0.dylib
         working-directory: build
         run: make deploy
-
-      - name: Manually Codesign
-        working-directory: build
-        run: codesign -s 383J84DVB6 -f strawberry.app/Contents/Frameworks/png.framework/png strawberry.app
-
-      - name: Deploy check
-        working-directory: build
-        run: make deploycheck
 
       - name: Verify code-signing
         working-directory: build
@@ -1198,8 +1176,8 @@ jobs:
 
   build-windows-mingw:
     name: Build Windows MinGW
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -1395,8 +1373,8 @@ jobs:
 
   build-windows-msvc:
     name: Build Windows MSVC
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
         (github.event_name == 'release')
     strategy:
       fail-fast: false
