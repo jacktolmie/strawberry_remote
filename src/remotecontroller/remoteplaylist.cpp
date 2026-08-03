@@ -249,16 +249,19 @@ QJsonObject RemotePlaylist::remoteChangedPlaylist(const QJsonObject& args){
     qint32 toIndex{ args[u"to-index"_s].toInt(-1)};
     if (toIndex == -1) return wrongArgsSent(u"to-index"_s);
 
+    qInfo()<< "remoteplaylist remotechangedplaylist called with id: " << id << " with to: " << toIndex << " and from: " << fromIndex;
+
+    auto currentPlaylistId{app_->playlist_manager()->current_id()};
+    app_->playlist_manager()->SetCurrentPlaylist(id);
+
     PlaylistItemPtrList newItems = app_->playlist_manager()->current()->GetAllItems();
-    qInfo() << "remoteplaylist current playist:";
-    for(auto song: newItems) qInfo()<< song->EffectiveMetadata().PrettyTitle();
 
     auto moved{app_->playlist_manager()->current()->item_at(fromIndex)};
     newItems.removeAt(fromIndex);
     newItems.insert(toIndex, moved);
-    qInfo() << "remoteplaylist current playist after change:";
-    for(auto song: newItems) qInfo()<< song->EffectiveMetadata().PrettyTitle();
+
     app_->playlist_manager()->current()->receiveChangedPlaylist(newItems);
+    app_->playlist_manager()->SetCurrentPlaylist(currentPlaylistId);
 
     return makePlaylistData(id);
 }
