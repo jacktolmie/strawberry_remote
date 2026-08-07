@@ -55,11 +55,13 @@ private:
     QJsonObject receiveRemoteActive(const QJsonObject& args);
     // Send current album cover.
     QJsonObject sendCoverImage(const QJsonObject& args);
+    // Send current playing song to remote devices.
+    QJsonObject sendCurrentPlayingSong();
     // Make playlist a favourite or not.
     QJsonObject setFavouritePlaylist(const QJsonObject& args);
     // Set the playlist as current. Send set-current-playlist <playlist ID>.
     QJsonObject setCurrentPlaylist(const QJsonObject& args);
-    // Set the repeat mode from the remote device
+    // Set the repeat mode from the remote devices.
     QJsonObject setRepeatMode(const QJsonObject& args);
     // Send requested playlist to remote.
     QJsonObject sendRequestedPlaylist(const QJsonObject& args);
@@ -68,7 +70,7 @@ private:
     // QJsonObject makeSinglePlaylist(const int id);
     QJsonObject makePlaylistData(const int id) const;
     // Send number of arguments needed back to remote.
-    QJsonObject wrongArgsSent(const QString& error);  //(const int num);
+    QJsonObject wrongArgsSent(const QString& error);
 
 Q_SIGNALS:
 

@@ -100,8 +100,10 @@ namespace RemoteTypes{
 
       enum class Response{
         CLEARED_PLAYLIST,
+        CURRENT_SONG,
         DELETED_PLAYLIST_WITH_ID,
         IS_PLAYLIST_A_FAVOURITE,
+        PLAYLIST_CHANGED,
         PLAYLIST_CLOSED,
         REMOVED_DUPLICATES_FROM_PLAYLIST,
         REMOVED_UNAVAILABLE_SONGS,

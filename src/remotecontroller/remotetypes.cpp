@@ -112,8 +112,10 @@ QString toString(MessageType value) {
 QString toString(Response value) {
     switch (value) {
         case Response::CLEARED_PLAYLIST:                return u"cleared_playlist"_s;
+        case Response::CURRENT_SONG:                    return u"current_song"_s;
         case Response::DELETED_PLAYLIST_WITH_ID:        return u"deleted_playlist_with_id"_s;
         case Response::IS_PLAYLIST_A_FAVOURITE:         return u"is_playlist_a_favourite"_s;
+        case Response::PLAYLIST_CHANGED:                return u"playlist_changed"_s;
         case Response::PLAYLIST_CLOSED:                 return u"playlist_closed"_s;
         case Response::REMOVED_DUPLICATES_FROM_PLAYLIST: return u"removed_duplicates_from_playlist"_s;
         case Response::REMOVED_UNAVAILABLE_SONGS:       return u"removed_unavailable_songs"_s;
