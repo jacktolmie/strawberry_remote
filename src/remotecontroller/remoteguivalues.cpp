@@ -44,7 +44,8 @@ QJsonObject RemoteGuiValues::getUpdates() const{
     field(Arguments::CURRENT_SONG, app_->playlist_manager()->active() ? app_->playlist_manager()->active()->current_index().row(): -1),
     field(Arguments::PLAYING, toString(currentPlayState)),
     field(Arguments::PLAYLISTS, remotePlaylist_->sendAllPlaylists()),
-    field(Arguments::REPEAT_MODE, remotePlaylist_->repeatMode()),
+    field(Arguments::REPEAT_MODE, remotePlaylist_->repeatMode(app_->playlist_manager()->sequence()->repeat_mode())),
+    field(Arguments::SHUFFLE_MODE, remotePlaylist_->shuffleMode(app_->playlist_manager()->sequence()->shuffle_mode())),
     field(Arguments::TIME, app_->player()->engine()->position_nanosec() / kNsecPerMsec),
     field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume()))
   });

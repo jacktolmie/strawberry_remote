@@ -64,7 +64,7 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
     // QObject::connect(this, &RemotePlaylist::deletePlaylist, this, &RemotePlaylist::deleteServerPlaylist);
     // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::deletePlaylistId, this, &RemotePlaylist::deleteServerPlaylist);
     // QObject::connect(this, &RemotePlaylist::remoteClosedPlaylist, this, &RemotePlaylist::closeServerPlaylist);
-
+    // app_->playlist_manager()->sequence()
 }
 
 // Unused???
@@ -204,8 +204,14 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id) const{
 }
 
 void RemotePlaylist::playlistManagerLoaded(){
+    // Set playlist repeat connects
     QObject::connect(this, &RemotePlaylist::setRepeatModeSignal, app_->playlist_manager()->sequence(), &PlaylistSequence::SetRepeatMode);
     QObject::connect(app_->playlist_manager()->sequence(), &PlaylistSequence::RepeatModeChanged, this, &RemotePlaylist::repeatModeChanged);
+
+    // Set playlist shuffle connects
+    QObject::connect(this, &RemotePlaylist::setShuffleModeSignal, app_->playlist_manager()->sequence(), &PlaylistSequence::SetShuffleMode);
+    QObject::connect(app_->playlist_manager()->sequence(), &PlaylistSequence::ShuffleModeChanged, this, &RemotePlaylist::shuffleModeChanged);
+
 }
 
 QJsonObject RemotePlaylist::receiveRemoteActive(const QJsonObject& args){
@@ -340,39 +346,41 @@ QJsonObject RemotePlaylist::renameCurrentPlaylist(const QJsonObject& args){
     });
 }
 
-QString RemotePlaylist::repeatMode() const{
+QString RemotePlaylist::repeatMode(const PlaylistSequence::RepeatMode mode) const{
 
-    QString mode;
+    QString sendMode;
 
-    switch (app_->playlist_manager()->sequence()->repeat_mode()) {
+    switch ( mode ) {
     case PlaylistSequence::RepeatMode::Album: {
-        mode = u"album"_s;
+        sendMode = u"album"_s;
         break;
     }
     case PlaylistSequence::RepeatMode::Off: {
-        mode = u"off"_s;
+        sendMode = u"off"_s;
         break;
     }
     case PlaylistSequence::RepeatMode::Playlist: {
-        mode = u"playlist"_s;
+        sendMode = u"playlist"_s;
         break;
     }
     case PlaylistSequence::RepeatMode::Track: {
-        mode = u"track"_s;
+        sendMode = u"track"_s;
         break;
     }
     default:
         break;
     }
-    return mode;
+
+    return sendMode;
 }
 
-void RemotePlaylist::repeatModeChanged([[ maybe_unused ]] const PlaylistSequence::RepeatMode mode){
+void RemotePlaylist::repeatModeChanged(const PlaylistSequence::RepeatMode mode){
+
     Q_EMIT sendResponse( RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::REPEAT_MODE)),
-        field(Arguments::ID, app_->playlist_manager()->active_id()),
-        field(Arguments::REPEAT_MODE, repeatMode())
+        field(Arguments::ID, app_->playlist_manager()->current_id()), // should it be active_id())?
+        field(Arguments::REPEAT_MODE, repeatMode(mode))
     }));
 }
 
@@ -469,54 +477,124 @@ QJsonObject RemotePlaylist::setRepeatMode(const QJsonObject& args){
 
     if (!args.contains(u"repeat-mode"_s)) return wrongArgsSent(u"repeat-mode"_s);
 
-    QString mode{ args[u"repeat-mode"_s].toString().toLower()};
-    PlaylistSequence::RepeatMode sendMode{};
+    QMap<QString, PlaylistSequence::RepeatMode> repeatModes{
+        {u"album"_s, PlaylistSequence::RepeatMode::Album},
+        {u"intro"_s, PlaylistSequence::RepeatMode::Intro},
+        {u"off"_s, PlaylistSequence::RepeatMode::Off},
+        {u"one-by-one"_s, PlaylistSequence::RepeatMode::OneByOne},
+        {u"playlist"_s, PlaylistSequence::RepeatMode::Playlist},
+        {u"track"_s, PlaylistSequence::RepeatMode::Track}
+    };
 
-    if(mode == u"album"_s) sendMode = PlaylistSequence::RepeatMode::Album;
-    else if(mode == u"off"_s) sendMode = PlaylistSequence::RepeatMode::Off;
-    else if(mode == u"playlist"_s) sendMode = PlaylistSequence::RepeatMode::Playlist;
-    else if(mode == u"track"_s) sendMode = PlaylistSequence::RepeatMode::Track;
+    QString mode{ args[u"repeat-mode"_s].toString().toLower() };
 
-    Q_EMIT setRepeatModeSignal(sendMode);
+    if ( repeatModes.contains(mode)) Q_EMIT setRepeatModeSignal(repeatModes[mode]);
+    else return wrongArgsSent(u"repeat-mode"_s);
+
     return RemoteJsonCreator::createResponse({
         field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
         field(Response::RESPONSE, toString(Response::REPEAT_MODE)),
-        field(Arguments::REPEAT_MODE, repeatMode())
+        field(Arguments::REPEAT_MODE, repeatMode(app_->playlist_manager()->sequence()->repeat_mode()))
     });
 }
 
-QJsonObject RemotePlaylist::shuffleAllPlaylists(){
-  int currentId{app_->playlist_manager()->current_id()};
+QJsonObject RemotePlaylist::setShuffleMode(const QJsonObject& args){
+    if (!args.contains(u"shuffle-mode)")) return wrongArgsSent(u"shuffle-mode"_s);
 
-  QList<int> playlistIds{app_->playlist_manager()->playlist_ids()};
+    QMap<QString, PlaylistSequence::ShuffleMode> shuffleModes{
+        {u"albums"_s, PlaylistSequence::ShuffleMode::Albums},
+        {u"all"_s, PlaylistSequence::ShuffleMode::All},
+        {u"grouping"_s, PlaylistSequence::ShuffleMode::Grouping},
+        {u"inside-album"_s, PlaylistSequence::ShuffleMode::InsideAlbum},
+        {u"off"_s, PlaylistSequence::ShuffleMode::Off}
+    };
 
-  for(auto& list: playlistIds){
-    Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(list);
-    Q_EMIT RemotePlaylist::shufflePlaylist();
-  }
+    QString mode{ args[u"shuffle-mode"_s].toString().toLower() };
 
-  Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(currentId);
-  return RemoteJsonCreator::createResponse({
-    field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
-    field(Response::RESPONSE, toString(Response::SHUFFLED_ALL_PLAYLISTS))
-  });
-}
-
-QJsonObject RemotePlaylist::shuffleSinglePlaylist(const QJsonObject& args){
-
-    qint32 id{ args[u"id"_s].toInt(-1) };
-    if (id == -1) return wrongArgsSent(u"id"_s);
-
-    int serverCurrent{app_->playlist_manager()->current_id()};
-    app_->playlist_manager()->SetCurrentPlaylist(id);
-    Q_EMIT RemotePlaylist::shufflePlaylist();
-    app_->playlist_manager()->SetCurrentPlaylist(serverCurrent);
+    if (shuffleModes.contains(mode)) Q_EMIT setShuffleModeSignal(shuffleModes[mode]);
+    else return wrongArgsSent(u"shuffle-mode"_s);
 
     return RemoteJsonCreator::createResponse({
         field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
-        field(Response::SHUFFLED_PLAYLIST, toString(Response::SHUFFLED_PLAYLIST))
+        field(Response::RESPONSE, toString(Response::SHUFFLE_MODE)),
+        field(Arguments::SHUFFLE_MODE, shuffleMode(app_->playlist_manager()->sequence()->shuffle_mode()))
     });
+
 }
+
+QString RemotePlaylist::shuffleMode(const PlaylistSequence::ShuffleMode mode) const {
+
+    QString sendMode;
+
+    switch( mode ){
+        case PlaylistSequence::ShuffleMode::Albums: {
+            sendMode = u"album"_s;
+            break;
+        }
+        case PlaylistSequence::ShuffleMode::All: {
+            sendMode = u"all"_s;
+            break;
+        }
+        case PlaylistSequence::ShuffleMode::Grouping: {
+            sendMode = u"grouping"_s;
+            break;
+        }
+        case PlaylistSequence::ShuffleMode::InsideAlbum: {
+            sendMode = u"inside-album"_s;
+            break;
+        }
+        case PlaylistSequence::ShuffleMode::Off: {
+            sendMode = u"off"_s;
+            break;
+        }
+        default:
+            break;
+    }
+
+    return sendMode;
+}
+
+void RemotePlaylist::shuffleModeChanged([[ maybe_unused ]] const PlaylistSequence::ShuffleMode mode){
+
+    Q_EMIT sendResponse( RemoteJsonCreator::createResponse({
+        field(MessageType::EVENT, toString(MessageType::EVENT)),
+        field(Event::EVENT, toString(Event::SHUFFLE_MODE)),
+        field(Arguments::SHUFFLE_MODE, shuffleMode(mode))
+    }));
+}
+
+// QJsonObject RemotePlaylist::shuffleAllPlaylists(){
+//   int currentId{app_->playlist_manager()->current_id()};
+
+//   QList<int> playlistIds{app_->playlist_manager()->playlist_ids()};
+
+//   for(auto& list: playlistIds){
+//     Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(list);
+//     Q_EMIT RemotePlaylist::shufflePlaylist();
+//   }
+
+//   Q_EMIT RemotePlaylist::setCurrentPlaylistSignal(currentId);
+//   return RemoteJsonCreator::createResponse({
+//     field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+//     field(Response::RESPONSE, toString(Response::SHUFFLED_ALL_PLAYLISTS))
+//   });
+// }
+
+// QJsonObject RemotePlaylist::shuffleSinglePlaylist(const QJsonObject& args){
+
+//     qint32 id{ args[u"id"_s].toInt(-1) };
+//     if (id == -1) return wrongArgsSent(u"id"_s);
+
+//     int serverCurrent{app_->playlist_manager()->current_id()};
+//     app_->playlist_manager()->SetCurrentPlaylist(id);
+//     Q_EMIT RemotePlaylist::shufflePlaylist();
+//     app_->playlist_manager()->SetCurrentPlaylist(serverCurrent);
+
+//     return RemoteJsonCreator::createResponse({
+//         field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+//         field(Response::SHUFFLED_PLAYLIST, toString(Response::SHUFFLED_PLAYLIST))
+//     });
+// }
 
 QJsonObject RemotePlaylist::wrongArgsSent(const QString& error){
     return RemoteJsonCreator::createResponse({
@@ -543,6 +621,7 @@ void RemotePlaylist::createCommandMap(){
     commandMap[u"send-playlist"_s] = [this](const QJsonObject& args){ return sendRequestedPlaylist(args); };
     commandMap[u"request-cover"_s] = [this](const QJsonObject& args){ return sendCoverImage(args); };
     commandMap[u"set-current-playlist"_s] = [this](const QJsonObject& args){ return setCurrentPlaylist(args); };
-    commandMap[u"shuffle-all-playlists"_s] = [this](const auto&){ return shuffleAllPlaylists(); };
-    commandMap[u"shuffle-current-playlist"_s] = [this](const QJsonObject& args){ return shuffleSinglePlaylist(args); };
+    commandMap[u"set-shuffle-mode"_s] = [this](const QJsonObject& args){ return setShuffleMode(args);};
+    // commandMap[u"shuffle-all-playlists"_s] = [this](const auto&){ return shuffleAllPlaylists(); };
+    // commandMap[u"shuffle-current-playlist"_s] = [this](const QJsonObject& args){ return shuffleSinglePlaylist(args); };
 }

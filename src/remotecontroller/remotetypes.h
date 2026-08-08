@@ -35,6 +35,7 @@ namespace RemoteTypes{
         PLAYLIST_SIZE,
         PLAYING,
         POSITION,
+        SHUFFLE_MODE,
         SONGS,
         STOPPED,
         TIME,
@@ -84,6 +85,7 @@ namespace RemoteTypes{
         SEEK_FORWARD,
         SEEK_TO,
         SENT_ACTIVE_PLAYLIST,
+        SHUFFLE_MODE,
         SONG_CHANGED,
         SONG_INFO,
         STOP,
@@ -115,6 +117,7 @@ namespace RemoteTypes{
         SENT_ALBUM_COVER,
         SEND_REQUESTED_PLAYLIST,
         SET_CURRENT_PLAYLIST_TO,
+        SHUFFLE_MODE,
         SHUFFLED_PLAYLIST,
         SHUFFLED_ALL_PLAYLISTS
       };

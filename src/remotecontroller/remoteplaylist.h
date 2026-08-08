@@ -22,7 +22,10 @@ public:
 
     const PlaylistCmdMap& sendCommandMap() const;
     // Return current repeat mode
-    QString     repeatMode() const;
+    QString repeatMode(const PlaylistSequence::RepeatMode mode) const;
+    // Return current shuffle mode
+    QString shuffleMode (const PlaylistSequence::ShuffleMode mode) const;
+
     QJsonObject sendAllPlaylists() const;
 
 private:
@@ -45,10 +48,10 @@ private:
     QJsonObject removeUnavailableSongs(const QJsonObject& args);
     // Rename current playlist. Send command rename-playlist <new name>.
     QJsonObject renameCurrentPlaylist(const QJsonObject& args);
-    // Shuffle all playlists.
-    QJsonObject shuffleAllPlaylists();
-    // Shuffle single playlist.
-    QJsonObject shuffleSinglePlaylist(const QJsonObject& args);
+    // // Shuffle all playlists.
+    // QJsonObject shuffleAllPlaylists();
+    // // Shuffle single playlist.
+    // QJsonObject shuffleSinglePlaylist(const QJsonObject& args);
     // Delete current playlist.
     QJsonObject deleteCurrentRemotePlaylist(const QJsonObject& args);
     // Send active playlist and selected song on remote to server.
@@ -61,6 +64,8 @@ private:
     QJsonObject setFavouritePlaylist(const QJsonObject& args);
     // Set the playlist as current. Send set-current-playlist <playlist ID>.
     QJsonObject setCurrentPlaylist(const QJsonObject& args);
+    // Set the shuffle mode for playlists
+    QJsonObject setShuffleMode(const QJsonObject& args);
     // Set the repeat mode from the remote devices.
     QJsonObject setRepeatMode(const QJsonObject& args);
     // Send requested playlist to remote.
@@ -90,6 +95,7 @@ Q_SIGNALS:
     void setActivePlaylist(const int id);
     void setCurrentPlaylistSignal(const int id);
     void setRepeatModeSignal(const PlaylistSequence::RepeatMode mode);
+    void setShuffleModeSignal(const PlaylistSequence::ShuffleMode mode);
     void shufflePlaylist();
 
 private Q_SLOTS:
@@ -105,6 +111,7 @@ private Q_SLOTS:
     void repeatModeChanged(const PlaylistSequence::RepeatMode mode);
     void sendPlaylistData(const int id);
     void serverRenamePlaylist(const int id, const QString& name);
+    void shuffleModeChanged(const PlaylistSequence::ShuffleMode mode);
 };
 
 #endif // REMOTEPLAYLIST_H

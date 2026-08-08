@@ -33,6 +33,7 @@ QString toString(Arguments value) {
         case Arguments::PLAYLIST_SIZE:      return u"playlist_size"_s;
         case Arguments::PLAYING:            return u"playing"_s;
         case Arguments::POSITION:           return u"position"_s;
+        case Arguments::SHUFFLE_MODE:       return u"shuffle_mode"_s;
         case Arguments::SONGS:              return u"songs"_s;
         case Arguments::STOPPED:            return u"stopped"_s;
         case Arguments::TIME:               return u"time"_s;
@@ -91,6 +92,7 @@ QString toString(Event value) {
         case Event::SEEK_FORWARD:               return u"seek_forward"_s;
         case Event::SEEK_TO:                    return u"seek_to"_s;
         case Event::SENT_ACTIVE_PLAYLIST:       return u"sent_active_playlist"_s;
+        case Event::SHUFFLE_MODE:               return u"shuffle_mode"_s;
         case Event::SONG_CHANGED:               return u"song_changed"_s;
         case Event::SONG_INFO:                  return u"song_info"_s;
         case Event::STOP:                       return u"stop"_s;
@@ -127,6 +129,7 @@ QString toString(Response value) {
         case Response::SENT_ALBUM_COVER:                return u"sent_album_cover"_s;
         case Response::SEND_REQUESTED_PLAYLIST:         return u"send_requested_playlist"_s;
         case Response::SET_CURRENT_PLAYLIST_TO:         return u"set_current_playlist_to"_s;
+        case Response::SHUFFLE_MODE:                    return u"shuffle_mode"_s;
         case Response::SHUFFLED_PLAYLIST:               return u"shuffled_playlist"_s;
         case Response::SHUFFLED_ALL_PLAYLISTS:          return u"shuffled_all_playlists"_s;
     }
