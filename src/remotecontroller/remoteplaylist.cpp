@@ -53,8 +53,8 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
     metadataTimer_->setInterval(2000);
     connect(metadataTimer_, &QTimer::timeout, this, &RemotePlaylist::sendPendingPlaylist);
     QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::onPlaylistMetadataChanged);
-    // The connect below triggers db sends on every song change. Do not use unless needed.
 
+    // The connect below triggers db sends on every song change. Do not use unless needed.
     // QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistItemMetadataChanged, this, &RemotePlaylist::onPlaylistMetadataChangedWithQUuid);
 
     // Unused??
@@ -499,14 +499,14 @@ QJsonObject RemotePlaylist::setRepeatMode(const QJsonObject& args){
 }
 
 QJsonObject RemotePlaylist::setShuffleMode(const QJsonObject& args){
-    if (!args.contains(u"shuffle-mode)")) return wrongArgsSent(u"shuffle-mode"_s);
+    if (!args.contains(u"shuffle-mode"_s)) return wrongArgsSent(u"shuffle-mode"_s);
 
     QMap<QString, PlaylistSequence::ShuffleMode> shuffleModes{
         {u"albums"_s, PlaylistSequence::ShuffleMode::Albums},
         {u"all"_s, PlaylistSequence::ShuffleMode::All},
         {u"grouping"_s, PlaylistSequence::ShuffleMode::Grouping},
-        {u"inside-album"_s, PlaylistSequence::ShuffleMode::InsideAlbum},
-        {u"off"_s, PlaylistSequence::ShuffleMode::Off}
+        {u"off"_s, PlaylistSequence::ShuffleMode::Off},
+        {u"tracks"_s, PlaylistSequence::ShuffleMode::InsideAlbum}
     };
 
     QString mode{ args[u"shuffle-mode"_s].toString().toLower() };
@@ -621,7 +621,7 @@ void RemotePlaylist::createCommandMap(){
     commandMap[u"send-playlist"_s] = [this](const QJsonObject& args){ return sendRequestedPlaylist(args); };
     commandMap[u"request-cover"_s] = [this](const QJsonObject& args){ return sendCoverImage(args); };
     commandMap[u"set-current-playlist"_s] = [this](const QJsonObject& args){ return setCurrentPlaylist(args); };
-    commandMap[u"set-shuffle-mode"_s] = [this](const QJsonObject& args){ return setShuffleMode(args);};
+    commandMap[u"shuffle-mode"_s] = [this](const QJsonObject& args){ return setShuffleMode(args);};
     // commandMap[u"shuffle-all-playlists"_s] = [this](const auto&){ return shuffleAllPlaylists(); };
     // commandMap[u"shuffle-current-playlist"_s] = [this](const QJsonObject& args){ return shuffleSinglePlaylist(args); };
 }
