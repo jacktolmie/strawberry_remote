@@ -10,8 +10,8 @@ jobs:
 
   build-opensuse:
     name: Build openSUSE
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos' && github.ref_name != 'nsi') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos' && github.head_ref != 'nsi') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -128,8 +128,8 @@ jobs:
 
   build-fedora:
     name: Build Fedora
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos' && github.ref_name != 'nsi') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos' && github.head_ref != 'nsi') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -329,8 +329,8 @@ jobs:
 
   build-mageia:
     name: Build Mageia
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos' && github.ref_name != 'nsi') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos' && github.head_ref != 'nsi') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -433,8 +433,8 @@ jobs:
 
   build-debian:
     name: Build Debian
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos' && github.ref_name != 'nsi') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos' && github.head_ref != 'nsi') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -527,8 +527,8 @@ jobs:
 
   build-ubuntu:
     name: Build Ubuntu
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos' && github.ref_name != 'nsi') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos' && github.head_ref != 'nsi') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     strategy:
@@ -721,8 +721,8 @@ jobs:
 
   build-appimage:
     name: Build AppImage
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos' && github.ref_name != 'nsi') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos' && github.head_ref != 'nsi') ||
         (github.event_name == 'release')
     runs-on: ubuntu-latest
     container:
@@ -867,8 +867,8 @@ jobs:
 
   build-freebsd:
     name: Build FreeBSD
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos')
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos' && github.ref_name != 'nsi') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos' && github.head_ref != 'nsi')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -884,7 +884,7 @@ jobs:
         df -h
     - name: Build FreeBSD
       id: build-freebsd
-      uses: vmactions/freebsd-vm@v1.5.2
+      uses: vmactions/freebsd-vm@v1.5.3
       with:
         usesh: true
         mem: 8192
@@ -899,8 +899,8 @@ jobs:
 
   build-openbsd:
     name: Build OpenBSD
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos')
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'macos' && github.ref_name != 'nsi') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'macos' && github.head_ref != 'nsi')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -926,8 +926,8 @@ jobs:
 
   build-macos-public:
     name: Build macOS Public
-    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master') ||
-        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master') ||
+    if: (github.event_name == 'push' && github.repository == 'strawberrymusicplayer/strawberry' && github.ref_name != 'l10n_master' && github.ref_name != 'nsi') ||
+        (github.event_name == 'pull_request' && github.head_ref != 'l10n_master' && github.head_ref != 'nsi') ||
         (github.event_name == 'release')
 
     strategy:
@@ -1037,6 +1037,20 @@ jobs:
       - name: Create DMG
         working-directory: build
         run: make dmg
+
+      - name: Store notarization credentials
+        if: github.repository == 'strawberrymusicplayer/strawberry' && (github.event_name == 'release' || (github.event_name == 'push' && github.event.pull_request.head.repo.fork == false && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci' || github.ref == 'refs/heads/macos')))
+        run: xcrun notarytool store-credentials "strawberry-notarization" --apple-id "${{secrets.APPLE_NOTARIZATION_APPLE_ID}}" --team-id "383J84DVB6" --password "${{secrets.APPLE_NOTARIZATION_PASSWORD}}"
+
+      - name: Notarize DMG
+        if: github.repository == 'strawberrymusicplayer/strawberry' && (github.event_name == 'release' || (github.event_name == 'push' && github.event.pull_request.head.repo.fork == false && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci' || github.ref == 'refs/heads/macos')))
+        working-directory: build
+        run: xcrun notarytool submit *.dmg --keychain-profile "strawberry-notarization" --wait
+
+      - name: Staple notarization ticket
+        if: github.repository == 'strawberrymusicplayer/strawberry' && (github.event_name == 'release' || (github.event_name == 'push' && github.event.pull_request.head.repo.fork == false && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci' || github.ref == 'refs/heads/macos')))
+        working-directory: build
+        run: xcrun stapler staple *.dmg
 
       - name: SSH Setup
         if: github.repository == 'strawberrymusicplayer/strawberry' && (github.event_name == 'release' || (github.event_name == 'push' && github.event.pull_request.head.repo.fork == false && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/ci' || github.ref == 'refs/heads/macos')))
@@ -1157,6 +1171,17 @@ jobs:
       - name: Create DMG
         working-directory: build
         run: make dmg
+
+      - name: Store notarization credentials
+        run: xcrun notarytool store-credentials "strawberry-notarization" --apple-id "${{secrets.APPLE_NOTARIZATION_APPLE_ID}}" --team-id "383J84DVB6" --password "${{secrets.APPLE_NOTARIZATION_PASSWORD}}"
+
+      - name: Notarize DMG
+        working-directory: build
+        run: xcrun notarytool submit *.dmg --keychain-profile "strawberry-notarization" --wait
+
+      - name: Staple notarization ticket
+        working-directory: build
+        run: xcrun stapler staple *.dmg
 
       - name: Set Upload path
         id: set-upload-path
