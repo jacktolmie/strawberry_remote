@@ -50,8 +50,8 @@ private:
     QJsonObject renameCurrentPlaylist(const QJsonObject& args);
     // // Shuffle all playlists.
     // QJsonObject shuffleAllPlaylists();
-    // // Shuffle single playlist.
-    // QJsonObject shuffleSinglePlaylist(const QJsonObject& args);
+    // Shuffle single playlist.
+    QJsonObject shuffleSinglePlaylist(const QJsonObject& args);
     // Delete current playlist.
     QJsonObject deleteCurrentRemotePlaylist(const QJsonObject& args);
     // Send active playlist and selected song on remote to server.

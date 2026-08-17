@@ -565,6 +565,22 @@ void RemotePlaylist::shuffleModeChanged([[ maybe_unused ]] const PlaylistSequenc
     }));
 }
 
+QJsonObject RemotePlaylist::shuffleSinglePlaylist(const QJsonObject& args){
+
+    qint32 id{ args[u"id"_s].toInt(-1) };
+    if (id == -1) return wrongArgsSent(u"id"_s);
+
+    int serverCurrent{app_->playlist_manager()->current_id()};
+    app_->playlist_manager()->SetCurrentPlaylist(id);
+    Q_EMIT RemotePlaylist::shufflePlaylist();
+    app_->playlist_manager()->SetCurrentPlaylist(serverCurrent);
+
+    return RemoteJsonCreator::createResponse({
+        field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+        field(Response::SHUFFLED_PLAYLIST, toString(Response::SHUFFLED_PLAYLIST))
+    });
+}
+
 QJsonObject RemotePlaylist::wrongArgsSent(const QString& error){
     return RemoteJsonCreator::createResponse({
         field(MessageType::ERROR, toString(MessageType::ERROR)),
@@ -590,5 +606,6 @@ void RemotePlaylist::createCommandMap(){
     commandMap[u"send-playlist"_s] = [this](const QJsonObject& args){ return sendRequestedPlaylist(args); };
     commandMap[u"request-cover"_s] = [this](const QJsonObject& args){ return sendCoverImage(args); };
     commandMap[u"set-current-playlist"_s] = [this](const QJsonObject& args){ return setCurrentPlaylist(args); };
+    commandMap[u"shuffle-current-playlist"_s] = [this](const QJsonObject& args){ return shuffleSinglePlaylist(args); };
     commandMap[u"shuffle-mode"_s] = [this](const QJsonObject& args){ return setShuffleMode(args);};
 }
