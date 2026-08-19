@@ -50,7 +50,7 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
 
     metadataTimer_ = new QTimer(this);
     metadataTimer_->setSingleShot(true);
-    metadataTimer_->setInterval(2000);
+    metadataTimer_->setInterval(1000);
     connect(metadataTimer_, &QTimer::timeout, this, &RemotePlaylist::sendPendingPlaylist);
     QObject::connect(&*app_->playlist_manager(), &PlaylistManager::sendPlaylistToCreate, this, &RemotePlaylist::onPlaylistMetadataChanged);
 
@@ -421,7 +421,9 @@ void RemotePlaylist::sendPlaylistData(const int id){
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::MAKE_PLAYLIST)),
         field(Arguments::ID, id),
-        field(Arguments::PLAYLIST, makePlaylistData(id))
+        field(Arguments::PLAYLIST, makePlaylistData(id)),
+        field(Arguments::ACTIVE_PLAYLIST, app_->playlist_manager()->active_id()),
+        field(Arguments::CURRENT_SONG, app_->playlist_manager()->active() ? app_->playlist_manager()->active()->current_index().row(): -1),
     }));
 }
 

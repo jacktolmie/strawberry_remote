@@ -48,8 +48,6 @@ private:
     QJsonObject removeUnavailableSongs(const QJsonObject& args);
     // Rename current playlist. Send command rename-playlist <new name>.
     QJsonObject renameCurrentPlaylist(const QJsonObject& args);
-    // // Shuffle all playlists.
-    // QJsonObject shuffleAllPlaylists();
     // Shuffle single playlist.
     QJsonObject shuffleSinglePlaylist(const QJsonObject& args);
     // Delete current playlist.
