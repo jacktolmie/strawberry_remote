@@ -77,6 +77,7 @@ namespace RemoteTypes{
         GUI_UPDATES,
         MAKE_ALL_PLAYLISTS,
         MAKE_PLAYLIST,
+        MUSIC_TOTALS,
         NEXT,
         NEW_PLAYLIST,
         PAUSE,

@@ -47,8 +47,8 @@ private:
   QHostAddress          localIp6;
 
   const Application     *app_;
-  const RemoteCommands  *commands;  
-  const RemoteGuiValues *guiValues;
+  const RemoteCommands  *commands_;
+  const RemoteGuiValues *guiValues_;
 
   QTimer                *timer;
 

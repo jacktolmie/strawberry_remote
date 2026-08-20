@@ -84,6 +84,7 @@ QString toString(Event value) {
         case Event::GUI_UPDATES:                return u"gui_updates"_s;
         case Event::MAKE_ALL_PLAYLISTS:         return u"make_all_playlists"_s;
         case Event::MAKE_PLAYLIST:              return u"make_playlist"_s;
+        case Event::MUSIC_TOTALS:               return u"music_totals"_s;
         case Event::NEXT:                       return u"next"_s;
         case Event::NEW_PLAYLIST:               return u"new_playlist"_s;
         case Event::PAUSE:                      return u"pause"_s;

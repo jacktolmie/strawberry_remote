@@ -17,13 +17,14 @@ RemoteController::RemoteController(const Application* app, QObject *parent)
     : QObject{parent},
       server{new QTcpServer(this)},
       app_{app},
-      commands{new RemoteCommands(app, this)},
-      guiValues{new RemoteGuiValues(commands->getRemotePlaylist(), app_, this)},
+      commands_{new RemoteCommands(app, this)},
+      guiValues_{new RemoteGuiValues(commands_->getRemotePlaylist(), app_, this)},
       timer{new QTimer(this)}
 {
-  connect(this, &RemoteController::commandReceived, commands, &RemoteCommands::processLine);
-  connect(commands, &RemoteCommands::sendResponse, this, &RemoteController::broadcastToDevices);
+  connect(this, &RemoteController::commandReceived, commands_, &RemoteCommands::processLine);
+  connect(commands_, &RemoteCommands::sendResponse, this, &RemoteController::broadcastToDevices);
   connect(&*app_->player(), &Player::sendToRemote, this, &RemoteController::broadcastToDevices);
+  connect(guiValues_, &RemoteGuiValues::sendCurrentStatus, this, &RemoteController::broadcastToDevices);
 
   // Create a timer to check network connection.
   timer->setInterval(30000);
@@ -112,7 +113,7 @@ void RemoteController::onNewConnection()
             field(MessageType::AUTH, toString(MessageType::AUTH)),
             field(Auth::AUTH, toString(Auth::AUTH_SUCCESS))
           }));
-        onSendResponse(socket, guiValues->triggerUpdate());
+        onSendResponse(socket, guiValues_->triggerUpdate());
       }
       else {
         QByteArray nonce(32, Qt::Uninitialized);
@@ -187,7 +188,7 @@ void RemoteController::onReadyRead()
           field(MessageType::AUTH, toString(MessageType::AUTH)),
           field(Auth::AUTH, toString(Auth::AUTH_SUCCESS))
       }));
-        onSendResponse(socket, guiValues->triggerUpdate());
+        onSendResponse(socket, guiValues_->triggerUpdate());
 
       } else {
         qDebug() << "Bad proof from " << socket->peerAddress().toString() << ". Kicking.";

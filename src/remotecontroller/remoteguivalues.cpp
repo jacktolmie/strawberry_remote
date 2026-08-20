@@ -16,11 +16,15 @@ RemoteGuiValues::RemoteGuiValues(const RemotePlaylist *remotePlaylist, const App
   : QObject{parent},
     app_{app},
     remotePlaylist_{remotePlaylist}
-{}
+{
+    QObject::connect(&*app_->collection_model(), &CollectionModel::TotalAlbumCountUpdated, this, &RemoteGuiValues::musicTotals);
+    QObject::connect(&*app_->collection_model(), &CollectionModel::TotalArtistCountUpdated, this, &RemoteGuiValues::musicTotals);
+    QObject::connect(&*app_->collection_model(), &CollectionModel::TotalSongCountUpdated, this, &RemoteGuiValues::musicTotals);
+}
 
 QJsonObject RemoteGuiValues::getUpdates() const{
   RemoteTypes::Arguments currentPlayState;
-
+    // app_->collection_model()->TotalAlbumCountUpdated()
   switch(app_->player()->GetState()){
     case EngineBase::State::Empty:
     case EngineBase::State::Idle:
@@ -59,4 +63,15 @@ QJsonObject RemoteGuiValues::getUpdates() const{
 
 QJsonObject RemoteGuiValues::triggerUpdate() const {
   return getUpdates();
+}
+
+void RemoteGuiValues::musicTotals([[ maybe_unused ]] const int count){
+    qInfo() << "musictotals called";
+    Q_EMIT sendCurrentStatus(RemoteJsonCreator::createResponse({
+        field(MessageType::EVENT, toString(MessageType::EVENT)),
+        field(Event::EVENT, toString(Event::MUSIC_TOTALS)),
+        field(Arguments::TOTAL_ALBUMS, app_->collection_model()->total_album_count()),
+        field(Arguments::TOTAL_ARTISTS, app_->collection_model()->total_artist_count()),
+        field(Arguments::TOTAL_SONGS, app_->collection_model()->total_song_count())
+    }));
 }

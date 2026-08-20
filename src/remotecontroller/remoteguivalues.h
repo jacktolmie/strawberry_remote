@@ -20,13 +20,16 @@ class RemoteGuiValues : public QObject
   QJsonObject getUpdates() const;
 
 public:
-  explicit RemoteGuiValues(const RemotePlaylist* remotePlaylist, const Application* app, QObject *parent);
-
-public Q_SLOTS:
   QJsonObject triggerUpdate() const;
+
+public:
+  explicit RemoteGuiValues(const RemotePlaylist* remotePlaylist, const Application* app, QObject *parent);
 
 Q_SIGNALS:
   void sendCurrentStatus(const QJsonObject& response);
+
+private Q_SLOTS:
+   void musicTotals(const int count);
 
 };
 
