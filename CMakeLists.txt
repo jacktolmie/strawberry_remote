@@ -861,6 +861,7 @@ set(SOURCES
   src/remotecontroller/remoteguivalues.cpp
   src/remotecontroller/remotejsoncreator.cpp
   src/remotecontroller/remoteplaylist.cpp
+  src/remotecontroller/remoteradio.cpp
   src/remotecontroller/remotesettings.cpp
   src/remotecontroller/remotetypes.cpp
 )
@@ -1161,6 +1162,7 @@ set(HEADERS
   src/remotecontroller/remoteguivalues.h
   src/remotecontroller/remotejsoncreator.h
   src/remotecontroller/remoteplaylist.h
+  src/remotecontroller/remoteradio.h
   src/remotecontroller/remotesettings.h  
   src/remotecontroller/remotetypes.h
 )

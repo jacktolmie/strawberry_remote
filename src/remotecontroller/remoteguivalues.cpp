@@ -6,6 +6,9 @@
 #include "remoteplaylist.h"
 #include "remotetypes.h"
 
+
+#include "collection/collectionmodel.h"
+
 using namespace Qt::Literals::StringLiterals;
 using namespace RemoteTypes;
 
@@ -47,6 +50,9 @@ QJsonObject RemoteGuiValues::getUpdates() const{
     field(Arguments::REPEAT_MODE, remotePlaylist_->repeatMode(app_->playlist_manager()->sequence()->repeat_mode())),
     field(Arguments::SHUFFLE_MODE, remotePlaylist_->shuffleMode(app_->playlist_manager()->sequence()->shuffle_mode())),
     field(Arguments::TIME, app_->player()->engine()->position_nanosec() / kNsecPerMsec),
+    field(Arguments::TOTAL_ALBUMS, app_->collection_model()->total_album_count()),
+    field(Arguments::TOTAL_ARTISTS, app_->collection_model()->total_artist_count()),
+    field(Arguments::TOTAL_SONGS, app_->collection_model()->total_song_count()),
     field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume()))
   });
 }

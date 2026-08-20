@@ -40,6 +40,9 @@ namespace RemoteTypes{
         STOPPED,
         TIME,
         TITLE,
+        TOTAL_ALBUMS,
+        TOTAL_ARTISTS,
+        TOTAL_SONGS,
         TRACK_ID,
         SONG_URL,
         VOLUME

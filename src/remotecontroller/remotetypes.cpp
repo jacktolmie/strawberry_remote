@@ -38,6 +38,9 @@ QString toString(Arguments value) {
         case Arguments::STOPPED:            return u"stopped"_s;
         case Arguments::TIME:               return u"time"_s;
         case Arguments::TITLE:              return u"title"_s;
+        case Arguments::TOTAL_ALBUMS:       return u"total_albums"_s;
+        case Arguments::TOTAL_ARTISTS:      return u"total_artists"_s;
+        case Arguments::TOTAL_SONGS:        return u"total_songs"_s;
         case Arguments::TRACK_ID:           return u"track_id"_s;
         case Arguments::SONG_URL:           return u"song_url"_s;
         case Arguments::VOLUME:             return u"volume"_s;
