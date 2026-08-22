@@ -7,9 +7,6 @@ class CollectionView;
 
 #include "core/application.h"
 #include "radios/radioservices.h"
-#include "radios/radiobackend.h"
-#include "remotejsoncreator.h"
-#include "remotetypes.h"
 
 class RemoteRadio : public QObject
 {
@@ -22,11 +19,14 @@ public:
     ~RemoteRadio() = default;
 
 private:
-    void GotChannelsFromBackend(const RadioChannelList &channels);
-
     CollectionView *collectionview_;
 
-// signals:
+private Q_SLOTS:
+    void GotChannelsFromBackend(const RadioChannelList &channels);
+    void GotChannelsFromService(const RadioChannelList &channels);
+
+Q_SIGNALS:
+    void sendResponse(const QJsonObject& response);
 };
 
 #endif // REMOTERADIO_H

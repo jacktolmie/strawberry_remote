@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "core/application.h"
+#include "remoteradio.h"
 #include "remoteplaylist.h"
 #include "remotebasiccommands.h"
 
@@ -16,8 +17,10 @@ class RemoteCommands : public QObject
 
   const Application   *app_;
 
-  RemotePlaylist      *remotePlaylist;
-  RemoteBasicCommands *basicCommands;
+  RemoteBasicCommands   *basicCommands_;
+  RemoteRadio           *remoteRadio_;
+  RemotePlaylist        *remotePlaylist_;
+
 
   BasicCmdMap         basicCmdMap;
   PlaylistCmdMap      playlistCmdMap;
@@ -27,7 +30,7 @@ public:
   ~RemoteCommands() = default;
 
   void processCommand(const QString& command, const QJsonObject& args);
-  const RemotePlaylist* getRemotePlaylist() const { return remotePlaylist; }
+  const RemotePlaylist* getRemotePlaylist() const { return remotePlaylist_; }
 
 public Q_SLOTS:
   void processLine(const QString& line);

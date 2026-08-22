@@ -35,6 +35,9 @@ QString toString(Arguments value) {
         case Arguments::POSITION:           return u"position"_s;
         case Arguments::SHUFFLE_MODE:       return u"shuffle_mode"_s;
         case Arguments::SONGS:              return u"songs"_s;
+        case Arguments::STATION_LIST:       return u"station_list"_s;
+        case Arguments::STATION_SOURCE:     return u"station_source"_s;
+        case Arguments::STATION_URL:        return u"station_url"_s;
         case Arguments::STOPPED:            return u"stopped"_s;
         case Arguments::TIME:               return u"time"_s;
         case Arguments::TITLE:              return u"title"_s;
@@ -90,6 +93,7 @@ QString toString(Event value) {
         case Event::PAUSE:                      return u"pause"_s;
         case Event::PLAY:                       return u"play"_s;
         case Event::PREVIOUS:                   return u"previous"_s;
+        case Event::RADIO_STATIONS:             return u"radio_stations"_s;
         case Event::REPEAT_MODE:                return u"repeat_mode"_s;
         case Event::RENAME_PLAYLIST:            return u"rename_playlist"_s;
         case Event::SEEK_BACKWARD:              return u"seek_backward"_s;

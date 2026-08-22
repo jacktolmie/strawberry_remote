@@ -24,7 +24,7 @@ RemoteGuiValues::RemoteGuiValues(const RemotePlaylist *remotePlaylist, const App
 
 QJsonObject RemoteGuiValues::getUpdates() const{
   RemoteTypes::Arguments currentPlayState;
-    // app_->collection_model()->TotalAlbumCountUpdated()
+
   switch(app_->player()->GetState()){
     case EngineBase::State::Empty:
     case EngineBase::State::Idle:
@@ -66,7 +66,6 @@ QJsonObject RemoteGuiValues::triggerUpdate() const {
 }
 
 void RemoteGuiValues::musicTotals([[ maybe_unused ]] const int count){
-    qInfo() << "musictotals called";
     Q_EMIT sendCurrentStatus(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::MUSIC_TOTALS)),

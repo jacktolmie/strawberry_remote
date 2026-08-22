@@ -10,6 +10,8 @@
 #include "playlist/playlistsequence.h"
 #include "remotecurrentsong.h"
 
+#include "remoteradio.h"
+
 using PlaylistCmdMap = QMap<QString, std::function<QJsonObject(const QJsonObject&)>>;
 
 class RemotePlaylist : public QObject
@@ -33,6 +35,7 @@ private:
 
     const Application   *app_;
     RemoteCurrentSong   *currentSong_;
+    RemoteRadio *radio_;
 
     QTimer *metadataTimer_;
     int pendingPlaylistId_;

@@ -21,7 +21,6 @@ QJsonObject RemoteCurrentSong::songData(const Song& song, const int playlistId, 
     QJsonObject songInfo;
     songInfo[toString(Arguments::ARTIST)] =         song.artist();
     songInfo[toString(Arguments::ALBUM)] =          song.album();
-    // songInfo[toString(Arguments::COVER_IMAGE)] =    QFileInfo(song.art_manual().toLocalFile()).fileName();
     songInfo[toString(Arguments::COVER_IMAGE)] =    song.art_manual().toLocalFile();
     songInfo[toString(Arguments::ID)] =             song.id();
     songInfo[toString(Arguments::LENGTH)] =         song.length_nanosec() / kNsecPerMsec;
@@ -55,6 +54,6 @@ void RemoteCurrentSong::getCurrentSongRequest(const Song& song){
   Q_EMIT sendCurrentSongData(songInfoData(song));
 }
 
-QJsonObject RemoteCurrentSong::requestAlbumArt(const QString& coverArt){ //(const Song& song) const{
-    return albumArt.makeAlbumArtByName(coverArt); //(song);
+QJsonObject RemoteCurrentSong::requestAlbumArt(const QString& coverArt){
+    return albumArt.makeAlbumArtByName(coverArt);
 }

@@ -13,19 +13,22 @@ using namespace RemoteTypes;
 using CommandHandler = std::function<QJsonObject(const QJsonObject&)>;
 
 RemoteCommands::RemoteCommands(const Application* app, QObject* parent = nullptr):
-  QObject{parent},
-  app_(app),
-  remotePlaylist(new RemotePlaylist(app, this)),
-  basicCommands(new RemoteBasicCommands(app)),
-  basicCmdMap{basicCommands->sendCommandMap()},
-  playlistCmdMap{remotePlaylist->sendCommandMap()}
+    QObject{parent},
+    app_(app),
+    basicCommands_(new RemoteBasicCommands(app_)),
+    remoteRadio_(new RemoteRadio(app_)),
+    remotePlaylist_(new RemotePlaylist(app_, this)),
+    basicCmdMap{basicCommands_->sendCommandMap()},
+    playlistCmdMap{remotePlaylist_->sendCommandMap()}
 {
-  QObject::connect(remotePlaylist, &RemotePlaylist::sendResponse, this, &RemoteCommands::sendResponse);
-  QObject::connect(basicCommands, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::sendResponse);
+    QObject::connect(remotePlaylist_, &RemotePlaylist::sendResponse, this, &RemoteCommands::sendResponse);
+    QObject::connect(basicCommands_, &RemoteBasicCommands::sendResponse, this, &RemoteCommands::sendResponse);
+    QObject::connect(remoteRadio_, &RemoteRadio::sendResponse, this, &RemoteCommands::sendResponse);
 }
 
 void RemoteCommands::processCommand(const QString& command, const QJsonObject& args)
 {
+    // if (command.toLower() == u"radio"_s)
     // Check if sent command is in basicCommandMap.
     if(basicCmdMap.contains(command)){
         basicCmdMap[command](args);

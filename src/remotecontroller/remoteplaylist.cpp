@@ -20,8 +20,9 @@ using namespace RemoteTypes;
 
 RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
     : QObject{parent},
-      app_(app),
-      currentSong_(new RemoteCurrentSong(app_))
+    app_(app),
+    currentSong_(new RemoteCurrentSong(app_)),
+    radio_{new RemoteRadio(app_)}
 {
     RemotePlaylist::createCommandMap();
 
@@ -59,12 +60,12 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
 
     // Unused??
     QObject::connect(&*app_->playlist_manager(), &PlaylistManager::PlaylistItemsAdded, this, &RemotePlaylist::playlistItemsAdded);
+
 }
 
 // Unused???
 void RemotePlaylist::playlistItemsAdded(const int playlist_id, const QList<QUuid> &track_ids, const QUuid after_track_id){
     Q_UNUSED(after_track_id)
-    qInfo()<<"Playlist item added: " << playlist_id;
     for(auto& id: track_ids) qInfo() << "Track ID: " << id;
 }
 
@@ -193,7 +194,6 @@ QJsonObject RemotePlaylist::makePlaylistData(const int id) const{
     }
 
     playlistObject[toString(RemoteTypes::Arguments::SONGS)] = songsArray;
-    qInfo()<<"Song array: " << playlistObject;
     return playlistObject;
 }
 
@@ -416,7 +416,6 @@ QJsonObject RemotePlaylist::sendCurrentPlayingSong(){
 }
 
 void RemotePlaylist::sendPlaylistData(const int id){
-    qInfo()<<"remoteplaylist sendplaylistdata called with id: " << id;
     Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::MAKE_PLAYLIST)),
