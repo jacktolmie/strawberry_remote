@@ -23,43 +23,95 @@ RemoteGuiValues::RemoteGuiValues(const RemotePlaylist *remotePlaylist, const App
 }
 
 QJsonObject RemoteGuiValues::getUpdates() const{
-  RemoteTypes::Arguments currentPlayState;
-
-  switch(app_->player()->GetState()){
+    RemoteTypes::Arguments currentPlayState;
+    switch(app_->player()->GetState()){
     case EngineBase::State::Empty:
     case EngineBase::State::Idle:
     case EngineBase::State::Error: {
-      currentPlayState = RemoteTypes::Arguments::STOPPED;
-      break;
+        currentPlayState = RemoteTypes::Arguments::STOPPED;
+        break;
     }
     case EngineBase::State::Paused: {
-      currentPlayState = RemoteTypes::Arguments::PAUSED;
-      break;
+        currentPlayState = RemoteTypes::Arguments::PAUSED;
+        break;
     }
     case EngineBase::State::Playing: {
-      currentPlayState = RemoteTypes::Arguments::PLAYING;
-      break;
+        currentPlayState = RemoteTypes::Arguments::PLAYING;
+        break;
     }
-  };
+    };
 
-  return RemoteJsonCreator::createResponse({
-    field(MessageType::EVENT, toString(MessageType::EVENT)),
-    field(Event::EVENT, toString(Event::GUI_UPDATES)),
-    field(Arguments::ACTIVE_PLAYLIST, app_->playlist_manager()->active_id()),
-    field(Arguments::COVER_IMAGE, QFileInfo(app_->playlist_manager()->current()->current_item_metadata().art_manual().toLocalFile()).fileName()),
-    field(Arguments::CURRENT_PLAYLIST, app_->playlist_manager()->current_id()),
-    field(Arguments::CURRENT_SONG, app_->playlist_manager()->active() ? app_->playlist_manager()->active()->current_index().row(): -1),
-    field(Arguments::PLAYING, toString(currentPlayState)),
-    field(Arguments::PLAYLISTS, remotePlaylist_->sendAllPlaylists()),
-    field(Arguments::REPEAT_MODE, remotePlaylist_->repeatMode(app_->playlist_manager()->sequence()->repeat_mode())),
-    field(Arguments::SHUFFLE_MODE, remotePlaylist_->shuffleMode(app_->playlist_manager()->sequence()->shuffle_mode())),
-    field(Arguments::TIME, app_->player()->engine()->position_nanosec() / kNsecPerMsec),
-    field(Arguments::TOTAL_ALBUMS, app_->collection_model()->total_album_count()),
-    field(Arguments::TOTAL_ARTISTS, app_->collection_model()->total_artist_count()),
-    field(Arguments::TOTAL_SONGS, app_->collection_model()->total_song_count()),
-    field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume()))
-  });
+    // Get cover image data
+    const Song& metadata = app_->playlist_manager()->current()->current_item_metadata();
+    QByteArray imageData;
+    QFile file(metadata.art_manual().toLocalFile());
+    if (file.exists() && file.open(QIODevice::ReadOnly)) {
+        imageData = file.readAll();
+        file.close();
+    } else {
+        QFile autoFile(metadata.art_automatic().toLocalFile());
+        if (autoFile.exists() && autoFile.open(QIODevice::ReadOnly)) {
+            imageData = autoFile.readAll();
+            autoFile.close();
+        }
+    }
+
+    return RemoteJsonCreator::createResponse({
+        field(MessageType::EVENT, toString(MessageType::EVENT)),
+        field(Event::EVENT, toString(Event::GUI_UPDATES)),
+        field(Arguments::ACTIVE_PLAYLIST, app_->playlist_manager()->active_id()),
+        field(Arguments::COVER_IMAGE, QString::fromLatin1(imageData.toBase64())),
+        field(Arguments::CURRENT_PLAYLIST, app_->playlist_manager()->current_id()),
+        field(Arguments::CURRENT_SONG, app_->playlist_manager()->active() ? app_->playlist_manager()->active()->current_index().row(): -1),
+        field(Arguments::PLAYING, toString(currentPlayState)),
+        field(Arguments::PLAYLISTS, remotePlaylist_->sendAllPlaylists()),
+        field(Arguments::REPEAT_MODE, remotePlaylist_->repeatMode(app_->playlist_manager()->sequence()->repeat_mode())),
+        field(Arguments::SHUFFLE_MODE, remotePlaylist_->shuffleMode(app_->playlist_manager()->sequence()->shuffle_mode())),
+        field(Arguments::TIME, app_->player()->engine()->position_nanosec() / kNsecPerMsec),
+        field(Arguments::TOTAL_ALBUMS, app_->collection_model()->total_album_count()),
+        field(Arguments::TOTAL_ARTISTS, app_->collection_model()->total_artist_count()),
+        field(Arguments::TOTAL_SONGS, app_->collection_model()->total_song_count()),
+        field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume()))
+    });
 }
+// QJsonObject RemoteGuiValues::getUpdates() const{
+//   RemoteTypes::Arguments currentPlayState;
+
+//   switch(app_->player()->GetState()){
+//     case EngineBase::State::Empty:
+//     case EngineBase::State::Idle:
+//     case EngineBase::State::Error: {
+//       currentPlayState = RemoteTypes::Arguments::STOPPED;
+//       break;
+//     }
+//     case EngineBase::State::Paused: {
+//       currentPlayState = RemoteTypes::Arguments::PAUSED;
+//       break;
+//     }
+//     case EngineBase::State::Playing: {
+//       currentPlayState = RemoteTypes::Arguments::PLAYING;
+//       break;
+//     }
+//   };
+
+//   return RemoteJsonCreator::createResponse({
+//     field(MessageType::EVENT, toString(MessageType::EVENT)),
+//     field(Event::EVENT, toString(Event::GUI_UPDATES)),
+//     field(Arguments::ACTIVE_PLAYLIST, app_->playlist_manager()->active_id()),
+//     field(Arguments::COVER_IMAGE, QFileInfo(app_->playlist_manager()->current()->current_item_metadata().art_manual().toLocalFile()).fileName()),
+//     field(Arguments::CURRENT_PLAYLIST, app_->playlist_manager()->current_id()),
+//     field(Arguments::CURRENT_SONG, app_->playlist_manager()->active() ? app_->playlist_manager()->active()->current_index().row(): -1),
+//     field(Arguments::PLAYING, toString(currentPlayState)),
+//     field(Arguments::PLAYLISTS, remotePlaylist_->sendAllPlaylists()),
+//     field(Arguments::REPEAT_MODE, remotePlaylist_->repeatMode(app_->playlist_manager()->sequence()->repeat_mode())),
+//     field(Arguments::SHUFFLE_MODE, remotePlaylist_->shuffleMode(app_->playlist_manager()->sequence()->shuffle_mode())),
+//     field(Arguments::TIME, app_->player()->engine()->position_nanosec() / kNsecPerMsec),
+//     field(Arguments::TOTAL_ALBUMS, app_->collection_model()->total_album_count()),
+//     field(Arguments::TOTAL_ARTISTS, app_->collection_model()->total_artist_count()),
+//     field(Arguments::TOTAL_SONGS, app_->collection_model()->total_song_count()),
+//     field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume()))
+//   });
+// }
 
 QJsonObject RemoteGuiValues::triggerUpdate() const {
   return getUpdates();

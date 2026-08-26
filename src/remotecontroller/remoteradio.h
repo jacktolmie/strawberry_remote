@@ -1,6 +1,8 @@
 #ifndef REMOTERADIO_H
 #define REMOTERADIO_H
 
+#include "covermanager/albumcoverimageresult.h"
+#include "covermanager/albumcoverloaderresult.h"
 #include <QObject>
 
 class CollectionView;
@@ -19,11 +21,16 @@ public:
     ~RemoteRadio() = default;
 
 private:
-    CollectionView *collectionview_;
+    // QJsonObject appendToCurrentPlaylist();
+    // QJsonObject replaceCurrentPlaylist();
+    // QJsonObject createNewPlaylist();
+    void somaFmParse(const QJsonObject& data, const QString radioStation);
+    void radioParadiseParse(const QJsonObject& data, const QString radioStation);
 
 private Q_SLOTS:
-    void GotChannelsFromBackend(const RadioChannelList &channels);
-    void GotChannelsFromService(const RadioChannelList &channels);
+    void gotChannels(const RadioChannelList &channels);
+    void getImage(const Song &song, const AlbumCoverLoaderResult &result);
+    void RawDataReceived(const QByteArray &data, Song::Source source);
 
 Q_SIGNALS:
     void sendResponse(const QJsonObject& response);

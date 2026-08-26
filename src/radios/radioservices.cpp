@@ -73,6 +73,7 @@ void RadioServices::AddService(RadioService *service) {
 
   QObject::connect(service, &RadioService::NewChannels, this, &RadioServices::GotChannelsFromService);
   QObject::connect(service, &RadioService::destroyed, this, &RadioServices::ServiceDeleted);
+  QObject::connect(service, &RadioService::RawDataReceived, this, &RadioServices::OnRawDataReceived);
 
 }
 

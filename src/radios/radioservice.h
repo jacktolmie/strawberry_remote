@@ -61,6 +61,7 @@ class RadioService : public QObject {
 
  Q_SIGNALS:
   void NewChannels(const RadioChannelList &channels = RadioChannelList());
+  void RawDataReceived(const QByteArray &data, Song::Source source);
 
  public Q_SLOTS:
   virtual void GetChannels() = 0;

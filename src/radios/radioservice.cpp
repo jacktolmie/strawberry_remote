@@ -56,7 +56,10 @@ QByteArray RadioService::ExtractData(QNetworkReply *reply) {
     Error(QStringLiteral("Received HTTP code %1").arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()));
   }
 
-  return reply->readAll();
+  const QByteArray data = reply->readAll();
+  Q_EMIT RawDataReceived(data, source_);
+
+  return data;
 
 }
 

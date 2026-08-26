@@ -64,7 +64,7 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
 }
 
 // Unused???
-void RemotePlaylist::playlistItemsAdded(const int playlist_id, const QList<QUuid> &track_ids, const QUuid after_track_id){
+void RemotePlaylist::playlistItemsAdded([[ maybe_unused ]] const int playlist_id, const QList<QUuid> &track_ids, const QUuid after_track_id){
     Q_UNUSED(after_track_id)
     for(auto& id: track_ids) qInfo() << "Track ID: " << id;
 }

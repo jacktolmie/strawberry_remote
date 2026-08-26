@@ -78,6 +78,10 @@ class RadioServices : public QObject {
   QSortFilterProxyModel *sort_model_;
   QMap<Song::Source, RadioService*> services_;
   bool channels_refresh_;
+
+ Q_SIGNALS:
+  void OnRawDataReceived(const QByteArray &data, Song::Source source);
+
 };
 
 #endif  // RADIOSERVICES_H

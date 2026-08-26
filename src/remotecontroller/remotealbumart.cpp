@@ -21,13 +21,12 @@ QJsonObject RemoteAlbumArt::makeAlbumArtBySong(const Song& song) const{
 
     QByteArray imageData{file.readAll()};
     file.close();
-    // QString base64Image{QString::fromLatin1(imageData.toBase64())};
 
     return RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::COVER_IMAGE)),
         field(Arguments::NAME, QFileInfo(song.art_manual().toLocalFile()).fileName()),
-        field(Arguments::COVER_IMAGE, QString::fromLatin1(imageData.toBase64()))// base64Image)
+        field(Arguments::COVER_IMAGE, QString::fromLatin1(imageData.toBase64()))
     });
 }
 
