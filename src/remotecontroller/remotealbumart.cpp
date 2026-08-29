@@ -45,18 +45,10 @@ QJsonObject RemoteAlbumArt::makeAlbumArtByName(const QString& coverArt) const {
     QByteArray imageData = file.readAll();
     file.close();
 
-    QString base64Image{QString::fromLatin1(imageData.toBase64())};
-
     return RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::COVER_IMAGE)),
         field(Arguments::NAME, coverArt),
-        field(Arguments::COVER_IMAGE, base64Image)
+        field(Arguments::COVER_IMAGE, QString::fromLatin1(imageData.toBase64()))
     });
-
-    QJsonObject obj;
-    obj[u"type"_s] = u"cover_image"_s;
-    obj[u"filename"_s] = fileInfo.fileName();
-    obj[u"data"_s] = QString::fromLatin1(imageData.toBase64());
-    return obj;
 }

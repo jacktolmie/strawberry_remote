@@ -81,6 +81,7 @@ class RadioServices : public QObject {
 
  Q_SIGNALS:
   void OnRawDataReceived(const QByteArray &data, Song::Source source);
+  void RadioBrowserSearchFinished(const RadioChannelList &channels, const bool has_more);
 
 };
 

@@ -75,6 +75,13 @@ void RadioServices::AddService(RadioService *service) {
   QObject::connect(service, &RadioService::destroyed, this, &RadioServices::ServiceDeleted);
   QObject::connect(service, &RadioService::RawDataReceived, this, &RadioServices::OnRawDataReceived);
 
+  if (service->source() == Song::Source::RadioBrowser) {
+      RadioBrowserService *rb = qobject_cast<RadioBrowserService*>(service);
+      if (rb) {
+          QObject::connect(rb, &RadioBrowserService::SearchFinished, this, &RadioServices::RadioBrowserSearchFinished);
+      }
+  }
+
 }
 
 void RadioServices::RemoveService(RadioService *service) {

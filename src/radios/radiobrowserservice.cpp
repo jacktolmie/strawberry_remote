@@ -221,6 +221,7 @@ void RadioBrowserService::SearchReply(QNetworkReply *reply, const int task_id, c
 
   RadioChannelList channels;
   for (const QJsonValue &value : array) {
+      qInfo() << "RadioValue: " << value;
     if (!value.isObject()) continue;
     const QJsonObject obj = value.toObject();
 
