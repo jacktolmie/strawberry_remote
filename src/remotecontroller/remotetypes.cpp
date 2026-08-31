@@ -12,6 +12,8 @@ QString toString(Arguments value) {
         case Arguments::ARGUMENT:           return u"argument"_s;
         case Arguments::ARGUMENTS:          return u"arguments"_s;
         case Arguments::ARTIST:             return u"artist"_s;
+        case Arguments::BITRATE:            return u"bitrate"_s;
+        case Arguments::CLICK_COUNTS:       return u"click_counts"_s;
         case Arguments::COMMAND:            return u"command"_s;
         case Arguments::COUNTRY:            return u"country"_s;
         case Arguments::COVER_IMAGE:        return u"cover_image"_s;
@@ -22,9 +24,11 @@ QString toString(Arguments value) {
         case Arguments::FAVOURITE:          return u"favourite"_s;
         case Arguments::FORMAT:             return u"format"_s;
         case Arguments::GENRE:              return u"genre"_s;
+        case Arguments::HOMEPAGE:           return u"homepage"_s;
         case Arguments::ID:                 return u"id"_s;
         case Arguments::IMAGE:              return u"image"_s;
         case Arguments::IS_FAVOURITE:       return u"is_favourite"_s;
+        case Arguments::LANGUAGE:           return u"language"_s;
         case Arguments::LENGTH:             return u"length"_s;
         case Arguments::NAME:               return u"name"_s;
         case Arguments::NONCE:              return u"nonce"_s;
@@ -56,6 +60,7 @@ QString toString(Arguments value) {
         case Arguments::TRACK_ID:           return u"track_id"_s;
         case Arguments::SONG_URL:           return u"song_url"_s;
         case Arguments::VOLUME:             return u"volume"_s;
+        case Arguments::VOTES:              return u"votes"_s;
     }
     Q_UNREACHABLE();
 }

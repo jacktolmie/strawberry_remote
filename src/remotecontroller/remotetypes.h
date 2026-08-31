@@ -14,6 +14,8 @@ namespace RemoteTypes{
         ARGUMENT,
         ARGUMENTS,
         ARTIST,
+        BITRATE,
+        CLICK_COUNTS,
         COMMAND,
         COUNTRY,
         COVER_IMAGE,
@@ -24,9 +26,11 @@ namespace RemoteTypes{
         FAVOURITE,
         FORMAT,
         GENRE,
+        HOMEPAGE,
         ID,
         IMAGE,
         IS_FAVOURITE,
+        LANGUAGE,
         LENGTH,
         NAME,
         NONCE,
@@ -57,7 +61,8 @@ namespace RemoteTypes{
         TOTAL_SONGS,
         TRACK_ID,
         SONG_URL,
-        VOLUME
+        VOLUME,
+        VOTES
     };
 
     enum class Auth{

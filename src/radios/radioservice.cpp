@@ -57,6 +57,8 @@ QByteArray RadioService::ExtractData(QNetworkReply *reply) {
   }
 
   const QByteArray data = reply->readAll();
+
+  // Send data to remoteradio for parsing.
   Q_EMIT RawDataReceived(data, source_);
 
   return data;

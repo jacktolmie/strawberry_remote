@@ -26,6 +26,7 @@
 #include <QUrlQuery>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QJsonDocument>
 #include <QJsonValue>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -221,7 +222,6 @@ void RadioBrowserService::SearchReply(QNetworkReply *reply, const int task_id, c
 
   RadioChannelList channels;
   for (const QJsonValue &value : array) {
-      qInfo() << "RadioValue: " << value;
     if (!value.isObject()) continue;
     const QJsonObject obj = value.toObject();
 

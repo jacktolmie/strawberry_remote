@@ -25,7 +25,7 @@ private:
     // QJsonObject replaceCurrentPlaylist();
     // QJsonObject createNewPlaylist();
     void somaFmParse(const QJsonObject& data, const QString radioStation);
-    void radioBrowserParse(const QJsonObject& data, const QString radioStation);
+    void radioBrowserParse(const QJsonArray& data, const QString radioStation);
     void radioParadiseParse(const QJsonObject& data, const QString radioStation);
 
 private Q_SLOTS:
