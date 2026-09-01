@@ -24,14 +24,14 @@ private:
     // QJsonObject appendToCurrentPlaylist();
     // QJsonObject replaceCurrentPlaylist();
     // QJsonObject createNewPlaylist();
-    void somaFmParse(const QJsonObject& data, const QString radioStation);
-    void radioBrowserParse(const QJsonArray& data, const QString radioStation);
-    void radioParadiseParse(const QJsonObject& data, const QString radioStation);
+    void somaFmParse(const QJsonObject& data, const QString radioStation, RadioService *service);
+    void radioBrowserParse(const QJsonArray& data, const QString radioStation, RadioService *service);
+    void radioParadiseParse(const QJsonObject& data, const QString radioStation, RadioService *service);
 
 private Q_SLOTS:
     void gotChannels(const RadioChannelList &channels);
     void getImage(const Song &song, const AlbumCoverLoaderResult &result);
-    void RawDataReceived(const QByteArray &data, Song::Source source);
+    void RawDataReceived(const QByteArray &data, Song::Source source, RadioService* service);
     void RadioBrowserSearchFinished(const RadioChannelList &channels, const bool has_more);
 
 

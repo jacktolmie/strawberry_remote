@@ -13,7 +13,7 @@ QString toString(Arguments value) {
         case Arguments::ARGUMENTS:          return u"arguments"_s;
         case Arguments::ARTIST:             return u"artist"_s;
         case Arguments::BITRATE:            return u"bitrate"_s;
-        case Arguments::CLICK_COUNTS:       return u"click_counts"_s;
+        case Arguments::CLICK_COUNT:        return u"click_count"_s;
         case Arguments::COMMAND:            return u"command"_s;
         case Arguments::COUNTRY:            return u"country"_s;
         case Arguments::COVER_IMAGE:        return u"cover_image"_s;

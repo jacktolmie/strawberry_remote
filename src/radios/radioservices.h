@@ -80,7 +80,7 @@ class RadioServices : public QObject {
   bool channels_refresh_;
 
  Q_SIGNALS:
-  void OnRawDataReceived(const QByteArray &data, Song::Source source);
+  void OnRawDataReceived(const QByteArray &data, Song::Source source, RadioService* service);
   void RadioBrowserSearchFinished(const RadioChannelList &channels, const bool has_more);
 
 };

@@ -15,7 +15,7 @@ namespace RemoteTypes{
         ARGUMENTS,
         ARTIST,
         BITRATE,
-        CLICK_COUNTS,
+        CLICK_COUNT,
         COMMAND,
         COUNTRY,
         COVER_IMAGE,
