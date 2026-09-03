@@ -86,6 +86,7 @@ class SettingsDialog : public QDialog {
     Scrobbler,
     Covers,
     Lyrics,
+    Acoustid,
     Transcoding,
     Proxy,
     RemoteController,

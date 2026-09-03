@@ -12,6 +12,7 @@
 /out
 /CMakeSettings.json
 /dist/scripts/maketarball.sh
+/src/apicredentials.h
 /debian/changelog
 /commands_to_add.txt
 /chat_init_ai.txt

@@ -21,6 +21,7 @@ include(cmake/Version.cmake)
 include(cmake/OptionalComponent.cmake)
 include(cmake/OptionalSource.cmake)
 include(cmake/ParseArguments.cmake)
+include(cmake/ApiCredentials.cmake)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set(LINUX ON)
@@ -166,6 +167,10 @@ endif()
 find_package(Backtrace)
 if(Backtrace_FOUND)
   set(HAVE_BACKTRACE ON)
+endif()
+find_package(OpenSSL COMPONENTS Crypto CONFIG)
+if(NOT OpenSSL_FOUND)
+  find_package(OpenSSL COMPONENTS Crypto REQUIRED)
 endif()
 find_package(Boost CONFIG)
 if(NOT Boost_FOUND)
@@ -505,7 +510,6 @@ set(SOURCES
   src/utilities/textencodingutils.cpp
   src/utilities/styleutils.cpp
   src/utilities/coveroptions.cpp
-  src/utilities/musixmatchprovider.cpp
 
   src/tagreader/tagreaderclient.cpp
   src/tagreader/tagreaderresult.cpp
@@ -728,6 +732,7 @@ set(SOURCES
   src/settings/scrobblersettingspage.cpp
   src/settings/coverssettingspage.cpp
   src/settings/lyricssettingspage.cpp
+  src/settings/acoustidsettingspage.cpp
   src/settings/networkproxysettingspage.cpp
   src/settings/radiosettingspage.cpp
   src/settings/appearancesettingspage.cpp
@@ -1039,6 +1044,7 @@ set(HEADERS
   src/settings/scrobblersettingspage.h
   src/settings/coverssettingspage.h
   src/settings/lyricssettingspage.h
+  src/settings/acoustidsettingspage.h
   src/settings/networkproxysettingspage.h
   src/settings/radiosettingspage.h
   src/settings/appearancesettingspage.h
@@ -1207,6 +1213,7 @@ set(UI
   src/settings/scrobblersettingspage.ui
   src/settings/coverssettingspage.ui
   src/settings/lyricssettingspage.ui
+  src/settings/acoustidsettingspage.ui
   src/settings/networkproxysettingspage.ui
   src/settings/radiosettingspage.ui
   src/settings/appearancesettingspage.ui
@@ -1612,6 +1619,7 @@ endif()
 target_link_libraries(strawberry_lib PUBLIC
   ${CMAKE_THREAD_LIBS_INIT}
   $<$<BOOL:${HAVE_BACKTRACE}>:${Backtrace_LIBRARIES}>
+  OpenSSL::Crypto
   PkgConfig::GLIB
   PkgConfig::GOBJECT
   PkgConfig::SQLITE
