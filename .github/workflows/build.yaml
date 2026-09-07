@@ -1801,7 +1801,10 @@ jobs:
 
       - name: Generate API credentials encryption key
         shell: bash
-        run: echo "api_credentials_encryption_key=$(openssl rand -hex 32)" >> $GITHUB_ENV
+        run: |
+          key=$(openssl rand -hex 32)
+          echo "::add-mask::$key"
+          echo "api_credentials_encryption_key=$key" >> $GITHUB_ENV
 
       - name: Remove -lm from .pc files
         if: matrix.arch == 'arm64'

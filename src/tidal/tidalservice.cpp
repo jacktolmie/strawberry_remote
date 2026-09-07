@@ -130,7 +130,9 @@ TidalService::TidalService(const SharedPtr<TaskManager> task_manager,
   oauth_->set_access_token_url(QUrl(QLatin1String(kOAuthAccessTokenUrl)));
   oauth_->set_scope(QLatin1String(kOAuthScope));
   oauth_->set_use_local_redirect_server(false);
-  oauth_->set_random_port(false);
+  oauth_->set_port_type(OAuthenticator::PortType::SetToRedirectURL);
+  oauth_->set_use_pkce(true);
+
   QObject::connect(oauth_, &OAuthenticator::AuthenticationFinished, this, &TidalService::OAuthFinished);
 
   // Backends
@@ -269,7 +271,9 @@ void TidalService::StartAuthorization(const QString &client_id) {
 
 }
 
-void TidalService::OAuthFinished(const bool success, const QString &error) {
+void TidalService::OAuthFinished(const bool success, const QString &error, const bool invalid_grant) {
+
+  Q_UNUSED(invalid_grant);
 
   if (success) {
     qLog(Debug) << "Tidal: Login successful" << "user id" << user_id();
