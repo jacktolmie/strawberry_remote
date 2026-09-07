@@ -158,4 +158,18 @@ QString toString(Response value) {
     Q_UNREACHABLE();
 }
 
+QString toString(Source value){
+    switch (value) {
+        case Source::RADIOBROWSER:  return u"radioBrowser"_s;
+        case Source::RADIOPARADISE: return u"radioParadise"_s;
+        case Source::QOBUZ:         return u"qobuz"_s;
+        case Source::SOMAFM:        return u"somaFm"_s;
+        case Source::SPOTIFY:       return u"spotify"_s;
+        case Source::SUBSONIC:      return u"subsonic"_s;
+        case Source::TIDAL:         return u"tidal"_s;
+        case Source::UNKNOWN:       return u"unknown"_s;
+    }
+    Q_UNREACHABLE();
+}
+
 } // namespace RemoteTypes

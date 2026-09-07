@@ -144,13 +144,25 @@ namespace RemoteTypes{
         SHUFFLED_ALL_PLAYLISTS
       };
 
+      enum class Source{
+        RADIOBROWSER,
+        RADIOPARADISE,
+        SOMAFM,
+        QOBUZ,
+        SPOTIFY,
+        SUBSONIC,
+        TIDAL,
+        UNKNOWN
+      };
 
+
+      QString toString(Arguments value);
       QString toString(Auth auth);
       QString toString(Event event);
       QString toString(Error error);
       QString toString(Response response);
       QString toString(MessageType type);
-      QString toString(Arguments value);
+      QString toString(Source source);
 
       template<typename T>
       std::pair<QString, QJsonValue> field(T key, QJsonValue value) {

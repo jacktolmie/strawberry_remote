@@ -28,6 +28,10 @@ private:
     void radioBrowserParse(const QJsonArray& data, const QString radioStation, RadioService *service);
     void radioParadiseParse(const QJsonObject& data, const QString radioStation, RadioService *service);
 
+    void getStationsFromClient(const QJsonObject& args);
+    QString getNameFromSource(Song::Source source);
+    Song::Source getSourceFromName(const QString& name);
+
 private Q_SLOTS:
     void gotChannels(const RadioChannelList &channels);
     void getImage(const Song &song, const AlbumCoverLoaderResult &result);

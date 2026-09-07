@@ -28,6 +28,8 @@ RemoteCommands::RemoteCommands(const Application* app, QObject* parent = nullptr
 
 void RemoteCommands::processCommand(const QString& command, const QJsonObject& args)
 {
+    if (command.isEmpty() || args.isEmpty()) return;
+
     // if (command.toLower() == u"radio"_s)
     // Check if sent command is in basicCommandMap.
     if(basicCmdMap.contains(command)){
@@ -50,6 +52,8 @@ void RemoteCommands::processCommand(const QString& command, const QJsonObject& a
 
 void RemoteCommands::processLine(const QString& line)
 {
+    if (line.isEmpty()) return;
+
     qInfo() << "Command processline: " << line;
     QJsonParseError parseError;
     QJsonDocument doc{QJsonDocument::fromJson(line.toUtf8(), &parseError)};

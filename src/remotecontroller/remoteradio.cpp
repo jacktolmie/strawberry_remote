@@ -16,11 +16,32 @@ RemoteRadio::RemoteRadio(const Application *app, QObject *parent)
     :QObject{parent},
     app_{app}
 {
-    // QObject::connect(&*app_->radio_services()->radio_backend(), &RadioBackend::NewChannels, this, &RemoteRadio::gotChannels);
     QObject::connect(&*app_->current_albumcover_loader(), &CurrentAlbumCoverLoader::AlbumCoverLoaded, this, &RemoteRadio::getImage);
     QObject::connect(&*app_->radio_services(), &RadioServices::OnRawDataReceived, this, &RemoteRadio::RawDataReceived);
+
+    // QObject::connect(&*app_->radio_services()->radio_backend(), &RadioBackend::NewChannels, this, &RemoteRadio::gotChannels);
     // QObject::connect(&*app_->radio_services(), &RadioServices::RadioBrowserSearchFinished, this, &RemoteRadio::RadioBrowserSearchFinished);
     app_->radio_services()->RefreshChannels(); // delete when done testing radio stations.
+}
+
+void RemoteRadio::getStationsFromClient(const QJsonObject& args){
+
+    QString sourceString{args[u"source"_s].toString(u""_s)};
+    if (sourceString.isEmpty()) return;
+
+    RadioChannelList channels{};
+
+    QString source = args[u"source"_s].toString();
+    QJsonArray streams = args[u"streams"_s].toArray();
+    for (const auto& stream : std::as_const(streams)) {
+        QJsonObject streamObj = stream.toObject();
+        QString name = streamObj[u"name"_s].toString();
+        QUrl url = QUrl(streamObj[u"url"_s].toString());
+
+        channels.append(RadioChannel(getSourceFromName(name), name, url));
+    }
+
+    app_->radio_services()->radio_backend()->AddChannelsAsync(channels);
 }
 
 void RemoteRadio::gotChannels(const RadioChannelList &channels){
@@ -79,6 +100,50 @@ void RemoteRadio::getImage(const Song &song, const AlbumCoverLoaderResult &resul
         field(Arguments::NAME, title),
         field(Arguments::COVER_IMAGE, QString::fromLatin1(imageData.toBase64()))
     }));
+}
+
+Song::Source RemoteRadio::getSourceFromName(const QString& name){
+    static const QHash<QString, Song::Source> sourceMap = {
+        { u"somafm"_s, Song::Source::SomaFM },
+        { u"radioparadise"_s, Song::Source::RadioParadise },
+        { u"radiobrowser"_s, Song::Source::RadioBrowser },
+        { u"spotify"_s, Song::Source::Spotify },
+        { u"subsonic"_s, Song::Source::Subsonic },
+        { u"tidal"_s, Song::Source::Tidal },
+        { u"qoboz"_s, Song::Source::Qobuz }
+    };
+
+    return sourceMap.value(name.toLower(), Song::Source::Unknown);
+}
+
+QString RemoteRadio::getNameFromSource(Song::Source source){
+
+    switch(source){
+        case Song::Source::SomaFM: {
+            return toString(Source::SOMAFM);
+        }
+        case Song::Source::RadioParadise: {
+            return toString(Source::RADIOPARADISE);
+        }
+        case Song::Source::RadioBrowser: {
+            return toString(Source::RADIOBROWSER);
+        }
+        case Song::Source::Spotify: {
+            return toString(Source::SPOTIFY);
+        }
+        case Song::Source::Subsonic: {
+            return toString(Source::SUBSONIC);
+        }
+        case Song::Source::Tidal: {
+            return toString(Source::TIDAL);
+        }
+        case Song::Source::Qobuz: {
+            return toString(Source::QOBUZ);
+        }
+        default: break;
+    }
+
+    return toString(Source::UNKNOWN);
 }
 
 void RemoteRadio::RadioBrowserSearchFinished(const RadioChannelList &channels, const bool has_more){
@@ -189,19 +254,21 @@ void RemoteRadio::RawDataReceived(const QByteArray &data, Song::Source source, R
     const QJsonDocument doc = QJsonDocument::fromJson(data, &error);
     if (error.error != QJsonParseError::NoError) return;
 
+    QString sourceString{getNameFromSource(source)};
+
     if (doc.isArray() && source == Song::Source::RadioBrowser) {
-        radioBrowserParse(doc.array(),  u"radioBrowser"_s, service);
+        radioBrowserParse(doc.array(),  sourceString, service);
     }
 
     QJsonObject root = doc.object();
 
     switch(source){
         case Song::Source::SomaFM: {
-            somaFmParse(root , u"somaFM"_s, service);
+            somaFmParse(root , sourceString, service);
             break;
         }
         case Song::Source::RadioParadise: {
-            radioParadiseParse(root, u"radioParadise"_s, service);
+            radioParadiseParse(root,sourceString, service);
             break;
         }
         case Song::Source::RadioBrowser: {
