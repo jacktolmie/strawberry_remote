@@ -41,8 +41,8 @@ void RemoteBasicCommands::commandResponse(const QString& command){
 
 void RemoteBasicCommands::remoteVolume(const QJsonObject& args){
 
-    qint32 sentVol{ args[u"volume"_s].toInt(-1) };
-    if (sentVol == -1) wrongArgsSent(u"volume"_s);
+    qint32 sentVol{ args[toString(Event::VOLUME)].toInt(-1) };
+    if (sentVol == -1) wrongArgsSent(toString(Event::VOLUME));
     uint vol{static_cast<uint>(sentVol)};
 
     if (vol <=100) Q_EMIT volume(qBound(0u, vol, 100u));
@@ -50,10 +50,10 @@ void RemoteBasicCommands::remoteVolume(const QJsonObject& args){
 
 void RemoteBasicCommands::remoteSeekTo(const QJsonObject& args){
 
-    qint64 sentSeconds{ args[u"seek-to"_s].toInteger(-1)};
+    qint64 sentSeconds{ args[toString(Event::SEEK_TO)].toInteger(-1)};
 
     if (sentSeconds == -1) {
-        wrongArgsSent(u"seek-to"_s);
+        wrongArgsSent(toString(Event::SEEK_TO));
         return;
     }
     Q_EMIT RemoteBasicCommands::seekTo(sentSeconds);
@@ -69,7 +69,7 @@ void RemoteBasicCommands::volumeChanged(const uint volume)
     Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::VOLUME_CHANGED)),
-        field(Arguments::VOLUME, static_cast<int>(volume)),
+        field(Event::VOLUME, static_cast<int>(volume)),
     }));
 }
 
@@ -86,19 +86,19 @@ void RemoteBasicCommands::wrongArgsSent(const QString& error){
 void RemoteBasicCommands::createCommandMap()
 {
     // Basic audio playback funtions.
-    commandMap[u"play"_s] = [this](const auto&){Q_EMIT play(); commandResponse(toString(Event::PLAY));};
-    commandMap[u"play-pause"_s] = [this](const auto&) {Q_EMIT playPause(); commandResponse(toString(Event::PLAY));};
-    commandMap[u"pause"_s] = [this](const auto&){Q_EMIT pause(); commandResponse(toString(Event::PAUSE));};
-    commandMap[u"stop"_s] = [this](const auto&){Q_EMIT stop(false); commandResponse(toString(Event::STOP));};
-    commandMap[u"next"_s] = [this](const auto&){Q_EMIT next(); commandResponse(toString(Event::NEXT));};
-    commandMap[u"previous"_s] = [this](const auto&){Q_EMIT previous(); commandResponse(toString(Event::PREVIOUS));};
-    commandMap[u"stop-after-current"_s] = [this](const auto&){Q_EMIT stopAfterCurrent(); commandResponse(toString(Event::STOP));};
-    commandMap[u"restart-or-previous"_s] = [this](const auto&){Q_EMIT restartOrPrevious(); commandResponse(toString(Event::PREVIOUS));};
-    commandMap[u"volume"_s] = [this](const QJsonObject& args){ remoteVolume(args);};
-    commandMap[u"volume-up"_s] = [this](const auto&){ Q_EMIT volumeUp(); commandResponse(toString(Event::VOLUME_CHANGED));};
-    commandMap[u"volume-down"_s] = [this](const auto&){ Q_EMIT volumeDown(); commandResponse(toString(Event::VOLUME_CHANGED));};
-    commandMap[u"mute"_s] = [this](const auto&){ Q_EMIT mute(); commandResponse(toString(Event::VOLUME_CHANGED));};
-    commandMap[u"seek-to"_s] = [this](const QJsonObject& args){remoteSeekTo(args);};
-    commandMap[u"seek-backward"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekBackward(); commandResponse(toString(Event::SEEK_BACKWARD));};
-    commandMap[u"seek-forward"_s] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekForward(); commandResponse(toString(Event::SEEK_FORWARD));};
+    commandMap[toString(Event::PLAY)] = [this](const auto&){Q_EMIT play(); commandResponse(toString(Event::PLAY));};
+    commandMap[toString(Event::PLAY_PAUSE)] = [this](const auto&) {Q_EMIT playPause(); commandResponse(toString(Event::PLAY));};
+    commandMap[toString(Event::PAUSE)] = [this](const auto&){Q_EMIT pause(); commandResponse(toString(Event::PAUSE));};
+    commandMap[toString(Event::STOP)] = [this](const auto&){Q_EMIT stop(false); commandResponse(toString(Event::STOP));};
+    commandMap[toString(Event::NEXT)] = [this](const auto&){Q_EMIT next(); commandResponse(toString(Event::NEXT));};
+    commandMap[toString(Event::PREVIOUS)] = [this](const auto&){Q_EMIT previous(); commandResponse(toString(Event::PREVIOUS));};
+    commandMap[toString(Event::STOP_AFTER_CURRENT)] = [this](const auto&){Q_EMIT stopAfterCurrent(); commandResponse(toString(Event::STOP));};
+    commandMap[toString(Event::RESTART_OR_PREVIOUS)] = [this](const auto&){Q_EMIT restartOrPrevious(); commandResponse(toString(Event::PREVIOUS));};
+    commandMap[toString(Event::VOLUME)] = [this](const QJsonObject& args){ remoteVolume(args);};
+    commandMap[toString(Event::VOLUME_UP)] = [this](const auto&){ Q_EMIT volumeUp(); commandResponse(toString(Event::VOLUME_CHANGED));};
+    commandMap[toString(Event::VOLUME_DOWN)] = [this](const auto&){ Q_EMIT volumeDown(); commandResponse(toString(Event::VOLUME_CHANGED));};
+    commandMap[toString(Event::MUTE)] = [this](const auto&){ Q_EMIT mute(); commandResponse(toString(Event::VOLUME_CHANGED));};
+    commandMap[toString(Event::SEEK_TO)] = [this](const QJsonObject& args){remoteSeekTo(args);};
+    commandMap[toString(Event::SEEK_BACKWARD)] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekBackward(); commandResponse(toString(Event::SEEK_BACKWARD));};
+    commandMap[toString(Event::SEEK_FORWARD)] = [this](const auto&){ Q_EMIT RemoteBasicCommands::seekForward(); commandResponse(toString(Event::SEEK_FORWARD));};
 }

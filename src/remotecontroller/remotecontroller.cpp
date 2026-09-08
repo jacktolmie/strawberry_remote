@@ -170,13 +170,13 @@ void RemoteController::onReadyRead()
 
       QJsonObject obj = doc.object();
 
-      if (!obj.contains(u"proof"_s)) {
+      if (!obj.contains(toString(Arguments::PROOF))) {
         qDebug() << "No proof field in response. Kicking";
         socket->close();
         return;
       }
 
-      QByteArray receivedProof = QByteArray::fromHex(obj[u"proof"_s].toString().toUtf8());
+      QByteArray receivedProof = QByteArray::fromHex(obj[toString(Arguments::PROOF)].toString().toUtf8());
       QByteArray combined = client.nonce + app_->remote_settings()->values.password.toUtf8();
       QByteArray expectedProof = QCryptographicHash::hash(combined, QCryptographicHash::Sha256);
 
@@ -268,6 +268,7 @@ void RemoteController::onSendResponse(QTcpSocket* clientSocket, const QJsonObjec
 
 void RemoteController::broadcastToDevices(const QJsonObject& message)
 {
+    // Delete if statement when done testing
     if(!message.contains(u"cover_image"_s))
     qInfo()<< "broadcasttodevices called with message: "<< message;
 

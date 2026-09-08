@@ -23,10 +23,10 @@ QJsonObject RemoteCurrentSong::songData(const Song& song, const int playlistId, 
     songInfo[toString(Arguments::ALBUM)] =          song.album();
     songInfo[toString(Arguments::COVER_IMAGE)] =    song.art_manual().toLocalFile();
     songInfo[toString(Arguments::ID)] =             song.id();
-    songInfo[toString(Arguments::LENGTH)] =         song.length_nanosec() / kNsecPerMsec;
-    songInfo[toString(Arguments::PLAYLIST_ID)] =    playlistId,
-    songInfo[toString(Arguments::POSITION)] =       index,
-    songInfo[toString(Arguments::SONG_URL)] =       song.url().toString();
+    songInfo[toString(PlaylistData::LENGTH)] =      song.length_nanosec() / kNsecPerMsec;
+    songInfo[toString(PlaylistData::PLAYLIST_ID)] = playlistId,
+    songInfo[toString(PlaylistData::POSITION)] =    index,
+    songInfo[toString(PlaylistData::SONG_URL)] =    song.url().toString();
     songInfo[toString(Arguments::TITLE)] =          song.PrettyTitle();
 
     return songInfo;
@@ -42,11 +42,11 @@ QJsonObject RemoteCurrentSong::songInfoData(const Song& song) const {
         field(Arguments::ARTIST,        song.artist()),
         field(Arguments::ALBUM,         song.album()),
         field(Arguments::COVER_IMAGE,   QFileInfo(song.art_manual().toLocalFile()).fileName()),
-        field(Arguments::PLAYLIST_ID,   app_->playlist_manager()->active()->id()),
-        field(Arguments::POSITION,      app_->playlist_manager()->active()->current_row()),
-        field(Arguments::SONG_URL,      song.url().toString()),
+        field(PlaylistData::PLAYLIST_ID, app_->playlist_manager()->active()->id()),
+        field(PlaylistData::POSITION,   app_->playlist_manager()->active()->current_row()),
+        field(PlaylistData::SONG_URL,   song.url().toString()),
         field(Arguments::TITLE,         song.PrettyTitle()),
-        field(Arguments::LENGTH,        song.length_nanosec() / kNsecPerMsec)
+        field(PlaylistData::LENGTH,     song.length_nanosec() / kNsecPerMsec)
     });
 }
 

@@ -9,60 +9,28 @@ using namespace Qt::Literals::StringLiterals;
 namespace RemoteTypes{
 
     enum class Arguments{
-        ACTIVE_PLAYLIST,
+        // ACTIVE_PLAYLIST,
         ALBUM,
         ARGUMENT,
         ARGUMENTS,
         ARTIST,
-        BITRATE,
-        CLICK_COUNT,
         COMMAND,
-        COUNTRY,
+        COVER_ART,
         COVER_IMAGE,
-        CURRENT_PLAYLIST,
         CURRENT_SONG,
-        DESCRIPTION,
-        DONATE,
-        FAVOURITE,
-        FORMAT,
-        GENRE,
-        HOMEPAGE,
+        EMPTY,
+        EMPTY_FIELDS,
+        ERROR,
         ID,
-        IMAGE,
-        IS_FAVOURITE,
-        LANGUAGE,
-        LENGTH,
         NAME,
         NONCE,
-        REPEAT_MODE,
-        REQUIRED,
-        ROW,
         PAUSED,
-        PLAYLIST,
-        PLAYLIST_ID,
-        PLAYLISTS,
-        PLAYLIST_LENGTH,
-        PLAYLIST_SIZE,
         PLAYING,
-        POSITION,
-        QUALITY,
-        SHUFFLE_MODE,
-        SONGS,
-        STATION_LIST,
-        STATION_SOURCE,
-        STATION_URL,
+        PROOF,
+        REQUIRED,
         STOPPED,
-        STREAM_URL,
-        TAGS,
         TIME,
-        TITLE,
-        TOTAL_ALBUMS,
-        TOTAL_ARTISTS,
-        TOTAL_SONGS,
-        TRACK_ID,
-        SONG_URL,
-        VOLUME,
-        VOTES
+        TITLE
     };
 
     enum class Auth{
@@ -84,23 +52,22 @@ namespace RemoteTypes{
         WRONG_NUMBER_ARGUMENTS_PASSED,
     };
 
-      enum class Event{
-        ACTIVE_PLAYLIST,
+    enum class Event{
         CLOSED_PLAYLIST_WITH_ID,
-        COVER_IMAGE,
-        DELETE_PLAYLIST,
         EVENT,
-        FAVOURITE_PLAYLIST,
         GUI_UPDATES,
         MAKE_ALL_PLAYLISTS,
         MAKE_PLAYLIST,
         MUSIC_TOTALS,
+        MUTE,
         NEXT,
         NEW_PLAYLIST,
         PAUSE,
         PLAY,
+        PLAY_PAUSE,
         PREVIOUS,
         RADIO_STATIONS,
+        RESTART_OR_PREVIOUS,
         RENAME_PLAYLIST,
         REPEAT_MODE,
         SEEK_BACKWARD,
@@ -111,18 +78,77 @@ namespace RemoteTypes{
         SONG_CHANGED,
         SONG_INFO,
         STOP,
-        VOLUME_CHANGED
-      };
+        STOP_AFTER_CURRENT,
+        VOLUME_CHANGED,
+        VOLUME,
+        VOLUME_DOWN,
+        VOLUME_UP
+    };
 
-      enum class MessageType
-      {
+    enum class MessageType{
         AUTH,
         ERROR,
         EVENT,
         RESPONSE
-      };
+    };
 
-      enum class Response{
+    enum class PlaylistCommandMap{
+        CLEAR_PLAYLIST,
+        CLOSE_PLAYLIST,
+        DELETE_PLAYLIST,
+        FAVOURITE_PLAYLIST,
+        REMOTE_CHANGED_PLAYLIST,
+        REMOTE_SENT_ACTIVE,
+        REMOVE_DUPLICATES_PLAYLIST,
+        REMOVE_UNAVAILABLE_SONGS,
+        REMOVE_SONGS_PLAYLIST,
+        RENAME_PLAYLIST,
+        REPEAT_MODE,
+        SEND_ACTIVE_PLAYLIST_SONG,
+        SEND_ALL_PLAYLISTS,
+        SEND_PLAYLIST,
+        REQUEST_COVER,
+        SET_CURRENT_PLAYLIST,
+        SHUFFLE_CURRENT_PLAYLIST,
+        SHUFFLE_MODE
+    };
+
+    enum class PlaylistData{
+        ACTIVE_PLAYLIST,
+        ALL,
+        CURRENT_PLAYLIST,
+        FAVOURITE,
+        FROM_INDEX,
+        GROUPING,
+        IS_FAVOURITE,
+        LENGTH,
+        OFF,
+        PLAYLIST,
+        PLAYLIST_ID,
+        PLAYLISTS,
+        PLAYLIST_LENGTH,
+        PLAYLIST_SIZE,
+        POSITION,
+        REPEAT_INTRO,
+        REPEAT_MODE,
+        REPEAT_PLAYLIST,
+        REPEAT_ONEBYONE,
+        REPEAT_TRACK,
+        ROW,
+        SHUFFLE_MODE,
+        SONG_INDEX,
+        SONGS,
+        SONGS_LIST,
+        TO_INDEX,
+        TOTAL_ALBUMS,
+        TOTAL_ARTISTS,
+        TOTAL_SONGS,
+        TRACK,
+        TRACK_ID,
+        SONG_URL,
+    };
+
+    enum class Response{
         CLEARED_PLAYLIST,
         CURRENT_SONG,
         DELETED_PLAYLIST_WITH_ID,
@@ -142,27 +168,68 @@ namespace RemoteTypes{
         SHUFFLE_MODE,
         SHUFFLED_PLAYLIST,
         SHUFFLED_ALL_PLAYLISTS
-      };
+    };
 
-      enum class Source{
+    enum class RadioData{
+          BITRATE,
+          CHANNELS,
+          CLICK_COUNT,
+          CHAN_ID,
+          CHAN_NAME,
+          CODEC,
+          COUNTRY,
+          DESCRIPTION,
+          DONATE,
+          FORMAT,
+          GENRE,
+          HOMEPAGE,
+          HTTP,
+          IMAGE,
+          LABEL,
+          LANGUAGE,
+          QUALITY,
+          SOURCE,
+          STATION_LIST,
+          STATION_SOURCE,
+          STATION_URL,
+          STATION_UUID,
+          STREAMS,
+          STREAM_ID,
+          STREAM_URL,
+          TAGS,
+          URL,
+          VOTES
+    };
+
+    enum class RadioSource{
         RADIOBROWSER,
+        RADIOBROWSERPRETTY,
         RADIOPARADISE,
+        RADIOPARADISEPRETTY,
         SOMAFM,
+        SOMAFMPRETTY,
         QOBUZ,
+        QOBOZPRETTY,
         SPOTIFY,
+        SPOTIFYPRETTY,
         SUBSONIC,
+        SUBSONICPRETTY,
         TIDAL,
+        TIDALPRETTY,
         UNKNOWN
-      };
+    };
 
 
       QString toString(Arguments value);
       QString toString(Auth auth);
       QString toString(Event event);
       QString toString(Error error);
-      QString toString(Response response);
       QString toString(MessageType type);
-      QString toString(Source source);
+      QString toString(PlaylistCommandMap data);
+      QString toString(PlaylistData data);
+      QString toString(RadioData data);
+      QString toString(RadioSource source);
+      QString toString(Response response);
 
       template<typename T>
       std::pair<QString, QJsonValue> field(T key, QJsonValue value) {

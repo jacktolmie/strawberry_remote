@@ -26,17 +26,17 @@ RemoteRadio::RemoteRadio(const Application *app, QObject *parent)
 
 void RemoteRadio::getStationsFromClient(const QJsonObject& args){
 
-    QString sourceString{args[u"source"_s].toString(u""_s)};
+    QString sourceString{args[toString(RadioData::SOURCE)].toString(toString(Arguments::EMPTY))};
     if (sourceString.isEmpty()) return;
 
     RadioChannelList channels{};
 
-    QString source = args[u"source"_s].toString();
-    QJsonArray streams = args[u"streams"_s].toArray();
+    QString source = args[toString(RadioData::SOURCE)].toString();
+    QJsonArray streams = args[toString(RadioData::STREAMS)].toArray();
     for (const auto& stream : std::as_const(streams)) {
         QJsonObject streamObj = stream.toObject();
-        QString name = streamObj[u"name"_s].toString();
-        QUrl url = QUrl(streamObj[u"url"_s].toString());
+        QString name = streamObj[toString(Arguments::NAME)].toString();
+        QUrl url = QUrl(streamObj[toString(RadioData::URL)].toString());
 
         channels.append(RadioChannel(getSourceFromName(name), name, url));
     }
@@ -58,27 +58,27 @@ void RemoteRadio::gotChannels(const RadioChannelList &channels){
 
         station[toString(Arguments::ID)] = chan.ToSong().title();
         station[toString(Arguments::NAME)] = chan.name;
-        station[toString(Arguments::STATION_SOURCE)] = chan.ToSong().DescriptionForSource();
-        station[toString(Arguments::IMAGE)] = chan.thumbnail_url.toString();
-        station[toString(Arguments::STATION_URL)] = chan.ToSong().url().toString();
+        station[toString(RadioData::STATION_SOURCE)] = chan.ToSong().DescriptionForSource();
+        station[toString(RadioData::IMAGE)] = chan.thumbnail_url.toString();
+        station[toString(RadioData::STATION_URL)] = chan.ToSong().url().toString();
 
         // Split on both comma and space, remove empty/duplicate entries
         QStringList tags = chan.tags.split(QRegularExpression(u"[,\\s]+"_s), Qt::SkipEmptyParts);
         // Remove duplicates
         tags.removeDuplicates();
-        station[toString(Arguments::TAGS)] = QJsonArray::fromStringList(tags);
+        station[toString(RadioData::TAGS)] = QJsonArray::fromStringList(tags);
         radioArray.push_back(station);
     }
     Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::RADIO_STATIONS)),
-        field(Arguments::STATION_LIST, radioArray),
-        field(Arguments::STATION_SOURCE, QString())
+        field(RadioData::STATION_LIST, radioArray),
+        field(RadioData::STATION_SOURCE, QString())
     }));
 }
 
 void RemoteRadio::getImage(const Song &song, const AlbumCoverLoaderResult &result){
-    QString title = song.title().startsWith(u"http"_s) ? song.artist() : song.title();
+    QString title = song.title().startsWith(toString(RadioData::HTTP)) ? song.artist() : song.title();
 
     QByteArray imageData;
 
@@ -104,13 +104,13 @@ void RemoteRadio::getImage(const Song &song, const AlbumCoverLoaderResult &resul
 
 Song::Source RemoteRadio::getSourceFromName(const QString& name){
     static const QHash<QString, Song::Source> sourceMap = {
-        { u"somafm"_s, Song::Source::SomaFM },
-        { u"radioparadise"_s, Song::Source::RadioParadise },
-        { u"radiobrowser"_s, Song::Source::RadioBrowser },
-        { u"spotify"_s, Song::Source::Spotify },
-        { u"subsonic"_s, Song::Source::Subsonic },
-        { u"tidal"_s, Song::Source::Tidal },
-        { u"qoboz"_s, Song::Source::Qobuz }
+        { toString(RadioSource::SOMAFM), Song::Source::SomaFM },
+        { toString(RadioSource::RADIOPARADISE), Song::Source::RadioParadise },
+        { toString(RadioSource::RADIOBROWSER), Song::Source::RadioBrowser },
+        { toString(RadioSource::SPOTIFY), Song::Source::Spotify },
+        { toString(RadioSource::SUBSONIC), Song::Source::Subsonic },
+        { toString(RadioSource::TIDAL), Song::Source::Tidal },
+        { toString(RadioSource::QOBUZ), Song::Source::Qobuz }
     };
 
     return sourceMap.value(name.toLower(), Song::Source::Unknown);
@@ -120,30 +120,30 @@ QString RemoteRadio::getNameFromSource(Song::Source source){
 
     switch(source){
         case Song::Source::SomaFM: {
-            return toString(Source::SOMAFM);
+            return toString(RadioSource::SOMAFM);
         }
         case Song::Source::RadioParadise: {
-            return toString(Source::RADIOPARADISE);
+            return toString(RadioSource::RADIOPARADISE);
         }
         case Song::Source::RadioBrowser: {
-            return toString(Source::RADIOBROWSER);
+            return toString(RadioSource::RADIOBROWSER);
         }
         case Song::Source::Spotify: {
-            return toString(Source::SPOTIFY);
+            return toString(RadioSource::SPOTIFY);
         }
         case Song::Source::Subsonic: {
-            return toString(Source::SUBSONIC);
+            return toString(RadioSource::SUBSONIC);
         }
         case Song::Source::Tidal: {
-            return toString(Source::TIDAL);
+            return toString(RadioSource::TIDAL);
         }
         case Song::Source::Qobuz: {
-            return toString(Source::QOBUZ);
+            return toString(RadioSource::QOBUZ);
         }
         default: break;
     }
 
-    return toString(Source::UNKNOWN);
+    return toString(RadioSource::UNKNOWN);
 }
 
 void RemoteRadio::RadioBrowserSearchFinished(const RadioChannelList &channels, const bool has_more){
@@ -166,28 +166,28 @@ void RemoteRadio::radioBrowserParse(const QJsonArray& data, const QString radioS
 
     for ( auto& chan: data){
         const QJsonObject chan_obj{chan.toObject()};
-        if (!chan_obj.contains(u"bitrate"_s)) break;
+        if (!chan_obj.contains(toString(RadioData::BITRATE))) break;
 
         QJsonObject station;
 
-        station[toString(Arguments::BITRATE)] = chan_obj[u"bitrate"_s].toInt(0);
-        station[toString(Arguments::CLICK_COUNT)] = chan_obj[u"clickcount"_s].toInt(0);
-        station[toString(Arguments::COUNTRY)] = chan_obj[u"country"_s].toString(u""_s);
-        station[toString(Arguments::DESCRIPTION)] = QString();
-        station[toString(Arguments::DONATE)] = service ? service->Donate().toString() : u""_s;
-        station[toString(Arguments::FORMAT)] = chan_obj[u"codec"_s].toString(u""_s);
+        station[toString(RadioData::BITRATE)] = chan_obj[toString(RadioData::BITRATE)].toInt(0);
+        station[toString(RadioData::CLICK_COUNT)] = chan_obj[toString(RadioData::CLICK_COUNT)].toInt(0);
+        station[toString(RadioData::COUNTRY)] = chan_obj[toString(RadioData::COUNTRY)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::DESCRIPTION)] = QString();
+        station[toString(RadioData::DONATE)] = service ? service->Donate().toString() : toString(Arguments::EMPTY);
+        station[toString(RadioData::FORMAT)] = chan_obj[toString(RadioData::CODEC)].toString(toString(Arguments::EMPTY));
 
-        const QStringList genres = chan_obj[u"tags"_s].toString().split(u',', Qt::SkipEmptyParts);
+        const QStringList genres = chan_obj[toString(RadioData::TAGS)].toString().split(u',', Qt::SkipEmptyParts);
         const QJsonArray genressArray = QJsonArray::fromStringList(genres);
-        station[toString(Arguments::GENRE)] = genressArray;
-        station[toString(Arguments::HOMEPAGE)] = chan_obj[u"homepage"].toString(u""_s);
-        station[toString(Arguments::ID)] = chan_obj[u"stationuuid"_s].toString(u""_s);
-        station[toString(Arguments::IMAGE)] = QString();
-        station[toString(Arguments::LANGUAGE)] = chan_obj[u"language"_s].toString(u""_s);
-        station[toString(Arguments::NAME)] = chan_obj[u"name"].toString(u""_s);
-        station[toString(Arguments::PLAYLISTS)] = QJsonArray();
-        station[toString(Arguments::STATION_URL)] = chan_obj[u"url"_s].toString(u""_s);
-        station[toString(Arguments::VOTES)] = chan_obj[u"votes"_s].toInt(0);
+        station[toString(RadioData::GENRE)] = genressArray;
+        station[toString(RadioData::HOMEPAGE)] = chan_obj[toString(RadioData::HOMEPAGE)].toString(toString(Arguments::EMPTY));
+        station[toString(Arguments::ID)] = chan_obj[toString(RadioData::STATION_UUID)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::IMAGE)] = QString();
+        station[toString(RadioData::LANGUAGE)] = chan_obj[toString(RadioData::LANGUAGE)].toString(toString(Arguments::EMPTY));
+        station[toString(Arguments::NAME)] = chan_obj[toString(Arguments::NAME)].toString(toString(Arguments::EMPTY));
+        station[toString(PlaylistData::PLAYLISTS)] = QJsonArray();
+        station[toString(RadioData::STATION_URL)] = chan_obj[toString(RadioData::URL)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::VOTES)] = chan_obj[toString(RadioData::VOTES)].toInt(0);
 
         station_array.append(station);
     }
@@ -195,56 +195,58 @@ void RemoteRadio::radioBrowserParse(const QJsonArray& data, const QString radioS
     Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::RADIO_STATIONS)),
-        field(Arguments::STATION_SOURCE, radioStation),
-        field(Arguments::STATION_LIST, station_array)
+        field(Arguments::NAME, toString(RadioSource::RADIOBROWSERPRETTY)),
+        field(RadioData::STATION_SOURCE, radioStation),
+        field(RadioData::STATION_LIST, station_array)
     }));
 }
 
 void RemoteRadio::radioParadiseParse(const QJsonObject& data, const QString radioStation, RadioService *service){
 
-    const QJsonArray channels = data[u"channels"_s].toArray();
+    const QJsonArray channels = data[toString(RadioData::CHANNELS)].toArray();
     QJsonArray station_array;
 
     for (auto chan : channels){
         const QJsonObject chan_obj{chan.toObject()};
         QJsonObject station;
 
-        station[toString(Arguments::BITRATE)] = 0;
-        station[toString(Arguments::CLICK_COUNT)] = 0;
-        station[toString(Arguments::COUNTRY)] = QString();
-        station[toString(Arguments::DESCRIPTION)] = chan_obj[u"chan_name"_s].toString(u""_s);
-        station[toString(Arguments::DONATE)] = service ? service->Donate().toString() : u""_s;;
-        station[toString(Arguments::FORMAT)] = QString();
-        station[toString(Arguments::GENRE)] = QString();
-        station[toString(Arguments::HOMEPAGE)] = service ? service->Homepage().toString() : u""_s;
-        station[toString(Arguments::ID)] = QString::number(chan_obj[u"chan_id"_s].toInt(0));
-        station[toString(Arguments::IMAGE)] = chan_obj[u"image"_s].toString(u""_s);
-        station[toString(Arguments::LANGUAGE)] = chan_obj[u"language"_s].toString(u""_s);
-        station[toString(Arguments::NAME)] = chan_obj[u"chan_name"_s].toString(u""_s);
-        station[toString(Arguments::STATION_URL)] = service ? service->Homepage().toString() : u""_s;
-        station[toString(Arguments::VOTES)] = 0;
+        station[toString(RadioData::BITRATE)] = 0;
+        station[toString(RadioData::CLICK_COUNT)] = 0;
+        station[toString(RadioData::COUNTRY)] = QString();
+        station[toString(RadioData::DESCRIPTION)] = chan_obj[toString(RadioData::CHAN_NAME)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::DONATE)] = service ? service->Donate().toString() : toString(Arguments::EMPTY);;
+        station[toString(RadioData::FORMAT)] = QString();
+        station[toString(RadioData::GENRE)] = QString();
+        station[toString(RadioData::HOMEPAGE)] = service ? service->Homepage().toString() : toString(Arguments::EMPTY);
+        station[toString(Arguments::ID)] = QString::number(chan_obj[toString(RadioData::CHAN_ID)].toInt(0));
+        station[toString(RadioData::IMAGE)] = chan_obj[toString(RadioData::IMAGE)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::LANGUAGE)] = chan_obj[toString(RadioData::LANGUAGE)].toString(toString(Arguments::EMPTY));
+        station[toString(Arguments::NAME)] = chan_obj[toString(RadioData::CHAN_NAME)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::STATION_URL)] = service ? service->Homepage().toString() : toString(Arguments::EMPTY);
+        station[toString(RadioData::VOTES)] = 0;
 
         // Add playlists to the station.
-        const QJsonArray playlists = chan_obj[u"streams"_s].toArray();
+        const QJsonArray playlists = chan_obj[toString(RadioData::STREAMS)].toArray();
         QJsonArray playlist_array;
 
         for (auto playlist : playlists){
             QJsonObject playlist_obj = playlist.toObject();
             QJsonObject playlist_data;
-            playlist_data[toString(Arguments::STREAM_URL)] = playlist_obj[u"url"_s].toString(u""_s);
-            playlist_data[toString(Arguments::FORMAT)] = playlist_obj[u"label"_s].toString(u""_s);
-            playlist_data[toString(Arguments::QUALITY)] = playlist_obj[u"stream_id"_s].toString(u""_s);
+            playlist_data[toString(RadioData::STREAM_URL)] = playlist_obj[toString(RadioData::URL)].toString(toString(Arguments::EMPTY));
+            playlist_data[toString(RadioData::FORMAT)] = playlist_obj[toString(RadioData::LABEL)].toString(toString(Arguments::EMPTY));
+            playlist_data[toString(RadioData::QUALITY)] = playlist_obj[toString(RadioData::STREAM_ID)].toString(toString(Arguments::EMPTY));
             playlist_array.append(playlist_data);
         }
-        station[toString(Arguments::PLAYLISTS)] = playlist_array;
+        station[toString(PlaylistData::PLAYLISTS)] = playlist_array;
         station_array.append(station);
     }
 
     Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::RADIO_STATIONS)),
-        field(Arguments::STATION_SOURCE, radioStation),
-        field(Arguments::STATION_LIST, station_array)
+        field(Arguments::NAME, toString(RadioSource::RADIOPARADISEPRETTY)),
+        field(RadioData::STATION_SOURCE, radioStation),
+        field(RadioData::STATION_LIST, station_array)
     }));
 }
 
@@ -294,54 +296,55 @@ void RemoteRadio::RawDataReceived(const QByteArray &data, Song::Source source, R
 
 void RemoteRadio::somaFmParse(const QJsonObject& data, const QString radioStation, RadioService *service){
 
-    const QJsonArray channels = data[u"channels"_s].toArray();
+    const QJsonArray channels = data[toString(RadioData::CHANNELS)].toArray();
     QJsonArray station_array;
 
     for (auto chan : channels){
         const QJsonObject chan_obj{chan.toObject()};
         QJsonObject station;
         
-        station[toString(Arguments::BITRATE)] = 0;
-        station[toString(Arguments::CLICK_COUNT)] = 0;
-        station[toString(Arguments::COUNTRY)] = QString();
-        station[toString(Arguments::DESCRIPTION)] = chan_obj[u"description"_s].toString(u""_s);
-        station[toString(Arguments::DONATE)] = service ? service->Donate().toString() : u""_s;;
-        station[toString(Arguments::FORMAT)] = QString();
-
-        const QStringList genre = chan_obj[u"genre"_s].toString().split(u'|', Qt::SkipEmptyParts);
+        station[toString(RadioData::BITRATE)] = 0;
+        station[toString(RadioData::CLICK_COUNT)] = 0;
+        station[toString(RadioData::COUNTRY)] = QString();
+        station[toString(RadioData::DESCRIPTION)] = chan_obj[toString(RadioData::DESCRIPTION)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::DONATE)] = service ? service->Donate().toString() : toString(Arguments::EMPTY);;
+        station[toString(RadioData::FORMAT)] = QString();
+        
+        const QStringList genre = chan_obj[toString(RadioData::GENRE)].toString().split(u'|', Qt::SkipEmptyParts);
         const QJsonArray genreArray = QJsonArray::fromStringList(genre);
-        station[toString(Arguments::GENRE)] = genreArray;
-        station[toString(Arguments::HOMEPAGE)] = service ? service->Homepage().toString() : u""_s;
-        station[toString(Arguments::ID)] = chan_obj[u"id"_s].toString(u""_s);
-        station[toString(Arguments::IMAGE)] = chan_obj[u"image"_s].toString(u""_s);
-        station[toString(Arguments::LANGUAGE)] = chan_obj[u"language"_s].toString(u""_s);
-        station[toString(Arguments::NAME)] = chan_obj[u"title"_s].toString(u""_s);
-        station[toString(Arguments::STATION_URL)] = service ? service->Homepage().toString() : u""_s;
-        station[toString(Arguments::VOTES)] = 0;
+        station[toString(RadioData::GENRE)] = genreArray;
+        station[toString(RadioData::HOMEPAGE)] = service ? service->Homepage().toString() : toString(Arguments::EMPTY);
+        station[toString(Arguments::ID)] = chan_obj[toString(Arguments::ID)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::IMAGE)] = chan_obj[toString(RadioData::IMAGE)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::LANGUAGE)] = chan_obj[toString(RadioData::LANGUAGE)].toString(toString(Arguments::EMPTY));
+        station[toString(Arguments::NAME)] = chan_obj[toString(Arguments::TITLE)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::STATION_URL)] = service ? service->Homepage().toString() : toString(Arguments::EMPTY);
+        station[toString(RadioData::VOTES)] = 0;
 
 
         // Add playlists to the station.
-        const QJsonArray playlists = chan_obj[u"playlists"_s].toArray();
+        const QJsonArray playlists = chan_obj[toString(PlaylistData::PLAYLISTS)].toArray();
         QJsonArray playlist_array;
 
         for (auto playlist : playlists){
             QJsonObject playlist_obj = playlist.toObject();
             QJsonObject playlist_data;
 
-            playlist_data[toString(Arguments::STREAM_URL)] = playlist_obj[u"url"_s].toString(u""_s);
-            playlist_data[toString(Arguments::FORMAT)] = playlist_obj[u"format"_s].toString(u""_s);
-            playlist_data[toString(Arguments::QUALITY)] = playlist_obj[u"quality"_s].toString(u""_s);
+            playlist_data[toString(RadioData::STREAM_URL)] = playlist_obj[toString(RadioData::URL)].toString(toString(Arguments::EMPTY));
+            playlist_data[toString(RadioData::FORMAT)] = playlist_obj[toString(RadioData::FORMAT)].toString(toString(Arguments::EMPTY));
+            playlist_data[toString(RadioData::QUALITY)] = playlist_obj[toString(RadioData::QUALITY)].toString(toString(Arguments::EMPTY));
             playlist_array.append(playlist_data);
         }
-        station[toString(Arguments::PLAYLISTS)] = playlist_array;
+        station[toString(PlaylistData::PLAYLISTS)] = playlist_array;
         station_array.append(station);
     }
 
     Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::RADIO_STATIONS)),
-        field(Arguments::STATION_SOURCE, radioStation),
-        field(Arguments::STATION_LIST, station_array)
+        field(RadioData::STATION_SOURCE, radioStation),
+        field(Arguments::NAME, toString(RadioSource::SOMAFMPRETTY)),
+        field(RadioData::STATION_LIST, station_array)
     }));
 }
 

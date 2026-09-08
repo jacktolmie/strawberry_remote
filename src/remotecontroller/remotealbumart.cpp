@@ -24,7 +24,7 @@ QJsonObject RemoteAlbumArt::makeAlbumArtBySong(const Song& song) const{
 
     return RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
-        field(Event::EVENT, toString(Event::COVER_IMAGE)),
+        field(Event::EVENT, toString(Arguments::COVER_IMAGE)),
         field(Arguments::NAME, QFileInfo(song.art_manual().toLocalFile()).fileName()),
         field(Arguments::COVER_IMAGE, QString::fromLatin1(imageData.toBase64()))
     });
@@ -47,7 +47,7 @@ QJsonObject RemoteAlbumArt::makeAlbumArtByName(const QString& coverArt) const {
 
     return RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
-        field(Event::EVENT, toString(Event::COVER_IMAGE)),
+        field(Event::EVENT, toString(Arguments::COVER_IMAGE)),
         field(Arguments::NAME, coverArt),
         field(Arguments::COVER_IMAGE, QString::fromLatin1(imageData.toBase64()))
     });
