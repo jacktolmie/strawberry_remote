@@ -96,7 +96,7 @@ void RemoteRadio::getImage(const Song &song, const AlbumCoverLoaderResult &resul
 
     Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
-        field(Event::EVENT, toString(Event::COVER_IMAGE)),
+        field(Event::EVENT, toString(Arguments::COVER_IMAGE)),
         field(Arguments::NAME, title),
         field(Arguments::COVER_IMAGE, QString::fromLatin1(imageData.toBase64()))
     }));
@@ -184,8 +184,10 @@ void RemoteRadio::radioBrowserParse(const QJsonArray& data, const QString radioS
         station[toString(Arguments::ID)] = chan_obj[toString(RadioData::STATION_UUID)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::IMAGE)] = QString();
         station[toString(RadioData::LANGUAGE)] = chan_obj[toString(RadioData::LANGUAGE)].toString(toString(Arguments::EMPTY));
-        station[toString(Arguments::NAME)] = chan_obj[toString(Arguments::NAME)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::STATION_NAME)] = chan_obj[toString(Arguments::NAME)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::STREAM_NAME)] = chan_obj[toString(Arguments::NAME)].toString(toString(Arguments::EMPTY));
         station[toString(PlaylistData::PLAYLISTS)] = QJsonArray();
+        station[toString(RadioData::STATION_SOURCE)] = radioStation;
         station[toString(RadioData::STATION_URL)] = chan_obj[toString(RadioData::URL)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::VOTES)] = chan_obj[toString(RadioData::VOTES)].toInt(0);
 
@@ -195,7 +197,7 @@ void RemoteRadio::radioBrowserParse(const QJsonArray& data, const QString radioS
     Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::RADIO_STATIONS)),
-        field(Arguments::NAME, toString(RadioSource::RADIOBROWSERPRETTY)),
+        field(RadioData::STATION_NAME, toString(RadioSource::RADIOBROWSERPRETTY)),
         field(RadioData::STATION_SOURCE, radioStation),
         field(RadioData::STATION_LIST, station_array)
     }));
@@ -216,12 +218,14 @@ void RemoteRadio::radioParadiseParse(const QJsonObject& data, const QString radi
         station[toString(RadioData::DESCRIPTION)] = chan_obj[toString(RadioData::CHAN_NAME)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::DONATE)] = service ? service->Donate().toString() : toString(Arguments::EMPTY);;
         station[toString(RadioData::FORMAT)] = QString();
-        station[toString(RadioData::GENRE)] = QString();
+        station[toString(RadioData::GENRE)] = QJsonArray();
         station[toString(RadioData::HOMEPAGE)] = service ? service->Homepage().toString() : toString(Arguments::EMPTY);
         station[toString(Arguments::ID)] = QString::number(chan_obj[toString(RadioData::CHAN_ID)].toInt(0));
         station[toString(RadioData::IMAGE)] = chan_obj[toString(RadioData::IMAGE)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::LANGUAGE)] = chan_obj[toString(RadioData::LANGUAGE)].toString(toString(Arguments::EMPTY));
-        station[toString(Arguments::NAME)] = chan_obj[toString(RadioData::CHAN_NAME)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::STREAM_NAME)] = chan_obj[toString(RadioData::CHAN_NAME)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::STATION_NAME)] = toString(RadioSource::RADIOPARADISEPRETTY);
+        station[toString(RadioData::STATION_SOURCE)] = radioStation;
         station[toString(RadioData::STATION_URL)] = service ? service->Homepage().toString() : toString(Arguments::EMPTY);
         station[toString(RadioData::VOTES)] = 0;
 
@@ -244,7 +248,7 @@ void RemoteRadio::radioParadiseParse(const QJsonObject& data, const QString radi
     Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::RADIO_STATIONS)),
-        field(Arguments::NAME, toString(RadioSource::RADIOPARADISEPRETTY)),
+        field(RadioData::STATION_NAME, toString(RadioSource::RADIOPARADISEPRETTY)),
         field(RadioData::STATION_SOURCE, radioStation),
         field(RadioData::STATION_LIST, station_array)
     }));
@@ -317,7 +321,9 @@ void RemoteRadio::somaFmParse(const QJsonObject& data, const QString radioStatio
         station[toString(Arguments::ID)] = chan_obj[toString(Arguments::ID)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::IMAGE)] = chan_obj[toString(RadioData::IMAGE)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::LANGUAGE)] = chan_obj[toString(RadioData::LANGUAGE)].toString(toString(Arguments::EMPTY));
-        station[toString(Arguments::NAME)] = chan_obj[toString(Arguments::TITLE)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::STREAM_NAME)] = chan_obj[toString(Arguments::TITLE)].toString(toString(Arguments::EMPTY));
+        station[toString(RadioData::STATION_NAME)] = toString(RadioSource::SOMAFMPRETTY);
+        station[toString(RadioData::STATION_SOURCE)] = radioStation;
         station[toString(RadioData::STATION_URL)] = service ? service->Homepage().toString() : toString(Arguments::EMPTY);
         station[toString(RadioData::VOTES)] = 0;
 
@@ -343,7 +349,7 @@ void RemoteRadio::somaFmParse(const QJsonObject& data, const QString radioStatio
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::RADIO_STATIONS)),
         field(RadioData::STATION_SOURCE, radioStation),
-        field(Arguments::NAME, toString(RadioSource::SOMAFMPRETTY)),
+        field(RadioData::STATION_NAME, toString(RadioSource::SOMAFMPRETTY)),
         field(RadioData::STATION_LIST, station_array)
     }));
 }

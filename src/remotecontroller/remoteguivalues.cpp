@@ -70,7 +70,7 @@ QJsonObject RemoteGuiValues::getUpdates() const{
         field(PlaylistData::TOTAL_ALBUMS, app_->collection_model()->total_album_count()),
         field(PlaylistData::TOTAL_ARTISTS, app_->collection_model()->total_artist_count()),
         field(PlaylistData::TOTAL_SONGS, app_->collection_model()->total_song_count()),
-        field(Arguments::VOLUME, static_cast<qint32>(app_->player()->GetVolume()))
+        field(Event::VOLUME, static_cast<qint32>(app_->player()->GetVolume()))
     });
 }
 // QJsonObject RemoteGuiValues::getUpdates() const{

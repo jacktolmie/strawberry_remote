@@ -189,6 +189,8 @@ namespace RemoteTypes{
           LANGUAGE,
           QUALITY,
           SOURCE,
+          STREAM_NAME,
+          STATION_NAME,
           STATION_LIST,
           STATION_SOURCE,
           STATION_URL,

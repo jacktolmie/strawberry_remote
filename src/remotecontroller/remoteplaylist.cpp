@@ -88,7 +88,7 @@ void RemotePlaylist::activeChanged(const int id){
 
     Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
-        field(Event::EVENT, toString(Event::ACTIVE_PLAYLIST)),
+        field(Event::EVENT, toString(PlaylistData::ACTIVE_PLAYLIST)),
         field(Arguments::ID, id),
         field(PlaylistData::ROW, app_->playlist_manager()->active() ? app_->playlist_manager()->active()->current_row() : -1)
     }));
@@ -159,7 +159,7 @@ void RemotePlaylist::deleteServerPlaylist(const int id){
 void RemotePlaylist::favouriteServerPlaylist(const int id, bool favourite){
     Q_EMIT RemotePlaylist::sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
-        field(Event::EVENT, toString(Event::FAVOURITE_PLAYLIST)),
+        field(Event::EVENT, toString(PlaylistCommandMap::FAVOURITE_PLAYLIST)),
         field(Arguments::ID, id),
         field(PlaylistData::FAVOURITE, favourite)
     }));
@@ -180,11 +180,11 @@ QJsonObject RemotePlaylist::makeAllPlaylists() const{
 
 QJsonObject RemotePlaylist::makePlaylistData(const int id) const{
     QJsonObject playlistObject;
-    playlistObject[toString(Arguments::NAME)] =             app_->playlist_manager()->playlist_name(id);
-    playlistObject[toString(Arguments::ID)] =               id;
-    playlistObject[toString(PlaylistData::FAVOURITE)] =        app_->playlist_manager()->IsPlaylistFavorite(id);
-    playlistObject[toString(PlaylistData::PLAYLIST_LENGTH)] =  static_cast<qint64>(app_->playlist_manager()->playlist(id)->GetTotalLength() /kNsecPerMsec);
-    playlistObject[toString(PlaylistData::PLAYLIST_SIZE)] =    app_->playlist_manager()->playlist(id)->rowCount();
+    playlistObject[toString(Arguments::NAME)] =                 app_->playlist_manager()->playlist_name(id);
+    playlistObject[toString(Arguments::ID)] =                   id;
+    playlistObject[toString(PlaylistData::FAVOURITE)] =         app_->playlist_manager()->IsPlaylistFavorite(id);
+    playlistObject[toString(PlaylistData::PLAYLIST_LENGTH)] =   static_cast<qint64>(app_->playlist_manager()->playlist(id)->GetTotalLength() /kNsecPerMsec);
+    playlistObject[toString(PlaylistData::PLAYLIST_SIZE)] =     app_->playlist_manager()->playlist(id)->rowCount();
 
     QJsonArray songsArray;
     auto songs{app_->playlist_manager()->playlist(id)->GetAllSongs()};
@@ -236,9 +236,9 @@ QJsonObject RemotePlaylist::remoteChangedPlaylist(const QJsonObject& args){
     if (id == -1) return wrongArgsSent(toString(Arguments::ID));
 
     qint32 fromIndex{ args[toString(PlaylistData::FROM_INDEX)].toInt(-1)};
-    if (fromIndex == -1) return wrongArgsSent(u"from-index"_s);
+    if (fromIndex == -1) return wrongArgsSent(toString(PlaylistData::FROM_INDEX));
 
-    qint32 toIndex{ args[u"to-index"_s].toInt(-1)};
+    qint32 toIndex{ args[toString(PlaylistData::TO_INDEX)].toInt(-1)};
     if (toIndex == -1) return wrongArgsSent(toString(PlaylistData::TO_INDEX));
 
     // Set remotes changed playlist id as current.

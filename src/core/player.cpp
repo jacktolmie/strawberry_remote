@@ -742,7 +742,7 @@ void Player::SetVolumeFromSlider(const int value) {
     sendToRemote(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::VOLUME_CHANGED)),
-        field(Arguments::VOLUME, static_cast<int>(volume))
+        field(Event::VOLUME, static_cast<int>(volume))
     }));
   }
 

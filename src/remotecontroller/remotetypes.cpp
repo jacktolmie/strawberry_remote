@@ -210,6 +210,8 @@ QString toString(RadioData value){
         case RadioData::LABEL:          return u"label"_s;
         case RadioData::QUALITY:        return u"quality"_s;
         case RadioData::SOURCE:         return u"source"_s;
+        case RadioData::STREAM_NAME:    return u"stream_name"_s;
+        case RadioData::STATION_NAME:   return u"station_name"_s;
         case RadioData::STATION_LIST:   return u"station_list"_s;
         case RadioData::STATION_SOURCE: return u"station_source"_s;
         case RadioData::STATION_UUID:   return u"stationuuid"_s;
