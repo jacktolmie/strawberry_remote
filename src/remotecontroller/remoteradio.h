@@ -9,6 +9,9 @@ class CollectionView;
 
 #include "core/application.h"
 #include "radios/radioservices.h"
+#include "remotetypes.h"
+
+using namespace RemoteTypes;
 
 class RemoteRadio : public QObject
 {
@@ -21,6 +24,7 @@ public:
     ~RemoteRadio() = default;
 
 private:
+    QMap<RadioSource, QString> stationLogos;
     // QJsonObject appendToCurrentPlaylist();
     // QJsonObject replaceCurrentPlaylist();
     // QJsonObject createNewPlaylist();

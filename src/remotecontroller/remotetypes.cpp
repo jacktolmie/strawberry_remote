@@ -201,6 +201,7 @@ QString toString(RadioData value){
         case RadioData::COUNTRY:        return u"country"_s;
         case RadioData::DESCRIPTION:    return u"description"_s;
         case RadioData::DONATE:         return u"donate"_s;
+        case RadioData::FAVICON:        return u"favicon"_s;
         case RadioData::FORMAT:         return u"format"_s;
         case RadioData::GENRE:          return u"genre"_s;
         case RadioData::HOMEPAGE:       return u"homepage"_s;
@@ -210,15 +211,16 @@ QString toString(RadioData value){
         case RadioData::LABEL:          return u"label"_s;
         case RadioData::QUALITY:        return u"quality"_s;
         case RadioData::SOURCE:         return u"source"_s;
-        case RadioData::STREAM_NAME:    return u"stream_name"_s;
-        case RadioData::STATION_NAME:   return u"station_name"_s;
+        case RadioData::SOURCE_LOGO:    return u"source_logo"_s;
         case RadioData::STATION_LIST:   return u"station_list"_s;
+        case RadioData::STATION_NAME:   return u"station_name"_s;
         case RadioData::STATION_SOURCE: return u"station_source"_s;
+        case RadioData::STATION_URL:    return u"station_url"_s;
         case RadioData::STATION_UUID:   return u"stationuuid"_s;
         case RadioData::STREAMS:        return u"streams"_s;
         case RadioData::STREAM_ID:      return u"stream_id"_s;
+        case RadioData::STREAM_NAME:    return u"stream_name"_s;
         case RadioData::STREAM_URL:     return u"stream_url"_s;
-        case RadioData::STATION_URL:    return u"station_url"_s;
         case RadioData::TAGS:           return u"tags"_s;
         case RadioData::URL:            return u"url"_s;
         case RadioData::VOTES:          return u"votes"_s;
