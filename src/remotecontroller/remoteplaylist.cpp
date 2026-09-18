@@ -24,7 +24,7 @@ RemotePlaylist::RemotePlaylist(const Application *app, QObject *parent)
     currentSong_(new RemoteCurrentSong(app_)),
     radio_{new RemoteRadio(app_)}
 {
-    RemotePlaylist::createCommandMap();
+    createCommandMap();
 
     QObject::connect(this, &RemotePlaylist::clearPlaylist , &*app_->playlist_manager(), &PlaylistManager::ClearCurrent);
     QObject::connect(this, &RemotePlaylist::remoteClosedPlaylist , &*app_->playlist_manager(), &PlaylistManager::Close);
@@ -391,7 +391,7 @@ QJsonObject RemotePlaylist::sendAllPlaylists() const {
 }
 
 const PlaylistCmdMap& RemotePlaylist::sendCommandMap() const{
-    return commandMap;
+    return commandMap_;
 }
 
 QJsonObject RemotePlaylist::sendCoverImage(const QJsonObject& args){
@@ -591,22 +591,22 @@ QJsonObject RemotePlaylist::wrongArgsSent(const QString& error){
 }
 
 void RemotePlaylist::createCommandMap(){
-    commandMap[toString(PlaylistCommandMap::CLEAR_PLAYLIST)] = [this](const QJsonObject& args){ return clearRemoteCurrentPlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::CLOSE_PLAYLIST)] = [this](const QJsonObject& args){ return closeRemoteCurrentPlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::DELETE_PLAYLIST)] = [this](const QJsonObject& args){ return deleteCurrentRemotePlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::FAVOURITE_PLAYLIST)] = [this](const QJsonObject& args){ return setFavouritePlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::REMOTE_CHANGED_PLAYLIST)] = [this](const QJsonObject& args){ return remoteChangedPlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::REMOTE_SENT_ACTIVE )] = [this](const QJsonObject& args){ return receiveRemoteActive(args); };
-    commandMap[toString(PlaylistCommandMap::REMOVE_DUPLICATES_PLAYLIST)] = [this](const QJsonObject& args){ return removeDuplicatesPlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::REMOVE_UNAVAILABLE_SONGS)] = [this](const QJsonObject& args){ return removeUnavailableSongs(args); };
-    commandMap[toString(PlaylistCommandMap::REMOVE_SONGS_PLAYLIST)] = [this](const QJsonObject& args){ return removeCurrentSongsPlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::RENAME_PLAYLIST)] = [this](const QJsonObject& args){ return renameCurrentPlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::REPEAT_MODE)] = [this](const QJsonObject& args){ return setRepeatMode(args); };
-    commandMap[toString(PlaylistCommandMap::SEND_ACTIVE_PLAYLIST_SONG)] = [this](const auto&){ return sendCurrentPlayingSong(); };
-    commandMap[toString(PlaylistCommandMap::SEND_ALL_PLAYLISTS)] = [this](const auto&){ return makeAllPlaylists(); };
-    commandMap[toString(PlaylistCommandMap::SEND_PLAYLIST)] = [this](const QJsonObject& args){ return sendRequestedPlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::REQUEST_COVER)] = [this](const QJsonObject& args){ return sendCoverImage(args); };
-    commandMap[toString(PlaylistCommandMap::SET_CURRENT_PLAYLIST)] = [this](const QJsonObject& args){ return setCurrentPlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::SHUFFLE_CURRENT_PLAYLIST)] = [this](const QJsonObject& args){ return shuffleSinglePlaylist(args); };
-    commandMap[toString(PlaylistCommandMap::SHUFFLE_MODE)] = [this](const QJsonObject& args){ return setShuffleMode(args);};
+    commandMap_[toString(PlaylistCommandMap::CLEAR_PLAYLIST)] = [this](const QJsonObject& args){ return clearRemoteCurrentPlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::CLOSE_PLAYLIST)] = [this](const QJsonObject& args){ return closeRemoteCurrentPlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::DELETE_PLAYLIST)] = [this](const QJsonObject& args){ return deleteCurrentRemotePlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::FAVOURITE_PLAYLIST)] = [this](const QJsonObject& args){ return setFavouritePlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::REMOTE_CHANGED_PLAYLIST)] = [this](const QJsonObject& args){ return remoteChangedPlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::REMOTE_SENT_ACTIVE )] = [this](const QJsonObject& args){ return receiveRemoteActive(args); };
+    commandMap_[toString(PlaylistCommandMap::REMOVE_DUPLICATES_PLAYLIST)] = [this](const QJsonObject& args){ return removeDuplicatesPlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::REMOVE_UNAVAILABLE_SONGS)] = [this](const QJsonObject& args){ return removeUnavailableSongs(args); };
+    commandMap_[toString(PlaylistCommandMap::REMOVE_SONGS_PLAYLIST)] = [this](const QJsonObject& args){ return removeCurrentSongsPlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::RENAME_PLAYLIST)] = [this](const QJsonObject& args){ return renameCurrentPlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::REPEAT_MODE)] = [this](const QJsonObject& args){ return setRepeatMode(args); };
+    commandMap_[toString(PlaylistCommandMap::SEND_ACTIVE_PLAYLIST_SONG)] = [this](const auto&){ return sendCurrentPlayingSong(); };
+    commandMap_[toString(PlaylistCommandMap::SEND_ALL_PLAYLISTS)] = [this](const auto&){ return makeAllPlaylists(); };
+    commandMap_[toString(PlaylistCommandMap::SEND_PLAYLIST)] = [this](const QJsonObject& args){ return sendRequestedPlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::REQUEST_COVER)] = [this](const QJsonObject& args){ return sendCoverImage(args); };
+    commandMap_[toString(PlaylistCommandMap::SET_CURRENT_PLAYLIST)] = [this](const QJsonObject& args){ return setCurrentPlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::SHUFFLE_CURRENT_PLAYLIST)] = [this](const QJsonObject& args){ return shuffleSinglePlaylist(args); };
+    commandMap_[toString(PlaylistCommandMap::SHUFFLE_MODE)] = [this](const QJsonObject& args){ return setShuffleMode(args);};
 }

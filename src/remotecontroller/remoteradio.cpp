@@ -1,7 +1,7 @@
 #include <QJsonArray>
 #include <QJsonParseError>
 
-#include "covermanager/albumcoverloader.h"
+// #include "covermanager/albumcoverloader.h"
 #include "radios/radiobackend.h"
 #include "radios/radioparadiseservice.h"
 #include "radios/radioservices.h"
@@ -10,16 +10,20 @@
 #include "remoteradio.h"
 #include "remotejsoncreator.h"
 
+#include "remotetypes.h"
+using namespace RemoteTypes;
+
 RemoteRadio::RemoteRadio(const Application *app, QObject *parent)
     :QObject{parent},
     app_{app}
 {
+    createCommandMap();
+
     QObject::connect(&*app_->current_albumcover_loader(), &CurrentAlbumCoverLoader::AlbumCoverLoaded, this, &RemoteRadio::getImage);
     QObject::connect(&*app_->radio_services(), &RadioServices::OnRawDataReceived, this, &RemoteRadio::RawDataReceived);
 
     // QObject::connect(&*app_->radio_services()->radio_backend(), &RadioBackend::NewChannels, this, &RemoteRadio::gotChannels);
     // QObject::connect(&*app_->radio_services(), &RadioServices::RadioBrowserSearchFinished, this, &RemoteRadio::RadioBrowserSearchFinished);
-    // app_->radio_services()->RefreshChannels(); // delete when done testing radio stations.
 
     const QList<QPair<RadioSource, QString>> logos = {
         { RadioSource::RADIOPARADISE, u":/icons/128x128/radioparadise.png"_s },
@@ -31,10 +35,25 @@ RemoteRadio::RemoteRadio(const Application *app, QObject *parent)
         QFile file(path);
         if (file.open(QIODevice::ReadOnly)) {
             qInfo() << "RadioStation added icon: " << toString(name);
-            stationLogos[name] = QString::fromLatin1(file.readAll().toBase64());
+            sourcesAndLogos[toString(name)] = QString::fromLatin1(file.readAll().toBase64());
         }
     }
+}
 
+QJsonObject RemoteRadio::appendToCurrentPlaylist(const QJsonObject& args){
+    return QJsonObject(args); // TODO: Finish this
+}
+
+QJsonObject RemoteRadio::commandResponse(const QString& command){
+    return RemoteJsonCreator::createResponse({
+        field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
+        field(Response::RESPONSE, toString(Response::RUNNING_COMMAND)),
+        field(Arguments::COMMAND, command)
+    });
+}
+
+QJsonObject RemoteRadio::createNewPlaylist(const QJsonObject& args){
+    return QJsonObject(args); // TODO: Finish this
 }
 
 void RemoteRadio::getStationsFromClient(const QJsonObject& args){
@@ -195,7 +214,7 @@ void RemoteRadio::radioBrowserParse(const QJsonArray& data, const QString radioS
         station[toString(RadioData::GENRE)] = genressArray;
         station[toString(RadioData::HOMEPAGE)] = chan_obj[toString(RadioData::HOMEPAGE)].toString(toString(Arguments::EMPTY));
         station[toString(Arguments::ID)] = chan_obj[toString(RadioData::STATION_UUID)].toString(toString(Arguments::EMPTY));
-        station[toString(RadioData::IMAGE)] = chan_obj[toString(RadioData::FAVICON) ].toString(stationLogos[RadioSource::RADIOBROWSER]);
+        station[toString(RadioData::IMAGE)] = chan_obj[toString(RadioData::FAVICON) ].toString(sourcesAndLogos[toString(RadioSource::RADIOBROWSER)]);
         station[toString(RadioData::LANGUAGE)] = chan_obj[toString(RadioData::LANGUAGE)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::STATION_NAME)] = chan_obj[toString(Arguments::NAME)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::STREAM_NAME)] = chan_obj[toString(Arguments::NAME)].toString(toString(Arguments::EMPTY));
@@ -213,7 +232,7 @@ void RemoteRadio::radioBrowserParse(const QJsonArray& data, const QString radioS
         field(RadioData::STATION_NAME, toString(RadioSource::RADIOBROWSERPRETTY)),
         field(RadioData::STATION_SOURCE, radioStation),
         field(RadioData::STATION_LIST, station_array),
-        field(RadioData::SOURCE_LOGO, stationLogos[RadioSource::RADIOBROWSER])
+        field(RadioData::SOURCE_LOGO, sourcesAndLogos[toString(RadioSource::RADIOBROWSER)])
     }));
 }
 
@@ -237,7 +256,7 @@ void RemoteRadio::radioParadiseParse(const QJsonObject& data, const QString radi
         station[toString(RadioData::GENRE)] = QJsonArray();
         station[toString(RadioData::HOMEPAGE)] = service ? service->Homepage().toString() : toString(Arguments::EMPTY);
         station[toString(Arguments::ID)] = QString::number(chan_obj[toString(RadioData::CHAN_ID)].toInt(0));
-        station[toString(RadioData::IMAGE)] = chan_obj[toString(RadioData::IMAGE)].toString(stationLogos[RadioSource::RADIOPARADISE]);
+        station[toString(RadioData::IMAGE)] = chan_obj[toString(RadioData::IMAGE)].toString(sourcesAndLogos[toString(RadioSource::RADIOPARADISE)]);
         station[toString(RadioData::LANGUAGE)] = chan_obj[toString(RadioData::LANGUAGE)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::STREAM_NAME)] = chan_obj[toString(RadioData::CHAN_NAME)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::STATION_NAME)] = toString(RadioSource::RADIOPARADISEPRETTY);
@@ -267,7 +286,7 @@ void RemoteRadio::radioParadiseParse(const QJsonObject& data, const QString radi
         field(RadioData::STATION_NAME, toString(RadioSource::RADIOPARADISEPRETTY)),
         field(RadioData::STATION_SOURCE, radioStation),
         field(RadioData::STATION_LIST, station_array),
-        field(RadioData::SOURCE_LOGO, stationLogos[RadioSource::RADIOPARADISE])
+                                                           field(RadioData::SOURCE_LOGO, sourcesAndLogos[toString(RadioSource::RADIOPARADISE)])
     }));
 }
 
@@ -315,6 +334,33 @@ void RemoteRadio::RawDataReceived(const QByteArray &data, Song::Source source, R
     }
 }
 
+QJsonObject RemoteRadio::replaceCurrentPlaylist(const QJsonObject& args){
+    return QJsonObject(args); // TODO: Finish this
+}
+
+const RadioCmdMap& RemoteRadio::sendCommandMap() const {
+    return commandMap_;
+}
+
+void RemoteRadio::sendSources(){
+    QJsonObject obj;
+    obj[toString(MessageType::EVENT)] = toString(MessageType::EVENT);
+    obj[toString(Event::EVENT)] = toString(Event::RADIO_SOURCES);
+
+    QJsonArray sourcesArray;
+    for (const auto& [source, icon]: sourcesAndLogos.asKeyValueRange()){
+
+        QJsonObject station;
+        station[toString(RadioData::STATION_NAME)] = source;
+        station[toString(RadioData::IMAGE)] = icon;
+
+        sourcesArray.append(station);
+    }
+    obj[toString(RadioData::SOURCES_LIST)] = sourcesArray;
+
+    Q_EMIT sendResponse(obj);
+}
+
 void RemoteRadio::somaFmParse(const QJsonObject& data, const QString radioStation, RadioService *service){
 
     if (data.isEmpty()) return;
@@ -338,7 +384,7 @@ void RemoteRadio::somaFmParse(const QJsonObject& data, const QString radioStatio
         station[toString(RadioData::GENRE)] = genreArray;
         station[toString(RadioData::HOMEPAGE)] = service ? service->Homepage().toString() : toString(Arguments::EMPTY);
         station[toString(Arguments::ID)] = chan_obj[toString(Arguments::ID)].toString(toString(Arguments::EMPTY));
-        station[toString(RadioData::IMAGE)] = chan_obj[toString(RadioData::IMAGE)].toString(stationLogos[RadioSource::SOMAFM]);
+        station[toString(RadioData::IMAGE)] = chan_obj[toString(RadioData::IMAGE)].toString(sourcesAndLogos[toString(RadioSource::SOMAFM)]);
         station[toString(RadioData::LANGUAGE)] = chan_obj[toString(RadioData::LANGUAGE)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::STREAM_NAME)] = chan_obj[toString(Arguments::TITLE)].toString(toString(Arguments::EMPTY));
         station[toString(RadioData::STATION_NAME)] = toString(RadioSource::SOMAFMPRETTY);
@@ -370,7 +416,24 @@ void RemoteRadio::somaFmParse(const QJsonObject& data, const QString radioStatio
         field(RadioData::STATION_SOURCE, radioStation),
         field(RadioData::STATION_NAME, toString(RadioSource::SOMAFMPRETTY)),
         field(RadioData::STATION_LIST, station_array),
-        field(RadioData::SOURCE_LOGO, stationLogos[RadioSource::SOMAFM])
+        field(RadioData::SOURCE_LOGO, sourcesAndLogos[toString(RadioSource::SOMAFM)])
     }));
 }
 
+void RemoteRadio::wrongArgsSent(const QString& error){
+    Q_EMIT sendResponse(
+        RemoteJsonCreator::createResponse({
+            field(MessageType::ERROR, toString(MessageType::ERROR)),
+            field(Error::ERROR, toString(Error::WRONG_ARGUMENT_SENT)),
+            field(Arguments::REQUIRED, error)
+        })
+        );
+}
+
+void RemoteRadio::createCommandMap(){
+    commandMap_[toString(RadioCommandMap::APPEND_TO_CURRENT_PLAYLIST)] = [this](const QJsonObject& args){ appendToCurrentPlaylist(args); return commandResponse(toString(RadioCommandMap::APPEND_TO_CURRENT_PLAYLIST)); };
+    commandMap_[toString(RadioCommandMap::CREATE_NEW_PLAYLIST)] = [this](const QJsonObject& args){ createNewPlaylist(args); return commandResponse(toString(RadioCommandMap::CREATE_NEW_PLAYLIST)); };
+    commandMap_[toString(RadioCommandMap::GET_STATIONS_FROM_REMOTE)] = [this](const QJsonObject& args){ getStationsFromClient(args); return commandResponse(toString(RadioCommandMap::GET_STATIONS_FROM_REMOTE)); };
+    commandMap_[toString(RadioCommandMap::REPLACE_CURRENT_PLAYLIST)] = [this](const QJsonObject& args){ replaceCurrentPlaylist(args); return commandResponse(toString(RadioCommandMap::REPLACE_CURRENT_PLAYLIST)); };
+    commandMap_[toString(RadioCommandMap::SEND_SOURCES)] = [this](const auto&){sendSources(); return commandResponse(toString(RadioCommandMap::SEND_SOURCES)); };
+}

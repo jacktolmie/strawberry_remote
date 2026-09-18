@@ -72,6 +72,7 @@ QString toString(Event value) {
         case Event::PLAY:                       return u"play"_s;
         case Event::PLAY_PAUSE:                 return u"play_pause"_s;
         case Event::PREVIOUS:                   return u"previous"_s;
+        case Event::RADIO_SOURCES:              return u"radio_sources_list"_s;
         case Event::RADIO_STATIONS:             return u"radio_stations"_s;
         case Event::REPEAT_MODE:                return u"repeat_mode"_s;
         case Event::RENAME_PLAYLIST:            return u"rename_playlist"_s;
@@ -190,6 +191,16 @@ QString toString(Response value) {
     Q_UNREACHABLE();
 }
 
+QString toString(RadioCommandMap value){
+    switch(value){
+        case RadioCommandMap::APPEND_TO_CURRENT_PLAYLIST:   return u"append_to_current_playlist"_s;
+        case RadioCommandMap::CREATE_NEW_PLAYLIST:          return u"create_new_playlist"_s;
+        case RadioCommandMap::GET_STATIONS_FROM_REMOTE:     return u"get_stations_from_remote"_s;
+        case RadioCommandMap::REPLACE_CURRENT_PLAYLIST:     return u"replace_current_playlist"_s;
+        case RadioCommandMap::SEND_SOURCES:                 return u"send_sources"_s;
+    }
+}
+
 QString toString(RadioData value){
     switch (value) {
         case RadioData::BITRATE:        return u"bitrate"_s;
@@ -211,6 +222,7 @@ QString toString(RadioData value){
         case RadioData::LABEL:          return u"label"_s;
         case RadioData::QUALITY:        return u"quality"_s;
         case RadioData::SOURCE:         return u"source"_s;
+        case RadioData::SOURCES_LIST:   return u"sources_list"_s;
         case RadioData::SOURCE_LOGO:    return u"source_logo"_s;
         case RadioData::STATION_LIST:   return u"station_list"_s;
         case RadioData::STATION_NAME:   return u"station_name"_s;

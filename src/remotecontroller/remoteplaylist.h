@@ -40,7 +40,7 @@ private:
     QTimer *metadataTimer_;
     int pendingPlaylistId_;
 
-    PlaylistCmdMap commandMap;
+    PlaylistCmdMap commandMap_;
 
     void createCommandMap();
     QJsonObject clearRemoteCurrentPlaylist(const QJsonObject& args);

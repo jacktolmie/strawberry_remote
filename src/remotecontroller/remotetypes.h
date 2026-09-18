@@ -66,6 +66,7 @@ namespace RemoteTypes{
         PLAY,
         PLAY_PAUSE,
         PREVIOUS,
+        RADIO_SOURCES,
         RADIO_STATIONS,
         RESTART_OR_PREVIOUS,
         RENAME_PLAYLIST,
@@ -170,39 +171,48 @@ namespace RemoteTypes{
         SHUFFLED_ALL_PLAYLISTS
     };
 
+    enum class RadioCommandMap{
+        APPEND_TO_CURRENT_PLAYLIST,
+        CREATE_NEW_PLAYLIST,
+        GET_STATIONS_FROM_REMOTE,
+        REPLACE_CURRENT_PLAYLIST,
+        SEND_SOURCES
+    };
+
     enum class RadioData{
-          BITRATE,
-          CHANNELS,
-          CLICK_COUNT,
-          CHAN_ID,
-          CHAN_NAME,
-          CODEC,
-          COUNTRY,
-          DESCRIPTION,
-          DONATE,
-          FAVICON,
-          FORMAT,
-          GENRE,
-          HOMEPAGE,
-          HTTP,
-          IMAGE,
-          LABEL,
-          LANGUAGE,
-          QUALITY,
-          SOURCE,
-          SOURCE_LOGO,
-          STATION_LIST,
-          STATION_NAME,
-          STATION_SOURCE,
-          STATION_URL,
-          STATION_UUID,
-          STREAMS,
-          STREAM_ID,
-          STREAM_NAME,
-          STREAM_URL,
-          TAGS,
-          URL,
-          VOTES
+        BITRATE,
+        CHANNELS,
+        CLICK_COUNT,
+        CHAN_ID,
+        CHAN_NAME,
+        CODEC,
+        COUNTRY,
+        DESCRIPTION,
+        DONATE,
+        FAVICON,
+        FORMAT,
+        GENRE,
+        HOMEPAGE,
+        HTTP,
+        IMAGE,
+        LABEL,
+        LANGUAGE,
+        QUALITY,
+        SOURCE,
+        SOURCE_LOGO,
+        SOURCES_LIST,
+        STATION_LIST,
+        STATION_NAME,
+        STATION_SOURCE,
+        STATION_URL,
+        STATION_UUID,
+        STREAMS,
+        STREAM_ID,
+        STREAM_NAME,
+        STREAM_URL,
+        TAGS,
+        URL,
+        VOTES
     };
 
     enum class RadioSource{
@@ -225,15 +235,16 @@ namespace RemoteTypes{
 
 
       QString toString(Arguments value);
-      QString toString(Auth auth);
-      QString toString(Event event);
-      QString toString(Error error);
-      QString toString(MessageType type);
-      QString toString(PlaylistCommandMap data);
-      QString toString(PlaylistData data);
-      QString toString(RadioData data);
-      QString toString(RadioSource source);
-      QString toString(Response response);
+      QString toString(Auth value);
+      QString toString(Event value);
+      QString toString(Error value);
+      QString toString(MessageType value);
+      QString toString(PlaylistCommandMap value);
+      QString toString(PlaylistData value);
+      QString toString(RadioCommandMap value);
+      QString toString(RadioData value);
+      QString toString(RadioSource value);
+      QString toString(Response value);
 
       template<typename T>
       std::pair<QString, QJsonValue> field(T key, QJsonValue value) {
@@ -243,7 +254,7 @@ namespace RemoteTypes{
       // Specialisation for MessageType
       template<>
       inline std::pair<QString, QJsonValue> field(MessageType key, QJsonValue value) {
-          Q_UNUSED(value); // value is derived from the key itself
+          Q_UNUSED(value);
           return {u"type"_s, toString(key)};
       }
 }

@@ -22,8 +22,11 @@ class RemoteCommands : public QObject
   RemotePlaylist        *remotePlaylist_;
 
 
-  BasicCmdMap         basicCmdMap;
-  PlaylistCmdMap      playlistCmdMap;
+  BasicCmdMap           basicCmdMap_;
+  PlaylistCmdMap        playlistCmdMap_;
+  RadioCmdMap           radioCmdMap_;
+
+  QList<QMap<QString, std::function<QJsonObject(const QJsonObject&)>>*> commandMaps;
 
 public:
   explicit RemoteCommands(const Application *app, QObject *parent);
