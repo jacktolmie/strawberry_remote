@@ -26,9 +26,9 @@ RemoteRadio::RemoteRadio(const Application *app, QObject *parent)
     // QObject::connect(&*app_->radio_services(), &RadioServices::RadioBrowserSearchFinished, this, &RemoteRadio::RadioBrowserSearchFinished);
 
     const QList<QPair<RadioSource, QString>> logos = {
-        { RadioSource::RADIOPARADISE, u":/icons/128x128/radioparadise.png"_s },
-        { RadioSource::SOMAFM,        u":/icons/128x128/somafm.png"_s },
-        { RadioSource::RADIOBROWSER,  u":/icons/128x128/radiobrowser.png"_s }
+        { RadioSource::RADIOPARADISEPRETTY, u":/icons/128x128/radioparadise.png"_s },
+        { RadioSource::SOMAFMPRETTY,        u":/icons/128x128/somafm.png"_s },
+        { RadioSource::RADIOBROWSERPRETTY,  u":/icons/128x128/radiobrowser.png"_s }
     };
 
     for (const auto &[name, path] : logos) {
@@ -229,7 +229,7 @@ void RemoteRadio::radioBrowserParse(const QJsonArray& data, const QString radioS
     Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::RADIO_STATIONS)),
-        field(RadioData::STATION_NAME, toString(RadioSource::RADIOBROWSERPRETTY)),
+        field(RadioData::SOURCE_NAME, toString(RadioSource::RADIOBROWSERPRETTY)),
         field(RadioData::STATION_SOURCE, radioStation),
         field(RadioData::STATION_LIST, station_array),
         field(RadioData::SOURCE_LOGO, sourcesAndLogos[toString(RadioSource::RADIOBROWSER)])
@@ -283,10 +283,10 @@ void RemoteRadio::radioParadiseParse(const QJsonObject& data, const QString radi
     Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::RADIO_STATIONS)),
-        field(RadioData::STATION_NAME, toString(RadioSource::RADIOPARADISEPRETTY)),
+        field(RadioData::SOURCE_NAME, toString(RadioSource::RADIOPARADISEPRETTY)),
         field(RadioData::STATION_SOURCE, radioStation),
         field(RadioData::STATION_LIST, station_array),
-                                                           field(RadioData::SOURCE_LOGO, sourcesAndLogos[toString(RadioSource::RADIOPARADISE)])
+        field(RadioData::SOURCE_LOGO, sourcesAndLogos[toString(RadioSource::RADIOPARADISE)])
     }));
 }
 
@@ -343,22 +343,22 @@ const RadioCmdMap& RemoteRadio::sendCommandMap() const {
 }
 
 void RemoteRadio::sendSources(){
-    QJsonObject obj;
-    obj[toString(MessageType::EVENT)] = toString(MessageType::EVENT);
-    obj[toString(Event::EVENT)] = toString(Event::RADIO_SOURCES);
 
     QJsonArray sourcesArray;
     for (const auto& [source, icon]: sourcesAndLogos.asKeyValueRange()){
 
         QJsonObject station;
-        station[toString(RadioData::STATION_NAME)] = source;
-        station[toString(RadioData::IMAGE)] = icon;
+        station[toString(RadioData::SOURCE_NAME)] = source;
+        station[toString(RadioData::SOURCE_LOGO)] = icon;
 
         sourcesArray.append(station);
     }
-    obj[toString(RadioData::SOURCES_LIST)] = sourcesArray;
 
-    Q_EMIT sendResponse(obj);
+    Q_EMIT sendResponse(RemoteJsonCreator::createResponse({
+        field(MessageType::EVENT, toString(MessageType::EVENT)),
+        field(Event::EVENT, toString(Event::RADIO_SOURCES)),
+        field(RadioData::SOURCES_LIST, sourcesArray)
+    }));
 }
 
 void RemoteRadio::somaFmParse(const QJsonObject& data, const QString radioStation, RadioService *service){
@@ -414,7 +414,7 @@ void RemoteRadio::somaFmParse(const QJsonObject& data, const QString radioStatio
         field(MessageType::EVENT, toString(MessageType::EVENT)),
         field(Event::EVENT, toString(Event::RADIO_STATIONS)),
         field(RadioData::STATION_SOURCE, radioStation),
-        field(RadioData::STATION_NAME, toString(RadioSource::SOMAFMPRETTY)),
+        field(RadioData::SOURCE_NAME, toString(RadioSource::SOMAFMPRETTY)),
         field(RadioData::STATION_LIST, station_array),
         field(RadioData::SOURCE_LOGO, sourcesAndLogos[toString(RadioSource::SOMAFM)])
     }));

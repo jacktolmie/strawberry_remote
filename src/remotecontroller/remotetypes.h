@@ -202,6 +202,7 @@ namespace RemoteTypes{
         SOURCE_LOGO,
         SOURCES_LIST,
         STATION_LIST,
+        SOURCE_NAME,
         STATION_NAME,
         STATION_SOURCE,
         STATION_URL,

@@ -224,6 +224,7 @@ QString toString(RadioData value){
         case RadioData::SOURCE:         return u"source"_s;
         case RadioData::SOURCES_LIST:   return u"sources_list"_s;
         case RadioData::SOURCE_LOGO:    return u"source_logo"_s;
+        case RadioData::SOURCE_NAME:    return u"source_name"_s;
         case RadioData::STATION_LIST:   return u"station_list"_s;
         case RadioData::STATION_NAME:   return u"station_name"_s;
         case RadioData::STATION_SOURCE: return u"station_source"_s;
