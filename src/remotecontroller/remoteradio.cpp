@@ -420,6 +420,10 @@ void RemoteRadio::somaFmParse(const QJsonObject& data, const QString radioStatio
     }));
 }
 
+void RemoteRadio::updateSources(){
+    app_->radio_services()->RefreshChannels();
+}
+
 void RemoteRadio::wrongArgsSent(const QString& error){
     Q_EMIT sendResponse(
         RemoteJsonCreator::createResponse({
@@ -436,4 +440,5 @@ void RemoteRadio::createCommandMap(){
     commandMap_[toString(RadioCommandMap::GET_STATIONS_FROM_REMOTE)] = [this](const QJsonObject& args){ getStationsFromClient(args); return commandResponse(toString(RadioCommandMap::GET_STATIONS_FROM_REMOTE)); };
     commandMap_[toString(RadioCommandMap::REPLACE_CURRENT_PLAYLIST)] = [this](const QJsonObject& args){ replaceCurrentPlaylist(args); return commandResponse(toString(RadioCommandMap::REPLACE_CURRENT_PLAYLIST)); };
     commandMap_[toString(RadioCommandMap::SEND_SOURCES)] = [this](const auto&){sendSources(); return commandResponse(toString(RadioCommandMap::SEND_SOURCES)); };
+    commandMap_[toString(RadioCommandMap::UPDATE_SOURCES)] = [this](const auto&){updateSources(); return commandResponse(toString(RadioCommandMap::UPDATE_SOURCES));};
 }

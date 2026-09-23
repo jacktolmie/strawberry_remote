@@ -198,6 +198,7 @@ QString toString(RadioCommandMap value){
         case RadioCommandMap::GET_STATIONS_FROM_REMOTE:     return u"get_stations_from_remote"_s;
         case RadioCommandMap::REPLACE_CURRENT_PLAYLIST:     return u"replace_current_playlist"_s;
         case RadioCommandMap::SEND_SOURCES:                 return u"send_sources"_s;
+        case RadioCommandMap::UPDATE_SOURCES:               return u"update_sources"_s;
     }
 }
 

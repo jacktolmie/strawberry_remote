@@ -176,7 +176,8 @@ namespace RemoteTypes{
         CREATE_NEW_PLAYLIST,
         GET_STATIONS_FROM_REMOTE,
         REPLACE_CURRENT_PLAYLIST,
-        SEND_SOURCES
+        SEND_SOURCES,
+        UPDATE_SOURCES
     };
 
     enum class RadioData{

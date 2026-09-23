@@ -35,11 +35,12 @@ private:
     void somaFmParse(const QJsonObject& data, const QString radioStation, RadioService *service);
     void radioBrowserParse(const QJsonArray& data, const QString radioStation, RadioService *service);
     void radioParadiseParse(const QJsonObject& data, const QString radioStation, RadioService *service);
-    void wrongArgsSent(const QString& error);
 
     void createCommandMap();
     void getStationsFromClient(const QJsonObject& args);
     void sendSources();
+    void updateSources();
+    void wrongArgsSent(const QString& error);
 
     QString getNameFromSource(Song::Source source);
     Song::Source getSourceFromName(const QString& name);
