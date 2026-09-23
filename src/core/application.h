@@ -44,6 +44,7 @@ class DeviceFinders;
 class UrlHandlers;
 class Player;
 class NetworkAccessManager;
+class CredentialsManager;
 class CollectionLibrary;
 class CollectionBackend;
 class CollectionModel;
@@ -82,6 +83,7 @@ class Application : public QObject {
   SharedPtr<TaskManager> task_manager() const;
   SharedPtr<Player> player() const;
   SharedPtr<NetworkAccessManager> network() const;
+  SharedPtr<CredentialsManager> credentials_manager() const;
   SharedPtr<DeviceFinders> device_finders() const;
   SharedPtr<UrlHandlers> url_handlers() const;
   SharedPtr<DeviceManager> device_manager() const;
