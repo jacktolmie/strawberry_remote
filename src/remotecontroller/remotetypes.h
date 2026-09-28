@@ -9,13 +9,11 @@ using namespace Qt::Literals::StringLiterals;
 namespace RemoteTypes{
 
     enum class Arguments{
-        // ACTIVE_PLAYLIST,
         ALBUM,
         ARGUMENT,
         ARGUMENTS,
         ARTIST,
         COMMAND,
-        COVER_ART,
         COVER_IMAGE,
         CURRENT_SONG,
         EMPTY,
@@ -117,6 +115,7 @@ namespace RemoteTypes{
     enum class PlaylistData{
         ACTIVE_PLAYLIST,
         ALL,
+        COVER_ART,
         CURRENT_PLAYLIST,
         FAVOURITE,
         FROM_INDEX,
@@ -130,10 +129,10 @@ namespace RemoteTypes{
         PLAYLIST_LENGTH,
         PLAYLIST_SIZE,
         POSITION,
-        REPEAT_INTRO,
         REPEAT_MODE,
         REPEAT_PLAYLIST,
         REPEAT_ONEBYONE,
+        REPEAT_SCAN,
         REPEAT_TRACK,
         ROW,
         SHUFFLE_MODE,
@@ -176,6 +175,7 @@ namespace RemoteTypes{
         CREATE_NEW_PLAYLIST,
         GET_STATIONS_FROM_REMOTE,
         REPLACE_CURRENT_PLAYLIST,
+        REQUEST_LOGO,
         SEND_SOURCES,
         UPDATE_SOURCES
     };
@@ -198,6 +198,7 @@ namespace RemoteTypes{
         IMAGE,
         LABEL,
         LANGUAGE,
+        LOGO_URL,
         QUALITY,
         SOURCE,
         SOURCE_LOGO,

@@ -3,6 +3,7 @@
 
 #include "covermanager/albumcoverimageresult.h"
 #include "covermanager/albumcoverloaderresult.h"
+#include "remotecontroller/remotealbumart.h"
 #include <QObject>
 
 class CollectionView;
@@ -16,7 +17,8 @@ class RemoteRadio : public QObject
 {
     Q_OBJECT
 
-    const Application   *app_;
+    const Application       *app_;
+    const RemoteAlbumArt    albumArt_;
 
 public:
     explicit RemoteRadio(const Application *app, QObject *parent = nullptr);
@@ -31,6 +33,8 @@ private:
     QJsonObject appendToCurrentPlaylist(const QJsonObject& args);
     QJsonObject createNewPlaylist(const QJsonObject& args);
     QJsonObject replaceCurrentPlaylist(const QJsonObject& args);
+    QJsonObject requestLogo(const QJsonObject& args);
+    QJsonObject wrongArgsSent(const QString& error);
 
     void somaFmParse(const QJsonObject& data, const QString radioStation, RadioService *service);
     void radioBrowserParse(const QJsonArray& data, const QString radioStation, RadioService *service);
@@ -40,7 +44,6 @@ private:
     void getStationsFromClient(const QJsonObject& args);
     void sendSources();
     void updateSources();
-    void wrongArgsSent(const QString& error);
 
     QString getNameFromSource(Song::Source source);
     Song::Source getSourceFromName(const QString& name);

@@ -365,10 +365,6 @@ QString RemotePlaylist::repeatMode(const PlaylistSequence::RepeatMode mode) cons
         sendMode =toString(PlaylistData::REPEAT_ONEBYONE);
         break;
     }
-    case PlaylistSequence::RepeatMode::Intro: {
-        sendMode = toString(PlaylistData::REPEAT_INTRO);
-        break;
-    }
     default:
         break;
     }
@@ -396,9 +392,9 @@ const PlaylistCmdMap& RemotePlaylist::sendCommandMap() const{
 
 QJsonObject RemotePlaylist::sendCoverImage(const QJsonObject& args){
 
-    if (!args.contains(toString(Arguments::COVER_ART))) return wrongArgsSent(toString(Arguments::NAME));
+    if (!args.contains(toString(PlaylistData::COVER_ART))) return wrongArgsSent(toString(Arguments::NAME));
 
-    Q_EMIT sendResponse(currentSong_->requestAlbumArt(args[toString(Arguments::COVER_ART)].toString()));
+    Q_EMIT sendResponse(currentSong_->requestAlbumArt(args[toString(PlaylistData::COVER_ART)].toString()));
 
     return RemoteJsonCreator::createResponse({
         field(MessageType::RESPONSE, toString(MessageType::RESPONSE)),
@@ -482,10 +478,10 @@ QJsonObject RemotePlaylist::setRepeatMode(const QJsonObject& args){
 
     QMap<QString, PlaylistSequence::RepeatMode> repeatModes{
         {toString(Arguments::ALBUM), PlaylistSequence::RepeatMode::Album},
-        {toString(PlaylistData::REPEAT_INTRO), PlaylistSequence::RepeatMode::Intro},
         {toString(PlaylistData::OFF), PlaylistSequence::RepeatMode::Off},
         {toString(PlaylistData::REPEAT_ONEBYONE), PlaylistSequence::RepeatMode::OneByOne},
         {toString(PlaylistData::REPEAT_PLAYLIST), PlaylistSequence::RepeatMode::Playlist},
+        {toString(PlaylistData::REPEAT_SCAN), PlaylistSequence::RepeatMode::Scan},
         {toString(PlaylistData::REPEAT_TRACK), PlaylistSequence::RepeatMode::Track}
     };
 

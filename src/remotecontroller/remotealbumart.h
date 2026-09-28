@@ -2,16 +2,20 @@
 #define REMOTEALBUMART_H
 
 #include <QObject>
+#include "core/application.h"
 #include "core/song.h"
 
 class RemoteAlbumArt : public QObject
 {
     Q_OBJECT
 public:
-    explicit RemoteAlbumArt(QObject *parent = nullptr);
+    explicit RemoteAlbumArt(const Application *app, QObject *parent = nullptr);
+
+    const Application   *app_;
 
     QJsonObject makeAlbumArtBySong(const Song& song) const;
     QJsonObject makeAlbumArtByName(const QString& coverArt) const;
+    QJsonObject makeAlbumArtByUrl(const QString& url) const;
 
 public Q_SLOTS:
     // void requestAlbumArt(const Song& song);

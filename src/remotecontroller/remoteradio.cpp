@@ -15,7 +15,8 @@ using namespace RemoteTypes;
 
 RemoteRadio::RemoteRadio(const Application *app, QObject *parent)
     :QObject{parent},
-    app_{app}
+    app_{app},
+    albumArt_(RemoteAlbumArt(app_, this))
 {
     createCommandMap();
 
@@ -338,6 +339,11 @@ QJsonObject RemoteRadio::replaceCurrentPlaylist(const QJsonObject& args){
     return QJsonObject(args); // TODO: Finish this
 }
 
+QJsonObject RemoteRadio::requestLogo(const QJsonObject& args){
+    if (!args.contains(toString(RadioData::URL)) || args.isEmpty()) return wrongArgsSent(toString(RadioCommandMap::REQUEST_LOGO));
+    return albumArt_.makeAlbumArtByUrl(args[toString(RadioData::URL)].toString());
+}
+
 const RadioCmdMap& RemoteRadio::sendCommandMap() const {
     return commandMap_;
 }
@@ -424,14 +430,12 @@ void RemoteRadio::updateSources(){
     app_->radio_services()->RefreshChannels();
 }
 
-void RemoteRadio::wrongArgsSent(const QString& error){
-    Q_EMIT sendResponse(
-        RemoteJsonCreator::createResponse({
+QJsonObject RemoteRadio::wrongArgsSent(const QString& error){
+    return RemoteJsonCreator::createResponse({
             field(MessageType::ERROR, toString(MessageType::ERROR)),
             field(Error::ERROR, toString(Error::WRONG_ARGUMENT_SENT)),
             field(Arguments::REQUIRED, error)
-        })
-        );
+    });
 }
 
 void RemoteRadio::createCommandMap(){
@@ -439,6 +443,7 @@ void RemoteRadio::createCommandMap(){
     commandMap_[toString(RadioCommandMap::CREATE_NEW_PLAYLIST)] = [this](const QJsonObject& args){ createNewPlaylist(args); return commandResponse(toString(RadioCommandMap::CREATE_NEW_PLAYLIST)); };
     commandMap_[toString(RadioCommandMap::GET_STATIONS_FROM_REMOTE)] = [this](const QJsonObject& args){ getStationsFromClient(args); return commandResponse(toString(RadioCommandMap::GET_STATIONS_FROM_REMOTE)); };
     commandMap_[toString(RadioCommandMap::REPLACE_CURRENT_PLAYLIST)] = [this](const QJsonObject& args){ replaceCurrentPlaylist(args); return commandResponse(toString(RadioCommandMap::REPLACE_CURRENT_PLAYLIST)); };
+    commandMap_[toString(RadioCommandMap::REQUEST_LOGO)] = [this](const QJsonObject& args){ requestLogo(args); return commandResponse(toString(RadioCommandMap::REQUEST_LOGO));};
     commandMap_[toString(RadioCommandMap::SEND_SOURCES)] = [this](const auto&){sendSources(); return commandResponse(toString(RadioCommandMap::SEND_SOURCES)); };
     commandMap_[toString(RadioCommandMap::UPDATE_SOURCES)] = [this](const auto&){updateSources(); return commandResponse(toString(RadioCommandMap::UPDATE_SOURCES));};
 }

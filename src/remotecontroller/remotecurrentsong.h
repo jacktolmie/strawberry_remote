@@ -13,14 +13,14 @@ class RemoteCurrentSong : public QObject
     Q_OBJECT
 
     const Application       *app_;
-    const RemoteAlbumArt    albumArt;
+    const RemoteAlbumArt    albumArt_;
 
 public:
     explicit RemoteCurrentSong(const Application *app, QObject *parent = nullptr);
 
     QJsonObject songData(const Song& song, const int playlistId, const int index) const;
     QJsonObject songInfoData(const Song& song) const;
-    QJsonObject requestAlbumArt(const QString& coverArt); //(const Song& song) const;
+    QJsonObject requestAlbumArt(const QString& coverArt);
 
 public Q_SLOTS:
     void getCurrentSongRequest(const Song& song);

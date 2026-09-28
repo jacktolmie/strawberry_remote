@@ -11,7 +11,7 @@ using namespace RemoteTypes;
 RemoteCurrentSong::RemoteCurrentSong(const Application *app, QObject *parent)
   : QObject{parent},
     app_(app),
-    albumArt(RemoteAlbumArt(this))
+    albumArt_(RemoteAlbumArt(app_, this))
 {
     QObject::connect(&*app_->playlist_manager(), &PlaylistManager::CurrentSongChanged, this, &RemoteCurrentSong::getCurrentSongRequest);
 }
@@ -55,5 +55,5 @@ void RemoteCurrentSong::getCurrentSongRequest(const Song& song){
 }
 
 QJsonObject RemoteCurrentSong::requestAlbumArt(const QString& coverArt){
-    return albumArt.makeAlbumArtByName(coverArt);
+    return albumArt_.makeAlbumArtByName(coverArt);
 }

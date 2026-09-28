@@ -12,7 +12,6 @@ QString toString(Arguments value) {
         case Arguments::ARGUMENTS:          return u"arguments"_s;
         case Arguments::ARTIST:             return u"artist"_s;
         case Arguments::COMMAND:            return u"command"_s;
-        case Arguments::COVER_ART:          return u"cover_art"_s;
         case Arguments::COVER_IMAGE:        return u"cover_image"_s;
         case Arguments::CURRENT_SONG:       return u"current_song"_s;
         case Arguments::EMPTY:              return u""_s;
@@ -124,14 +123,15 @@ QString toString(PlaylistCommandMap value) {
         case PlaylistCommandMap::SET_CURRENT_PLAYLIST:          return u"set_current_playlist"_s;
         case PlaylistCommandMap::SHUFFLE_CURRENT_PLAYLIST:      return u"shuffle_current_playlist"_s;
         case PlaylistCommandMap::SHUFFLE_MODE:                  return u"shuffle_mode"_s;
-
     }
+        Q_UNREACHABLE();
 }
 QString toString(PlaylistData value) {
     switch (value) {
 
         case PlaylistData::ACTIVE_PLAYLIST:     return u"active_playlist"_s;
         case PlaylistData::ALL:                 return u"all"_s;
+        case PlaylistData::COVER_ART:          return u"cover_art"_s;
         case PlaylistData::CURRENT_PLAYLIST:    return u"current_playlist"_s;
         case PlaylistData::FAVOURITE:           return u"favourite"_s;
         case PlaylistData::FROM_INDEX:          return u"from_index"_s;
@@ -145,8 +145,8 @@ QString toString(PlaylistData value) {
         case PlaylistData::PLAYLIST_LENGTH:     return u"playlist_length"_s;
         case PlaylistData::PLAYLIST_SIZE:       return u"playlist_size"_s;
         case PlaylistData::POSITION:            return u"position"_s;
-        case PlaylistData::REPEAT_INTRO:        return u"intro"_s;
         case PlaylistData::REPEAT_MODE:         return u"repeat_mode"_s;
+        case PlaylistData::REPEAT_SCAN:         return u"scan"_s;
         case PlaylistData::REPEAT_ONEBYONE:     return u"stop"_s;
         case PlaylistData::REPEAT_PLAYLIST:     return u"playlist"_s;
         case PlaylistData::REPEAT_TRACK:        return u"track"_s;
@@ -197,9 +197,11 @@ QString toString(RadioCommandMap value){
         case RadioCommandMap::CREATE_NEW_PLAYLIST:          return u"create_new_playlist"_s;
         case RadioCommandMap::GET_STATIONS_FROM_REMOTE:     return u"get_stations_from_remote"_s;
         case RadioCommandMap::REPLACE_CURRENT_PLAYLIST:     return u"replace_current_playlist"_s;
+        case RadioCommandMap::REQUEST_LOGO:                 return u"request_logo"_s;
         case RadioCommandMap::SEND_SOURCES:                 return u"send_sources"_s;
         case RadioCommandMap::UPDATE_SOURCES:               return u"update_sources"_s;
     }
+    Q_UNREACHABLE();
 }
 
 QString toString(RadioData value){
@@ -221,6 +223,7 @@ QString toString(RadioData value){
         case RadioData::IMAGE:          return u"image"_s;
         case RadioData::LANGUAGE:       return u"language"_s;
         case RadioData::LABEL:          return u"label"_s;
+        case RadioData::LOGO_URL:       return u"logo_url"_s;
         case RadioData::QUALITY:        return u"quality"_s;
         case RadioData::SOURCE:         return u"source"_s;
         case RadioData::SOURCES_LIST:   return u"sources_list"_s;
