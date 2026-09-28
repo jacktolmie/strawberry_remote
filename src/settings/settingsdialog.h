@@ -100,6 +100,8 @@ class SettingsDialog : public QDialog {
     Tidal,
     Qobuz,
     Spotify,
+    Plex,
+    Jellyfin,
     Radio,
   };
 
